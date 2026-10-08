@@ -1,5 +1,8 @@
 # Molecular Dynamics and Learned Propagators
 
+Read the [precompiled book](precompiled/md_notes.pdf), or use the notebooks
+and build instructions below.
+
 I started this book to work through molecular dynamics for myself: derive the
 equations, write the calculation and check whether the result makes physical
 sense. The explanations and exercises are written so that someone else can
@@ -192,6 +195,7 @@ viewing the supplied animation.
 
 | Path | Contents |
 | --- | --- |
+| `precompiled/` | A ready-to-read PDF of the book |
 | `book/` | LaTeX chapters, references, styles and saved figures |
 | `notebooks/` | Chapter workbooks, exercises and worked solutions |
 | `mdlab/` | Python source and tests |
@@ -201,5 +205,5 @@ viewing the supplied animation.
 | `renders/` | Saved-GIF scripts and optional Blender rendering source |
 
 The [publishing notes](docs/publishing.md) describe the initial Git upload and
-the separate data release. Build products, personal workbook copies and local
-working notes stay out of Git.
+the separate data release. Intermediate build files, personal workbook copies
+and local working notes stay out of Git.
