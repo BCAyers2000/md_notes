@@ -1,7 +1,5 @@
 # Molecular Dynamics and Learned Propagators
 
-Brad Ayers
-
 I started this book to work through molecular dynamics for myself: derive the
 equations, write the calculation and check whether the result makes physical
 sense. The explanations and exercises are written so that someone else can
