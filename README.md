@@ -154,7 +154,7 @@ The optional LAMMPS integration check requires a working LAMMPS and MPI
 installation. FHI-aims must be installed separately.
 Set `AIMS_ROOT` to its installation, or set `AIMS_BINARY` and `AIMS_SPECIES`
 explicitly; `MPIRUN` and `AIMS_RANKS` select the MPI launcher and rank count.
-The script `scripts/ch17_practice/runs_aims.py --help` lists its calculations.
+Run `python scripts/ch17_practice/runs_aims.py --help` to list its calculations.
 The carbon regeneration scripts also use the `SiC.tersoff` parameter file
 shipped with ASE's test data.
 
