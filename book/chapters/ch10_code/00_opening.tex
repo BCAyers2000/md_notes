@@ -1,0 +1,17 @@
+%=============================================================================!
+% 10.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+The earlier chapters followed a handful of atoms in empty space. To
+represent a liquid or a crystal, we need a sample packed at the material's
+density whose atoms have neighbours on every side. Repeating a simulation
+cell supplies those neighbours, but also changes how we find separations
+and sum the forces. We develop these operations first, including the
+Ewald sum for charges, then use neighbour lists to avoid testing every
+pair at every step.
+
+With the forces defined, we can prepare the positions and velocities and
+advance them with the velocity Verlet loop of Chapter~9. Comparisons with
+an independent library check the implementation, and timings identify
+where compiled code can reduce its cost. Chapter~11 starts from this loop
+and asks how far the step can be lengthened by constraining stiff bonds
+and evaluating slowly changing forces less often.

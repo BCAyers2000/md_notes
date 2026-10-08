@@ -1,0 +1,160 @@
+%=============================================================================!
+% 16.6  VELOCITIES THAT REMEMBER                                              !
+%=============================================================================!
+\section{Velocities that remember}
+\label{sec:ob-vacf}
+
+A walk whose steps are independent spreads as $2dDt$, but an atom's
+velocity is not new at each instant: it changes only as collisions turn
+it, and for a while each velocity resembles the one before, as the
+samples of Chapter~15 resembled their predecessors. The memory of the
+velocity sets how far the atom gets, and measuring it gives the diffusion
+coefficient by a second route, and other transport coefficients by the
+same one.
+
+\subsection*{The velocity autocorrelation function}
+
+The velocity autocorrelation function is
+\begin{equation*}
+   C_{vv}(t) = \ens{\vb{v}(t_0)\cdot\vb{v}(t_0 + t)} ,
+\end{equation*}
+averaged over the atoms and over the starting times $t_0$, the
+covariance of Chapter~15 for a vector quantity. At $t = 0$ it is
+$\ens{v^2} = 3\kB T/m$, and it falls towards zero as collisions scatter
+the velocity. In liquid argon (\cref{fig:ob-vacf}a) it reaches zero at
+\SI{320}{\femto\second} and goes negative, to $-0.056\,C_{vv}(0)$ at
+\SI{420}{\femto\second}: an atom that has run into the cage of its
+neighbours rebounds, and its velocity points, on average, backwards. In
+the crystal at \SI{21}{\kelvin}, where the cage never opens, it
+oscillates, reaching $-0.62\,C_{vv}(0)$ at \SI{330}{\femto\second}, the
+atom swinging back and forth about its site. \texttt{velocity\_autocorrelation}
+of \texttt{mdlab} computes the average over every pair of frames by the
+fast Fourier transform, a tool \cref{sec:ob-fourier} explains.
+
+\subsection*{From the velocity to the displacement}
+
+The displacement is the integral of the velocity, $\vb{r}(t_0 + t) -
+\vb{r}(t_0) = \int_0^t\vb{v}(t_0 + t')\,\dd t'$. Its square is a double
+integral, and averaging,
+\begin{equation*}
+   \ens{\lvert\vb{r}(t_0 + t) - \vb{r}(t_0)\rvert^2}
+   = \int_0^t\!\!\int_0^t\ens{\vb{v}(t_0 + t')\cdot\vb{v}(t_0 + t'')}
+   \,\dd t'\,\dd t''
+   = \int_0^t\!\!\int_0^tC_{vv}(t'' - t')\,\dd t'\,\dd t'' ,
+\end{equation*}
+since in a settled run the average depends only on the separation of the
+two times. For the same reason $C_{vv}$ is even: shifting the start from
+$t_0$ to $t_0 - t$ turns $\ens{\vb{v}(t_0)\cdot\vb{v}(t_0 - t)}$ into
+$\ens{\vb{v}(t_0 - t)\cdot\vb{v}(t_0)}$, so $C_{vv}(-t) = C_{vv}(t)$. The
+integrand is constant along the lines $t'' - t' = s$ across the square $0
+\le t', t'' \le t$. The line at separation $s$ runs from $(0, s)$ to $(t -
+s, t)$, a length $\sqrt2\,(t - s)$, and the line at $s + \dd s$ lies
+parallel to it at the distance $\dd s/\sqrt2$, so the strip between them
+has the area $(t - s)\,\dd s$; the lines at $-s$ cut out an equal strip.
+Collecting the strips,
+\begin{equation}
+   \ens{\lvert\vb{r}(t_0 + t) - \vb{r}(t_0)\rvert^2}
+   = 2\int_0^t(t - s)\,C_{vv}(s)\,\dd s ,
+   \label{eq:ob-msd-vacf}
+\end{equation}
+the same counting of pairs by their separation that gave the variance of
+a correlated mean in \cref{eq:cv-var}. Written as $2t\int_0^tC_{vv}\,\dd s -
+2\int_0^tsC_{vv}\,\dd s$, it has the slope in $t$
+\begin{equation*}
+   2\int_0^tC_{vv}(s)\,\dd s + 2tC_{vv}(t) - 2tC_{vv}(t)
+   = 2\int_0^tC_{vv}(s)\,\dd s ,
+\end{equation*}
+by the product rule (\cref{sec:ne-drag}) for the first term and, for
+both, the fundamental theorem of calculus, by which the slope of an
+integral with respect to its upper limit is the integrand there
+(\cref{sec:mo-integrating}). Once
+$C_{vv}$ has died away this slope is constant and equals $6D$ by
+\cref{eq:ob-einstein}, so
+\begin{equation}
+   D = \frac13\int_0^\infty C_{vv}(t)\,\dd t ,
+   \label{eq:ob-gk}
+\end{equation}
+a Green-Kubo formula: a transport coefficient as the integral of the
+autocorrelation function of a current, here the velocity of one
+atom\cite{AllenTildesley2017}.
+
+The two routes are one identity, and on the same run they agree.
+\Cref{fig:ob-msd}(b) plots the slope of the MSD divided by 6 and the
+running integral $\frac13\int_0^tC_{vv}$, which lie on each other at
+every $t$; from 1 to \SI{10}{\pico\second} the integral strays from its
+final value by at most 1.2\%. Averaged over 2 to \SI{10}{\pico\second}, it
+gives $D = \SI{3.784e-4}{\angstrom\squared\per\femto\second}$, 0.5\% above
+the fit to the MSD over 2 to \SI{20}{\pico\second}. The integral
+overshoots before it settles, to 1.12 times its final value at
+\SI{320}{\femto\second}, where $C_{vv}$ crosses zero, because the
+negative part that follows takes back some of what came before: the
+rebound from the cage slows diffusion.
+
+\subsection*{The viscosity}
+
+The same form gives the shear viscosity, the friction of one layer of a
+liquid sliding over another, as the integral of the autocorrelation
+function of the shear stress, the off-diagonal pressure $\mathsf{P}_{xy}$
+of \cref{sec:pr-tensor}:
+\begin{equation*}
+   \eta_{\mathrm s} = \frac{V}{\kB T}\int_0^\infty
+   \ens{\mathsf{P}_{xy}(0)\,\mathsf{P}_{xy}(t)}\,\dd t .
+\end{equation*}
+Its derivation needs the response of a liquid to a slow shear, which
+this book does not develop; it is given by Allen and
+Tildesley\cite{AllenTildesley2017}. Chapter~15 recorded
+$\mathsf{P}_{xy}$, $\mathsf{P}_{xz}$ and $\mathsf{P}_{yz}$ at every step of
+twelve runs of liquid argon at 133.7 to \SI{135.3}{\kelvin}, the two of
+\SI{2}{\nano\second} and the ten of \SI{1}{\nano\second} at five sizes,
+\SI{14}{\nano\second} in all. Each component of each run gives one
+estimate, and the integrals, averaged and given the standard error of the
+twelve runs, reach 0.98 of their plateau by \SI{1}{\pico\second}
+(\cref{fig:ob-vacf}b). Over
+1 to \SI{3}{\pico\second},
+\begin{equation*}
+   \eta_{\mathrm s} = (1.853 \pm 0.038)\times10^{-4}\,\si{\pascal\second} ,
+\end{equation*}
+or $2.04 \pm 0.04$ in the reduced unit $\sqrt{m\varepsilon}/\sigma^2$.
+\Cref{sec:cv-size} inferred $(2.18 \pm 0.20)\times10^{-4}$\,\si{\pascal\second}
+from the way $D$ changed with the size of the box through
+\cref{eq:cv-yh}, and the two lie 1.6 combined errors apart: the change
+of $D$ with size is the return flow of the hydrodynamic theory, to within
+its error. With this $\eta_{\mathrm s}$ the correction of \cref{eq:cv-yh}
+for 256 atoms is \SI{0.651e-4}{\angstrom\squared\per\femto\second}, which
+added to the 256-atom value of \num{3.914e-4} gives \num{4.565e-4},
+against the $(4.503 \pm 0.032)\times10^{-4}$ extrapolated from five sizes.
+
+Beyond \SI{3}{\pico\second} the integral wanders: the correlation has
+gone, and what is added is noise whose spread grows with the upper limit,
+as the integral of a sum of noisy terms does. The integral is read where
+it has settled and not later (\cref{sec:ob-trajectory}).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/vacf}
+\caption{(a) The velocity autocorrelation function of liquid argon at
+fixed energy and \SI{132}{\kelvin} and of the fcc crystal at
+\SI{21}{\kelvin}, each divided by its value at $t = 0$. (b) The
+Green-Kubo integral of the shear stress, $(V/\kB T)\int_0^t\ens{
+\mathsf{P}_{xy}(0)\mathsf{P}_{xy}(t')}\dd t'$, from the
+\SI{14}{\nano\second} of Chapter~15's runs near \SI{135}{\kelvin}, with
+twice its standard error over the twelve runs (band), against the
+viscosity that \cref{eq:cv-yh} inferred from the change of $D$ with
+size (dashed, with its error).}
+\label{fig:ob-vacf}
+\end{figure}
+
+\begin{keyidea}
+The mean squared displacement is twice the integral of the velocity
+autocorrelation function weighted by $t - s$, so $D$ is a third of the
+integral of $C_{vv}$, a Green-Kubo formula. Both routes give the same $D$
+from the same run. The shear viscosity is the same kind of integral of
+the shear stress's autocorrelation, read where it has settled.
+\end{keyidea}
+
+\notebook{16}{integrate the velocity autocorrelation function and watch it settle}
+
+\begin{selfcheck}
+Why does the negative dip of $C_{vv}$ in a liquid make $D$ smaller than
+the integral of its first, positive part alone?
+\end{selfcheck}

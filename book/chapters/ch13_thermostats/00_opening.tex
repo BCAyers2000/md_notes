@@ -1,0 +1,18 @@
+%=============================================================================!
+% 13.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+Chapter~12 described the canonical distribution of a system in contact
+with a heat bath. To reproduce that situation in a simulation, an
+algorithm must exchange energy with the atoms while preserving the
+required distribution. Such an algorithm is called a thermostat. We
+judge it by two questions: whether it samples the canonical ensemble,
+and how much it changes the motion during sampling.
+
+We develop six approaches, beginning with direct velocity rescaling and
+ending with the stochastic rescaling used by TrajCast. Comparisons on
+liquid argon and on lithium atoms moving over the model surface of
+Chapter~3 show why a suitable method depends on the measurement. The
+chapter draws together choices for equilibration, equilibrium averages
+and dynamics, then examines the signs of faulty thermostatting in a
+trajectory. Chapter~14 applies the same distinction between mean values,
+fluctuations and motion to pressure control.

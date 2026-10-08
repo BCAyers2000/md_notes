@@ -1,0 +1,114 @@
+%=============================================================================!
+% 5.8  SPINNING MOLECULES                                                     !
+%=============================================================================!
+\section{Spinning molecules}
+\label{sec:ro-molecules}
+
+Molecules in a gas tumble as they fly, and the turning of a molecule is
+slow compared with its vibration. This section puts numbers to that for
+a molecule of lithium fluoride, LiF, one lithium atom bonded to one
+fluorine atom.
+
+\subsection*{Lithium fluoride}
+
+The two atoms of a free LiF molecule are \SI{1.5639}{\angstrom} apart at
+the bottom of their well\cite{NISTWebBook}. With the masses 6.94 and
+\SI{18.998}{\amu}, the reduced mass is $6.94\times18.998/25.938 =
+\SI{5.0831}{\amu}$, and by \cref{eq:ro-dumbbell} the moment of inertia
+about an axis through the centre of mass at right angles to the bond is
+\begin{equation*}
+   I = m_{\mathrm r}d^2 = 5.0831\times1.5639^2
+   = \SI{12.432}{\amu\angstrom\squared} .
+\end{equation*}
+We use the average mass of lithium atoms; the measured constants belong
+to molecules made with the commonest, slightly heavier kind, for which $I$
+is about \SI{1}{\percent} larger.
+The lighter lithium atom lies $18.998/25.938\times1.5639 =
+\SI{1.1455}{\angstrom}$ from the centre of mass and the fluorine atom
+\SI{0.4184}{\angstrom}, so the lithium atom does most of the moving.
+
+How fast does it turn? Chapter~12 shows that at a temperature $T$ a
+freely turning molecule of two atoms carries, on average, the energy
+$\kB T$ in its turning, where $\kB = \SI{8.617333e-5}{\electronvolt\per
+\kelvin}$ is Boltzmann's constant; at room temperature,
+\SI{300}{\kelvin} (the kelvin is the degree of the Celsius scale, counted
+from \SI{-273.15}{\degreeCelsius}, so \SI{300}{\kelvin} is about
+\SI{27}{\degreeCelsius}),
+that is $8.617333\times10^{-5}\times300 = \SI{0.025852}{\electronvolt}$. In
+the units of atoms an energy in \si{\electronvolt} becomes one in
+\si{\amu\angstrom\squared\per\femto\second\squared} on multiplying by
+\num{9.648533e-3} (\cref{sec:en-atoms}), and for a molecule with this average energy $K =
+\frac12 I\omega^2$ gives
+\begin{equation*}
+   \omega = \sqrt{\frac{2K}{I}}
+   = \sqrt{\frac{2\times0.025852\times9.648533\times10^{-3}}{12.432}}
+   = \SI{0.006335}{\radian\per\femto\second} ,
+\end{equation*}
+one turn in $2\pi/\omega = \SI{992}{\femto\second}$, about a picosecond,
+with the angular momentum $I\omega =
+\SI{0.0788}{\amu\angstrom\squared\per\femto\second}$ along the axis of
+turning (\cref{fig:ro-lif}). The lithium atom then circles at
+$0.006335\times1.1455 = \SI{0.00726}{\angstrom\per\femto\second}$, or
+\SI{726}{\metre\per\second}.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   vec/.style={-{Stealth[length=6pt]}, line width=1.1pt}]
+   % the plane of turning, seen at a slant
+   \draw[black!30, line width=0.5pt] (0,0) ellipse (2.6 and 0.75);
+   \draw[black!50, ->, line width=0.6pt] (-60:2.75 and 0.88) arc[start
+      angle=-60, end angle=-20, x radius=2.75, y radius=0.88];
+   % the molecule: Li far from the centre, F near it
+   \draw[line width=1.2pt, black!60] (-1.75,0.22) -- (0.64,-0.08);
+   \shade[ball color=black!20] (-1.75,0.22) circle (0.24);
+   \shade[ball color=black!45] (0.64,-0.08) circle (0.17);
+   \node[above left] at (-1.85,0.38) {\small Li};
+   \node[below right] at (0.72,-0.18) {\small F};
+   % angular momentum along the axis
+   \draw[vec, accent] (0,0) -- (0,2.0) node[above] {\small $\vb{L}$};
+   \draw[black!40, dashed, line width=0.4pt] (0,0) -- (0,-1.1);
+   \fill (0,0) circle (0.055);
+\end{tikzpicture}
+\caption{A LiF molecule turning about an axis through its centre of mass
+(dot), at right angles to the bond. Its angular momentum $\vb{L} = I
+\boldsymbol{\omega}$ points along the axis by the right-hand rule. The
+lithium atom, the lighter, lies \SI{1.145}{\angstrom} from the centre and
+the fluorine atom \SI{0.418}{\angstrom}.}
+\label{fig:ro-lif}
+\end{figure}
+
+\subsection*{Fast vibration, slow turning}
+
+The bond of LiF has the harmonic wavenumber\cite{NISTWebBook}
+\SI{910.34}{\per\centi\metre}, that of small swings about the bottom of
+its well, so by
+\cref{sec:os-molecules} its period is
+\begin{equation*}
+   \frac{1}{2.99792458\times10^{-5}\times910.34}
+   = \SI{36.64}{\femto\second} .
+\end{equation*} The molecule therefore vibrates 27 times in each
+turn, and turns only $360/27 = \ang{13}$ in each vibration. Over one
+vibration it is nearly still; over one turn its length swings back and
+forth 27 times about the same average, so the turning feels only that
+average.
+This separation of time scales is why a turning molecule is often treated
+as rigid, and why the step of a simulation is set by the fastest vibrations
+(\cref{sec:os-molecules}). Turning does stretch the bond a
+little, since the atoms need a pull towards the centre to go round, but
+for LiF at room temperature only by about \SI{0.002}{\angstrom}
+(\cref{ex:ro-stretch}).
+
+A lithium atom on the model surface of \cref{sec:en-surface} is a
+different case. The surface pushes it with forces that point towards no
+single centre, so in general they exert a torque about any point, and the
+atom's angular momentum is not conserved. Among groups of atoms, only an isolated
+one, a cluster in empty space or a molecule in a gas between collisions,
+is sure to keep its angular momentum.
+
+\notebook{05}{a turning LiF molecule with its angular momentum}
+
+\begin{selfcheck}
+At the same turning energy, how would the period of turning change for a
+molecule of the same length with twice the reduced mass?
+\end{selfcheck}

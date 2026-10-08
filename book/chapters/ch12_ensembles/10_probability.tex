@@ -1,0 +1,154 @@
+%=============================================================================!
+% 12.1  PROBABILITY                                                           !
+%=============================================================================!
+\section{Probability}
+\label{sec:sm-probability}
+
+A liquid of a few hundred atoms passes through more arrangements in a
+picosecond than could ever be listed, and what can be said about it is
+what fraction of the time, or of many copies of it, has some property.
+That is the language of probability. This section sets out the few rules
+of it that the chapter uses, on a pair of dice first and then on a
+quantity that varies continuously.
+
+\begin{toolbox}[Probability]
+A trial, such as a throw of two dice, has outcomes. Repeated many times,
+the fraction of trials with a given outcome settles towards a number, its
+probability $\mathcal{P}$, which lies between 0 and 1; the probabilities
+of all the distinct outcomes add up to 1, since every trial has one of
+them. When the outcomes are equally likely, a probability is a count: two
+dice have $6\times6 = 36$ equally likely outcomes, of which $6 -
+\lvert s - 7\rvert$ give the total $s$, for $s$ from 2 to 12: the first
+die may show any face that leaves the second a face from 1 to 6, which is
+$s - 1$ faces for $s \le 7$ and $13 - s$ for $s \ge 7$. So
+$\mathcal{P}(s) = (6 - \lvert s - 7\rvert)/36$, largest at $s = 7$, with
+$6/36$. Two outcomes of separate trials are independent if knowing one
+does not change the probability of the other; then the probability of
+both is the product of the two, as the 36 outcomes of two dice are the
+$6\times6$ pairs, each with probability $\frac16\times\frac16$.
+\end{toolbox}
+
+\Cref{fig:sm-probability}(a) throws two dice by computer. After 100 throws
+the fractions miss the probabilities by up to 0.051; after 10\,000 by up
+to 0.0033. A fraction is only an estimate of a probability, and a better
+one the more trials it rests on.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/probability}
+\caption{Frequencies settle on probabilities. (a) The fraction of throws
+of two dice giving each total, after 100 throws (open) and 10\,000 throws
+(filled), against the probabilities (bars). (b) The histogram of 1000
+numbers drawn from the normal distribution, as a density, against the
+Gaussian of mean 0 and standard deviation 1 (dashed).}
+\label{fig:sm-probability}
+\end{figure}
+
+\subsection*{Averages and spreads}
+
+\begin{toolbox}[Expectation and variance]
+A quantity $x$ that takes the value $x_k$ with probability $\mathcal{P}_k$
+has the expectation, or mean, $\ens{x} = \sum_kx_k\mathcal{P}_k$, the value
+its average over many trials settles towards, and any function of it the
+expectation $\ens{f(x)} = \sum_kf(x_k)\mathcal{P}_k$. The variance
+measures the spread about the mean,
+\begin{align*}
+   \operatorname{var}(x) = \ens{(x - \ens{x})^2}
+   &= \ens{x^2 - 2\ens{x}\,x + \ens{x}^2}\\
+   &= \ens{x^2} - 2\ens{x}\ens{x} + \ens{x}^2 = \ens{x^2} - \ens{x}^2 ,
+\end{align*}
+expanding the square and then averaging term by term, which uses three
+properties of $\sum_kf(x_k)\mathcal{P}_k$: the expectation of a sum is the
+sum of the expectations, a constant factor such as $\ens{x}$ comes
+outside, and a constant $c$ averages to $c\sum_k\mathcal{P}_k = c$. Its
+square root is the standard deviation $\sigma_x$, in the units of
+$x$ (written with the quantity as a subscript, to keep it apart from the
+Lennard-Jones distance $\sigma$). For independent $x$ and $y$ the
+probability of each pair is the product, so
+\begin{equation*}
+   \ens{xy} = \sum_{k,l}x_ky_l\,\mathcal{P}(x_k)\,\mathcal{P}(y_l)
+   = \Bigl(\sum_kx_k\mathcal{P}(x_k)\Bigr)\Bigl(\sum_ly_l\mathcal{P}(y_l)\Bigr)
+   = \ens{x}\ens{y} ,
+\end{equation*}
+and by the same expansion with $x + y$ in place of $x$,
+\begin{align*}
+   \operatorname{var}(x + y) &= \ens{x^2} + 2\ens{xy} + \ens{y^2}
+   - \ens{x}^2 - 2\ens{x}\ens{y} - \ens{y}^2\\
+   &= \operatorname{var}(x) + \operatorname{var}(y)
+   + 2\bigl(\ens{xy} - \ens{x}\ens{y}\bigr)
+   = \operatorname{var}(x) + \operatorname{var}(y) :
+\end{align*}
+the variances of independent quantities add.
+\end{toolbox}
+
+One die has the mean $(1 + 2 + \dotsb + 6)/6 = 3.5$ and the variance
+$35/12$ (\cref{ex:sm-die}); two independent dice have twice each, 7 and
+$35/6 = 5.8333$, and the 10\,000 throws above give 6.997 and 5.846.
+
+\subsection*{Densities}
+
+A velocity or a position takes a continuum of values, and the probability
+of any exact value is zero. It has instead a probability density
+$\mathcal{P}(x)$: the probability that $x$ lies between $a$ and $b$ is
+$\int_a^b\mathcal{P}(x)\,\dd x$, so a narrow range of width $\Delta x$ at
+$x$ holds the probability $\mathcal{P}(x)\,\Delta x$. Cutting all the
+values into such ranges and letting them narrow, the sums above become
+integrals: $\int\mathcal{P}\,\dd x = 1$ over all values, and $\ens{f(x)} =
+\int f(x)\,\mathcal{P}(x)\,\dd x$. A histogram estimates a density: the fraction of
+samples in a bin of width $\Delta x$, divided by $\Delta x$, approaches
+$\mathcal{P}(x)$ as the samples grow many and the bins narrow. The most
+important density of the book is the Gaussian, or normal, density,
+\begin{equation}
+   \mathcal{P}(x) = \frac{1}{\sigma_x\sqrt{2\pi}}\,
+   \mathrm{e}^{-(x - \ens{x})^2/(2\sigma_x^2)} .
+   \label{eq:sm-gauss}
+\end{equation}
+Its integral is 1, by the Gaussian integral $\int\mathrm{e}^{-au^2}\dd u =
+\sqrt{\pi/a}$ of \cref{sec:md-ewald} with $u = x - \ens{x}$ and $a =
+1/(2\sigma_x^2)$ (\cref{ex:md-normal}). It is symmetric about $\ens{x}$: the values
+$\ens{x} + u$ and $\ens{x} - u$ have the same density, so their deviations
+from $\ens{x}$ cancel in the average, and $\ens{x}$ is its mean. Its variance follows by integration by parts
+(\cref{sec:la-euler}), with $u = x - \ens{x}$, $s = \sigma_x$, $f = u$
+and $g' = u\,\mathrm{e}^{-u^2/(2s^2)}$, whose integral is $g =
+-s^2\mathrm{e}^{-u^2/(2s^2)}$, as the chain rule confirms:
+\begin{align*}
+   \int u^2\mathrm{e}^{-u^2/(2s^2)}\dd u
+   &= \Bigl[-s^2u\,\mathrm{e}^{-u^2/(2s^2)}\Bigr]_{-\infty}^{\infty}
+   + s^2\int\mathrm{e}^{-u^2/(2s^2)}\dd u\\
+   &= 0 + s^2\times s\sqrt{2\pi} ,
+\end{align*}
+and the bracket vanishes at both ends, where the exponential falls faster
+than $u$ grows; dividing by $s\sqrt{2\pi}$, the variance is $\sigma_x^2$.
+The fraction of the probability within $k$ standard deviations of the mean
+follows with $w = u/(\sigma_x\sqrt2)$, so that $\dd u = \sigma_x\sqrt2\,\dd
+w$ and the limits $\pm k\sigma_x$ become $\pm k/\sqrt2$:
+\begin{equation*}
+   \frac{1}{\sigma_x\sqrt{2\pi}}\int_{-k\sigma_x}^{k\sigma_x}
+   \mathrm{e}^{-u^2/(2\sigma_x^2)}\,\dd u
+   = \frac{1}{\sqrt\pi}\int_{-k/\sqrt2}^{k/\sqrt2}\mathrm{e}^{-w^2}\,\dd w
+   = \operatorname{erf}(k/\sqrt2) ,
+\end{equation*}
+the last step since $\mathrm{e}^{-w^2}$ takes the same value at $w$ and
+$-w$, with the error function of \cref{sec:md-ewald}: 68.27\%, 95.45\% and
+99.73\% for $k$ = 1, 2 and 3.
+The function \texttt{rng.normal} that drew the starting velocities of
+\cref{sec:md-start} returns numbers with this density, mean 0 and
+standard deviation 1; \cref{fig:sm-probability}(b) draws 1000 of them,
+whose mean is 0.0029 and standard deviation 1.0115, and whose histogram
+departs from \cref{eq:sm-gauss} by up to 0.042 per unit. Why velocities
+should be Gaussian at all is the subject of \cref{sec:sm-maxwell}.
+
+\begin{keyidea}
+A probability is the long-run fraction of trials with an outcome; the
+probabilities of independent outcomes multiply. A quantity has a mean
+$\ens{x}$ and a variance $\ens{x^2} - \ens{x}^2$, and the variances of
+independent quantities add. A continuous quantity has a density, which a
+histogram estimates; the Gaussian density of \cref{eq:sm-gauss} has mean
+$\ens{x}$ and variance $\sigma_x^2$.
+\end{keyidea}
+
+\notebook{12}{throw dice and draw normal numbers, and watch the histograms settle}
+
+\begin{selfcheck}
+What is the probability that two dice total at least 10?
+\end{selfcheck}

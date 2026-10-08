@@ -1,0 +1,120 @@
+%=============================================================================!
+% 3.8  THE ENERGY OF SEVERAL BODIES                                           !
+%=============================================================================!
+\section{The energy of several bodies}
+\label{sec:en-bodies}
+
+\Cref{sec:ne-bodies} showed that the forces two bodies exert on each
+other cannot change their total momentum. This section asks the same
+question of energy, using the two carts of that section, and finds a
+different answer: forces between bodies can change their total kinetic
+energy, and they conserve the total energy only when they store what they
+give in a potential energy.
+
+\subsection*{The pair of forces does work}
+
+Two carts, of masses $m_1 = \SI{1}{\kilogram}$ and $m_2 =
+\SI{3}{\kilogram}$, at positions $x_1 < x_2$ on a level, smooth track,
+are pushed apart by a light spring of stiffness $k =
+\SI{200}{\newton\per\metre}$ compressed between them
+(\cref{fig:ne-carts-sketch}). Let $\xi$ be the compression of the spring,
+how much shorter it is than its natural length. The spring touches both
+carts, so as the gap $x_2 - x_1$ between them grows, $\xi$ shrinks by the
+same amount:
+\begin{equation*}
+   \frac{\dd \xi}{\dd t} = -\frac{\dd}{\dd t}(x_2 - x_1) = -(v_2 - v_1) .
+\end{equation*}
+By \cref{sec:ne-bodies} the spring pushes the two carts with forces of
+equal size in opposite directions, and by Hooke's law
+(\cref{sec:ne-spring}) a spring compressed by $\xi$ pushes with a force of
+size $k\xi$, so it pushes the first cart with $-k\xi$ and the second with
+$+k\xi$. The weights and normal forces do no work, so by \cref{sec:en-varying} the kinetic energies change at the rates
+\begin{equation*}
+   \frac{\dd K_1}{\dd t} = -k\xi\,v_1 , \qquad
+   \frac{\dd K_2}{\dd t} = +k\xi\,v_2 .
+\end{equation*}
+Adding them,
+\begin{align*}
+   \frac{\dd}{\dd t}\bigl(K_1 + K_2\bigr) &= k\xi\,(v_2 - v_1)\\
+   &= -k\xi\,\frac{\dd \xi}{\dd t}
+      && \text{using the rate of change of $\xi$}\\
+   &= -\frac{\dd}{\dd t}\bigl(\tfrac12 k\xi^2\bigr)
+      && \text{since $\tfrac{\dd}{\dd t}\bigl(\tfrac12 k\xi^2\bigr)
+         = k\xi\,\tfrac{\dd \xi}{\dd t}$ by the chain rule.}
+\end{align*}
+Moving the last term to the left, the sum
+\begin{equation*}
+   E = \tfrac12 m_1 v_1^2 + \tfrac12 m_2 v_2^2 + \tfrac12 k \xi^2
+\end{equation*}
+does not change: the total energy of the two carts and the spring is
+conserved, and $\frac12 k\xi^2$ is the potential energy of the spring, as in
+\cref{sec:en-potential}. It depends only on how far apart the carts are.
+
+The contrast with momentum lies in the velocities. The two forces are
+equal and opposite, so they cancel in the total momentum, whose rate of
+change is their sum. Their powers are $-k\xi\,v_1$ and $+k\xi\,v_2$, which
+cancel only if $v_1 = v_2$. When the carts move apart, the first moves
+backwards, along its push, and the second forwards, along its push, so
+both forces do positive work and the total kinetic energy grows. A pair
+of equal and opposite forces does work whenever the distance between the
+bodies changes. This is how the carts, at rest at first, come to move.
+
+\subsection*{The speeds of the carts}
+
+The spring starts compressed by \SI{0.1}{\metre}, so it stores $\frac12
+\times200\times0.1^2 = \SI{1}{\joule}$, and the carts start at rest. Once
+the spring has reached its natural length and fallen away, $\xi = 0$ and
+all of that energy is kinetic,
+\begin{equation*}
+   \tfrac12 m_1 v_1^2 + \tfrac12 m_2 v_2^2 = \SI{1}{\joule} .
+\end{equation*}
+One equation cannot fix two speeds, but momentum supplies the second. The
+total momentum stays zero (\cref{sec:ne-bodies}), so $m_1 v_1 + m_2 v_2
+= 0$, which gives $v_1 = -(m_2/m_1)\,v_2 = -3v_2$. Substituting,
+\begin{equation*}
+   \tfrac12\times1\times(-3v_2)^2 + \tfrac12\times3\times v_2^2
+   = \tfrac92 v_2^2 + \tfrac32 v_2^2 = 6\,v_2^2 = 1 ,
+\end{equation*}
+in joules, so $v_2^2 = \frac16$ and
+\begin{equation*}
+   v_2 = +\sqrt{\tfrac16} = +\SI{0.408}{\metre\per\second} , \qquad
+   v_1 = -3\sqrt{\tfrac16} = -\SI{1.225}{\metre\per\second} ,
+\end{equation*}
+taking the positive root for $v_2$ because the spring pushes the second
+cart forwards. These are the speeds that a computer solution of the
+equations of motion gave in \cref{sec:ne-bodies}, found now with two
+lines of algebra. \Cref{fig:en-carts} shows the energy passing from the
+spring to the carts while the total stays at \SI{1}{\joule}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/carts}
+\caption{The energies of the carts of \cref{fig:ne-carts}: the energy
+stored in the spring, $\frac12 k\xi^2$, the kinetic energies of the two
+carts, and the total, which stays at \SI{1}{\joule}. The spring falls away
+at the dotted line, after \SI{0.096}{\second}.}
+\label{fig:en-carts}
+\end{figure}
+
+The lighter cart ends with \SI{0.75}{\joule} and the heavier with
+\SI{0.25}{\joule}, although their momenta are equal and opposite. Writing
+the kinetic energy in terms of the momentum $p = mv$ shows why,
+\begin{equation*}
+   K = \tfrac12 m v^2 = \frac{(mv)^2}{2m} = \frac{p^2}{2m} :
+\end{equation*}
+for momenta of equal size the kinetic energies are in the inverse ratio of
+the masses, three to one here.
+
+The same argument extends to any number of bodies that push on one
+another in third-law pairs, provided that the two forces of each pair
+act along the line joining its two bodies, with a size that depends only
+on the distance between them: each pair then has a potential energy, and the kinetic energy plus the sum of the pair energies
+is conserved. \Cref{sec:en-atoms} proves this for atoms, in three
+dimensions.
+
+\notebook{03}{change the masses of the carts and the energy they share}
+
+\begin{selfcheck}
+If both carts had a mass of \SI{2}{\kilogram}, with the same spring and
+compression, at what speeds would they separate?
+\end{selfcheck}

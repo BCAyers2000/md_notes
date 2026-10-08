@@ -1,0 +1,135 @@
+%=============================================================================!
+% 6.5  POLAR COORDINATES AND CONSERVED MOMENTA                                !
+%=============================================================================!
+\section{Polar coordinates and conserved momenta}
+\label{sec:la-polar}
+
+\Cref{sec:ro-plane} found that a central force conserves angular
+momentum, by computing the torque. In polar coordinates the Lagrangian
+shows it at a glance, and the same reading gives a general rule: a
+coordinate that the Lagrangian does not contain carries a conserved
+quantity.
+
+\subsection*{A body pulled towards a centre}
+
+A puck on a smooth table is pulled towards a fixed point, the origin, by a
+force that depends only on its distance $r$, with potential energy $U(r)$.
+By \cref{eq:ro-polar} its velocity has the parts $\dot{r}$ along the line
+to the origin and $r\dot\theta$ across it, at right angles, so its speed
+squared is $\dot{r}^2 + r^2\dot\theta^2$ and
+\begin{equation*}
+   \Lag = \tfrac12 m\,\bigl(\dot{r}^2 + r^2\dot\theta^2\bigr) - U(r) .
+\end{equation*}
+For the coordinate $\theta$, $\partial\Lag/\partial\dot\theta =
+mr^2\dot\theta$, and $\partial\Lag/\partial\theta = 0$, since $\theta$
+appears nowhere in $\Lag$. \Cref{eq:la-euler} therefore reads
+\begin{equation*}
+   \frac{\dd}{\dd t}\bigl(mr^2\dot\theta\bigr) = 0 :
+\end{equation*}
+the angular momentum $L = mr^2\dot\theta$ of \cref{sec:ro-plane} (not
+the rod length $L$ of the pendulum) is conserved.
+
+\subsection*{Conserved momenta}
+
+For any generalised coordinate $q_k$, the quantity
+\begin{equation}
+   p_k = \frac{\partial\Lag}{\partial\dot{q}_k}
+   \label{eq:la-momentum}
+\end{equation}
+is called the momentum belonging to $q_k$, or its conjugate momentum. For
+$x$ in $\Lag = \frac12 m\dot{x}^2 - U$ it is $m\dot{x}$, the momentum of
+\cref{sec:ne-bodies}; for $\theta$ above it is the angular momentum. By
+\cref{eq:la-euler}, $\dot{p}_k = \partial\Lag/\partial q_k$, so whenever
+$\Lag$ does not contain $q_k$ itself, only its rate $\dot{q}_k$, the
+momentum $p_k$ is conserved. The Lagrangian of the puck does not contain
+$\theta$ because turning the whole picture about the origin changes
+nothing; that of a free body does not contain $x$ because moving it
+changes nothing. Chapter~7 turns this observation into Noether's theorem,
+which ties every such symmetry to a conserved quantity.
+
+\subsection*{The effective potential}
+
+For $r$, $\partial\Lag/\partial\dot{r} = m\dot{r}$ and $\partial\Lag/
+\partial r = mr\dot\theta^2 - U'(r)$, so
+\begin{align*}
+   m\ddot{r} &= mr\dot\theta^2 - U'(r)\\
+   &= mr\,\frac{L^2}{m^2r^4} - U'(r)
+   && \text{putting in $\dot\theta = L/(mr^2)$, from $L = mr^2\dot\theta$,}\\
+   &= \frac{L^2}{mr^3} - U'(r)
+   && \text{cancelling $m$ and $r$.}
+\end{align*}
+Since $L$ is constant, the right side is a function of $r$ alone, and it
+is minus the derivative of
+\begin{equation}
+   U_{\mathrm{eff}}(r) = U(r) + \frac{L^2}{2mr^2} ,
+   \label{eq:la-effective}
+\end{equation}
+because $\dd\bigl(L^2/(2mr^2)\bigr)/\dd r = -L^2/(mr^3)$ by the power rule for
+negative powers (\cref{sec:os-anharmonic}). The distance from the origin
+therefore moves as a body on a line in the effective potential
+$U_{\mathrm{eff}}$, and the energy diagrams of \cref{sec:en-diagrams}
+apply to it: $\frac12 m\dot{r}^2 + U_{\mathrm{eff}}(r)$ keeps a fixed
+value $E$, and $r$ turns back where $U_{\mathrm{eff}}(r) = E$. This $E$ is
+the whole energy $K + U$, since $L^2/(2mr^2) = \frac12 mr^2\dot\theta^2$
+is the kinetic energy of the motion across the line. The extra term grows without limit as
+$r \to 0$, so for a potential that stays finite at the centre, as the
+spring's does, a body that is going round, $L \neq 0$, never reaches the
+centre.
+
+Join the puck of \SI{0.2}{\kilogram} to the hole by a spring of
+\SI{2}{\newton\per\metre} and natural length zero, so that $U = \frac12
+kr^2$, and start it \SI{0.5}{\metre} out, moving across the line to the
+hole at \SI{0.5}{\metre\per\second}. Then $L = mrv_\theta = 0.2\times0.5\times0.5 =
+\SI{0.05}{\kilogram\metre\squared\per\second}$ and $E = \frac12\times0.2
+\times0.5^2 + \frac12\times2\times0.5^2 = \SI{0.275}{\joule}$. The turning
+points solve $\frac12 kr^2 + L^2/(2mr^2) = E$. Multiplying by $r^2$ and
+moving $Er^2$ across gives $\frac12 kr^4 - Er^2 + L^2/(2m) = 0$, a quadratic
+in the unknown $r^2$, with $\frac12 k = 1$ and $L^2/(2m) =
+0.05^2/(2\times0.2) = 0.00625$:
+\begin{align*}
+   r^4 - 0.275\,r^2 + 0.00625 &= 0 ,\\
+   r^2 &= \tfrac12\bigl(0.275 \pm\sqrt{0.275^2 - 4\times0.00625}\bigr)\\
+   &= \tfrac12\,(0.275 \pm 0.225) = 0.25 \text{ or } 0.025 ,
+\end{align*}
+by the formula for the roots of a quadratic,
+so $r$ swings between $\sqrt{0.025} = \SI{0.1581}{\metre}$ and $\sqrt{0.25}
+= \SI{0.5}{\metre}$
+(\cref{fig:la-central}). The path, computed with the function
+\texttt{solve\_newton}, is an ellipse centred on the hole between these
+two distances.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch06_lagrange/central}
+\caption{A puck of \SI{0.2}{\kilogram} joined to a hole by a spring of
+\SI{2}{\newton\per\metre}, started \SI{0.5}{\metre} out at
+\SI{0.5}{\metre\per\second} across the line to the hole. (a) The
+potential energy $U$, the term $L^2/(2mr^2)$ and their sum, the effective
+potential, with the energy $E$; the dots are the turning points. (b) The
+path seen from above, between circles at the two turning distances.}
+\label{fig:la-central}
+\end{figure}
+
+The $r$ equation also gives the pull of the string in \cref{fig:ro-puck}.
+A pull of size $F$ towards the hole is the force $-F$ along $\vb{e}_r$ and
+takes the place of $-U'(r)$: a pull $F(t)$ acts as the potential $F(t)\,r$
+at each instant, and the derivation of \cref{sec:la-euler} compares paths
+instant by instant, so it still applies, so $m\ddot{r} = mr\dot\theta^2 - F$. There the
+puck was drawn in at a steady speed, $\ddot{r} = 0$, so $F = mr\dot
+\theta^2 = L^2/(mr^3)$, the pull with which \cref{fig:ro-puck} was
+computed.
+
+\begin{keyidea}
+The momentum belonging to a coordinate is $p_k = \partial\Lag/\partial
+\dot{q}_k$, and it is conserved when $\Lag$ does not contain $q_k$. For a
+central force, $\theta$ is such a coordinate and its momentum is the
+angular momentum; the distance $r$ then moves in the effective potential
+$U + L^2/(2mr^2)$.
+\end{keyidea}
+
+\notebook{06}{explore the effective potential and the paths it gives}
+
+\begin{selfcheck}
+For $\Lag = \frac12 m(\dot{x}^2 + \dot{y}^2) - mgy$, a ball thrown in a
+vertical plane, which momentum is conserved, and why?
+\end{selfcheck}

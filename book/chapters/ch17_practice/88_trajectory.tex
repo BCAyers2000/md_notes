@@ -1,0 +1,135 @@
+%=============================================================================!
+% 17.8  WHAT THE TRAJECTORY LOOKS LIKE                                        !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:ip-trajectory}
+
+Every chapter from Chapter~11 on has broken its own runs and found the
+check that catches each fault. Moving to production codes and a real
+material adds faults of two kinds: a convention of one code read with the
+habits of another, and physics that a model or a setting leaves out. This
+section measures the faults that this chapter met, and then gathers the
+checks that a single record allows into one function,
+\texttt{diagnostics.health\_report}, which reads any record and says which
+checks it passes; Appendix~F lists every fault of Chapters~11 to~17.
+
+\subsection*{This chapter's faults}
+
+\textit{LAMMPS's arrays read by position.} LAMMPS reorders its atoms in
+memory every thousand steps (\cref{sec:ip-lammps}). The Langevin run of
+liquid argon in LAMMPS, its positions read every \SI{100}{\femto\second}
+in the order of the first frame instead of by identity, gives $D =
+(57.7 \pm 7.0)\times10^{-4}$\,\si{\angstrom\squared\per\femto\second},
+21 times the $(2.72 \pm 0.07)\times10^{-4}$ read correctly: after each
+reordering every row of the array belongs to another atom, which seems to
+have jumped across the cell. \texttt{largest\_jump} finds it at once, with
+a move of 3.6 cell widths between frames.
+
+\textit{Forces compared in two orientations.} LAMMPS turns a cell whose
+first lattice vector does not lie along $x$ into its own orientation
+(\cref{sec:ip-learned}). MACE-MP-0's forces in LAMMPS and in ASE, compared
+without turning one set, differ by up to
+\SI{5.9}{\electronvolt\per\angstrom}, while the energies, which do not
+turn, agree to nine digits. Equal energies with unequal forces point to
+the frame before they point to the model.
+
+\textit{A gap in the functional.} MACE-MP-0 alone puts graphite's sheets
+16.5\% too far apart, since PBE has no dispersion
+(\cref{sec:ip-learned}). The check is the lattice against measurement,
+and the cure D3.
+
+\textit{Isotropic coupling of a layered solid.} A barostat that scales
+LiC$_6$'s three lengths together holds the spacing of its sheets at the
+value of the structure it started from, and leaves the pressure along $c$
+at $(1.68 \pm 0.10)$\,\si{\giga\pascal} with the pressures in the plane
+near $-1.0$\,\si{\giga\pascal} (\cref{sec:ip-lic6}): the diagonal of the
+pressure tensor shows it, as \cref{sec:pr-trajectory} found for the model
+solid.
+
+\textit{A reference not converged.} FHI-aims's forces on carbon change by
+up to \SI{0.28}{\electronvolt\per\angstrom} between grids of 37 and 84
+$k$-points (\cref{sec:ip-aimd}). A comparison with an unconverged
+reference measures the reference's error as much as the model's.
+
+\textit{A step too long for the bonds.} With steps of
+\SI{3}{\femto\second}, LiC$_6$'s total energy spreads by 0.082 of the
+kinetic energy's and drifts by 12.5 errors of the test of
+\cref{sec:cv-drift} in \SI{2}{\pico\second} (\cref{sec:ip-learned}).
+
+\textit{Sites in the wrong frame, or too few of them.} Graphite's sheets
+slide in a small cell by more than the distance between lithium's sites
+(\cref{sec:ip-hops}). With both families of sites fixed in the cell where
+the sheets started, the count of hops at \SI{450}{\kelvin} falls from 85
+to 20 as the least stay a visit needs grows from 10 to
+\SI{200}{\femto\second}; with the hollows of the sheet below alone,
+followed as it slides, half the sites are missing, and the count at
+\SI{300}{\kelvin} falls from 28 to 8; with both families followed, it
+falls only from 14 to 11. A rate is reported with the definition of a site
+and of a hop that produced it, and the least stay is chosen where the
+count is flat.
+
+\subsection*{A health report}
+
+\texttt{mdlab.diagnostics.health\_report} takes the positions of a run
+and whatever else its record holds, the cell, masses, velocities, times,
+energies, symbols, a target temperature, the count of freedoms ($3N - 3$
+unless given), the ensemble and whether the run keeps its total momentum,
+and runs each of the checks below that those allow, with a limit
+justified in its documentation. No move between frames of half the
+cell's smallest width or more, the most that unwrapping can undo
+(\cref{sec:md-periodic}). A centre of mass that moves no more than three
+times the root-mean-square displacement over $\sqrt N$, how far $N$
+independent atoms of equal mass would carry it (\cref{ex:ip-com}), for a
+run that keeps the total momentum, in which it should not move at all;
+under Langevin dynamics the centre wanders as one free particle
+(\cref{sec:th-trajectory}), further than that, and \texttt{mdlab}'s
+healthy Langevin run of argon fails it, \SI{4.6}{\angstrom} against a
+limit of \SI{3.4}{\angstrom}, so for such runs the check is left out. In
+the first and last frames, no two atoms nearer than half the sum of their
+covalent radii (\cref{sec:ob-bonds}). At fixed energy, a spread of the
+total energy below a twentieth of the kinetic energy's, the band
+$\omega^2\dt^2/4$ of \cref{sec:in-stability} at about fourteen steps to
+the period of the fastest vibration, and a slope within two of its errors
+(\cref{sec:cv-drift}). Under a thermostat, a mean temperature within three
+standard errors of the target and, for a canonical one, a spread of the
+kinetic temperature within three times its own relative error,
+$\sqrt{g/2n}$ for $n$ samples of statistical inefficiency $g$
+(\cref{ex:cv-error-error}), of the canonical $\sqrt{2/N_{\mathrm f}}$ of
+the target (\cref{ex:ip-chi}); at fixed energy, where nothing holds it
+there, a mean temperature within a fifth of the target, between the 4\%
+by which a prepared liquid moves and the half that a start on a lattice
+loses (\cref{sec:sm-trajectory}). And, in the first and last frames, an
+excess kurtosis of the velocities within $3\sqrt{24/n}$ of zero, three
+times the scatter of a Gaussian sample of $n = 3N$ numbers
+(\cref{ex:ip-kurtosis}). \texttt{io.read\_run} turns any trajectory that
+ASE can read into the arrays it takes.
+
+On the runs of this chapter it separates the healthy from the broken.
+\texttt{mdlab}'s argon at fixed energy passes all five checks its record
+allows, its energy spreading by 0.0036 of the kinetic energy's and
+drifting by 1.3 errors. The same positions wrapped into the cell fail the
+first check with a move of 0.999 cell widths; carried along with the
+centre of mass at $\sqrt{3\kB T/Nm}$, they fail the second, with a path
+of \SI{0.91}{\angstrom} against a limit of \num{0.69}; the run under CSVR
+passes its temperature, 0.14 errors from \SI{135}{\kelvin}, and its
+spread, within 1.6\% of the canonical; the misread LAMMPS record fails the
+first check; and LiC$_6$ passes at \SI{1}{\femto\second} and fails both
+energy checks at \SI{3}{\femto\second}.
+
+\begin{keyidea}
+Production codes and real materials add faults of convention, arrays
+reordered in memory and cells turned into a code's own orientation, and
+faults of physics left out, a functional's missing dispersion, a coupling
+unsuited to the solid, a reference not converged and sites defined in the
+wrong frame. \texttt{health\_report} runs the book's checks of continuity,
+the centre of mass, overlaps, energy, temperature and velocities on any
+record, and Appendix~F gathers every fault with its check and its cure.
+\end{keyidea}
+
+\notebook{17}{read \texttt{health\_report} on the chapter's records,
+healthy and broken}
+
+\begin{selfcheck}
+Two codes give the same energy for a structure but forces that differ by
+several \si{\electronvolt\per\angstrom}. What is the first thing to check?
+\end{selfcheck}

@@ -1,0 +1,150 @@
+%=============================================================================!
+% 9.6  STABILITY AND THE SIZE OF THE STEP                                     !
+%=============================================================================!
+\section{Stability and the size of the step}
+\label{sec:in-stability}
+
+Chapters~1, 2 and~4 promised to say how long a step molecular dynamics
+can take. Two limits answer it: a step beyond which the computed motion
+grows without bound, and, well inside it, the step at which the energy
+fluctuates by an acceptable amount. This section derives the first,
+measures the second, and turns both into a procedure.
+
+\subsection*{The stability limit}
+
+The shadow energy of \cref{eq:in-shadow} contains the factor $1 -
+\omega^2\dt^2/4$. For $\omega\dt < 2$ it is positive, $\tilde{H}$ is a sum
+of two positive squares, and its curves are ellipses: the computed motion
+stays on one and is bounded. For $\omega\dt > 2$ the factor is negative,
+and $\tilde{H} = p^2/(2m) - \frac12 kq^2(\omega^2\dt^2/4 - 1)$ is a
+difference of two squares, which stays fixed while $p$ and $q$ both grow
+without limit. Its curves are hyperbolas, open curves that run off to
+infinity, and the computed motion follows one outwards, its size
+multiplied, after the first few steps, by a fixed factor at every step
+(\cref{ex:in-growth}). Velocity Verlet is therefore stable for the spring
+only when
+\begin{equation}
+   \omega\,\dt < 2 ,
+   \label{eq:in-stable}
+\end{equation}
+that is, with more than $2\pi/2 = \pi$ steps per period.
+\Cref{fig:in-stability} measures it: in 200 steps $\lvert q\rvert$ stays
+at 1 up to $\omega\dt = 1.99$, reaches $\num{1.2e17}$ at $2.01$ and
+$\num{3e38}$ at $2.05$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch09_integrators/stability}
+\caption{The largest $\lvert q\rvert$ reached in 200 steps of velocity
+Verlet for a spring started at $q = 1$ at rest, against $\omega\dt$, on a
+logarithmic axis; the limit $\omega\dt = 2$ is dotted.}
+\label{fig:in-stability}
+\end{figure}
+
+Atoms near a minimum of $U$ vibrate in normal modes (\cref{sec:os-modes}).
+We write the displacements from the minimum as $\vb{q} = \sum_k
+c_k\vb{u}_k$, with $\vb{u}_k$ the patterns of \cref{sec:os-modes}, which
+satisfy $\boldsymbol{\Phi}\vb{u}_k = \omega_k^2\vb{M}\vb{u}_k$. When the
+forces are linear, pattern $\vb{u}_k$ feels the force
+$-\boldsymbol{\Phi}\vb{u}_k = -\omega_k^2\vb{M}\vb{u}_k$, so its
+acceleration is $-\omega_k^2\vb{u}_k$: a half kick changes the rate of
+change of each $c_k$ by $-\frac12\dt\,\omega_k^2c_k$, a drift changes each
+$c_k$ by $\dt$ times its own rate, and velocity Verlet steps every $c_k$ as
+it steps a spring of angular frequency $\omega_k$. Each mode must
+therefore satisfy \cref{eq:in-stable}: the fastest vibration in the system
+sets the limit, however slow everything else is. For the faster O--H
+stretch of water, the antisymmetric one, with a period of
+\SI{8.88}{\femto\second} (\cref{sec:os-molecules}), $\omega = 2\pi/8.88 =
+\SI{0.708}{\radian\per\femto\second}$, and the limit is $\dt < 2/\omega =
+\SI{2.83}{\femto\second}$.
+
+\subsection*{Accuracy}
+
+Inside the limit, the energy band of \cref{sec:in-shadow} sets how long a
+step is acceptable: for a vibration of angular frequency $\omega$ it
+fluctuates by a fraction $\omega^2\dt^2/4$ of the vibration's energy. For
+the O--H stretch, a step of \SI{0.5}{\femto\second} gives $\omega\dt =
+0.354$ and a band of 3.1\%; \SI{1}{\femto\second} gives 12.5\%. These are
+fractions of the energy of the fastest vibration only, but they show why a
+step must be short compared with $1/\omega = \SI{1.41}{\femto\second}$, as
+\cref{sec:os-molecules} anticipated.
+
+\Cref{fig:in-water} measures this on the spring model of water of
+\cref{sec:ro-freedom}, whose fastest vibration, the symmetric stretch,
+which the model puts 24\% above the measured value, has $\omega^2 =
+\SI{0.7338}{\per\femto\second\squared}$, so $\omega =
+\SI{0.857}{\radian\per\femto\second}$ and $2/\omega =
+\SI{2.33}{\femto\second}$. Given \SI{0.1}{\electronvolt} of kinetic
+energy and followed for \SI{2000}{\femto\second}, its total energy spreads
+by \SI{1.3e-3}{\electronvolt}, 1.3\% of the energy put in, with $\dt =
+\SI{0.5}{\femto\second}$, and by 9.6\% with \SI{1}{\femto\second}. The
+spread grows as $\dt^2$ for the shorter steps (fitted slope 2.02 from 0.05
+to \SI{0.5}{\femto\second}) and faster beyond, by a factor of 7.5 from 0.5
+to \SI{1}{\femto\second}, where $\omega\dt = 0.86$ is no longer small. The
+run blows up at $\dt = \SI{2.3}{\femto\second}$, just inside the limit for
+a perfect spring. There $1 - \omega^2\dt^2/4 = 0.030$, so by
+\cref{eq:in-shadow} the computed swing of the fastest vibration is
+$1/\sqrt{0.030} = 5.8$ times the true one, and over so wide a swing the
+springs between atoms are no longer linear in the positions; with
+\SI{0.01}{\electronvolt} the same step stays bounded.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch09_integrators/water}
+\caption{The spring model of water (\cref{sec:ro-freedom}) followed by
+velocity Verlet from its equilibrium geometry with
+\SI{0.1}{\electronvolt} of kinetic energy. (a) The total energy relative
+to its initial value $E_0 = \SI{0.1}{\electronvolt}$, over the first \SI{100}{\femto\second} for three
+steps. (b) The spread of the total energy over \SI{2000}{\femto\second}
+against $\dt$, with a line of slope 2 (dashed) and the stability limit
+$2/\omega$ of its fastest vibration (dotted); the run at
+\SI{2.3}{\femto\second} blew up and is not shown.}
+\label{fig:in-water}
+\end{figure}
+
+\begin{practice}
+The step is chosen by measurement. Without a thermostat, the device of
+Chapter~13 that holds the temperature, the total energy should stay
+constant, and short runs at two or three steps, such as 0.25, 0.5 and
+\SI{1}{\femto\second}, each covering many periods of the vibrations,
+record how well it does. Its fluctuation should fall close to $\dt^2$
+between the shorter steps, as expected for smooth forces consistent with
+the reported energy; it should show no steady
+drift; and it should be small compared with the fluctuation of the kinetic
+energy, the amount that passes back and forth between kinetic and
+potential energy. For the water of \cref{fig:in-water} the ratio of their
+standard deviations is 0.9\% at \SI{0.5}{\femto\second} and 6.7\% at
+\SI{1}{\femto\second}; how small is acceptable depends on what is to be
+measured, and is a judgement. The TrajCast paper gives 0.5 to
+\SI{1.0}{\femto\second} as the typical step of molecular dynamics with
+forces from electronic structure\cite{Thiemann2026}, and the band of the
+O--H stretch above, 3.1\% at \SI{0.5}{\femto\second} and 12.5\% at
+\SI{1}{\femto\second}, shows why bonds to hydrogen hold it there. Without
+hydrogen the fastest vibrations are slower, and longer steps pass the same
+test (for the lithium model alone, \cref{ex:in-lithium}; in graphite the
+vibrations of the carbon atoms must pass it too). At half the limit,
+$\omega\dt = 1$, the band of the fastest vibration is already 25\%.
+Chapter~11 removes the fastest vibrations by holding bonds at fixed
+length.
+\end{practice}
+
+The stability limit has a cousin in \cref{sec:mo-atoms}: saving the
+positions of an oscillation needs enough frames per period to recover its
+velocity, and computing the motion needs more than $\pi$ steps per period
+to remain bounded at all.
+
+\begin{keyidea}
+Velocity Verlet is stable only for $\omega\dt < 2$ for every vibration, so
+the fastest one sets the limit, \SI{2.83}{\femto\second} for the O--H
+stretch. Accuracy demands a much shorter step: the energy of a vibration
+fluctuates by $\omega^2\dt^2/4$, and the step is chosen by measuring the
+energy fluctuation of short runs.
+\end{keyidea}
+
+\notebook{09}{push the step to the stability limit}
+
+\begin{selfcheck}
+The model lithium atom rattling in its hollow (\cref{sec:os-small}) has a
+period of \SI{170.3}{\femto\second}. What is the stability limit for the
+step?
+\end{selfcheck}

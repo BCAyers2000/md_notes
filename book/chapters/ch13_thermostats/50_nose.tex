@@ -1,0 +1,177 @@
+%=============================================================================!
+% 13.5  A FRICTION THAT LEARNS                                                !
+%=============================================================================!
+\section{A friction that learns}
+\label{sec:th-nose}
+
+Friction and noise disturb every atom at random. Nosé and Hoover found a
+deterministic alternative: a single friction, shared by all the atoms,
+that grows when the system is too hot and turns negative, pushing the
+atoms faster, when it is too cold. This section gives their equations,
+the quantity they conserve, why they sample the canonical ensemble when
+the motion is ergodic, where they fail, and the chains that cure the
+failure.
+
+\subsection*{The equations}
+
+Hoover's form of Nosé's thermostat adds one variable, the friction $\xi$,
+with its own equation of motion\cite{Nose1984,Hoover1985}:
+\begin{equation}
+   \dot{\vb{r}}_i = \frac{\vb{p}_i}{m_i} , \qquad
+   \dot{\vb{p}}_i = \vb{F}_i - \xi\,\vb{p}_i , \qquad
+   \dot\xi = \frac{2K - N_{\mathrm f}\kB T_0}{Q} .
+   \label{eq:th-nh}
+\end{equation}
+When $2K$ exceeds its canonical mean $N_{\mathrm f}\kB T_0$, $\xi$ grows and
+the friction slows every atom; when $2K$ falls below, $\xi$ falls,
+eventually below zero, and speeds them up. The thermostat's mass $Q$, an
+energy times a time squared, sets how fast $\xi$ responds; with $Q =
+N_{\mathrm f}\kB T_0\tau_{\mathrm T}^2$, $\tau_{\mathrm T}$ sets the time
+over which it responds, a small departure of $K$ swinging with the period
+$2\pi\tau_{\mathrm T}/\sqrt2$ (\cref{ex:th-nh-swing}); $Q$ is
+\SI{8.9e4}{\electronvolt\femto\second\squared} for 256 argon atoms at
+\SI{135}{\kelvin} with $\tau_{\mathrm T} = \SI{100}{\femto\second}$.
+
+The motion keeps a quantity. With $H = K + U$, the force $-\xi\vb{p}_i$
+changes $H$ at the rate $\sum_i\vb{p}_i\cdot(-\xi\vb{p}_i)/m_i = -2K\xi$,
+while
+\begin{equation*}
+   \frac{\dd}{\dd t}\Bigl(\tfrac12Q\xi^2\Bigr) = Q\xi\dot\xi
+   = \xi\bigl(2K - N_{\mathrm f}\kB T_0\bigr) ,
+\end{equation*}
+so
+\begin{equation*}
+   H + \tfrac12Q\xi^2 + N_{\mathrm f}\kB T_0\int_0^t\xi(t_1)\,\dd t_1
+\end{equation*}
+changes at the rate $-2K\xi + 2K\xi - N_{\mathrm f}\kB T_0\xi +
+N_{\mathrm f}\kB T_0\xi = 0$. Its last two terms change at the rate
+$2K\xi$, minus the rate at which the friction adds heat, so, with $\xi$
+starting at zero, they are minus the heat, and this is the effective
+energy of \cref{eq:th-effective}. One oscillator in reduced units,
+followed for 1000 units of time, about 160 periods, with steps of 0.05,
+starts with 0.2124 of it; the integrator's error makes it swing by up to
+\num{9.4e-4} over the run, but it does not drift, and it ends
+\num{4e-5} from where it began.
+
+\subsection*{Why it is canonical}
+
+\Cref{sec:ha-liouville} showed that the divergence of a flow is the rate
+at which the volume of a small blob of states grows, divided by that
+volume. In the space of positions, momenta and $\xi$, the rates
+$\dot{\vb{r}}_i$ do not depend on $\vb{r}_i$, $\dot\xi$ does not depend on
+$\xi$, and each of the $N_{\mathrm f}$ free momentum components has
+$\partial\dot p/\partial p = -\xi$, the friction keeping a zero total
+momentum at zero so that the motion stays among the free components; the
+divergence is $-N_{\mathrm f}\xi$ (\cref{ex:th-divergence}).
+A blob shrinks while $\xi > 0$, and since it keeps its copies, their
+density along the flow rises at the rate $N_{\mathrm f}\xi$. The density
+\begin{equation*}
+   \rho \propto \mathrm{e}^{-\beta(H + \frac12Q\xi^2)} , \qquad
+   \beta = \frac{1}{\kB T_0} .
+\end{equation*}
+changes along the flow at the rate
+\begin{equation*}
+   \frac{\dd\rho}{\dd t} = -\beta\rho\,\frac{\dd}{\dd t}\Bigl(H +
+   \tfrac12Q\xi^2\Bigr) = -\beta\rho\,\bigl(-N_{\mathrm f}\kB T_0\xi\bigr)
+   = N_{\mathrm f}\xi\rho ,
+\end{equation*}
+using the two rates above: the rate that the shrinking of the blobs
+requires. The copies arriving at any state therefore have the density
+this formula gives there, wherever they came from, so the cloud is the
+same at every time, as for the Hamiltonian flow of
+\cref{sec:ha-liouville}: the density is stationary. Integrating it over
+$\xi$, a Gaussian, leaves
+$\mathrm{e}^{-\beta H}$: the canonical distribution of the atoms. The
+argument shows that the canonical ensemble is kept; that one trajectory
+explores it, the ergodic hypothesis of \cref{sec:sm-ergodic}, is a
+separate matter.
+
+\subsection*{Nosé's Hamiltonian}
+
+\Cref{eq:th-nh} came from a Hamiltonian. Nosé added a coordinate $s$
+with momentum $p_s$, scaled the atoms' momenta by it, and took
+\begin{equation*}
+   H_{\mathrm N} = \sum_i\frac{\tilde{\vb{p}}_i^2}{2m_is^2} + U
+   + \frac{p_s^2}{2Q} + N_{\mathrm f}\kB T_0\ln s ,
+\end{equation*}
+whose equations of motion, in a time $t'$ of their own, are Hamilton's.
+Writing the real momenta as $\vb{p}_i = \tilde{\vb{p}}_i/s$, the real
+time by $\dd t = \dd t'/s$, and $\xi = p_s/Q$, turns them into
+\cref{eq:th-nh} (\cref{ex:th-nose}). The logarithm's slope,
+$N_{\mathrm f}\kB T_0/s$, becomes the $-N_{\mathrm f}\kB T_0$ of $\dot\xi$
+that sets the temperature; $s$ itself only records how the two times
+differ.
+
+\subsection*{Where it fails, and chains}
+
+One oscillator, $H = \frac12p^2 + \frac12x^2$ in reduced units, under
+\cref{eq:th-nh} with $\tau_{\mathrm T} = 1$, never fills its phase plane
+(\cref{fig:th-nose}(a)): over 2000 units of time its positions have the
+excess kurtosis of \cref{sec:sm-maxwell}, $\ens{x^4}/\ens{x^2}^2 - 3 =
+-1.46$, against 0 for the canonical Gaussian. Started from 100 different positions at rest, each trajectory
+keeps its own time average of $x^2$, from 0.78 to 1.59, where the
+canonical value is 1 (\cref{fig:th-nose}(c)). The motion is not ergodic:
+the single variable $\xi$ and the oscillator lock into a regular pattern.
+A lithium atom on the surface with its own Nosé-Hoover thermostat fails
+too: the density of its potential energy differs from the exact one, at
+the worst point, by 0.23 of the exact density's peak, and it hops
+\SI{0.667}{\per\pico\second}, against 1.09 under the chain of three
+below, which samples it correctly.
+
+Martyna, Klein and Tuckerman's cure gives $\xi$ a thermostat of its own,
+and that one another, a chain\cite{Martyna1992}:
+\begin{equation*}
+   \dot\xi_1 = \frac{2K - N_{\mathrm f}\kB T_0}{Q_1} - \xi_2\xi_1 , \qquad
+   \dot\xi_j = \frac{Q_{j-1}\xi_{j-1}^2 - \kB T_0}{Q_j} - \xi_{j+1}\xi_j ,
+\end{equation*}
+the last without the final term. The atoms feel only $\xi_1$, through
+\cref{eq:th-nh}; each later $\xi_j$ is a friction on $\xi_{j-1}$, as
+$\xi_1$ is on the atoms, driven by twice the energy
+$\frac12Q_{j-1}\xi_{j-1}^2$ of $\xi_{j-1}$ against the $\kB T_0$ of one
+freedom. The masses are $Q_1 = N_{\mathrm f}\kB T_0\tau_{\mathrm T}^2$ and,
+for the others, $\kB T_0\tau_{\mathrm T}^2$. A chain of
+four fills the oscillator's plane (\cref{fig:th-nose}(b)) and its
+trajectories' averages of $x^2$ lie between 0.92 and 1.08; a chain of
+three gives the lithium atom's density to within 0.016. \texttt{mdlab}
+integrates the chain for half a step before and half after each step,
+the Trotter factorisation of \cref{sec:in-splitting} with the thermostat
+as a third part. Each half is made of three pieces, of $w_1$, $1 - 2w_1$
+and $w_1$ times the half step, with $w_1 = 1/(2 - 2^{1/3}) = 1.3512$, so
+that the middle piece runs backwards; these weights of
+Yoshida\cite{Yoshida1990} cancel the error of third order. The scheme is
+the one Martyna, Tuckerman, Tobias and Klein set out\cite{Martyna1996},
+and ASE's. For the liquid tested here, the single thermostat and the chain
+both give a spread of $K$ consistent with the canonical ensemble: the mean
+of three runs lies between 0.0507 and 0.0534 at $\tau_{\mathrm T} = 0.1$
+and \SI{1}{\pico\second}, against the canonical 0.0511, and the chain
+costs about 1.1 times a step without a thermostat.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch13_thermostats/nose}
+\caption{One oscillator ($m = k = \kB T_0 = 1$). (a) One trajectory under
+Nosé-Hoover ($\tau_{\mathrm T} = 1$) over 2000 units of time, in the plane
+of $x$ and $p$. (b) The same under a chain of four. (c) The time average
+of $x^2$ along each of 100 trajectories started at rest from random
+positions, under Nosé-Hoover, the chain and Langevin ($\gamma = 0.5$),
+against the canonical value (dotted).}
+\label{fig:th-nose}
+\end{figure}
+
+\begin{keyidea}
+Nosé-Hoover friction $\xi$ obeys $\dot\xi = (2K - N_{\mathrm f}\kB T_0)/Q$
+and keeps the effective energy. The density $\mathrm{e}^{-\beta(H +
+Q\xi^2/2)}$ is carried unchanged by the flow, so the canonical ensemble is
+stationary, but only an ergodic motion samples it: one oscillator, or one
+atom in the examples here, is not sampled correctly by the single
+thermostat. A chain samples these examples successfully. For the liquid
+tested here, both give the canonical fluctuations and disturb the motion
+little.
+\end{keyidea}
+
+\notebook{13}{follow one oscillator under Nosé-Hoover and under a chain}
+
+\begin{selfcheck}
+What is $Q_1$ for 1000 atoms whose centre of mass is held still, at \SI{300}{\kelvin}
+with $\tau_{\mathrm T} = \SI{100}{\femto\second}$?
+\end{selfcheck}

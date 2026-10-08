@@ -1,0 +1,144 @@
+%=============================================================================!
+% 11.2  VELOCITIES TOO: RATTLE                                                !
+%=============================================================================!
+\section{Velocities too: RATTLE}
+\label{sec:cs-rattle}
+
+SHAKE corrects positions, and the Störmer--Verlet step it was built on
+carries no velocities. The loop of \cref{sec:md-loop} uses velocity
+Verlet, which needs the velocities at the same times as the positions,
+for the kinetic energy and to start the next step. Andersen's RATTLE
+gives velocity Verlet the same constraints\cite{Andersen1983}; this
+section derives it, checks it against an independent code, and counts
+the motions that are left.
+
+\subsection*{Two corrections}
+
+Velocity Verlet is a half kick, a drift and a half kick
+(\cref{sec:in-splitting}). With the constraint force added to the first
+half kick, the step of atom $i$ begins
+\begin{align*}
+   \vb{v}_i(t + \tfrac12\dt) &= \vb{v}_i(t) + \frac{\dt}{2m_i}
+      \bigl(\vb{F}_i + \vb{F}_i^{\mathrm c}\bigr) ,\\
+   \vb{r}_i(t + \dt) &= \vb{r}_i(t) + \dt\,\vb{v}_i(t + \tfrac12\dt)
+   = \tilde{\vb{r}}_i + \frac{\dt^2}{2m_i}\,\vb{F}_i^{\mathrm c} ,
+\end{align*}
+with the provisional position now $\tilde{\vb{r}}_i = \vb{r}_i(t) +
+\dt\,\vb{v}_i(t) + (\dt^2/2m_i)\vb{F}_i$. This has the form of the
+constrained Störmer step with $\dt^2/2$ in place of $\dt^2$, a factor
+that $\eta = \dt^2\lambda/(2m_{\mathrm r})$ absorbs, so \texttt{shake}
+corrects the positions unchanged. The half-step velocity drove the drift,
+so it must take the same correction, divided by $\dt$; equivalently,
+$\vb{v}_i(t + \frac12\dt) = [\vb{r}_i(t + \dt) - \vb{r}_i(t)]/\dt$ once the
+positions are corrected.
+
+The second half kick, with the forces at the new positions, leaves
+velocities that would in general stretch or shrink the bonds. The length
+of a bond stays $d$ only if it is not changing, and, differentiating
+component by component as for $\lvert\vb{v}\rvert^2$ in
+\cref{sec:mo-circle},
+\begin{equation*}
+   \frac{\dd}{\dd t}\,\tfrac12\lvert\vb{r}_{ij}\rvert^2
+   = \vb{r}_{ij}\cdot\vb{v}_{ij} ,
+   \qquad \vb{v}_{ij} = \vb{v}_j - \vb{v}_i ,
+\end{equation*}
+which must be zero at $t + \dt$: the two atoms may move side by side or
+turn about each other, but not approach or separate along the bond. A
+second constraint force, along the new bond $\vb{r}_{ij}$, changes $\vb{v}_j$
+by $(m_{\mathrm r}\zeta/m_j)\,\vb{r}_{ij}$ and $\vb{v}_i$ by
+$-(m_{\mathrm r}\zeta/m_i)\,\vb{r}_{ij}$, for some number $\zeta$, so that,
+as for the positions, the relative velocity changes by $m_{\mathrm
+r}\zeta(1/m_j + 1/m_i)\vb{r}_{ij} = \zeta\vb{r}_{ij}$. Then
+\begin{align*}
+   (\vb{v}_{ij} + \zeta\vb{r}_{ij})\cdot\vb{r}_{ij} &= 0 ,\\
+   \zeta &= -\frac{\vb{v}_{ij}\cdot\vb{r}_{ij}}{d^2}
+   && \text{as $\lvert\vb{r}_{ij}\rvert^2 = d^2$.}
+\end{align*}
+This condition is linear in $\zeta$, so one correction makes a single
+bond exact, and bonds that share atoms are swept until all hold, as in
+SHAKE. For atom $i$ of mass 1 and atom $j$ of mass 3, joined along $x$
+with $d = 1$, so that $\vb{r}_{ij} = (1, 0, 0)$, and with $\vb{v}_i =
+\vb{0}$ and $\vb{v}_j = (0.3, 0.4, 0)$, $\zeta = -0.3$, and the corrected
+velocities are $(0.225, 0, 0)$ and $(0.225, 0.4, 0)$: the relative motion
+along the bond is gone, the sideways motion of atom $j$ is untouched.
+
+Every correction, of positions or of velocities, changes $m_j\vb{v}_j$ by
+$m_{\mathrm r}\zeta\vb{r}_{ij}$ and $m_i\vb{v}_i$ by the opposite (or the
+positions likewise), so the total momentum and the centre of mass are
+unchanged by the constraints, as \cref{sec:ne-bodies} requires of forces
+between the atoms of a system. In the example, the momentum along $x$ is
+$3\times0.3 = 0.9$ before and $0.225 + 3\times0.225 = 0.9$ after, and
+along $y$ it stays $3\times0.4 = 1.2$.
+
+The function \texttt{rattle\_step} of \texttt{mdlab.constraints} is the
+whole step:
+\begin{code}
+    v_half = v + 0.5 * dt * force_to_accel * np.asarray(forces) / m
+    r, _ = shake(r0 + dt * v_half, r0, m[:, 0], bonds, lengths, **keep)
+    v_half = (r - r0) / dt
+    u, f = model(r)
+    v = v_half + 0.5 * dt * force_to_accel * f / m
+    v, _ = rattle_velocities(r, v, m[:, 0], bonds, lengths, **keep)
+    return r, v, u, f
+\end{code}
+\noindent with \texttt{force\_to\_accel} the factor of \cref{sec:ne-atoms}
+that turns a force in \si{\electronvolt\per\angstrom} over a mass in amu
+into an acceleration in \si{\angstrom\per\femto\second\squared}, and
+\texttt{keep} passing on the cell and the tolerance. The model is called
+once per step, as in velocity Verlet; the constraints add only the sweeps,
+and for the water box of \cref{sec:cs-water} one SHAKE to a tolerance of
+$10^{-10}$ after a step of \SI{2}{\femto\second} takes about a tenth of the
+time of one call of the model.
+
+Running the step forwards and then backwards from the reversed velocities
+retraces it. Fifty steps of \SI{2}{\femto\second} of the water box of
+\cref{sec:cs-water}, out and back with a tolerance of $10^{-14}$, recover
+the starting positions to $\num{5.2e-12}$\,\AA\ and the velocities to
+$\num{1.9e-13}$\,\AA/fs. Leimkuhler and Skeel showed that RATTLE, like
+velocity Verlet, is symplectic for motion confined to the
+constraints\cite{LeimkuhlerSkeel1994}, so its energy should stay in a
+band, as \cref{sec:cs-water} measures.
+
+\subsection*{Checked against ASE}
+
+ASE carries out the same two corrections: its \texttt{VelocityVerlet},
+given the constraint \texttt{FixBondLengths}, corrects the positions and
+half-step velocities after the drift and the velocities after the second
+half kick, with the update of \cref{eq:cs-linear} for the positions and
+the $\zeta$ above for the velocities. Given the forces of the
+\texttt{mdlab} water model, the same start and the same femtosecond
+(\cref{sec:md-loop}), 50 steps of \SI{1}{\femto\second} of the box of 64
+rigid molecules agree to $\num{2.1e-12}$\,\AA\ in the positions and
+$\num{1.5e-13}$\,\AA/fs in the velocities, with both codes' bonds held to
+$\num{1.5e-13}$\,\AA\ at a tolerance of $10^{-13}$.
+
+\subsection*{The motions that are left}
+
+Each independent distance constraint removes one way of moving. A system
+of $N$ atoms with $n_{\mathrm c}$ independent held distances has $3N - n_{\mathrm c}$ degrees of
+freedom (\cref{sec:ro-freedom,sec:la-coordinates}), and $3N - n_{\mathrm c} - 3$ once the
+drift of the centre of mass is removed and kept at zero. A water molecule
+with all three of its distances held has $9 - 3 = 6$: the three drifts and
+three turnings of \cref{sec:ro-freedom}, and no way left to vibrate. For
+64 molecules, 192 atoms, flexible water has $576 - 3 = 573$ freedoms,
+water with its 128 O--H bonds held has $573 - 128 = 445$, and rigid water,
+with $3\times64 = 192$ distances held, $573 - 192 = 381$.
+Chapter~12 needs these counts, since the kinetic energy is shared among
+the freedoms.
+
+\begin{keyidea}
+RATTLE is velocity Verlet with two corrections along the bonds: after the
+drift, the positions are corrected by SHAKE and the half-step velocities
+with them; after the second half kick, each relative velocity loses its
+part along its bond. Both corrections keep the total momentum; the step
+is reversible and symplectic, and agrees with ASE to the rounding of the
+arithmetic. Each held distance removes one freedom.
+\end{keyidea}
+
+\notebook{11}{correct a pair of velocities, and run RATTLE beside ASE}
+
+\begin{selfcheck}
+Atoms of masses 2 and 2, joined along $x$ with $d = 1$, have $\vb{v}_i =
+(0.1, 0, 0)$ and $\vb{v}_j = (-0.1, 0.2, 0)$. What are the velocities
+after the correction?
+\end{selfcheck}

@@ -1,0 +1,44 @@
+%=============================================================================!
+% 11.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:cs-answers}
+
+\answerto{sec:cs-shake}No: \cref{eq:cs-quadratic} contains no mass, so
+$\eta = -0.2$ again. Now $m_{\mathrm r} = 1$, and each atom moves by
+$m_{\mathrm r}\lvert\eta\rvert/2 = 0.1$ along the bond, towards the
+other.
+
+\answerto{sec:cs-rattle}$\vb{v}_{ij} = (-0.2, 0.2, 0)$ and $\vb{r}_{ij} =
+(1, 0, 0)$, so $\zeta = 0.2$; with $m_{\mathrm r} = 1$, $\vb{v}_j$ gains
+$0.1$ along $x$ and $\vb{v}_i$ loses it: $\vb{v}_i = \vb{0}$ and $\vb{v}_j
+= (0, 0.2, 0)$. The total momentum is $(0, 0.4, 0)$ before and after:
+zero along $x$, $2\times0.2$ along $y$.
+
+\answerto{sec:cs-water}$10^6/0.41 = \num{2.44e6}$ and $10^6/1.98 =
+\num{5.05e5}$ steps.
+
+\answerto{sec:cs-respa}Velocity Verlet makes 2430 steps, each calling both
+forces, $24 + 0.04 = \SI{24.04}{\milli\second}$: about \SI{58}{\second}.
+RESPA makes 1380 calls of the slow forces, \SI{33}{\second}, and
+$3\times1380$ calls of the springs, \SI{0.17}{\second} more.
+
+\answerto{sec:cs-resonance}$b = 0.01$, so the band runs from $(1 -
+b)\times\SI{4.5}{\femto\second} = \SI{4.455}{\femto\second}$ to
+\SI{4.5}{\femto\second}, \SI{0.045}{\femto\second} wide.
+
+\answerto{sec:cs-mass}Carbon keeps $12.011 - 2.016 =
+\SI{9.995}{\amu}$; the reduced mass goes from 0.9300 to
+\SI{2.3216}{\amu}, 2.50 times larger, and the stretch slows by
+$\sqrt{2.50} = 1.58$.
+
+\answerto{sec:cs-limits}$296\times1000 = \num{2.96e5}$ for rigid water
+with heavier hydrogens, and $2430\times1000 = \num{2.43e6}$ for flexible
+water by velocity Verlet; the table's calls come from the unrounded steps,
+so $10^6/0.41 = \num{2.44e6}$ differs in the last figure.
+
+\answerto{sec:cs-trajectory}Velocities about ten times too small, since
+$1/0.0097 = 103$ is close to $10.18^2$: velocities in
+\si{\angstrom\per\femto\second} taken as \aa ngstr\"oms per ASE time
+unit, the factor of \SI{10.18}{\femto\second} per ASE time unit
+missed.

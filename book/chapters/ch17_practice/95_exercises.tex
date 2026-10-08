@@ -1,0 +1,193 @@
+%=============================================================================!
+% 17.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:ip-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:ip-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~17 checks every numerical answer.
+
+\begin{exercise}[another code's unit of time]
+\label{ex:ip-time-unit}
+Some codes for biomolecules measure energy in kilocalories per mole,
+length in \si{\angstrom} and mass in \si{\amu}, with no conversion factor
+in $F = ma$. Find their unit of time in femtoseconds, with
+\SI{1}{\kilo\calorie} $= \SI{4184}{\joule}$ and a mole of
+\num{6.02214076e23} molecules. What number does such a code need for a
+step of \SI{2}{\femto\second}?
+\end{exercise}
+
+\begin{exercise}[one velocity, three codes]
+\label{ex:ip-velocity}
+An atom moves at \SI{0.01}{\angstrom\per\femto\second} in \texttt{mdlab}.
+What number gives its velocity in ASE's units, and what number in LAMMPS's
+\texttt{metal} units?
+\end{exercise}
+
+\begin{exercise}[friction in two codes]
+\label{ex:ip-friction}
+A Langevin friction of \SI{0.5}{\per\pico\second} is wanted. What damping
+parameter does LAMMPS's \texttt{fix langevin} take, and what friction does
+ASE's \texttt{Langevin} take, each in its own units?
+\end{exercise}
+
+\begin{exercise}[two masses for one chain]
+\label{ex:ip-chain-mass}
+ASE gives the first variable of a Nosé-Hoover chain the mass $3N\kB
+T\tau_{\mathrm T}^2$, and \texttt{mdlab} $N_{\mathrm f}\kB T\tau_{\mathrm
+T}^2$ with $N_{\mathrm f} = 3N - 3$. By what factor do they differ for 256 atoms, and by what
+factor does the period of the thermostat's oscillation, which goes as the
+square root of the mass, differ?
+\end{exercise}
+
+\begin{exercise}[the error of a table]
+\label{ex:ip-table}
+A smooth function $y(x)$ is replaced between two points $\delta x$ apart
+by the straight line through its values there. Show that the line misses
+$y$ by at most $\delta x^2\max\lvert y''\rvert/8$.
+\end{exercise}
+
+\begin{exercise}[points for a precision]
+\label{ex:ip-table-points}
+LAMMPS's own table of \num{20001} entries misses the force beyond
+\SI{3}{\angstrom} by at most \SI{7.6e-7}{\electronvolt\per\angstrom}. How
+many entries over the same range would bring the miss to
+\SI{1e-9}{\electronvolt\per\angstrom}?
+\end{exercise}
+
+\begin{exercise}[image flags]
+\label{ex:ip-images}
+LAMMPS packs the three image counts of an atom into one whole number,
+$(i_x + 512) + 1024(i_y + 512) + 1024^2(i_z + 512)$, each count lying
+between $-512$ and 511. Show that the counts are recovered from the
+number by remainders and whole quotients on division by 1024, and find
+them for the number \num{540539393}.
+\end{exercise}
+
+\begin{exercise}[a nanosecond of a foundation model]
+\label{ex:ip-cost}
+MACE-MP-0's medium model takes \SI{0.25}{\second} a call for 126 atoms on
+a GPU, in proportion to the number of atoms. How long would a nanosecond
+of 1000 atoms take, with steps of \SI{1}{\femto\second}?
+\end{exercise}
+
+\begin{exercise}[sheets held loosely]
+\label{ex:ip-d3}
+Without D3, MACE-MP-0 binds graphite's sheets by \SI{5.2}{\milli
+\electronvolt} per atom against $c = \SI{9}{\angstrom}$; with it, by
+\SI{41.2}{\milli\electronvolt}. Compare each with $\kB T$ at
+\SI{300}{\kelvin}. The height of a cell is one number shared by all its
+atoms: what does stretching the 64 carbon atoms of \cref{sec:ip-hops} to
+$c = \SI{9}{\angstrom}$ cost without D3, and what might a run at room
+temperature under a barostat do?
+\end{exercise}
+
+\begin{exercise}[the longest step]
+\label{ex:ip-step}
+LiC$_6$'s total energy spreads by 0.0067 of the kinetic energy's with steps
+of \SI{1}{\femto\second}. If the spread grows as $\dt^2$, at what step
+does it reach the limit of 0.05 that \texttt{health\_report} uses? The
+run at \SI{3}{\femto\second} spreads by 0.082: what does the excess over
+the estimate say?
+\end{exercise}
+
+\begin{exercise}[the price of a reference]
+\label{ex:ip-aimd-cost}
+A first-principles step of the 28-atom cell costs \SI{192}{\second} on four
+cores. How many core-hours, the number of cores times the hours they
+run, does a run of \SI{10}{\pico\second} with steps of
+\SI{1}{\femto\second} take, and how long on 192 cores if the work divided
+perfectly?
+\end{exercise}
+
+\begin{exercise}[the $\sqrt3\times\sqrt3$ cell]
+\label{ex:ip-supercell}
+With $\vb{a} = a(1, 0)$ and $\vb{b} = a(-\frac12, \frac{\sqrt3}{2})$, show
+that $2\vb{a} + \vb{b}$ and $-\vb{a} + \vb{b}$ have length $\sqrt3\,a$,
+that they are \ang{120} apart, and that the cell they span has three times
+the area of the sheet's own cell, and so holds six carbon atoms.
+\end{exercise}
+
+\begin{exercise}[the mean of an unequal pressure]
+\label{ex:ip-isotropic}
+Under isotropic coupling LiC$_6$'s pressures along $x$, $y$ and $z$ are
+$-1.00 \pm 0.45$, $-1.11 \pm 0.36$ and $1.68 \pm 0.10$\,\si{\giga\pascal}.
+What is their mean, with its error if the three are independent, and why
+is a barostat that controls only the mean satisfied by it?
+\end{exercise}
+
+\begin{exercise}[how long to resolve a rate]
+\label{ex:ip-rate}
+A rate is wanted to a fifth. How long a run of one atom does a rate of 2
+hops per picosecond need? A run of \SI{20}{\pico\second} sees no hop at
+all. Using the Poisson chance of no event, $\mathcal{P}(0) =
+\mathrm{e}^{-\nu X}$ (\cref{sec:ob-reactions}), find the rate above which
+a run would see none less than 5\% of the time, an upper bound with 95\%
+confidence, and how long a run must be before even that bound would be
+resolved.
+\end{exercise}
+
+\begin{exercise}[hops on a honeycomb]
+\label{ex:ip-honeycomb}
+Sites form a honeycomb of two families that alternate, neighbours $\ell$
+apart, and an atom hops to one of its three neighbours at random at the
+rate $k_{\mathrm h}$. A hop from a site of the first family is one of
+three vectors $\boldsymbol{\ell}_1$, $\boldsymbol{\ell}_2$,
+$\boldsymbol{\ell}_3$ of length $\ell$ at \ang{120} to one another, and a
+hop from the second family one of $-\boldsymbol{\ell}_1$,
+$-\boldsymbol{\ell}_2$, $-\boldsymbol{\ell}_3$. Show that
+$\boldsymbol{\ell}_1 + \boldsymbol{\ell}_2 + \boldsymbol{\ell}_3 =
+\vb{0}$, that the hops are therefore uncorrelated although the families
+alternate, and hence that $D = k_{\mathrm h}\ell^2/4$
+(\cref{sec:ob-layers}). Evaluate $\ell = a/\sqrt3$ for lithium's sites in
+dilute graphite, with $a = \SI{2.4648}{\angstrom}$.
+\end{exercise}
+
+\begin{exercise}[the scatter of a squared ratio]
+\label{ex:ip-chi}
+For a Gaussian number $z$ of mean 0 and variance 1, show that $z^2$ has
+the mean 1 and the variance 2, using $\ens{z^4} = 3$ (\cref{sec:sm-maxwell}),
+so that the mean of $n$ such squares scatters about 1 by $\sqrt{2/n}$.
+Hence show that the kinetic temperature of a canonical run, the target
+times the mean of $N_{\mathrm f}$ such squares, scatters by
+$\sqrt{2/N_{\mathrm f}}$ of the target, the spread that
+\texttt{health\_report} checks.
+\end{exercise}
+
+\begin{exercise}[the wandering centre]
+\label{ex:ip-com}
+$N$ atoms of equal mass move independently, each with no mean
+displacement and the mean square displacement $\ens{\Delta r^2}$. Show that their centre of mass has the
+mean square displacement $\ens{\Delta r^2}/N$, the basis of
+\texttt{health\_report}'s limit on the centre's path.
+\end{exercise}
+
+\begin{exercise}[half a width]
+\label{ex:ip-unwrap}
+Explain why no rule can recover a path from wrapped positions if an atom
+may move more than half a cell's width between frames, and what
+\texttt{health\_report}'s first check therefore guards.
+\end{exercise}
+
+\begin{exercise}[the kurtosis limit]
+\label{ex:ip-kurtosis}
+For $n$ independent Gaussian numbers $z_i$ of mean 0 and variance 1, the
+sample's excess kurtosis is $m_4/m_2^2 - 3$, with $m_2$ and $m_4$ the
+means of $z_i^2$ and $z_i^4$. Writing $m_2 = 1 + \epsilon_2$ and $m_4 = 3
++ \epsilon_4$ and keeping the first order in the small $\epsilon$, and
+using $\ens{z^6} = 15$ and $\ens{z^8} = 105$, show that it scatters about
+zero by $\sqrt{24/n}$. What limit does \texttt{health\_report}, which
+allows three times this, set for the 768 velocity components of 256
+atoms, and would velocities drawn evenly from an interval, of excess
+kurtosis $-1.2$, pass it?
+\end{exercise}
+
+\begin{exercise}[a plan for a run]
+\label{ex:ip-plan}
+A diffusion coefficient of lithium in a new electrolyte is wanted to 5\%
+with a learned potential that has not been used on it. List, in order,
+what the protocol of \cref{sec:ip-protocol} asks before the production run
+starts.
+\end{exercise}

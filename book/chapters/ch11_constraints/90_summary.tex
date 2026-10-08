@@ -1,0 +1,49 @@
+%=============================================================================!
+% 11.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+A bond held at a fixed length adds a force along the old bond to each
+step, and the bond at the end of the step is the provisional one plus a
+multiple $\eta$ of the old: a quadratic in $\eta$ whose first-order
+solution is a step of Newton's method. SHAKE corrects the bonds one at a
+time with that step and sweeps until all hold, the error of a single bond
+squaring at each sweep and that of a water molecule's triangle falling by
+a steady factor.
+
+RATTLE gives velocity Verlet the same constraints,
+correcting the positions and half-step velocities after the drift and
+removing each relative velocity's part along its bond after the second
+half kick; both corrections keep the total momentum, the step is
+reversible and symplectic, and it agrees with ASE to the rounding of the
+arithmetic. Each independent held distance removes one freedom. On 64 molecules of
+TIP3P water, at an energy fluctuation of 1\% of the kinetic energy's,
+holding the O--H bonds lengthens the step from 0.41 to
+\SI{0.97}{\femto\second} and holding all three distances to
+\SI{1.98}{\femto\second}.
+
+RESPA splits the forces and the Liouville
+operator into fast and slow parts and applies the costly slow forces once
+per outer step; it saves a factor of 1.8 in their calls for flexible
+water, and its outer step is limited by resonance: for two springs the
+outer step's matrix has the trace $2\cos\theta - (\omega_{\mathrm s}^2\dt
+/\omega_{\mathrm f})\sin\theta$, unstable in bands just below multiples of
+half the fast period, and in water beyond about a quarter of the fastest
+period.
+
+Moving mass from heavy atoms to their hydrogens slows the fastest
+motions by a factor of about 1.6 to 1.7 while keeping the forces and, for
+free or rigid molecules, every average over arrangements, and lengthens
+the step of rigid water by a further 1.7. All
+these gains are factors of a few: the Verlet-based methods used here
+still need a step short enough to resolve the fastest motion they keep.
+
+A healthy run shows $K$
+and $U$ mirroring each other, a narrow band of total energy without drift,
+bonds at the tolerance and a still centre of mass; eight common faults
+each leave their own mark, caught by the checks of
+\texttt{mdlab.diagnostics} and of the record.
+
+Chapter~12 turns from single trajectories to the statistics of many
+states: what temperature is, why the kinetic energy is shared equally
+among the freedoms counted here, and what ensemble a simulation samples.

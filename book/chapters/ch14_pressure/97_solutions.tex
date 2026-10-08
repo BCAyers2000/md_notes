@@ -1,0 +1,176 @@
+%=============================================================================!
+% 14.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:pressure}: Pressure and barostats}
+\label{sec:pr-solutions}
+
+\solutionto{ex:pr-units}One electronvolt is \SI{1.602177e-19}{\joule} and
+one cubic ångström is \SI{e-30}{\metre\cubed}, so
+\SI{1}{\electronvolt\per\angstrom\cubed} is
+\SI{1.602177e11}{\pascal} = \SI{160.218}{\giga\pascal}. One bar,
+\SI{e5}{\pascal}, is then $10^5/(1.602177\times10^{11}) =
+\SI{6.2415e-7}{\electronvolt\per\angstrom\cubed}$.
+
+\solutionto{ex:pr-air}$N/V = P/\kB T$ with $P =
+\SI{6.2415e-7}{\electronvolt\per\angstrom\cubed}$ and $\kB T =
+\SI{0.025852}{\electronvolt}$: \SI{2.414e-5}{\per\angstrom\cubed}. Each
+molecule has $V/N = \SI{41419}{\angstrom\cubed}$ to itself, a cube of side
+\SI{34.6}{\angstrom}.
+
+\solutionto{ex:pr-flux}Of the atoms with a given $v_x > 0$, those within
+$v_xt$ of the wall reach it in the time $t$: the box of area $A$ and depth
+$v_xt$ holds $\rho Av_xt$ atoms, of which the fraction $\mathcal{P}(v_x)\,
+\dd v_x$ have that velocity. Each delivers $2mv_x$, so the momentum
+delivered in $t$ by all the atoms moving towards the wall is
+\begin{equation*}
+   \int_0^\infty2mv_x\,\rho Av_xt\,\mathcal{P}(v_x)\,\dd v_x
+   = 2\rho Atm\int_0^\infty v_x^2\mathcal{P}(v_x)\,\dd v_x .
+\end{equation*}
+$\mathcal{P}(v_x)$ is symmetric about zero, and so is $v_x^2$, so the
+integral over $v_x > 0$ is half that over all $v_x$, which is
+$\ens{v_x^2}$; the momentum is $\rho Atm\ens{v_x^2}$. Dividing by $At$,
+$P = \rho m\ens{v_x^2}$, and $m\ens{v_x^2} = \kB T$ by equipartition, so $P
+= \rho\kB T$.
+
+\solutionto{ex:pr-sign}With $\varphi = 4\varepsilon[(\sigma/r)^{12} -
+(\sigma/r)^6]$, the slope is $\varphi' = 4\varepsilon[-12\sigma^{12}/r^{13}
++ 6\sigma^6/r^7]$, and multiplying by $-r$,
+\begin{equation*}
+   -r\varphi'(r) = 4\varepsilon\bigl[12(\sigma/r)^{12} -
+   6(\sigma/r)^6\bigr] .
+\end{equation*}
+This is zero where $12(\sigma/r)^{12} = 6(\sigma/r)^6$, that is
+$(\sigma/r)^6 = \frac12$, at $r = 2^{1/6}\sigma = 2^{1/6}\times3.4 =
+\SI{3.816}{\angstrom}$, the minimum of $\varphi$. Closer in, $\sigma/r$ is
+larger, the first term wins and the contribution is positive: the pair
+pushes outwards and raises the pressure.
+
+\solutionto{ex:pr-centre}Let $F_\perp$ be the total force the atoms exert
+on one wall, so that the wall pushes them back with $-F_\perp$ in all. The
+atoms touching the wall at $x = L/2$ have $x \approx L/2$ and feel a
+total force $-F_\perp$ along $x$, contributing $-(L/2)F_\perp$; those
+touching the wall at $x = -L/2$ have $x \approx -L/2$ and feel $+F_\perp$,
+contributing $-(L/2)F_\perp$ too. On average $F_\perp = PA$, so the pair
+of walls gives $-LPA = -PV$, and the three pairs $-3PV$, as before.
+
+\solutionto{ex:pr-wrap}Wrapping moves $\vb{r}_i$ by $\pm L$ along $x$ and
+changes no force, since the forces depend on separations to the nearest
+copy, so $\sum_j\vb{r}_j\cdot\vb{F}_j$ changes by $\pm LF_{ix}$, which is
+not zero in general. \Cref{eq:pe-virial} uses only the separations
+$r_{ij}$ to the nearest copy, which wrapping does not change.
+
+\solutionto{ex:pr-det}The columns of $\vb{I} + \boldsymbol{\epsilon}$ are
+$\vb{c}_1 = (1 + \epsilon_{xx}, \epsilon_{yx}, \epsilon_{zx})$, $\vb{c}_2 =
+(\epsilon_{xy}, 1 + \epsilon_{yy}, \epsilon_{zy})$ and $\vb{c}_3 =
+(\epsilon_{xz}, \epsilon_{yz}, 1 + \epsilon_{zz})$. The $x$ component of
+$\vb{c}_2\times\vb{c}_3$ is $(1 + \epsilon_{yy})(1 + \epsilon_{zz}) -
+\epsilon_{zy}\epsilon_{yz}$, which is $1 + \epsilon_{yy} + \epsilon_{zz}$
+plus products of two components; its $y$ and $z$ components,
+$\epsilon_{zy}\epsilon_{xz} - \epsilon_{xy}(1 + \epsilon_{zz})$ and
+$\epsilon_{xy}\epsilon_{yz} - (1 + \epsilon_{yy})\epsilon_{xz}$, are each
+one component plus products of two. In the dot product with $\vb{c}_1$,
+the $x$ components give $(1 + \epsilon_{xx})(1 + \epsilon_{yy} +
+\epsilon_{zz} + \dots) = 1 + \epsilon_{xx} + \epsilon_{yy} + \epsilon_{zz}$
+plus products of two or three components, while the $y$ and $z$ components
+are multiplied by $\epsilon_{yx}$ and $\epsilon_{zx}$ and give only
+products of two or more. To first order the determinant is $1 +
+\epsilon_{xx} + \epsilon_{yy} + \epsilon_{zz}$.
+
+\solutionto{ex:pr-trace}The trace of $\sum_im_iv_{i\alpha}v_{i\beta}$ is
+$\sum_im_iv_i^2 = 2K$, and that of $\mathcal{W}_{\alpha\beta}$ is
+$\mathcal{W}$, so one third of the trace of \cref{eq:pr-tensor} is $(2K +
+\mathcal{W})/3V$.
+
+\solutionto{ex:pr-cubic}An even squeeze $\epsilon_{xx} = \epsilon_{yy} =
+\epsilon_{zz} = e$ changes $\mathsf{P}_{xx}$ by $-C_{11}e$ from its own
+strain and by $-C_{12}e$ from each of the other two, $-(C_{11} +
+2C_{12})e$ in all, and likewise each diagonal component, so $\dd P =
+-(C_{11} + 2C_{12})e$. The volume changes by $\dd V = 3Ve$
+(\cref{ex:pr-det}), so $B = -V\,\dd P/\dd V = (C_{11} + 2C_{12})/3 = (3.920
++ 2\times2.324)/3 = \SI{2.856}{\giga\pascal}$.
+
+\solutionto{ex:pr-gamma}For $n = 0$, $\int_0^\infty\mathrm{e}^{-bV}\dd V =
+1/b$. By parts, with $f = V^n$ and $g' = \mathrm{e}^{-bV}$,
+\begin{equation*}
+   \int_0^\infty V^n\mathrm{e}^{-bV}\dd V
+   = \Bigl[-\frac{V^n\mathrm{e}^{-bV}}{b}\Bigr]_0^\infty
+   + \frac nb\int_0^\infty V^{n-1}\mathrm{e}^{-bV}\dd V
+   = \frac nb\,\frac{(n - 1)!}{b^n} = \frac{n!}{b^{n+1}} ,
+\end{equation*}
+using the result for $n - 1$. The bracket vanishes at both ends: at $V =
+0$ because $V^n = 0$ for $n \geq 1$, and as $V \to \infty$ because the
+exponential falls faster than any power grows.
+
+\solutionto{ex:pr-ideal}$\kB T/P_0 = 0.011633/10^{-4} =
+\SI{116.3}{\angstrom\cubed}$, so $\ens{V} = 21\times116.3 =
+\SI{2443}{\angstrom\cubed}$ and the spread is $\sqrt{21}\times116.3 =
+\SI{533}{\angstrom\cubed}$. $N\kB T/P_0 = \SI{2327}{\angstrom\cubed}$, 4.8\%
+less.
+
+\solutionto{ex:pr-berendsen-mean}Each step changes $\ln V$ in proportion
+to $P_0 - P$, so once the volume has settled the average of $P_0 - P$ is
+zero: $\ens{P_0 - 2K/3V} = 0$. With
+$K$ independent of $V$, $\ens{2K/3V} = \frac23\ens{K}\ens{1/V}$, and for a
+narrow volume $\ens{1/V} \approx 1/\ens{V}$. So $P_0 = \frac23\ens{K}/
+\ens{V} = N\kB T/\ens{V}$, and $\ens{V} \approx N\kB T/P_0$.
+
+\solutionto{ex:pr-relax}The volume relaxes in $\tau_{\mathrm P}\kappa_T/
+\kappa$ (\cref{sec:pr-rescaling}): $1\times1.46/2.5 =
+\SI{0.58}{\pico\second}$ with $\kappa = \SI{2.5}{\per\giga\pascal}$, and $10^4$ times longer,
+\SI{5.8}{\nano\second}, with $\kappa$ entered $10^4$ times too small.
+
+\solutionto{ex:pr-logspread}Since \SI{1}{\per\giga\pascal} is
+\SI{160.218}{\angstrom\cubed\per\electronvolt} (\cref{ex:pr-units}),
+$\kappa_T = 1.46\times160.218 = \SI{233.9}{\angstrom\cubed\per
+\electronvolt}$, and the variance of $\ln V$ is $\kB T\kappa_T/V =
+0.011633\times233.9/12306 = 2.21\times10^{-4}$, a spread of 0.0149, 1.5\% of the volume.
+
+\solutionto{ex:pr-kinetic}$K = \sum_ip_i^2/2m_i = V^{-2/3}\sum_i\pi_i^2/
+2m_i$, and at fixed $\boldsymbol{\pi}_i$ only the power of $V$ changes:
+$\partial K/\partial V = -\frac23V^{-5/3}\sum_i\pi_i^2/2m_i = -2K/3V$.
+
+\solutionto{ex:pr-gas-kappa}At fixed temperature $V = N\kB T/P$, so
+$\dd V/\dd P = -N\kB T/P^2 = -V/P$ and $\kappa_T = -(1/V)\,\dd V/\dd P =
+1/P$.
+
+\solutionto{ex:pr-andersen}About the mean $\bar V$, $P - P_0 \approx
+-(V - \bar V)/(\bar V\kappa_T)$, so with $\delta V = V - \bar V$
+\begin{equation*}
+   M_V\,\ddot{\delta V} = -\frac{\delta V}{\bar V\kappa_T} ,
+\end{equation*}
+an oscillator with $\omega^2 = 1/(M_V\bar V\kappa_T)$.
+
+\solutionto{ex:pr-period}$\omega^2 = 9V/[(3N + 3)\kB T\tau_{\mathrm P}^2
+\kappa_T] = 3V/[(N + 1)\kB T\kappa_T\tau_{\mathrm P}^2]$, so $2\pi/\omega =
+2\pi\tau_{\mathrm P}\sqrt{(N + 1)\kB T\kappa_T/3V}$. With $N = 256$, $\kB T
+= \SI{0.011633}{\electronvolt}$, $\kappa_T = \SI{1.46}{\per\giga\pascal}
+= \SI{233.9}{\angstrom\cubed\per\electronvolt}$ (\cref{ex:pr-logspread})
+and $V = \SI{12306}{\angstrom\cubed}$,
+\begin{equation*}
+   \frac{(N + 1)\kB T\kappa_T}{3V}
+   = \frac{257\times0.011633\times233.9}{3\times12306} = 0.01894 ,
+\end{equation*}
+and the factor is $2\pi\sqrt{0.01894} = 0.865$.
+
+\solutionto{ex:pr-graphite}$1.108^{1/3} = 1.0348$: each length would grow
+by 3.48\%. The sheets, 6.7 times stiffer along their plane than across it
+in the model of \cref{sec:pr-shape}, would be stretched by 3.48\%, and the
+gaps would open by only about a third of the 10.8\%.
+
+\solutionto{ex:pr-dropped}The true pressure rises by $N\kB T/V$, which
+is \SI{0.0388}{\giga\pascal} at the healthy volume of
+\SI{12312}{\angstrom\cubed}, so the volume shrinks by about $\kappa_TN\kB
+T/V = 1.46\times0.0388 = 0.057$, 5.7\%. The run shrinks by only 4.9\%,
+to \SI{11706}{\angstrom\cubed}, because the liquid grows stiffer as it is
+squeezed: between 11\,706 and \SI{12112}{\angstrom\cubed} its pressure
+rises by \SI{7.46e-5}{\giga\pascal} for each \si{\angstrom\cubed} lost,
+against \SI{5.76e-5}{\giga\pascal} between 12\,112 and
+\SI{12301}{\angstrom\cubed} (the runs at fixed volume of
+\cref{sec:pr-npt}), so $\kappa_T$ taken at \SI{0.1}{\giga\pascal}
+overestimates the response to a larger squeeze.
+
+\solutionto{ex:pr-referee}Berendsen's barostat squeezes the fluctuations
+of the volume, so \cref{eq:pr-volume} gives a compressibility too small,
+0.64 against \SI{1.46}{\per\giga\pascal} for the liquid of this chapter.
+Stochastic cell rescaling, or a piston with Nosé-Hoover chains, samples the
+volume's fluctuations correctly.

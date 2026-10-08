@@ -1,0 +1,124 @@
+%=============================================================================!
+% 2.6  EQUATIONS OF MOTION AND THE STATE                                      !
+%=============================================================================!
+\section{Equations of motion and the state}
+\label{sec:ne-equations}
+
+For the falling ball the force was constant, and two integrations gave
+the motion. Most forces are not constant: the drag of a liquid grows with
+the speed of the body moving through it, and the pull of a spring grows
+with how far it is stretched. This section shows what the second law
+becomes in general, and what must be known at one instant to predict the
+whole motion.
+
+\subsection*{The equation of motion}
+
+For motion along a line the force may depend on the position $x$, on the
+velocity $v$ and on the time $t$, and we write it $F(x, v, t)$. Since the
+acceleration is the second derivative of the position, the second law
+reads
+\begin{equation}
+   m\,\frac{\dd^2 x}{\dd t^2} = F(x, v, t) .
+   \label{eq:ne-eom}
+\end{equation}
+An ordinary equation such as $x^2 = 4$ has numbers as its unknowns;
+\cref{eq:ne-eom} has a whole function, $x(t)$, as its unknown, and it
+contains that function through its derivatives. An equation of this kind
+is called a differential equation. Its order is that of the highest
+derivative it contains, so \cref{eq:ne-eom} is of second order. It is the
+equation of motion of the body, and solving it means finding a function
+$x(t)$ for which it holds at every instant.
+
+\subsection*{The state}
+
+\Cref{eq:ne-eom} can be split into two first-order equations by treating
+the velocity as a second unknown. The velocity is the rate of change of
+the position, and the acceleration, which is the rate of change of the
+velocity, equals $F/m$ by the second law, so
+\begin{equation}
+   \frac{\dd x}{\dd t} = v, \qquad
+   \frac{\dd v}{\dd t} = \frac{F(x, v, t)}{m} .
+   \label{eq:ne-first-order}
+\end{equation}
+These equations say that if the position and the velocity are known at
+some instant, then the rates at which both are changing are known too.
+Over a short interval $\tau$, therefore, the position changes by about
+$v\tau$ and the velocity by about $(F/m)\tau$, which gives the position
+and velocity at the time $t + \tau$, from which the next step follows in
+the same way.
+
+Take the thrown ball of Chapter~1, leaving the hand at $x = 0$ with
+$v_0 = \SI{12}{\metre\per\second}$, where $F/m = -g$, and take one step of
+$\tau = \SI{0.1}{\second}$:
+\begin{align*}
+   x(0.1) &\approx x(0) + v(0)\,\tau
+      = 0 + 12\times0.1 = \SI{1.200}{\metre} ,\\
+   v(0.1) &\approx v(0) - g\tau
+      = 12 - 9.80665\times0.1 = \SI{11.019}{\metre\per\second} .
+\end{align*}
+The exact height from \cref{eq:mo-ball} is $12\times0.1 - \tfrac12
+\times9.80665\times0.1^2 = \SI{1.151}{\metre}$. The step overshoots by
+$\tfrac12 g\tau^2 = \SI{0.049}{\metre}$, because it used the velocity at
+the start of the interval throughout, while the ball was in fact slowing
+down. Halving $\tau$ divides this error per step by four but doubles the
+number of steps needed to cover a given time, so the error at a given
+time is halved. Shorter steps therefore approach the true motion.
+Chapter~9 builds on this approximation to derive the integrators used in
+molecular dynamics.
+
+Once the force law $F(x, v, t)$ is given, the stepping argument
+suggests, and the theorem below guarantees, that the pair $(x, v)$ at a
+known instant is everything that needs to be known to predict the
+future, and it is called the state of the body. The instant matters only
+when the force depends on time explicitly, that is, through its third
+argument $t$ and not only through the changing $x$ and $v$, as a push
+switched on at a chosen moment does; the forces between atoms in this book do not, and
+for them the state alone suffices.
+Neither half is enough on its own. \Cref{fig:ne-state}(a) shows three
+balls that start from the same height with different velocities and
+follow three different motions; balls thrown at the same velocity from
+different heights would differ as well. \Cref{fig:ne-state}(b) draws the
+same three motions as paths in the plane whose two coordinates are $x$
+and $v$, so that each point is one state. The arrows show, for every
+state, the direction in which \cref{eq:ne-first-order} moves it, and each
+path follows the arrows.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch02_newton/state}
+\caption{The state of a falling ball. (a) Three balls released
+\SI{3}{\metre} above the ground with velocities of $+2$, 0 and
+\SI{-2}{\metre\per\second}: the same position with different velocities
+gives different motions. (b) The same motions as paths through the
+states $(x, v)$. Each grey arrow shows how the state at its tail changes
+over \SI{0.03}{\second}, and dots mark the starting states.}
+\label{fig:ne-state}
+\end{figure}
+
+That each starting state leads to exactly one motion is a theorem of
+mathematics, the existence and uniqueness theorem for differential
+equations, known as the Picard--Lindel\"of theorem. It holds provided
+that $F$ is continuous in time and its slopes with respect to $x$ and
+$v$ stay bounded in a neighbourhood of the starting state. It then
+guarantees a single solution for at least some interval of time. Smooth
+force laws satisfy this condition away from singularities such as two
+atoms occupying the same position. A discontinuous cutoff requires
+separate care, which is one reason to examine how forces are truncated
+in Chapter~8. In three dimensions the same holds
+with $\vb{r}$ and $\vb{v}$ in place of $x$ and $v$, and the state is the
+pair of vectors $(\vb{r}, \vb{v})$. This is the state of a particle; a
+body that can also turn needs, in addition, its orientation and how fast
+it is turning (Chapter~5).
+
+\begin{keyidea}
+The equation of motion, $m\,\dd^2\vb{r}/\dd t^2 = \vb{F}$, is a
+second-order differential equation. Given the force law and the starting
+time, the position and velocity together, the state, determine the
+motion that follows.
+\end{keyidea}
+
+\begin{selfcheck}
+Two stones are dropped from rest, one from a bridge and one from a
+window \SI{1}{\metre} lower. Do they have the same state at the moment of
+release? Do they follow the same motion?
+\end{selfcheck}

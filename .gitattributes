@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.ipynb text filter=notebook-clean
+*.pdf binary
+*.png binary
+*.gif binary
+*.npz binary
+*.zip binary
+*.extxyz text

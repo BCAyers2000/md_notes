@@ -1,0 +1,226 @@
+%=============================================================================!
+% 4.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:oscillations}: Oscillations}
+\label{sec:os-solutions}
+
+\solutionto{ex:os-phase-pi}At the angle $\pi$ the point $P$ is at $(-A,
+0)$, the left end of the circle's horizontal diameter, so the block is at
+$x = A\cos\pi = -A$, a turning point, momentarily at rest. Going
+anticlockwise, $P$ is moving straight down there, and next swings towards
+the right, so the block is about to move back towards the centre, in the
+positive direction.
+
+\solutionto{ex:os-energy}$E = \frac12 kA^2 = \frac12\times80\times0.03^2 =
+\SI{0.036}{\joule}$. With $\omega = \sqrt{80/0.2} =
+\SI{20}{\radian\per\second}$, the largest speed is $A\omega = 0.03\times20 =
+\SI{0.6}{\metre\per\second}$. At $x = \SI{0.015}{\metre}$, $U =
+\frac12\times80\times0.015^2 = \SI{0.009}{\joule}$, so $K = 0.036 - 0.009
+= \SI{0.027}{\joule}$ and
+\begin{equation*}
+   v = \sqrt{\frac{2\times0.027}{0.2}} = \SI{0.520}{\metre\per\second} .
+\end{equation*}
+
+\solutionto{ex:os-average}Rearranging $\cos2\theta = 1 - 2\sin^2\theta$
+gives $\sin^2\theta = \frac12 - \frac12\cos2\theta$. With $\theta = \omega
+t$, the average of $\cos 2\omega t$ over a period $2\pi/\omega$ is zero:
+$\sin 2\omega t/(2\omega)$ has derivative $\cos 2\omega t$ by the chain
+rule, so the integral is $[\sin 2\omega t/(2\omega)]_0^{2\pi/\omega} =
+(\sin4\pi - \sin 0)/(2\omega) = 0$. The integral of a sum is the sum of
+the integrals, and a constant averages to itself, so the average of
+$\sin^2\omega t$ is $\frac12 - \frac12\times0 = \frac12$.
+
+\solutionto{ex:os-ellipse}$E = \frac12 mv^2 + \frac12 kx^2 =
+\frac12\times0.5\times0.4^2 + \frac12\times50\times0.03^2 = 0.04 + 0.0225 =
+\SI{0.0625}{\joule}$. The semi-axes are $\sqrt{2E/k} = \sqrt{0.0025} =
+\SI{5}{\centi\metre}$ and $\sqrt{2E/m} = \sqrt{0.25} =
+\SI{0.5}{\metre\per\second}$. The velocity is negative, so $x$ is about to
+shrink; the state lies in the lower half of the ellipse, moving left.
+
+\solutionto{ex:os-clock}From $2\pi\sqrt{L/g} = 2$, squaring and solving
+for $L$,
+\begin{equation*}
+   L = g\,\Bigl(\frac{2}{2\pi}\Bigr)^2 = \frac{9.80665}{\pi^2}
+   = \SI{0.9936}{\metre} .
+\end{equation*}
+
+\solutionto{ex:os-arcsine}By the argument of \cref{eq:os-period}, the time
+from $x = 0$ to $x = A/2$ is the integral of $\dd x/v$, with $v =
+\omega\sqrt{A^2 - x^2}$ for the spring (\cref{sec:os-anharmonic}), so by
+the toolbox on the derivative of an inverse function
+\begin{equation*}
+   t = \frac{1}{\omega}\int_0^{A/2}\frac{\dd x}{\sqrt{A^2 - x^2}}
+   = \frac1\omega\Bigl[\arcsin\frac{x}{A}\Bigr]_0^{A/2}
+   = \frac{1}{\omega}\Bigl(\arcsin\tfrac12 - 0\Bigr) = \frac{\pi}{6\omega} ,
+\end{equation*}
+since $\sin(\pi/6) = \frac12$: an equilateral triangle of side 1, cut in
+half, has an angle of $\pi/6$ opposite a side of $\frac12$. For $\omega =
+\SI{10}{\radian\per\second}$ this is $\pi/60 = \SI{0.0524}{\second}$, a
+twelfth of the period $2\pi/\omega$. The whole way out, from the centre to
+the turning point, takes a quarter period, $\pi/(2\omega) =
+3\pi/(6\omega)$, so the second half of the way takes $3\pi/(6\omega) -
+\pi/(6\omega) = 2\pi/(6\omega)$, twice as long as the first, because the
+block slows down.
+
+\solutionto{ex:os-double}With $s = x/a$, the solution of
+\cref{ex:en-double} gives $U''(x) = (4U_0/a^2)(3s^2 - 1)$, which at $s =
+\pm1$ is $8U_0/a^2$. By \cref{eq:os-small}, $\omega_0 = \sqrt{8U_0/(m
+a^2)}$.
+
+\solutionto{ex:os-isotropic}On the line $x = 0$, $\vb{r} = (0, y)$.
+Writing $g$ for $\lvert\vb{g}\rvert$, the solution of \cref{ex:en-top}
+gives $\vb{g}_1 = g(\frac{\sqrt3}{2}, -\frac12)$, $\vb{g}_2 = g(0, 1)$ and
+$\vb{g}_3 = g(-\frac{\sqrt3}{2}, -\frac12)$, so the products
+$\vb{g}_k\cdot\vb{r}$ are $-\frac12 gy$, $gy$ and $-\frac12 gy$. The
+cosine is even, so
+\begin{equation*}
+      U(0, y) = \tfrac14 U_{\mathrm b}\bigl[3 - 2\cos(\tfrac12 gy)
+   - \cos(gy)\bigr] .
+\end{equation*}
+Differentiating twice by the chain rule, $-2\cos(\frac12 gy)$ gives
+$2(\frac12 g)^2\cos(\frac12 gy)$, which is $\frac12 g^2$ at $y = 0$, and
+$-\cos(gy)$ gives $g^2\cos(gy)$, which is $g^2$. So $U''(0) =
+\frac14U_{\mathrm b}(\frac12g^2 + g^2) = \frac38U_{\mathrm b}g^2$.
+Squaring $g = 4\pi/(\sqrt3\,a)$ gives $g^2 = 16\pi^2/(3a^2)$, and
+\begin{equation*}
+   \tfrac38U_{\mathrm b}\,\frac{16\pi^2}{3a^2} = \frac{2\pi^2U_{\mathrm b}}{a^2} ,
+\end{equation*}
+the curvature along $x$: the well is equally stiff in both directions, and
+by a longer argument in every direction.
+
+\solutionto{ex:os-lj}By \cref{sec:os-anharmonic}, $U_{\mathrm{LJ}}'' =
+(4\varepsilon/r^2)[156(\sigma/r)^{12} - 42(\sigma/r)^6]$, which is zero
+when $156(\sigma/r)^6 = 42$, after dividing by $4\varepsilon/r^2$ and by
+$(\sigma/r)^6$. So $(\sigma/r)^6 = 42/156 = 7/26$ and $r =
+(26/7)^{1/6}\sigma = 1.2445\,\sigma$. The bracket is $(\sigma/r)^6\,
+[156(\sigma/r)^6 - 42]$, positive at smaller $r$, where $(\sigma/r)^6$ is
+larger, and negative at larger $r$, so inside this distance the slope of
+$U$ steepens with $r$ and outside it flattens. Beyond $r_{\min}$ the force
+$-U'$ pulls the atoms together with a size equal to that slope, so here
+the attractive force is greatest.
+
+\solutionto{ex:os-morse}Write $w = \mathrm{e}^{-a(r - r_0)}$, so that
+$\dd w/\dd r = -aw$ by the chain rule, and $U_{\mathrm M} = D(1 - w)^2$.
+Then
+\begin{align*}
+   \frac{\dd U_{\mathrm M}}{\dd r} &= 2D(1 - w)\Bigl(-\frac{\dd w}{\dd r}\Bigr)
+   = 2Da\,w\,(1 - w) = 2Da\,(w - w^2) ,\\
+   \frac{\dd^2 U_{\mathrm M}}{\dd r^2} &= 2Da\,(1 - 2w)\,\frac{\dd w}{\dd r}
+   = -2Da^2\,w\,(1 - 2w) ,
+\end{align*}
+and at $r = r_0$, where $w = 1$, this is $-2Da^2\times1\times(-1) =
+2Da^2$.
+
+\solutionto{ex:os-liquid}$\omega_{\mathrm d} = \sqrt{10^2 - 6^2} =
+\SI{8}{\radian\per\second}$, a period of $2\pi/8 = \SI{0.785}{\second}$.
+The swing shrinks by $\mathrm{e}^{-\gamma t/2} = \mathrm{e}^{-6t}$, which
+is $\frac1{10}$ when $6t = \ln10$, that is, taking the natural logarithm
+of $\mathrm{e}^{6t} = 10$, at $t = 2.303/6 = \SI{0.384}{\second}$.
+
+\solutionto{ex:os-critical}Write $y = c_1 + c_2t$ and $z =
+\mathrm{e}^{-\omega_0 t}$ for short, so that $x = yz$, $\dot{y} = c_2$ and
+$\dot{z} = -\omega_0 z$. By the product rule,
+\begin{align*}
+   \dot{x} &= z\,(c_2 - \omega_0 y) , \qquad
+   \ddot{x} = z\,(-\omega_0 c_2) - \omega_0 z\,(c_2 - \omega_0 y)
+   = z\,(\omega_0^2 y - 2\omega_0 c_2) .
+\end{align*}
+With $\gamma = 2\omega_0$, $\ddot{x} + \gamma\dot{x} + \omega_0^2 x =
+z\,[\omega_0^2y - 2\omega_0c_2 + 2\omega_0c_2 - 2\omega_0^2y +
+\omega_0^2y] = 0$, which is \cref{eq:os-damped} with its right side
+moved to the left.
+
+\solutionto{ex:os-off}By \cref{eq:os-resonance}, at $\omega = 5$,
+\begin{equation*}
+   A = \frac{1}{\sqrt{(100 - 25)^2 + (2\times5)^2}} = \frac{1}{75.66}\
+   \si{\metre} = \SI{1.32}{\centi\metre} ,
+      \qquad \tan\delta = \frac{10}{75} .
+\end{equation*}
+Here $\omega_0^2 - \omega^2 = 75$ is positive, so $\cos\delta$ and
+$\sin\delta$ are both positive and $\delta$ lies between 0 and $\pi/2$,
+inside the range of the arctangent: $\delta = \arctan(10/75) =
+\SI{0.133}{\radian}$. At $\omega = 15$, $A = 1/\sqrt{125^2 + 30^2} =
+1/128.55\ \si{\metre} = \SI{0.778}{\centi\metre}$ and $\tan\delta =
+30/(-125)$. Now $\omega_0^2 - \omega^2 = -125$, so $\cos\delta$ is
+negative while $\sin\delta$ is still positive, and $\delta$ lies between
+$\pi/2$ and $\pi$, outside the range of the arctangent. By the rule of
+\cref{sec:os-driven}, $\delta = \pi - \arctan(30/125) = \pi - 0.236 =
+\SI{2.906}{\radian}$. Below resonance the block nearly follows the push;
+above it, it nearly opposes it.
+
+\solutionto{ex:os-linear}Let $x = c_1x_1 + c_2x_2$, and write
+\cref{eq:os-damped} as $\ddot{x} + \gamma\dot{x} + \omega_0^2x = 0$,
+adding $\omega_0^2x + \gamma\dot{x}$ to both sides. Derivatives of sums
+are sums of derivatives, and constants pass through, so $\ddot{x} +
+\gamma\dot{x} + \omega_0^2x = c_1(\ddot{x}_1 + \gamma\dot{x}_1 +
+\omega_0^2x_1) + c_2(\ddot{x}_2 + \gamma\dot{x}_2 + \omega_0^2x_2) =
+c_1\times0 + c_2\times0 = 0$, each bracket vanishing because $x_1$ and
+$x_2$ are motions.
+
+\solutionto{ex:os-isotope}The reduced masses are $m_{\mathrm{r},\mathrm{OH}} =
+\SI{0.9483}{\amu}$ (\cref{sec:os-bodies}) and $m_{\mathrm{r},\mathrm{OD}} =
+2.014\times15.999/18.013 = \SI{1.7888}{\amu}$. With the same stiffness,
+$\omega = \sqrt{k/m_{\mathrm r}}$ for each bond, and dividing one by the
+other cancels $k$:
+\begin{equation*}
+   \frac{\omega_{\mathrm{OD}}}{\omega_{\mathrm{OH}}}
+   = \sqrt{\frac{m_{\mathrm{r},\mathrm{OH}}}{m_{\mathrm{r},\mathrm{OD}}}}
+   = \sqrt{\frac{0.9483}{1.7888}} = 0.728 :
+\end{equation*}
+the O--D vibration has 0.728 times the angular frequency, and its period
+is longer by the factor $1/0.728 = 1.37$.
+
+\solutionto{ex:os-coupling}The middle spring is stretched by $x_2 - x_1$,
+so $m\ddot{x}_1 = -kx_1 + k'(x_2 - x_1) = -(k + k')x_1 + k'x_2$ and
+$m\ddot{x}_2 = -k'(x_2 - x_1) - kx_2 = k'x_1 - (k + k')x_2$. Written as
+$m\ddot{\vb{x}} = -\boldsymbol{\Phi}\vb{x}$, the matrix $\boldsymbol{\Phi}$
+has rows $(k + k', -k')$ and $(-k', k + k')$. Acting on $(1, 1)$ it gives
+$(k, k) = k\,(1, 1)$, so by \cref{eq:os-eigen} $m\omega^2 = k$; acting on $(1, -1)$ it gives $(k + 2k', -k - 2k') = (k +
+2k')(1, -1)$, so $m\omega^2 = k + 2k'$.
+
+\solutionto{ex:os-triatomic}Write $\rho = 2m_{\mathrm O}/m_{\mathrm C}$, so
+$\vb{u} = (1, -\rho, 1)$. Row by row,
+\begin{equation*}
+   \boldsymbol{\Phi}\vb{u} = k\,\bigl(1 + \rho,\ -1 - 2\rho - 1,\ \rho + 1\bigr)
+   = k\,(1 + \rho)\,(1, -2, 1) ,
+\end{equation*}
+and, since $\rho\,m_{\mathrm C} = 2m_{\mathrm O}$, $\vb{M}\vb{u} =
+(m_{\mathrm O}, -\rho\,m_{\mathrm C}, m_{\mathrm O}) = m_{\mathrm O}(1, -2,
+1)$. Hence $\boldsymbol{\Phi}\vb{u} = [k(1 + \rho)/m_{\mathrm O}]\,\vb{M}\vb{u}$,
+and $\omega^2 = (k/m_{\mathrm O})(1 + 2m_{\mathrm O}/m_{\mathrm C})$.
+
+\solutionto{ex:os-pair}Dividing each entry by $\sqrt{m_am_b}$, the
+mass-weighted Hessian has rows $(k/m_1, -k/\sqrt{m_1m_2})$ and
+$(-k/\sqrt{m_1m_2}, k/m_2)$. Its characteristic equation is
+\begin{equation*}
+   \Bigl(\frac{k}{m_1} - \lambda\Bigr)\Bigl(\frac{k}{m_2} - \lambda\Bigr)
+   - \frac{k^2}{m_1m_2} = \lambda^2 - \lambda\,k\Bigl(\frac{1}{m_1}
+   + \frac{1}{m_2}\Bigr) = \lambda\Bigl(\lambda - \frac{k}{m_{\mathrm r}}\Bigr) = 0 ,
+\end{equation*}
+multiplying out, cancelling the two terms $k^2/(m_1m_2)$, taking out the
+factor $\lambda$ and using $1/m_{\mathrm r} = 1/m_1 + 1/m_2$. The
+eigenvalues are the squared angular frequencies, so $\lambda = 0$ is the
+pair moving together without stretching the spring, and $\lambda =
+k/m_{\mathrm r}$, $\omega = \sqrt{k/m_{\mathrm r}}$, is the vibration of
+\cref{sec:os-bodies}.
+
+\solutionto{ex:os-stiffness}$\omega = 2\pi\times2.99792458\times10^{-5}
+\times3657 = \SI{0.6889}{\radian\per\femto\second}$. For a spring
+$\omega^2 = k/m_{\mathrm r}$, which, with $k$ in
+\si{\electronvolt\per\angstrom\squared}, $m_{\mathrm r}$ in \si{\amu} and
+$\omega$ in \si{\radian\per\femto\second}, reads $\omega^2 =
+k\times9.648533\times10^{-3}/m_{\mathrm r}$, as for lithium in
+\cref{sec:os-small}: the factor of \cref{sec:ne-atoms} turns a force
+divided by a mass into an acceleration. Solving for $k$,
+\begin{equation*}
+   k = \frac{0.9483\times0.6889^2}{9.648533\times10^{-3}}
+   = \SI{46.6}{\electronvolt\per\angstrom\squared} ,
+\end{equation*}
+nearly fifty times stiffer than the lithium atom's hollow of
+\cref{sec:os-small}.
+
+\solutionto{ex:os-step}The shortest period in \cref{tab:os-vibrations} for
+water is \SI{8.88}{\femto\second}, so the step could be at most
+\SI{0.888}{\femto\second}, and a picosecond, \SI{1000}{\femto\second},
+would take $1000/0.888 = 1126.1$ steps of that length; 1126 steps fall
+just short, so it takes 1127.

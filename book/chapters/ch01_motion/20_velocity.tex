@@ -1,0 +1,173 @@
+%=============================================================================!
+% 1.2  VELOCITY                                                               !
+%=============================================================================!
+\section{Velocity}
+\label{sec:mo-velocity}
+
+Consider a ball thrown vertically upwards. We measure its height $x$ above
+the hand, taking upwards as positive, and start the clock at the instant
+$t = 0$ at which the ball leaves the hand. Provided that air resistance is
+negligible, the heights recorded on a film of the throw are described by
+\begin{equation}
+   x(t) = v_0 t - \tfrac12 g t^2,
+   \label{eq:mo-ball}
+\end{equation}
+where $v_0$ is the speed at which the ball is thrown and $g$ is a constant,
+the same for every object near the Earth's surface. The value of $g$
+varies slightly from place to place, and we use its conventional standard
+value, \SI{9.80665}{\metre\per\second\squared}, read `metres per second
+squared': a metre divided by a second twice, so that $g$ has dimension
+$\mathsf{L}\mathsf{T}^{-2}$ (\cref{sec:mo-acceleration} explains why
+such a unit arises). For the present,
+\cref{eq:mo-ball} is simply a description of what is observed, and
+Chapter~2 derives it. Its two terms balance in dimension, as they must:
+$v_0 t$ has dimension $\mathsf{L}\mathsf{T}^{-1}\times\mathsf{T} =
+\mathsf{L}$, and $g t^2$ has dimension $\mathsf{L}\mathsf{T}^{-2}\times
+\mathsf{T}^2 = \mathsf{L}$. The figures and worked numbers of this
+chapter use $v_0 = \SI{12}{\metre\per\second}$.
+
+\subsection*{Average velocity}
+
+To find how fast the ball is moving at a particular time $t_1$, chosen
+anywhere during the flight, we begin with a finite interval, from $t_1$ to
+a slightly later time $t_1 + \tau$. The instant $t_1$ is not the moment of
+the throw, which is $t = 0$; throughout the book a subscript 0 marks a
+value at that starting moment, as in $v_0$, and other subscripts mark
+instants chosen later.
+During this interval the ball rises by $x(t_1+\tau) - x(t_1)$, and
+dividing the rise by the duration $\tau$ gives the average velocity over
+the interval. On the graph of $x(t)$ the average velocity is the slope of
+the straight line, or secant, joining the points at $t_1$ and $t_1+\tau$
+(\cref{fig:mo-secant}a).
+
+For the ball we can compute the average velocity exactly. The height at
+the later time follows from \cref{eq:mo-ball} by replacing $t$ with
+$t_1+\tau$, and the square is then multiplied out:
+\begin{align*}
+   x(t_1+\tau) &= v_0\,(t_1+\tau) - \tfrac12 g\,(t_1+\tau)^2
+      && \text{replacing $t$ by $t_1+\tau$}\\
+   &= v_0 t_1 + v_0\tau - \tfrac12 g\,\bigl(t_1^2 + 2t_1\tau + \tau^2\bigr)
+      && \text{expanding the square}\\
+   &= v_0 t_1 - \tfrac12 g t_1^2 + v_0\tau - g t_1\tau - \tfrac12 g\tau^2
+      && \text{multiplying out and collecting terms.}
+\end{align*}
+The first two terms of the last line are exactly $x(t_1)$, so subtracting
+$x(t_1)$ leaves only the terms that contain $\tau$,
+\begin{equation*}
+   x(t_1+\tau) - x(t_1) = v_0\tau - g t_1\tau - \tfrac12 g\tau^2 ,
+\end{equation*}
+and dividing by $\tau$ gives the average velocity,
+\begin{equation}
+   \frac{x(t_1+\tau) - x(t_1)}{\tau} = v_0 - g t_1 - \tfrac12 g\tau .
+   \label{eq:mo-secant}
+\end{equation}
+The average velocity depends on the length of the interval through its
+final term, $-\tfrac12 g\tau$; the first two terms are fixed once $t_1$ is
+chosen. With $v_0 = \SI{12}{\metre\per\second}$ and $t_1 =
+\SI{0.4}{\second}$, for example, when the ball is \SI{4.015}{\metre} up
+and still rising, substituting into \cref{eq:mo-secant}
+gives, in metres per second with $\tau$ in seconds,
+\begin{equation*}
+   v_0 - g t_1 - \tfrac12 g\tau
+   = 12 - 9.80665\times0.4 - \tfrac12\times9.80665\times\tau
+   = 8.077 - 4.903\,\tau .
+\end{equation*}
+Each interval therefore lowers the average below \SI{8.077}{\metre\per
+\second} by $4.903\,\tau$, and the table lists the result for three
+intervals, each worked out before rounding:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$\tau$ / \si{\second} & $\tfrac12 g\tau$ / \si{\metre\per\second}
+   & average velocity / \si{\metre\per\second}\\
+\midrule
+1.2 & 5.884 & 2.193\\
+0.6 & 2.942 & 5.135\\
+0.2 & 0.981 & 7.097\\
+\bottomrule
+\end{tabular}
+\end{center}
+The shorter the interval, the closer the average comes to
+\SI{8.077}{\metre\per\second} (\cref{fig:mo-secant}b). The reason is that
+the velocity of the ball, counted positive upwards, decreases throughout
+each interval: the ball slows as it rises, and in the longest interval,
+which runs past the top of the flight at \SI{1.22}{\second} (a time
+found in \cref{sec:mo-acceleration}), it then
+falls ever faster. Its average velocity is therefore lower than its
+velocity at the start, $t_1$; a shorter interval leaves less time for
+the velocity to fall, and the average climbs back towards the velocity at
+$t_1$ itself. The value $v_0 - g t_1 =
+\SI{8.077}{\metre\per\second}$ is therefore the velocity at the instant
+$t_1$, as we now make precise.
+
+\begin{figure}[tb]
+\centering
+\includegraphics{ch01_motion/secant}
+\caption{Velocity as a limit. (a) Height of the ball of
+\cref{eq:mo-ball} against time, with secants from $t_1 = \SI{0.4}{\second}$
+over three intervals $\tau$ and the tangent at $t_1$. (b) The slope of the
+secant against $\tau$, which falls short of $v(t_1)$ by $g\tau/2$ and
+reaches it as $\tau \to 0$.}
+\label{fig:mo-secant}
+\end{figure}
+
+\subsection*{Velocity at an instant}
+
+The velocity at the single instant $t_1$ cannot be found by setting $\tau
+= 0$ in the quotient on the left of \cref{eq:mo-secant}, because both its
+numerator and its denominator would then vanish and $0/0$ has no value.
+Instead we ask what value the average approaches as the interval is made
+shorter and shorter. In \cref{eq:mo-secant} the answer is plain: the term
+$-\tfrac12 g\tau$ can be made as small as we please by choosing $\tau$
+small enough, while the first two terms do not depend on $\tau$ at all,
+so the average approaches $v_0 - g t_1$. This value is the limit of the
+average as $\tau$ tends to zero, and we define it to be the velocity at
+$t_1$,
+\begin{equation*}
+   v(t_1) = \lim_{\tau\to0}\frac{x(t_1+\tau) - x(t_1)}{\tau}
+   = \frac{\dd x}{\dd t}\bigg|_{t_1} ,
+\end{equation*}
+where the vertical bar with $t_1$ means that the derivative is evaluated
+at the instant $t = t_1$.
+The velocity is therefore the derivative of the position with respect to
+time. Geometrically, as $\tau$ shrinks the secant turns about the point
+at $t_1$ until it lies along the tangent there (\cref{fig:mo-secant}a), so
+the velocity is the slope of the tangent to the graph of $x(t)$. For the
+ball, since $t_1$ can be any time,
+\begin{equation*}
+   v(t) = v_0 - g t ,
+\end{equation*}
+and at $t_1 = \SI{0.4}{\second}$ the ball is moving upwards at
+\SI{8.077}{\metre\per\second}.
+
+\begin{toolbox}[Derivatives of powers]
+The calculation above is an instance of a general rule. For a power
+$t^n$, with $n$ a whole number $1, 2, 3, \dots$, multiply out $(t+\tau)^n$, the product of $n$ identical factors
+$(t+\tau)$. Each term of the result takes either $t$ or $\tau$ from every
+factor. Taking $t$ from all $n$ factors gives $t^n$; taking $\tau$ from
+exactly one factor, which can be any of the $n$, gives $n$ terms each
+equal to $t^{n-1}\tau$; every other choice takes $\tau$ at least twice.
+Hence
+\begin{equation*}
+   (t+\tau)^n = t^n + n t^{n-1}\tau
+   + \tau^2\times(\text{terms in } t \text{ and } \tau) .
+\end{equation*}
+Subtracting $t^n$, dividing by $\tau$ and letting $\tau\to0$ removes
+every term that still contains $\tau$, leaving
+\begin{equation*}
+   \frac{\dd}{\dd t}\,t^n = n\,t^{n-1}.
+\end{equation*}
+The derivative of a sum is the sum of the derivatives, and a constant
+factor passes through unchanged, because the difference quotient has both
+properties for every $\tau$. A constant $c$ has derivative zero, since its
+difference quotient is $(c - c)/\tau = 0$ for every $\tau$. Applied to \cref{eq:mo-ball}, these rules
+give $\dd(v_0 t)/\dd t = v_0$ and $\dd(\tfrac12 g t^2)/\dd t = \tfrac12 g
+\times 2t = gt$, and hence $v = v_0 - gt$ once more.
+\end{toolbox}
+
+The sign of the velocity carries the direction of motion: it is positive
+while the ball rises and negative while it falls. Its magnitude $\lvert
+v\rvert$ is the speed, which says how fast the ball moves without saying
+in which direction.
+
+\notebook{01}{shrink the interval and watch the secant turn into the tangent}

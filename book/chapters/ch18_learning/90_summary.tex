@@ -1,0 +1,38 @@
+%=============================================================================!
+% 18.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+Learning a model from readings is the lowering of a loss. For a model
+linear in its weights, a sum of basis functions, the sum of squared
+misses is least where the normal equations $X^{\mathsf T}X\vb{w} =
+X^{\mathsf T}\vb{y}$ hold, and a fit answers the question its readings
+pose: a line through the forces of a hot run gives the bond's stiffness
+averaged over the stretches it explores.
+More basis functions bend the
+model more freely and, beyond a point, learn the noise, which only
+readings the model has not seen reveal. A ridge penalty
+$\lambda\lvert\vb{w}\rvert^2$ shrinks the directions the readings barely
+constrain, is the most probable fit under Gaussian noise and a Gaussian
+prior with $\lambda = \sigma^2/\sigma_w^2$, and is chosen on validation
+readings. A Gaussian process conditions a random function on the
+readings and returns an estimate with an error bar, whose kernel the
+marginal likelihood chooses and whose band must still be checked.
+
+Gradient descent walks a loss down with a rate bounded by $2/\lambda_{\max}$,
+the stability limit of an integrator again, at a pace set by the
+condition number; mini-batches estimate the gradient with an error
+$\sigma_g/\sqrt b$ at a fraction of the cost; momentum is damped motion
+on the loss and, on a quadratic with the optimal settings, has asymptotic
+contraction factor $(\sqrt\kappa - 1)/(\sqrt\kappa
++ 1)$ a step; Adam evens out badly scaled weights.
+Training, validation
+and test readings must be independent, and consecutive frames of a run
+are not. In this chapter's example, a random split makes the validation
+error four times too small; separating the time intervals gives a much
+closer estimate of the error on an independent run. The training and validation curves
+show the remaining faults of a training run.
+
+Planned Chapter~19 builds models that are not linear in their weights, neural
+networks, computes their gradients by the chain rule run backwards, and
+trains them on energies and forces with these optimisers.

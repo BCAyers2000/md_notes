@@ -1,0 +1,216 @@
+%=============================================================================!
+% 2.9  SEVERAL BODIES: MOMENTUM AND THE CENTRE OF MASS                        !
+%=============================================================================!
+\section{Several bodies: momentum and the centre of mass}
+\label{sec:ne-bodies}
+
+So far each body has moved under forces from its surroundings. When
+several bodies push and pull on one another, as the atoms of a material
+do, the third law ties their motions together. This section shows how,
+using a new quantity, momentum, and a new point, the centre of mass.
+
+\subsection*{Momentum}
+
+The momentum of a body is its mass times its velocity,
+\begin{equation*}
+   \vb{p} = m\vb{v} ,
+\end{equation*}
+a vector in \si{\kilogram\metre\per\second} that points along the
+velocity. Since the mass is constant, the rate of change of the momentum
+is $\dd\vb{p}/\dd t = m\,\dd\vb{v}/\dd t = m\vb{a}$, and the second law
+can be written
+\begin{equation*}
+   \frac{\dd\vb{p}}{\dd t} = \vb{F} :
+\end{equation*}
+the net force on a body is the rate at which its momentum changes. A
+constant force $\vb{F}$ acting from $t = 0$ to a time $t$ therefore
+changes the momentum by $\vb{F}t$, since $\vb{p}$ then grows at the
+constant rate $\vb{F}$, as $v$ grows by $at$ at the constant rate $a$ in
+\cref{eq:mo-constant}; so the momentum of a body measures how long
+a given force must push to bring it from rest to its velocity, or to stop
+it again. A trolley of \SI{20}{\kilogram} pushed from rest by
+\SI{10}{\newton} for \SI{2}{\second} gains a momentum of $10\times2 =
+\SI{20}{\kilogram\metre\per\second}$, and so a velocity of $20/20 =
+\SI{1}{\metre\per\second}$. A lorry and a bicycle moving at the same
+speed have very different momenta, and the brakes of the lorry must push
+far harder, or for far longer, to stop it.
+
+\subsection*{Two carts}
+
+Two carts, of masses $m_1 = \SI{1}{\kilogram}$ and $m_2 =
+\SI{3}{\kilogram}$, stand at rest on a level, smooth track with a
+compressed spring between them, and are released
+(\cref{fig:ne-carts-sketch}). On each cart the weight and the normal
+force balance, so only the forces along the track matter, and these come
+from the spring. The spring is light, and we treat it as having no mass.
+Two steps then fix the forces on the carts. First, the net force on the
+spring must be zero, since by the second law any net force on a body of
+no mass would give it an unlimited acceleration; so the two carts push on
+the two ends of the spring with forces of equal size. Second, by the third
+law, the spring pushes back on each cart with a force of that same size:
+$-\vb{F}$ on the first cart, backwards, and $+\vb{F}$ on the second,
+forwards.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt, accent},
+   coil/.style={decorate, decoration={coil, aspect=0.45,
+      segment length=3pt, amplitude=3.5pt, pre length=2pt,
+      post length=2pt}, line width=0.6pt}]
+   \draw[line width=0.6pt] (-0.6,0) -- (7.4,0);
+   % cart 1, the lighter, and cart 2, the heavier
+   \draw[line width=0.6pt, fill=black!8] (0.6,0.18) rectangle (1.8,0.9);
+   \draw[line width=0.6pt, fill=black!8] (3.6,0.18) rectangle (6.0,1.2);
+   \foreach \x in {0.85,1.55,4.0,5.6}
+      \draw[line width=0.6pt, fill=white] (\x,0.09) circle (0.09);
+   \draw[coil] (1.8,0.5) -- (3.6,0.5);
+   \node at (1.2,0.54) {\small 1};
+   \node at (4.8,0.69) {\small 2};
+   % the push of the spring on each cart
+   \draw[force] (0.6,0.54) -- (-0.4,0.54) node[above] {\small $-\vb{F}$};
+   \draw[force] (6.0,0.69) -- (7.0,0.69) node[above] {\small $+\vb{F}$};
+   \node[below] at (1.2,-0.05) {\small \SI{1}{\kilogram}};
+   \node[below] at (4.8,-0.05) {\small \SI{3}{\kilogram}};
+\end{tikzpicture}
+\caption{Two carts at rest with a compressed spring between them. The
+spring pushes the two carts with forces of equal size in opposite
+directions (teal); the weights and normal forces, which balance on each
+cart, are not drawn.}
+\label{fig:ne-carts-sketch}
+\end{figure}
+
+Applying the second law to each cart and adding the two equations,
+\begin{equation*}
+   \frac{\dd\vb{p}_1}{\dd t} = -\vb{F}, \qquad
+   \frac{\dd\vb{p}_2}{\dd t} = +\vb{F}
+   \quad\Longrightarrow\quad
+   \frac{\dd}{\dd t}\bigl(\vb{p}_1 + \vb{p}_2\bigr) = -\vb{F} + \vb{F}
+   = \vb{0} .
+\end{equation*}
+The total momentum $\vb{P} = \vb{p}_1 + \vb{p}_2$ therefore does not
+change, however the force of the spring varies, and since the carts
+started at rest it stays zero. A quantity that keeps the same value as
+time passes is said to be conserved, and here the total momentum is
+conserved. The carts therefore always have equal and opposite momenta,
+$m_1\vb{v}_1 = -m_2\vb{v}_2$, and the lighter cart moves faster by the
+ratio of the masses, three times faster here.
+
+\Cref{fig:ne-carts} shows the motion computed for a spring of stiffness
+\SI{200}{\newton\per\metre} compressed by \SI{10}{\centi\metre}. The
+spring is not fixed to either cart, so once it reaches its natural length
+it could only stay in contact by pulling, which a loose spring cannot do,
+and it falls away after about \SI{0.096}{\second}, a time found, like
+the speeds below, by a computer solution. From then on no force
+acts along the track, and by the first law the carts coast apart at
+constant velocities, \SI{-1.225}{\metre\per\second} and
+\SI{+0.408}{\metre\per\second}, a ratio of exactly $-3$. Their momenta,
+$\mp\SI{1.225}{\kilogram\metre\per\second}$, add to zero at every
+instant. Chapter~3 shows how energy gives these speeds directly.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch02_newton/carts}
+\caption{The carts of \cref{fig:ne-carts-sketch} pushed apart by a
+spring of \SI{200}{\newton\per\metre} compressed by
+\SI{10}{\centi\metre}; the spring falls away at the dotted line. (a)
+Positions of the carts and of their centre of mass (dashed). (b) Momenta
+of the carts and the component $P$ of their total momentum along the
+track (dashed), which stays zero.}
+\label{fig:ne-carts}
+\end{figure}
+
+\subsection*{Many bodies}
+
+The same argument works for any number of bodies. The forces on each body
+are of two kinds. External forces come from outside the group, such as
+the weight of a cart, and we write the net external force on body $i$ as
+$\vb{F}_i^{\mathrm{ext}}$. Internal forces come from the other members,
+and we write the force on body $i$ from body $j$ as $\vb{F}_{ij}$. For
+three bodies, with total momentum $\vb{P} = \vb{p}_1 + \vb{p}_2 +
+\vb{p}_3$, adding the three second laws and then regrouping the
+internal forces by pairs gives
+\begin{align*}
+   \frac{\dd\vb{P}}{\dd t}
+   &= \frac{\dd\vb{p}_1}{\dd t} + \frac{\dd\vb{p}_2}{\dd t}
+      + \frac{\dd\vb{p}_3}{\dd t}\\
+   &= \bigl(\vb{F}_1^{\mathrm{ext}} + \vb{F}_{12} + \vb{F}_{13}\bigr)
+      + \bigl(\vb{F}_2^{\mathrm{ext}} + \vb{F}_{21} + \vb{F}_{23}\bigr)
+      + \bigl(\vb{F}_3^{\mathrm{ext}} + \vb{F}_{31} + \vb{F}_{32}\bigr)\\
+   &= \vb{F}^{\mathrm{ext}}
+      + \bigl(\vb{F}_{12} + \vb{F}_{21}\bigr)
+      + \bigl(\vb{F}_{13} + \vb{F}_{31}\bigr)
+      + \bigl(\vb{F}_{23} + \vb{F}_{32}\bigr) ,
+\end{align*}
+where $\vb{F}^{\mathrm{ext}} = \vb{F}_1^{\mathrm{ext}} +
+\vb{F}_2^{\mathrm{ext}} + \vb{F}_3^{\mathrm{ext}}$ is the total external
+force. By the third law each bracket is zero. With $N$ bodies, numbered
+$i = 1, \dots, N$, the total momentum is $\vb{P} = \vb{p}_1 + \dotsb +
+\vb{p}_N$, written $\sum_{i=1}^{N}\vb{p}_i$ with the summation sign of
+\cref{sec:mo-integrating}, and the regrouping is the same: every internal force $\vb{F}_{ij}$ meets its
+partner $\vb{F}_{ji}$, each pair cancels, and
+\begin{equation}
+   \frac{\dd\vb{P}}{\dd t} = \vb{F}^{\mathrm{ext}} .
+   \label{eq:ne-momentum}
+\end{equation}
+The internal forces, however strong and however complicated, cannot
+change the total momentum. Whenever the total external force is zero,
+the total momentum is conserved. That happens when the external forces
+cancel, as the weights and normal forces of the carts do, and also when
+there are no external forces at all, in which case the group is called
+isolated.
+
+\subsection*{The centre of mass}
+
+The group as a whole has a position of its own, the centre of mass, an
+average of the positions of its members in which each counts in
+proportion to its mass,
+\begin{equation*}
+   \vb{R} = \frac{1}{M}\sum_{i=1}^{N} m_i\vb{r}_i, \qquad
+   M = \sum_{i=1}^{N} m_i ,
+\end{equation*}
+where $M$ is the total mass. For two bodies on a line it is the balance
+point: a light rod carrying the two carts would balance on a pivot placed
+there. The centres of the carts start at $x = 0$ and $x =
+\SI{0.2}{\metre}$, so their
+centre of mass is at $(1\times0 + 3\times0.2)/4 = \SI{0.15}{\metre}$,
+nearer the heavier cart. Its motion follows in three lines,
+\begin{align*}
+   M\vb{R} &= \sum_{i=1}^{N} m_i\vb{r}_i
+      && \text{multiplying by $M$}\\
+   M\,\frac{\dd\vb{R}}{\dd t} &= \sum_{i=1}^{N} m_i\vb{v}_i = \vb{P}
+      && \text{differentiating term by term, the masses constant}\\
+   M\,\frac{\dd^2\vb{R}}{\dd t^2} &= \frac{\dd\vb{P}}{\dd t}
+      = \vb{F}^{\mathrm{ext}}
+      && \text{differentiating again, by \cref{eq:ne-momentum}.}
+\end{align*}
+The centre of mass moves as a single body of mass $M$ would under the
+external forces alone. For the carts there is no external force along the
+track, so the centre of mass stays at \SI{0.15}{\metre} while the carts
+fly apart (\cref{fig:ne-carts}a). A firework that bursts in flight shows
+the same thing in two dimensions: the pieces scatter in every direction,
+but until the first of them lands, their centre of mass carries on along
+the parabola that the unburst firework would have followed. The only
+external force is still the weight, $\vb{F}^{\mathrm{ext}} = \sum_i
+m_i\vb{g} = M\vb{g}$, so $\dd^2\vb{R}/\dd t^2 = \vb{g}$ as before the
+burst, and the internal forces of the burst change neither $\vb{R}$ nor
+$\dd\vb{R}/\dd t = \vb{P}/M$. Chapter~7 shows that the
+conservation of momentum follows from a symmetry, that the laws of motion
+are the same at every place.
+
+\begin{keyidea}
+Internal forces cancel in pairs by the third law, so the total momentum
+of a group changes only through external forces, and is conserved when
+they add to zero. The centre of mass moves as a single body under the
+external forces alone.
+\end{keyidea}
+
+\notebook{02}{change the mass ratio of the carts; the centre of mass never
+moves}
+
+\begin{selfcheck}
+A skater of \SI{60}{\kilogram} standing on smooth ice throws a ball of
+\SI{0.5}{\kilogram} forwards at \SI{12}{\metre\per\second}, measured
+relative to the ice. What is the
+skater's velocity afterwards?
+\end{selfcheck}

@@ -1,0 +1,133 @@
+%=============================================================================!
+% 6.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:la-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:la-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~06 checks every numerical answer.
+
+\begin{exercise}[counting coordinates]
+\label{ex:la-count}
+How many generalised coordinates do (a) a bead threaded on a fixed
+circular hoop, (b) two atoms joined by a rigid bond and moving in a plane,
+and (c) a rigid water molecule free in space have?
+\end{exercise}
+
+\begin{exercise}[by parts]
+\label{ex:la-parts}
+Find $\int_0^1 x\,\mathrm{e}^x\,\dd x$ by integration by parts.
+\end{exercise}
+
+\begin{exercise}[a saddle of the action]
+\label{ex:la-saddle}
+For the block of \cref{sec:la-action} ($m = \SI{0.5}{\kilogram}$, $k =
+\SI{50}{\newton\per\metre}$) over $\tau = \SI{0.5}{\second}$, show that
+adding the bump $\zeta\sin(n\pi t/\tau)$ to the true path changes the
+action by $\zeta^2(\tau/4)\bigl(m(n\pi/\tau)^2 - k\bigr)$, and evaluate the
+coefficient of $\zeta^2$ for $n = 1$ and 2.
+\end{exercise}
+
+\begin{exercise}[free fall]
+\label{ex:la-fall}
+Write the Euler--Lagrange equation for $\Lag = \frac12 m\dot{x}^2 - mgx$.
+\end{exercise}
+
+\begin{exercise}[two coordinates]
+\label{ex:la-plane}
+Show that for $\Lag = \frac12 m(\dot{x}^2 + \dot{y}^2) - U(x, y)$ the two
+Euler--Lagrange equations are Newton's second law for the two components
+of the force $-\grad U$.
+\end{exercise}
+
+\begin{exercise}[the bottom of a valley]
+\label{ex:la-valley}
+Show that near the bottom $x_0$ of a valley of the wire, where $h'(x_0) =
+0$, \cref{eq:la-bead} becomes $\ddot{x} \approx -g\,h''(x_0)\,(x - x_0)$,
+and hence that small swings have $\omega_0 = \sqrt{g\,h''(x_0)}$, as
+\cref{sec:os-small} found.
+\end{exercise}
+
+\begin{exercise}[a bead in a bowl]
+\label{ex:la-bowl}
+A bead slides in a circular bowl, $h(x) = R - \sqrt{R^2 - x^2}$. Show
+that with $x = R\sin\theta$ its Lagrangian becomes that of a pendulum of
+length $R$.
+\end{exercise}
+
+\begin{exercise}[energy from the equation]
+\label{ex:la-energy}
+Multiplying \cref{eq:la-pendulum} by $\dot\theta$, show that $\frac12
+mL^2\dot\theta^2 + mgL(1 - \cos\theta)$ does not change.
+\end{exercise}
+
+\begin{exercise}[the energy of a Lagrangian]
+\label{ex:la-hamilton}
+For a Lagrangian $\Lag(q, \dot{q})$ of one coordinate that does not
+contain the time, show from \cref{eq:la-euler} that $\dot{q}\,\partial
+\Lag/\partial\dot{q} - \Lag$ does not change along the motion, and that
+for the bead it equals $K + U$.
+\end{exercise}
+
+\begin{exercise}[two carts]
+\label{ex:la-carts}
+Two carts of masses $m_1$ and $m_2$ on a smooth track are joined by a
+spring, $\Lag = \frac12 m_1\dot{x}_1^2 + \frac12 m_2\dot{x}_2^2 - \frac12
+k(x_2 - x_1 - \ell)^2$. Rewrite it with the centre of mass $X = (m_1x_1 +
+m_2x_2)/(m_1 + m_2)$ and the separation $r = x_2 - x_1$, and show that
+the momentum belonging to $X$ is conserved and that $r$ moves with the
+reduced mass of \cref{sec:os-bodies}.
+\end{exercise}
+
+\begin{exercise}[turning points]
+\label{ex:la-turning}
+The puck of \cref{fig:la-central} is started \SI{0.4}{\metre} out at
+\SI{0.3}{\metre\per\second} across the line to the hole. Find $L$, $E$
+and the two distances between which it swings.
+\end{exercise}
+
+\begin{exercise}[going round in a circle]
+\label{ex:la-circle}
+For $U = \frac12 kr^2$, show that the puck goes round in a circle when
+$r^4 = L^2/(mk)$, and that it then turns at the angular speed
+$\sqrt{k/m}$, whatever $L$. Evaluate the radius for the puck of
+\cref{fig:la-central}, of \SI{0.2}{\kilogram} on a spring of
+\SI{2}{\newton\per\metre}, with $L = \SI{0.05}{\kilogram\metre\squared\per
+\second}$.
+\end{exercise}
+
+\begin{exercise}[on the unit circle]
+\label{ex:la-unit}
+Find the largest value of $xy$ on the circle $x^2 + y^2 = 1$, and where
+it is reached.
+\end{exercise}
+
+\begin{exercise}[a deep swing]
+\label{ex:la-swing}
+A bob of \SI{0.5}{\kilogram} on a rod is released from rest at \ang{60}.
+What is the force of the rod when the bob passes the bottom, and when it
+is released?
+\end{exercise}
+
+\begin{exercise}[when a string goes slack]
+\label{ex:la-slack}
+Show that a pendulum on a string released from rest at $\theta_0$ keeps
+its string taut throughout only if $\theta_0 \le \ang{90}$.
+\end{exercise}
+
+\begin{exercise}[the forces of a bond]
+\label{ex:la-bond}
+For $\chi = \frac12(\lvert\vb{r}_j - \vb{r}_i\rvert^2 - d^2)$, show that
+$\grad_j\chi = \vb{r}_j - \vb{r}_i$ and $\grad_i\chi = -(\vb{r}_j -
+\vb{r}_i)$, so that the forces $\lambda\grad_i\chi$ and $\lambda\grad_j
+\chi$ on the two atoms are equal, opposite and along the bond.
+\end{exercise}
+
+\begin{exercise}[a smaller swing]
+\label{ex:la-small-swing}
+The bead of \cref{sec:la-constrained} is released from rest on the left
+slope at a height of \SI{0.8}{\metre}. Using \texttt{solve\_wire} in
+Notebook~06, find where it turns and how long it takes to come back.
+\end{exercise}

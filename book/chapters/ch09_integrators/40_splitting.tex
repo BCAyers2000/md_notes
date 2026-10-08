@@ -1,0 +1,144 @@
+%=============================================================================!
+% 9.4  SPLITTING THE LIOUVILLE OPERATOR                                       !
+%=============================================================================!
+\section{Splitting the Liouville operator}
+\label{sec:in-splitting}
+
+Velocity Verlet was derived above from Taylor series. A second derivation,
+from the Liouville operator of \cref{sec:ha-brackets}, explains why it is
+built of kicks and drifts, why each of these moves is exact, and how other
+methods are made, including the thermostats of Chapter~13.
+
+\subsection*{The motion as an exponential}
+
+\Cref{sec:ha-brackets} found that, over a short time, any quantity $A$
+of the state changes along the motion as
+\begin{equation*}
+   A(t) = \sum_{n=0}^{\infty}\frac{t^n}{n!}\,\Liou^nA ,
+\end{equation*}
+with $\Liou A = \pb{A}{H}$, every term evaluated at the start. This is the
+series of the exponential, $\mathrm{e}^s = \sum s^n/n!$ (\cref{sec:ne-drag}),
+with $t\Liou$ in place of $s$, and it is written $\mathrm{e}^{t\Liou}A$:
+the exponential of an operator is defined by this series, and applying it
+to $A$ carries $A$ forward by the time $t$. For $N$ atoms with $H =
+\sum_i\lvert\vb{p}_i\rvert^2/(2m_i) + U(\vb{r}^N)$, Hamilton's equations
+give $\dot{\vb{r}}_i = \vb{p}_i/m_i$ and $\dot{\vb{p}}_i = \vb{F}_i$, so
+\begin{equation*}
+   \Liou A = \sum_i\Bigl(\frac{\vb{p}_i}{m_i}\cdot\grad_{\vb{r}_i}A
+   + \vb{F}_i\cdot\grad_{\vb{p}_i}A\Bigr) = \Liou_{\mathrm r}A
+   + \Liou_{\mathrm p}A ,
+\end{equation*}
+where $\grad_{\vb{p}_i}$ is the gradient with respect to the momentum of
+atom $i$, $\Liou_{\mathrm r}$ is the first sum, the part that moves the
+positions, and $\Liou_{\mathrm p}$ the second, the part that moves the
+momenta. Many books write the Liouville operator $\mathrm{i}L$, with a
+factor $\mathrm{i}$ taken from quantum mechanics; nothing here depends on
+it.
+
+\subsection*{Each part alone is exact}
+
+Applied to a position, $\Liou_{\mathrm r}\vb{r}_i = \vb{p}_i/m_i$, and
+applied again, $\Liou_{\mathrm r}(\vb{p}_i/m_i) = 0$, since $\vb{p}_i/m_i$
+does not depend on any position. The series stops after two terms:
+\begin{equation*}
+   \mathrm{e}^{\dt\Liou_{\mathrm r}}\vb{r}_i = \vb{r}_i + \dt\,\frac{\vb{p}_i}
+   {m_i} , \qquad \mathrm{e}^{\dt\Liou_{\mathrm r}}\vb{p}_i = \vb{p}_i ,
+\end{equation*}
+the second because $\Liou_{\mathrm r}\vb{p}_i = 0$. This is an exact
+drift. In the same way $\Liou_{\mathrm p}\vb{p}_i = \vb{F}_i(\vb{r}^N)$,
+and $\Liou_{\mathrm p}\vb{F}_i = 0$, since the forces depend only on the
+positions, so
+\begin{equation*}
+   \mathrm{e}^{\dt\Liou_{\mathrm p}}\vb{p}_i = \vb{p}_i + \dt\,\vb{F}_i ,
+   \qquad \mathrm{e}^{\dt\Liou_{\mathrm p}}\vb{r}_i = \vb{r}_i :
+\end{equation*}
+an exact kick. Each part of the motion alone can be followed without
+error, and the error of a method built from them comes only from
+combining them. Since $\Liou_{\mathrm p}A = \pb{A}{U}$ and $\Liou_{\mathrm
+r}A = \pb{A}{K}$, they are the Liouville operators of $U$ alone and of $K$
+alone, so by \cref{eq:ha-series} $\mathrm{e}^{\dt\Liou_{\mathrm p}}$ turns
+any quantity into its value after a kick, and $\mathrm{e}^{\dt\Liou_{\mathrm
+r}}$ into its value after a drift.
+
+\subsection*{Putting the parts together}
+
+If $\Liou_{\mathrm r}$ and $\Liou_{\mathrm p}$ behaved like numbers, then
+$\mathrm{e}^{\dt(\Liou_{\mathrm r} + \Liou_{\mathrm p})}$ would equal
+$\mathrm{e}^{\dt\Liou_{\mathrm r}}\,\mathrm{e}^{\dt\Liou_{\mathrm p}}$. They
+do not: applying $\Liou_{\mathrm r}$ and then $\Liou_{\mathrm p}$ is not
+the same as the other order, because moving the positions changes the
+forces. For one coordinate, $\Liou_{\mathrm p}$ applied to $p$ gives $F$,
+and $\Liou_{\mathrm r}$ applied to that gives $(p/m)\,F'(q)$, while
+$\Liou_{\mathrm r}$ applied to $p$ gives 0, and $\Liou_{\mathrm p}$ applied
+to that gives 0. We write $X = \Liou_{\mathrm p}$ and $Y = \Liou_{\mathrm
+r}$ for short; $XY$ means $Y$ applied first and then $X$, so the order of
+every product must be kept, and $1$ is the operator that leaves a quantity
+unchanged. Expanding each exponential to second order in $\dt$,
+\begin{align*}
+   \mathrm{e}^{\dt(X + Y)} &= 1 + \dt\,(X + Y) + \tfrac12\dt^2(X + Y)^2
+   + \order{\dt^3}\\
+   &= 1 + \dt\,(X + Y) + \tfrac12\dt^2\bigl(X^2 + XY + YX + Y^2\bigr)
+   + \order{\dt^3} ,
+\end{align*}
+where $(X + Y)^2 = (X + Y)(X + Y)$ is multiplied out keeping $XY$ and $YX$
+apart. The symmetric product of half a kick, a drift and half a kick is
+\begin{align*}
+   \mathrm{e}^{\frac12\dt X}\,\mathrm{e}^{\dt Y}\,\mathrm{e}^{\frac12\dt X}
+   &= \bigl(1 + \tfrac12\dt X + \tfrac18\dt^2X^2\bigr)
+   \bigl(1 + \dt Y + \tfrac12\dt^2Y^2\bigr)\\
+   &\qquad\times\bigl(1 + \tfrac12\dt X + \tfrac18\dt^2X^2\bigr)
+   + \order{\dt^3} .
+\end{align*}
+Multiplying out, the terms of first order are $\frac12\dt X + \dt Y +
+\frac12\dt X = \dt\,(X + Y)$, and the terms of second order are
+$\frac18\dt^2X^2$ and $\frac18\dt^2X^2$ from the outer factors alone,
+$\frac12\dt^2Y^2$ from the middle one, and the products of first-order
+terms from two factors, $\frac12\dt X\,\dt Y$, $\dt Y\,\frac12\dt X$ and
+$\frac12\dt X\,\frac12\dt X$, in the order in which the factors stand:
+\begin{equation*}
+   \tfrac18X^2 + \tfrac18X^2 + \tfrac12Y^2 + \tfrac12XY + \tfrac12YX
+   + \tfrac14X^2 = \tfrac12\bigl(X^2 + XY + YX + Y^2\bigr) ,
+\end{equation*}
+times $\dt^2$. The two agree through the second order:
+\begin{equation}
+   \mathrm{e}^{\dt\Liou} = \mathrm{e}^{\frac12\dt\Liou_{\mathrm p}}\,
+   \mathrm{e}^{\dt\Liou_{\mathrm r}}\,\mathrm{e}^{\frac12\dt\Liou_{\mathrm p}}
+   + \order{\dt^3} .
+   \label{eq:in-trotter}
+\end{equation}
+The right side, applied to the state, is a half kick, a drift and a half
+kick: velocity Verlet, with the local error of order $\dt^3$ found in
+\cref{sec:in-verlet}. Splitting the exponential of a sum into a symmetric
+product of exponentials in this way is called a Trotter factorisation, and
+Tuckerman develops this derivation in full\cite{Tuckerman2023}. In a product
+of such exponentials the one written last acts first on the quantity, and
+the one written first acts first on the state: in
+$\mathrm{e}^{\dt\Liou_{\mathrm p}}\mathrm{e}^{\dt\Liou_{\mathrm r}}A$,
+the drift turns $A(\vb{r}, \vb{p})$ into $A(\vb{r} + \dt\,\vb{p}/m,
+\vb{p})$, and the kick then replaces $\vb{p}$ in this by $\vb{p} + \dt\,
+\vb{F}(\vb{r})$ everywhere it appears, so the state is kicked first and
+then drifts with the new momentum (\cref{ex:in-order}). That unsymmetric
+product agrees with $\mathrm{e}^{\dt\Liou}$ only to first order
+(\cref{ex:in-unsymmetric}), and is the symplectic Euler method of
+\cref{sec:ha-symplectic}; the symmetric product reads the same in either
+order.
+
+The same idea builds other methods. Splitting the forces themselves into
+fast and slow parts gives methods that kick with the slow forces less
+often\cite{Tuckerman2023} (Chapter~11), and Chapter~13 adds to $\Liou_{\mathrm r}$ and $\Liou_{\mathrm p}$ a
+third part, the action of a thermostat, and splits all three.
+
+\begin{keyidea}
+The motion over a step is $\mathrm{e}^{\dt\Liou}$, and the Liouville
+operator splits into a part that moves the positions and a part that moves
+the momenta, each of whose exponentials is exact: a drift and a kick. The
+symmetric product of half a kick, a drift and half a kick agrees with
+$\mathrm{e}^{\dt\Liou}$ to second order in $\dt$, and is velocity Verlet.
+\end{keyidea}
+
+\notebook{09}{the exponentials of the Liouville operator in SymPy}
+
+\begin{selfcheck}
+For one coordinate with $H = p^2/(2m)$, apply $\mathrm{e}^{\dt\Liou}$ to
+$q^2$ and check that it gives $(q + \dt\,p/m)^2$.
+\end{selfcheck}

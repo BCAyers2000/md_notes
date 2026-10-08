@@ -1,0 +1,240 @@
+%=============================================================================!
+% 4.5  LARGER SWINGS: ANHARMONIC WELLS                                        !
+%=============================================================================!
+\section{Larger swings: anharmonic wells}
+\label{sec:os-anharmonic}
+
+Real wells are not parabolas. The pendulum's well rises ever more slowly
+than its parabola as the bob swings towards the horizontal, and the well that holds two atoms together
+rises steeply when they are pushed together but levels off when they are
+pulled apart. A well that is not a parabola is called anharmonic. This
+section computes the period of a swing of any size from the energy alone,
+and finds that in every well of interest here it grows with the energy.
+
+\subsection*{The period from the energy}
+
+\Cref{sec:en-track} noted that energy fixes the time of a journey through
+the speed: a short step $\dd x$ taken at speed $v$ lasts $\dd x/v$. In a
+well, with total energy $E$ and turning points $x_1 < x_2$, the speed at
+$x$ is $v(x) = \sqrt{2(E - U(x))/m}$, so the journey from $x_1$ to $x_2$
+takes $\int_{x_1}^{x_2}\dd x/v(x)$. The way back takes as long, since the
+speed at each point is the same in either direction, and the period is
+\begin{equation}
+   \mathcal{T}(E) = 2\int_{x_1}^{x_2}\frac{\dd x}{\sqrt{2\bigl(E - U(x)\bigr)/m}} .
+   \label{eq:os-period}
+\end{equation}
+At the turning points the speed is zero and the integrand is infinite.
+The integral then means the limit as its ends approach the turning
+points, and it is finite when, as in the harmonic case below, the
+function whose derivative is the integrand tends to finite values there. To evaluate it we need
+the derivative of the arcsine.
+
+\begin{toolbox}[The derivative of an inverse function]
+For $u$ between $-1$ and 1, $\theta = \arcsin u$ is the angle between
+$-\pi/2$ and $\pi/2$ whose sine is $u$ (\cref{sec:mo-trig}), so $\sin
+\theta(u) = u$ for every such $u$. Differentiating both sides with respect
+to $u$, the left by the chain rule,
+\begin{equation*}
+   \cos\theta\,\frac{\dd\theta}{\dd u} = 1 ,
+   \qquad\text{so}\qquad
+   \frac{\dd}{\dd u}\arcsin u = \frac{1}{\cos\theta}
+   = \frac{1}{\sqrt{1 - u^2}} ,
+\end{equation*}
+since $\cos\theta = +\sqrt{1 - \sin^2\theta}$ for an angle between
+$-\pi/2$ and $\pi/2$, where the cosine is not negative. With $u = x/A$ and
+the chain rule, $\dd u/\dd x = 1/A$, so
+\begin{equation*}
+   \frac{\dd}{\dd x}\arcsin\frac{x}{A} = \frac{1}{A}\,
+   \frac{1}{\sqrt{1 - x^2/A^2}} = \frac{1}{\sqrt{A^2\,(1 - x^2/A^2)}}
+   = \frac{1}{\sqrt{A^2 - x^2}} ,
+\end{equation*}
+the positive $A$ having gone inside the root as $A^2$.
+The same method, differentiating the equation that defines the inverse,
+gives the derivative of any inverse function.
+\end{toolbox}
+
+For the spring, $U = \frac12 kx^2$ and $E = \frac12 kA^2$, so $E - U =
+\frac12 k(A^2 - x^2)$ and $v = \omega\sqrt{A^2 - x^2}$. Then
+\begin{align*}
+   \mathcal{T} &= \frac{2}{\omega}\int_{-A}^{A}\frac{\dd x}{\sqrt{A^2 - x^2}}
+   = \frac{2}{\omega}\Bigl[\arcsin\frac{x}{A}\Bigr]_{-A}^{A}
+      && \text{by the toolbox and \cref{eq:mo-integrals}}\\
+   &= \frac{2}{\omega}\Bigl(\frac{\pi}{2} - \Bigl(-\frac{\pi}{2}\Bigr)\Bigr)
+   = \frac{2\pi}{\omega} ,
+\end{align*}
+the period of \cref{sec:os-circle}, whatever the amplitude. The integrand
+is infinite at $\pm A$, yet $\arcsin(x/A)$ rises only to $\pm\pi/2$ there,
+so the area under it is finite: the spike is tall but very narrow. For
+other wells the integral is evaluated by computer. The function
+\texttt{oscillators.period} of \texttt{mdlab} finds the turning points,
+then writes $x = c - \eta\cos\vartheta$, with $c$ the centre and $\eta$ the
+half-width of the allowed region, so that $\vartheta$ runs from 0 at
+$x_1$ to $\pi$ at $x_2$. A short step $\dd\vartheta$ moves $x$ by $\dd x =
+\eta\sin\vartheta\,\dd\vartheta$, the derivative of $c - \eta\cos\vartheta$
+times the step, so each time $\dd x/v$ becomes $\eta\sin\vartheta\,
+\dd\vartheta/v$, and these are added up over $\vartheta$ from 0 to $\pi$.
+Near $x_1$, where $U(x_1) = E$, the Taylor series gives $E - U(x) \approx
+-U'(x_1)\,(x - x_1)$, and $x - x_1 = \eta(1 - \cos\vartheta) \approx \frac12
+\eta\vartheta^2$, so $v$ grows in proportion to $\vartheta$; so does
+$\sin\vartheta \approx \vartheta$, and their ratio, the new integrand,
+stays finite, as it does near $x_2$. The integral over $\vartheta$ is
+then evaluated by Gauss--Legendre quadrature, a weighted sum of the
+integrand at chosen points, which converges quickly for a smooth
+integrand. Its tests check it against the spring, against closed
+forms for the pendulum and for the Morse well below, and against motions
+timed by \texttt{solve\_newton}.
+
+\subsection*{The pendulum and the hop}
+
+The pendulum's well, $U = mgL(1 - \cos\theta)$, and the hop coordinate of
+the lithium atom, \cref{eq:os-hop}, have the same shape,
+\begin{equation*}
+   U = \tfrac12 D\,\Bigl(1 - \cos\frac{2\pi x}{\Lambda}\Bigr) ,
+\end{equation*}
+a cosine well of depth $D$ that repeats every $\Lambda$: for the
+pendulum $x$ is the distance $s = L\theta$ along the arc, $\Lambda =
+2\pi L$ and $D = 2mgL$, the potential energy of the bob held upright; for the atom $\Lambda = a$ and $D = U_{\mathrm b}$,
+the barrier. Away from its bottom the cosine well rises more slowly than
+its parabola (\cref{fig:os-wells}a), so the restoring force there is
+weaker than a spring's, and in a swing of the same amplitude the body
+moves more slowly and takes longer. \Cref{eq:os-period} gives, for the pendulum,
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+amplitude & \ang{10} & \ang{45} & \ang{90} & \ang{150} & \ang{179}\\
+\midrule
+period / small-swing period & 1.0019 & 1.0400 & 1.1803 & 1.7622 & 3.9011\\
+\bottomrule
+\end{tabular}
+\end{center}
+For swings of \ang{10} the period is within \SI{0.2}{\percent} of
+$2\pi\sqrt{L/g}$, and it changes only slowly with the amplitude: a clock
+whose swing grows from \ang{10} to \ang{11} loses about \SI{35}{\second} a
+day, which is why clockmakers keep the swing small and steady. Beyond \ang{90} the bob
+ends each swing above the pivot, where only a rod, which can push, keeps
+it on its circle; a string would go slack. As the amplitude approaches
+\ang{180}
+the bob lingers ever longer near the top, where the force on it is
+nearly zero, and the period grows without limit (\cref{fig:os-period}).
+
+The lithium atom behaves the same way. With \SI{0.25}{\electronvolt} above
+the bottom of the hollow,
+below the \SI{0.3}{\electronvolt} barrier, it rattles in its hollow with a
+period of \SI{253.8}{\femto\second}, half as long again as the
+\SI{170.3}{\femto\second} of small swings, and with
+\SI{0.297}{\electronvolt} the period is \SI{400.8}{\femto\second}. With exactly
+the barrier as energy, the atom would creep ever more slowly towards the
+bridge without ever reaching it. The phase
+portrait of the cosine well (\cref{fig:os-phase}b) shows all of this at
+once: closed paths for swings or rattles, the path through the top that
+separates them from the open paths of a pendulum going over the top or an
+atom hopping on from hollow to hollow.
+
+\subsection*{Two wells for a pair of atoms}
+
+The energy of two atoms depends on the distance $r$ between them, and two
+standard shapes model it; Chapter~8 discusses where they apply. The Morse
+well, used for a chemical bond, is
+\begin{equation*}
+   U_{\mathrm{M}}(r) = D\,\bigl(1 - \mathrm{e}^{-a(r - r_0)}\bigr)^2 ,
+\end{equation*}
+with three constants. At $r = r_0$ the exponential is 1 and $U_{\mathrm M}
+= 0$, its least value, since it is a square; when the atoms are pulled
+far apart the exponential vanishes and $U_{\mathrm M}$ levels off at $D$,
+the energy needed to separate them; when they are pushed together,
+$r < r_0$, the exponential grows rapidly and so does $U_{\mathrm M}$. The
+constant $a$, an inverse length, sets the width of the well; here it is
+not the spacing of the surface. Near the bottom, with $y = r - r_0$ and
+the exponential series of \cref{sec:ne-drag}, $\mathrm{e}^{-ay} = 1 - ay +
+\order{y^2}$, so $1 - \mathrm{e}^{-ay} = ay + \order{y^2}$ and, squaring,
+\begin{equation*}
+   U_{\mathrm M} = D a^2 y^2 + \order{y^3} ,
+   \qquad\text{a spring of stiffness } k = 2Da^2 .
+\end{equation*}
+
+The Lennard-Jones well, often used for atoms that form no bond, such as those
+of the noble gases (helium, neon, argon and their family, which hardly
+react), is
+\begin{equation*}
+   U_{\mathrm{LJ}}(r) = 4\varepsilon\Bigl[\Bigl(\frac{\sigma}{r}\Bigr)^{12}
+   - \Bigl(\frac{\sigma}{r}\Bigr)^6\Bigr] ,
+\end{equation*}
+a steep repulsion, $r^{-12}$, that dominates at short range and a weaker
+attraction, $-r^{-6}$, that dominates at long range. The power rule of
+\cref{sec:mo-velocity} was found for whole $n \ge 1$, but it holds for
+$r^{-n} = 1/r^n$ too: differentiating $r^{-n}\,r^n = 1$ by the product
+rule gives $r^n\,\dd(r^{-n})/\dd r + r^{-n}\,n r^{n-1} = 0$, so $\dd
+(r^{-n})/\dd r = -n\,r^{-n-1}$. Differentiating with this rule,
+\begin{equation*}
+   \frac{\dd U_{\mathrm{LJ}}}{\dd r}
+   = 4\varepsilon\Bigl[-12\,\frac{\sigma^{12}}{r^{13}}
+   + 6\,\frac{\sigma^6}{r^7}\Bigr]
+   = \frac{24\varepsilon}{r}\Bigl[\Bigl(\frac{\sigma}{r}\Bigr)^6
+   - 2\Bigl(\frac{\sigma}{r}\Bigr)^{12}\Bigr] ,
+\end{equation*}
+which vanishes when the bracket, $(\sigma/r)^6\,[1 - 2(\sigma/r)^6]$,
+does, so when $(\sigma/r)^6 = \frac12$, that is $(r/\sigma)^6 = 2$, at
+$r_{\min} = 2^{1/6}\sigma = 1.1225\,\sigma$, where $U_{\mathrm{LJ}} = 4\varepsilon(\frac14 - \frac12)
+= -\varepsilon$. Differentiating once more,
+\begin{equation*}
+   \frac{\dd^2 U_{\mathrm{LJ}}}{\dd r^2}
+   = \frac{4\varepsilon}{r^2}\Bigl[156\Bigl(\frac{\sigma}{r}\Bigr)^{12}
+   - 42\Bigl(\frac{\sigma}{r}\Bigr)^6\Bigr]
+   = \frac{4\varepsilon}{r_{\min}^2}\Bigl[\frac{156}{4} - \frac{42}{2}\Bigr]
+   = \frac{4\times18\,\varepsilon}{2^{1/3}\sigma^2}
+   = 57.15\,\frac{\varepsilon}{\sigma^2}
+\end{equation*}
+at the minimum, the middle steps putting in $(\sigma/r)^{12} = \frac14$,
+$(\sigma/r)^6 = \frac12$ and $r_{\min}^2 = 2^{2/6}\sigma^2 =
+2^{1/3}\sigma^2$, with $39 - 21 = 18$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/wells}
+\caption{Three anharmonic wells (black) against the parabolas of the same
+curvature at their bottoms (dashed), each in its own natural units; the
+dotted lines mark half the depth. (a) The cosine well of the pendulum and
+of the lithium hop. (b) The Morse well of a bond. (c) The Lennard-Jones
+well, drawn from its bottom.}
+\label{fig:os-wells}
+\end{figure}
+
+Both wells are lopsided (\cref{fig:os-wells}b, c): steeper than their
+parabola on the inside, softer on the outside. A swing therefore reaches
+less far in and much further out than a spring's would; in the
+Lennard-Jones well with half the depth as energy, the turning points are
+at $1.027\,\sigma$ and $1.377\,\sigma$, against $0.990\,\sigma$ and
+$1.255\,\sigma$ for the parabola, whose turning points lie
+$\sqrt{2\times0.5/57.15} = 0.132\,\sigma$ either side of the minimum at
+$1.1225\,\sigma$. The soft outer side wins, and the period grows with the
+energy (\cref{fig:os-period}). Measured from the bottom, at a tenth, half
+and nine tenths of the depth the period is 1.054, 1.414 and 3.162 times
+that of small swings for the Morse well, which are $1/\sqrt{1 - E/D}$
+exactly, the closed form the tests use, and 1.069, 1.554 and 4.399 times
+for the Lennard-Jones well. These ratios hold for any constants and any
+mass, because in the units of the figures the wells have no constants
+left, and by \cref{eq:os-period} every period is proportional to
+$\sqrt m$. A bond with
+more energy therefore vibrates more slowly, and the period of the small
+swings, the one that sets the steps of a simulation, is the shortest.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/period}
+\caption{The period of the motion in each well of \cref{fig:os-wells},
+divided by the period of small swings, against the energy above the
+bottom as a fraction of the depth, computed from \cref{eq:os-period}. The
+cosine well's period grows without limit as the energy approaches the
+barrier, though so slowly that it is only 3.8 at 0.9999 of the barrier,
+where its curve stops; the others' grows without limit as the energy
+approaches that needed to separate the atoms. A spring keeps the ratio 1 (dotted).}
+\label{fig:os-period}
+\end{figure}
+
+\notebook{04}{explore the period in each well as the energy grows}
+
+\begin{selfcheck}
+Why does a pendulum swinging out to \ang{90} on each side take longer for
+each swing than one swinging out to \ang{10}, even though it moves faster at the
+bottom?
+\end{selfcheck}

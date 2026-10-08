@@ -1,0 +1,174 @@
+%=============================================================================!
+% 7.7  STEPS THAT KEEP AREA                                                   !
+%=============================================================================!
+\section{Steps that keep area}
+\label{sec:ha-symplectic}
+
+A computer follows a motion in steps. A method of computing motion takes
+the state $(q, p)$ at one instant and returns the state $(q', p')$ a time
+$\dt$ later, so it is a map of the phase plane into itself, a step map,
+and like the flow it has a Jacobian determinant. The exact flow over $\dt$
+keeps both the energy and areas. This section shows, for the spring and
+the two simplest methods, that a step map which inflates areas makes the
+energy grow without limit, while the area-preserving method holds the energy within a band for
+the stable step used here.
+
+\subsection*{The forward Euler method}
+
+The simplest step takes the rates at the start of the step as if they held throughout it, so that the change over the step is the
+rate times $\dt$, the secant of \cref{sec:mo-velocity} read backwards:
+\begin{equation*}
+   q' = q + \dt\,\frac{\partial H}{\partial p}(q, p) , \qquad
+   p' = p - \dt\,\frac{\partial H}{\partial q}(q, p) .
+\end{equation*}
+This is the forward Euler method. For the block of \cref{sec:os-circle},
+\SI{0.5}{\kilogram} on a spring of \SI{50}{\newton\per\metre}, it reads
+$q' = q + \dt\,p/m$ and $p' = p - \dt\,kq$. Its energy after the step is
+\begin{align*}
+   H' &= \frac{p'^2}{2m} + \frac12 kq'^2
+   = \frac{(p - \dt\,kq)^2}{2m} + \frac12 k\Bigl(q + \frac{\dt\,p}{m}
+   \Bigr)^2\\
+   &= \frac{p^2}{2m} - \frac{\dt\,kqp}{m} + \frac{\dt^2k^2q^2}{2m}
+   + \frac12 kq^2 + \frac{\dt\,kqp}{m} + \frac{\dt^2kp^2}{2m^2}
+   && \text{expanding both squares}\\
+   &= \frac{p^2}{2m} + \frac12 kq^2
+   + \frac{k}{m}\,\dt^2\Bigl(\frac12 kq^2 + \frac{p^2}{2m}\Bigr)
+   && \text{collecting terms}\\
+   &= \bigl(1 + \omega^2\dt^2\bigr)\,H
+   && \text{with $\omega^2 = k/m$.}
+\end{align*}
+In the third line the two terms in $qp$ have cancelled and $k\dt^2/m$ has
+been taken out of the two terms in $\dt^2$. Every step multiplies the
+energy by $1 + \omega^2\dt^2$, whatever the state, so the computed motion spirals outwards in the phase plane
+(\cref{fig:ha-maps}). With $\omega = \SI{10}{\radian\per\second}$ and $\dt
+= \SI{0.02}{\second}$, so that $\omega\dt = 0.2$, the factor is 1.04, and
+after 50 steps, one second, the energy is 7.107 times its starting value;
+after \SI{10}{\second} it is $3.3\times10^8$ times. A shorter step only
+slows the growth: the energy doubles after the $n$ steps for which $(1 +
+\omega^2\dt^2)^n = 2$. Writing $1 + \omega^2\dt^2 = \mathrm{e}^{\ln(1 +
+\omega^2\dt^2)}$ and $2 = \mathrm{e}^{\ln 2}$ (\cref{sec:ne-drag}), this
+is $n\ln(1 + \omega^2\dt^2) = \ln 2$, so $n = \ln 2/\ln(1 +
+\omega^2\dt^2)$, which is 17.7 at $\omega\dt = 0.2$, 69.7 at 0.1 and 6932
+at 0.01, about 11 periods of $2\pi/(\omega\dt) = 628$ steps each.
+
+The step map also stretches areas. Its Jacobian matrix, from the
+derivatives of $q'$ and $p'$ with respect to $q$ and $p$, and its
+determinant are
+\begin{equation*}
+   \vb{J} = \begin{pmatrix} 1 & \dt/m\\ -k\,\dt & 1 \end{pmatrix} ,
+   \qquad
+   \det\vb{J} = 1\times1 - \frac{\dt}{m}\times(-k\,\dt)
+   = 1 + \omega^2\dt^2 ,
+\end{equation*}
+the same factor: every step inflates every area by it.
+
+\subsection*{The symplectic Euler method}
+
+A small change to the order of the updates gives a map that keeps area.
+The momentum is moved first, with the force at the old position, and then
+the position, with the new momentum:
+\begin{equation*}
+   p' = p - \dt\,\frac{\partial H}{\partial q}(q) , \qquad
+   q' = q + \dt\,\frac{\partial H}{\partial p}(p') ,
+\end{equation*}
+for a Hamiltonian $H = K(p) + U(q)$ whose kinetic energy depends only on
+the momentum and potential energy only on the position, as for atoms in
+Cartesian coordinates. For the spring, $p' = p - \dt\,kq$, and putting
+this into $q' = q + \dt\,p'/m$ gives $q' = (1 - \omega^2\dt^2)\,q + \dt\,
+p/m$. So
+\begin{equation*}
+   \vb{J} = \begin{pmatrix} 1 - \omega^2\dt^2 & \dt/m\\ -k\,\dt & 1
+   \end{pmatrix} ,
+   \qquad
+   \det\vb{J} = 1 - \omega^2\dt^2 - \frac{\dt}{m}\times(-k\,\dt) = 1 .
+\end{equation*}
+The same holds for any $H = K(p) + U(q)$. The step is two maps in turn: a
+kick, $(q, p) \to (q, p - \dt\,U'(q))$, which changes only the momentum,
+by an amount that depends only on the position, and then a drift, $(q, p')
+\to (q + \dt\,K'(p'), p')$, which changes only the position, by an amount
+that depends only on the momentum. Their Jacobian matrices are
+\begin{equation*}
+   \begin{pmatrix} 1 & 0\\ -\dt\,U''(q) & 1 \end{pmatrix}
+   \qquad\text{and}\qquad
+   \begin{pmatrix} 1 & \dt\,K''(p')\\ 0 & 1 \end{pmatrix} ,
+\end{equation*}
+each with determinant $1\times1 - 0 = 1$: each is a shear. A small square
+taken through the kick keeps its area, and the parallelogram it becomes
+keeps its area through the drift, so the whole step keeps area. This is
+the symplectic Euler method; a step map that keeps area in the phase
+plane is called symplectic. With more coordinates, keeping volume is
+necessary but the full condition is stronger, and Chapter~9 states
+it\cite{LeimkuhlerMatthews2015}. The function \texttt{symplectic\_euler\_step}
+of \texttt{mdlab} takes one step:
+
+\begin{code}
+def symplectic_euler_step(
+    dh_dq: Callable[[NDArray, NDArray], NDArray],
+    dh_dp: Callable[[NDArray, NDArray], NDArray],
+    q: ArrayLike,
+    p: ArrayLike,
+    dt: float,
+) -> tuple[NDArray, NDArray]:
+    q = np.asarray(q, dtype=float)
+    p = np.asarray(p, dtype=float)
+    p_new = p - dt * dh_dq(q, p)
+    return q + dt * dh_dp(q, p_new), p_new
+\end{code}
+
+\noindent The two derivatives of $H$ are passed in as functions, called
+with the state as it stands: the kick with the old $q$, the drift with the
+new momentum \texttt{p\_new}. For the pendulum of \cref{sec:ha-equations},
+whose step is not linear, the determinant computed by central differences
+with $\dt = \SI{0.05}{\second}$ differs from 1 by less than $10^{-9}$ at
+each of the states tried.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch07_hamilton/maps}
+\caption{The block of \SI{0.5}{\kilogram} on a spring of
+\SI{50}{\newton\per\metre} ($\omega = \SI{10}{\radian\per\second}$),
+released from rest at \SI{4}{\centi\metre}, stepped with $\dt =
+\SI{0.02}{\second}$ by the forward Euler method (oxblood) and the
+symplectic Euler method (green). (a) The states after each step for
+\SI{1}{\second}, with the true ellipse (dashed), which the green points
+nearly hide. (b) The energy over \SI{10}{\second} as a
+multiple of its starting value, on a logarithmic axis; the forward Euler
+energy leaves the axis, at 1000 times its starting value, after
+\SI{3.5}{\second}.}
+\label{fig:ha-maps}
+\end{figure}
+
+With the same step of \SI{0.02}{\second}, the symplectic Euler method keeps
+the block's energy between 0.9091 and 1.1111 times its starting value,
+over \SI{10}{\second} and over \SI{2000}{\second} alike
+(\cref{fig:ha-maps}b): its error oscillates and does not grow. Halving the
+step to \SI{0.01}{\second} narrows the band to between 0.9524 and 1.0526.
+Chapter~9 explains why: a step map that keeps area keeps a slightly
+different energy, exactly for the spring and very nearly in
+general\cite{LeimkuhlerMatthews2015}, and so stays close to the true one.
+It also finds methods whose band is much narrower for the same step.
+
+\begin{practice}
+The total energy of an isolated system is the first diagnostic of a
+method of computing motion and of its step. A steady growth or fall shows
+a method that does not keep area, as here, a step too long for the
+method, or forces that are not the slopes of a single potential energy
+(\cref{sec:en-drift}); for smooth forces and sufficiently short stable steps, the symplectic
+method shown here has bounded fluctuations that shrink as the step is
+shortened. Chapter~9 sizes the step from these
+fluctuations.
+\end{practice}
+
+\begin{keyidea}
+A step map keeps area when its Jacobian determinant is 1. The forward Euler
+method multiplies the spring's energy and every area by $1 + \omega^2
+\dt^2$ at each step; the symplectic Euler method, a kick then a drift, keeps
+area and holds the energy within a band.
+\end{keyidea}
+
+\notebook{07}{step the spring with both methods and watch a square of states}
+
+\begin{selfcheck}
+With $\omega\dt = 0.05$, by what factor does the forward Euler method
+multiply the energy of a spring in 100 steps?
+\end{selfcheck}

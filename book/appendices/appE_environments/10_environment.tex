@@ -1,0 +1,45 @@
+%=============================================================================!
+% E.1  THE ENVIRONMENT                                                        !
+%=============================================================================!
+\section{The environment}
+\label{sec:env-environment}
+
+Every calculation in the book runs in one Python environment, created with
+the conda package manager from the file \texttt{environment.yml} at the root
+of the course material. Conda installs compiled libraries as well as Python
+packages, which matters here because the environment carries LAMMPS, the
+PyTorch machine-learning library and the LaTeX-driven animation tool Manim,
+none of which is pure Python. Two commands build it and install
+\texttt{mdlab} into it:
+\begin{code}[language=bash,numbers=none]
+conda env create -f environment.yml
+conda activate mdbook && pip install -e mdlab
+\end{code}
+The second command installs \texttt{mdlab} in editable form, so a change to
+its source takes effect without reinstalling. The command \texttt{pytest
+mdlab} then runs the tests of every routine built so far; they should all
+pass before any notebook is opened.
+
+The file names packages without versions and leaves the choice to the
+solver, so two builds months apart can differ. \Cref{tab:env-versions}
+records the versions against which the book's numbers were produced; the
+script that prints it is in \texttt{scripts/appE\_environments}, and running
+it in a new build shows at once what has moved.
+
+\begin{table}[ht]
+\centering
+\caption{Versions of the principal packages in the environment that
+produced the results of this book.}
+\label{tab:env-versions}
+\input{appendices/appE_environments/versions_table}
+\end{table}
+
+Some codes cannot share this environment. A package may require an exact
+version of a library on which another package sets an incompatible lower
+bound, and then no single environment satisfies both. The MACE potential
+used from Chapter~12 onwards and the TrajCast propagator of Chapter~23 are
+such a pair: MACE requires a particular early release of the
+\texttt{e3nn} library for rotation-equivariant networks, and TrajCast a
+later one. Each such code therefore receives its own environment, built in
+the chapter that first runs it, and data pass between environments as
+files.

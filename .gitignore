@@ -1,0 +1,48 @@
+# Local working notes and build instructions
+/BUILD_PROMPT.md
+/SESSION_PROMPT.md
+/CONVENTIONS.md
+/PLAN.md
+/PROGRESS.md
+/notes/
+AGENTS.md
+CLAUDE.md
+CODEX.md
+.agents/
+.claude/
+.codex/
+
+# Compiled documents, movies and release downloads
+/book/build/
+/mdlab/build/
+/renders/**/*
+!/renders/**/
+!/renders/**/*.py
+/release-assets/
+/animations/media/
+
+# Python and notebook working files
+__pycache__/
+*.py[cod]
+*.so
+*.dylib
+*.pyd
+*.o
+*.nbc
+*.nbi
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+/notebooks/*_work.ipynb
+/notebooks/argon.extxyz
+
+# Local settings
+.DS_Store
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/

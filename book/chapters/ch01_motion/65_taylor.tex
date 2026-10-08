@@ -1,0 +1,181 @@
+%=============================================================================!
+% 1.8  SHORT INTERVALS AND THE TAYLOR SERIES                                  !
+%=============================================================================!
+\section{Short intervals and the Taylor series}
+\label{sec:mo-taylor}
+
+For the ball, the acceleration was constant and the integrals of
+\cref{sec:mo-integrating} could be done by hand. For most motions, and for
+general systems of interacting atoms, the acceleration changes from
+moment to moment and the integrals cannot be done in closed form. A
+computer then advances the motion through many short intervals, and on
+each interval it needs an approximation to the position a short time
+$\tau$ ahead, built from what is known at the start of the interval. The
+Taylor series provides that approximation, and tells us how large its
+error is.
+
+\subsection*{Matching a polynomial to a function}
+
+Near a time $t$, we look for a polynomial in $\tau$ that matches $x(t +
+\tau)$ as closely as possible,
+\begin{equation*}
+   x(t+\tau) \approx c_0 + c_1\tau + c_2\tau^2 + c_3\tau^3 + \dotsb ,
+\end{equation*}
+and we choose its coefficients so that the polynomial and the function
+have the same value, the same first derivative, the same second
+derivative, and so on, at $\tau = 0$. Each condition fixes one
+coefficient.
+\begin{itemize}
+\item Setting $\tau = 0$ leaves only $c_0$, so $c_0 = x(t)$.
+\item Differentiating once with respect to $\tau$ gives $c_1 + 2c_2\tau +
+   3c_3\tau^2 + \dotsb$, which at $\tau = 0$ is $c_1$. The function's own
+   derivative with respect to $\tau$, with $t$ held fixed, is by the chain
+   rule with inner function $u = t + \tau$, whose derivative with respect
+   to $\tau$ is 1, $\dot{x}(t+\tau)$; repeating this, its $n$th derivative
+   is $x^{(n)}(t+\tau)$, the $n$th derivative of $x$ evaluated at
+   $t+\tau$. At $\tau = 0$ the first derivative is $\dot{x}(t)$, so matching
+   gives $c_1 = \dot{x}(t)$.
+\item Differentiating twice gives $2c_2 + 6c_3\tau + \dotsb$, which at
+   $\tau = 0$ is $2c_2$, so $c_2 = \ddot{x}(t)/2$.
+\item Differentiating three times gives $6c_3 + \dotsb$, so $c_3 =
+   \dddot{x}(t)/6$, where $\dddot{x}$ is the third derivative.
+\end{itemize}
+Each differentiation brings down one more factor from the power of
+$\tau$, so the $n$th differentiation of $c_n\tau^n$ produces $n\times(n-1)
+\times\dotsb\times 1 = n!$ times $c_n$, a product written $n!$ and read
+`$n$ factorial'. After $n$ differentiations the lower powers of $\tau$ have
+become zero and the higher ones still contain $\tau$, so at $\tau = 0$ only
+$n!\,c_n$ survives, and matching the $n$th derivative $x^{(n)}(t)$ gives
+$c_n = x^{(n)}(t)/n!$. Collecting the coefficients gives the Taylor
+series,
+\begin{equation*}
+   x(t+\tau) = \sum_{n=0}^{\infty} \frac{x^{(n)}(t)}{n!}\,\tau^n
+   = x(t) + \dot{x}(t)\,\tau + \frac{\ddot{x}(t)}{2}\,\tau^2
+   + \frac{\dddot{x}(t)}{6}\,\tau^3 + \dotsb ,
+\end{equation*}
+with $0! = 1$. For the functions met in this book, polynomials, sines,
+cosines and exponentials, the infinite series converges to $x(t+\tau)$:
+adding more and more terms brings the sum as close to $x(t+\tau)$ as we
+please.
+In general, matching derivatives guarantees only that the series stopped
+after a finite number of terms has a small error, as described below, and
+that is all the book relies on. For a motion, $\dot{x} = v$ and $\ddot{x}
+= a$, so
+\begin{equation}
+   x(t+\tau) = x(t) + v(t)\,\tau + \tfrac12 a(t)\,\tau^2
+   + \tfrac16\,\dddot{x}(t)\,\tau^3 + \order{\tau^4} .
+   \label{eq:mo-taylor}
+\end{equation}
+
+\subsection*{The size of the error}
+
+The symbol $\order{\tau^4}$ stands for everything left out, and it
+records how quickly that remainder vanishes as the interval shrinks: a
+quantity is $\order{\tau^4}$, read `of order $\tau^4$', if its absolute
+value is no larger than some fixed constant times $\lvert\tau\rvert^4$
+once $\lvert\tau\rvert$ is small enough. More generally, stopping the
+series after the term in $\tau^n$ leaves an error of order $\tau^{n+1}$
+for a smooth function, one that can be differentiated as often as we
+like. To see why, call the error $D(\tau)$, the function $x(t+\tau)$
+minus the polynomial of degree $n$, and take $\tau > 0$. By construction
+$D$ and its first $n$ derivatives with respect to $\tau$ vanish at $\tau
+= 0$. Since $n + 1$ differentiations remove a polynomial of degree $n$
+entirely, the $(n+1)$th derivative of $D$ is $x^{(n+1)}(t+\tau)$. Let $M$
+be the greatest value of $\lvert x^{(n+1)}\rvert$ between $t$ and $t +
+\tau$. By \cref{eq:mo-integrals} the $n$th derivative of $D$, which
+starts at zero, is the integral of the $(n+1)$th from 0 to $\tau$, an
+area under a curve lying between $-M$ and $M$, so its size is at most
+$M\tau$. Integrating again, the size of the $(n-1)$th derivative is at
+most $\int_0^\tau M s\,\dd s = M\tau^2/2$. Each further integration raises
+the power by one and divides by the new power, so after $n + 1$
+integrations
+\begin{equation*}
+   \lvert D(\tau)\rvert \le \frac{M\,\lvert\tau\rvert^{n+1}}{(n+1)!} ,
+\end{equation*}
+and the same argument holds for $\tau < 0$. Halving the interval
+therefore divides this bound by $2^{n+1}$, and the error itself by about
+that factor.
+
+\begin{toolbox}[Logarithmic axes]
+Errors such as these span many powers of ten, so they are plotted on
+logarithmic axes, on which the marks $10^{-3}$, $10^{-2}$ and $10^{-1}$
+are equally spaced. Equal distances along such an axis stand for equal
+ratios, here a factor of ten, rather than equal differences: the
+position of a positive number $y$ along the axis is proportional to its
+logarithm $\log y$, the power to which 10 must be raised to give $y$, so
+that $\log 10^k = k$. Writing $y = 10^a$ and $z = 10^b$, so that $yz =
+10^a\times10^b = 10^{a+b}$, gives $\log(yz) = a + b = \log y + \log z$:
+the logarithm turns products into sums. Since $(10^a)^p = 10^{pa}$, it
+also turns a power into a multiple, $\log(\tau^p) = p\log\tau$. An error
+$D$ that behaves as $D = C\tau^p$ therefore obeys
+\begin{equation*}
+   \log D = \log C + p\log\tau ,
+\end{equation*}
+which is a straight line when $\log D$ is plotted against $\log\tau$.
+Its slope is the power $p$: a line that rises by one power of ten for
+every power of ten in $\tau$ has $p = 1$, and one that rises by four has
+$p = 4$. The constant $C$ only moves the line up or down. The slope of an
+error plot thus gives the power with which the error falls, and two
+lines of equal slope differ only by a constant factor.
+\end{toolbox}
+
+\Cref{fig:mo-taylor} shows these properties for $x(t) = \sin t$ expanded
+about $t_1 = \pi/4$. By \cref{eq:mo-trig-derivs} the derivatives of the
+sine cycle through $\sin, \cos, -\sin, -\cos$, so at $\pi/4$ every one of
+them is $\pm 1/\sqrt2$, and none is zero, so the leading term
+$x^{(n+1)}(t_1)\,\tau^{n+1}/(n+1)!$ of every error is present. The
+polynomial of degree 1 is the tangent line,
+the polynomial of degree 2 adds the bending of the graph, and each further
+degree follows the function over a wider range. Close to $t_1$, the error
+of the polynomial of degree $n$ falls as $\tau^{n+1}$, so on the
+logarithmic axes of \cref{fig:mo-taylor}(b) it is a straight line of
+slope $n + 1$: for the cubic,
+halving
+$\tau$ from 0.1 to 0.05 divides the error by 16.15, close to $2^4 = 16$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch01_motion/taylor}
+\caption{Taylor polynomials of $x(t) = \sin t$ about $t_1 = \pi/4$. (a)
+The polynomials of degrees 1, 2 and 3 (colours as in the key of b) follow
+the function ever more closely near $t_1$. (b) The error of the polynomial
+of degree $n$ at $t_1 + \tau$, including the constant polynomial of degree
+0, with its leading term $\lvert x^{(n+1)}(t_1)\rvert\,\tau^{n+1}/(n+1)!$
+(dashed); each error falls as $\tau^{n+1}$.}
+\label{fig:mo-taylor}
+\end{figure}
+
+\subsection*{Two series used later}
+
+Setting $t = 0$ in the Taylor series and writing $y$ for $\tau$, so that
+$x(y) = x(0) + \dot{x}(0)\,y + \ddot{x}(0)\,y^2/2! + \dotsb$, and using
+$\sin 0 = 0$ and $\cos 0 = 1$, the
+derivatives of $\sin y$ at $y = 0$ are $0, 1, 0, -1, 0, 1, \dots$ and
+those of $\cos y$ are $1, 0, -1, 0, 1, \dots$, so
+\begin{equation}
+   \sin y = y - \frac{y^3}{3!} + \frac{y^5}{5!} - \dotsb, \qquad
+   \cos y = 1 - \frac{y^2}{2!} + \frac{y^4}{4!} - \dotsb .
+   \label{eq:mo-sin-series}
+\end{equation}
+For small angles these give the approximations $\sin y \approx y$ and
+$\cos y \approx 1 - y^2/2$, which are used throughout the book; the
+first agrees with the limit $\sin h/h \to 1$ found in \cref{sec:mo-trig}.
+
+\subsection*{Back to the ball}
+
+For the ball, the Taylor series ends after its third term, because
+$\dddot{x} = \dd a/\dd t = 0$ when the acceleration is constant, and
+every higher derivative vanishes too. The expansion of
+\cref{sec:mo-velocity},
+\begin{equation*}
+   x(t_1+\tau) = x(t_1) + \bigl(v_0 - g t_1\bigr)\,\tau - \tfrac12 g\,\tau^2 ,
+\end{equation*}
+was this series in disguise: its coefficients are $v(t_1)$ and
+$\tfrac12 a$. For a general motion, the first three terms of
+\cref{eq:mo-taylor} amount to \cref{eq:mo-constant} with the acceleration
+held at its value at the start of the interval, and their error is of
+order $\tau^3$, small when the interval is short. Advancing a motion
+through many such intervals is how a computer follows it, and Chapter~9
+develops this idea into the methods that molecular dynamics uses.
+
+\notebook{01}{Taylor polynomials of growing order}

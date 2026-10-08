@@ -1,0 +1,23 @@
+%=============================================================================!
+% 15.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+Many results of a simulation are averages over a run of finite length.
+A second run from another start would give a slightly different value.
+Chapters~11 to~14 quoted such averages, sometimes with the spread of a
+few runs, but left open how accurately they were known. An error bar
+makes that question explicit when we compare a result with experiment,
+another code or another thermostat. It does not remove a bias: an early
+interval in which the system is still settling shifts the average, and
+extending the run only dilutes that shift.
+
+We first find the error of a mean from independent samples, then account
+for the memory between successive samples of a trajectory. Block averages
+provide a second estimate and a visible check on whether the record is
+long enough. These tools let us choose where to begin averaging, test for
+drift and estimate the time needed for a chosen precision.
+
+Convergence in time is only part of the problem. We also test the size of
+the periodic box and whether the thermostat samples its stated ensemble.
+The chapter ends with a protocol for preparing a run and a numerical
+criterion for each reported quantity. Chapter~16 uses these checks to
+measure structure and motion.

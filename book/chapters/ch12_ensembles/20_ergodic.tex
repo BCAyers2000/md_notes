@@ -1,0 +1,154 @@
+%=============================================================================!
+% 12.2  MANY STATES, ONE SYSTEM                                               !
+%=============================================================================!
+\section{Many states, one system}
+\label{sec:sm-ergodic}
+
+A simulation follows one system along one trajectory, and its averages
+are averages over time. Statistical mechanics computes averages over the
+states the system could be in, weighted by their probabilities. This
+section sets out the two kinds of average and the assumption that they
+agree, and then shows systems for which they do not.
+
+\subsection*{Microstates, macrostates and ensembles}
+
+The state of $N$ atoms is a point $\Gamma = (\vb{r}^N, \vb{p}^N)$ of phase
+space (\cref{sec:ha-equations}), called a microstate. What is measured of
+a macroscopic sample, its energy, volume and number of atoms, or its
+temperature and pressure, fixes a macrostate, which an enormous number of
+microstates share. An ensemble is the cloud of copies of \cref{sec:ha-liouville}:
+many imagined copies of the system, all in the same macrostate and spread
+over its microstates, with a probability density $\mathcal{P}(\Gamma)$ in phase
+space: a small box of phase space, of volume $\dd\Gamma$, the product of
+its $6N$ sides, holds the fraction $\mathcal{P}(\Gamma)\,\dd\Gamma$ of the
+copies. The ensemble average of a quantity $A(\Gamma)$ is
+\begin{equation*}
+   \ens{A} = \int A(\Gamma)\,\mathcal{P}(\Gamma)\,\dd\Gamma ,
+\end{equation*}
+an integral over all $6N$ coordinates and momenta, the limit of a sum
+over such boxes, as for the volume integrals of \cref{sec:md-ewald}, and
+the time average
+along one trajectory is
+\begin{equation*}
+   \overline{A} = \lim_{t_{\mathrm f}\to\infty}\frac{1}{t_{\mathrm f}}
+   \int_0^{t_{\mathrm f}}A\bigl(\Gamma(t)\bigr)\,\dd t .
+\end{equation*}
+\Cref{sec:ha-liouville} showed that a cloud whose density depends on the
+state only through its energy, $\mathcal{P} = f(H)$, does not change as the
+copies move. The ensembles of statistical mechanics are such clouds, and
+the hypothesis that makes them useful to a simulation is the ergodic
+hypothesis: that a single trajectory, followed long enough, passes near
+every microstate of its energy, spending equal times near equal volumes of
+phase space at that energy, so that $\overline{A}$ equals $\ens{A}$ for
+the ensemble spread evenly over those states (\cref{sec:sm-micro}). It can be tested, and it fails for some systems.
+
+\subsection*{A chain that never shares}
+
+$N$ atoms of unit mass sit in a line between two fixed walls, each joined
+to its neighbours by springs of unit stiffness. With $q_j$ the displacement
+of atom $j$ and $q_0 = q_{N+1} = 0$ at the walls, the spring on the left
+of atom $j$ is stretched by $q_j - q_{j-1}$ and pulls it back with
+$-(q_j - q_{j-1})$, and the spring on its right is stretched by $q_{j+1} -
+q_j$ and pulls it on with $q_{j+1} - q_j$, as for the carts of
+\cref{sec:os-modes}; together they pull it with the force $q_{j-1} - 2q_j
++ q_{j+1}$. A normal mode has every atom moving as $u_j\cos(\omega t +
+\phi)$, with the acceleration $-\omega^2u_j\cos(\omega t + \phi)$, which
+for unit mass must equal the force; cancelling the common factor
+$\cos(\omega t + \phi)$, this needs
+\begin{equation*}
+   -\omega^2u_j = u_{j-1} - 2u_j + u_{j+1} .
+\end{equation*}
+With $u_j = \sin j\theta$, the addition formulae (\cref{eq:mo-addition})
+give $u_{j-1} + u_{j+1} = \sin(j\theta - \theta) + \sin(j\theta + \theta)
+= 2\sin j\theta\cos\theta$, so the condition holds with
+\begin{equation*}
+   \omega^2 = 2 - 2\cos\theta = 4\sin^2\tfrac12\theta ,
+\end{equation*}
+using $1 - \cos\theta = 2\sin^2\frac12\theta$ (\cref{ex:mo-identity}).
+The wall at $j = 0$ is met, since $\sin0 = 0$, and the one at $j = N + 1$
+needs $\sin(N + 1)\theta = 0$, so $\theta = k\pi/(N + 1)$ for a whole
+number $k$. The values $k = 1$ to $N$ give $N$ different patterns, as many
+as the chain has modes (\cref{sec:os-modes}); $k = N + 1$ gives $\sin
+j\pi = 0$ for every atom, no motion at all, and larger $k$ give the same
+patterns again, up to sign. The modes have the angular frequencies
+$\omega_k = 2\sin(k\pi/(2N + 2))$, the positive root, since $k\pi/(2N +
+2)$ lies between 0 and $\pi/2$. For $N =
+32$, the slowest repeats every 66.0 units of time and the fastest every
+3.15. As \cref{sec:os-modes} showed, every motion of the harmonic chain
+is a sum of normal modes, each keeping its own amplitude, so a chain
+started with its energy in one mode keeps it there for ever: two starts
+with the same energy $E$, one in the first mode and one in the second,
+give the energy in the first mode the time averages $E$ and 0. The
+harmonic chain is not ergodic.
+
+Real bonds are not perfect springs. Adding an energy $\frac13\alpha x^3$
+to each spring stretched by $x$ couples the modes, and the question is
+whether the coupling spreads the energy among them. Fermi, Pasta and Ulam
+asked it in what Dauxois calls the first numerical experiment, programmed
+and run by Mary Tsingou\cite{Dauxois2008}. \Cref{fig:sm-ergodic}(a) repeats
+it with \texttt{mdlab.chain}, for 32 atoms with $\alpha = 0.25$ and the
+energy 0.0724 put into the first mode, followed by velocity Verlet with
+steps of 0.05, over which the total energy varies by no more than
+$\num{4.9e-5}$ of itself. The first mode's share falls below 0.1 by $t = 3950$, the
+energy passing to modes 2, 3 and 4 and back, and by $t = 10\,225$ it has
+returned to 0.981. Over the whole run, to $t = 20\,000$, about 300
+periods of the first mode, modes 5 to 32 never hold more than 0.198 of the
+energy; spread equally, they would hold $28/32 = 0.875$. A trajectory
+started in this special state keeps its energy in the few slowest modes,
+passing it among them and back to the first, for the whole run; a run a
+hundred times longer, to $t = \num{2e6}$, still leaves only 0.086 of it on
+average in modes 5 to 32, and never more than 0.220.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/ergodic}
+\caption{Time averages. (a) A chain of 32 atoms started with its energy
+in the first normal mode: the share of the energy in modes 1 to 4 against
+time, with the coupling $\alpha = 0.25$ (the four labelled curves), and for
+the harmonic chain, whose first mode keeps all of it (grey dashed). (b) Liquid argon, 256
+atoms: the running time average of the kinetic energy of three single
+atoms, divided by the average over all atoms and times (dotted at 1).}
+\label{fig:sm-ergodic}
+\end{figure}
+
+\subsection*{Time averages in a liquid}
+
+The liquid provides a contrasting test over a finite observation time. \Cref{fig:sm-ergodic}(b) follows 256 atoms
+of liquid argon, the model of \cref{sec:md-loop} at the density
+$0.8\sigma^{-3}$ and about \SI{135}{\kelvin} (a temperature in the sense of
+\cref{sec:sm-equipartition}), prepared as in
+\cref{sec:cs-water}, for \SI{50}{\pico\second} at fixed energy. The
+running time average of one atom's kinetic energy wanders at first and
+then settles towards the average over all atoms and saved times. If
+the atoms sample the same stationary distribution, this pooled average
+estimates the ensemble average: after
+\SI{50}{\pico\second} the time averages of the 256 atoms lie between 0.807
+and 1.249 of it, with a standard deviation of 0.076. They are still
+settling, and how long a run must be for an average to be trusted is the
+question of Chapter~15. A crystal at a low temperature, whose
+vibrations are nearly harmonic, is closer to the chain than to the
+liquid, and sharing in it can be correspondingly slow.
+
+\begin{practice}
+A run that starts in a special state, such as a crystal on its lattice or
+energy given to one motion only, may keep the memory of that start. The
+start should be one the system could reach from many others, and its
+averages should not depend on which of several such starts is used.
+\end{practice}
+
+\begin{keyidea}
+An ensemble is a cloud of copies of a system with a density $\mathcal{P}(\Gamma)$
+in phase space, and $\ens{A}$ its average; a simulation measures the time
+average $\overline{A}$. The ergodic hypothesis, that the two agree, is
+consistent with liquid argon over \SI{50}{\pico\second}; it fails for the
+harmonic chain, whose modes never share energy. The chain of Fermi,
+Pasta, Ulam and Tsingou also fails to share its energy equally over the
+observation times tested here, returning much of it to the first mode;
+that finite-time result does not establish its behaviour at infinite time.
+\end{keyidea}
+
+\notebook{12}{run the chain with any coupling and watch the modes share or not}
+
+\begin{selfcheck}
+Why is the period of the fastest mode of a long chain close to $\pi$?
+\end{selfcheck}

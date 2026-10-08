@@ -1,0 +1,228 @@
+%=============================================================================!
+% 7.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:hamilton}: Hamiltonian mechanics and phase space}
+\label{sec:ha-solutions}
+
+\solutionto{ex:ha-exp}The slope is $f'(v) = \mathrm{e}^v$, which grows
+with $v$ and is positive, so each $p > 0$ is reached at the one $v$ with
+$\mathrm{e}^v = p$, that is $v = \ln p$ (\cref{sec:ne-drag}). Then
+\begin{equation*}
+   f^*(p) = pv - f(v) = p\ln p - \mathrm{e}^{\ln p} = p\ln p - p .
+\end{equation*}
+The slope of $\ln p$ is $1/p$, by the derivative of an inverse function
+(\cref{sec:os-anharmonic}): $\mathrm{e}^v = p$ has $\dd p/\dd v =
+\mathrm{e}^v = p$, so $\dd v/\dd p = 1/p$. By the product rule, the slope
+of $f^*$ is then $\ln p + p\times(1/p) - 1 = \ln p = v$.
+
+\solutionto{ex:ha-cross}$U$ does not contain the rates, so $p_1 =
+\partial K/\partial\dot{q}_1 = a\dot{q}_1 + b\,\dot{q}_2$ and $p_2 =
+\partial K/\partial\dot{q}_2 = b\,\dot{q}_1 + c\,\dot{q}_2$, the factor
+$\frac12$ cancelling the 2 that differentiating each square brings and
+the 2 of the middle term. Then
+\begin{equation*}
+   p_1\dot{q}_1 + p_2\dot{q}_2 = a\dot{q}_1^2 + b\,\dot{q}_1\dot{q}_2
+   + b\,\dot{q}_1\dot{q}_2 + c\,\dot{q}_2^2 = 2K ,
+\end{equation*}
+and $H = 2K - (K - U) = K + U$.
+
+\solutionto{ex:ha-vertical}$K = \frac12 m\dot{q}^2$ gives $p = m\dot{q}$
+and $H = p^2/(2m) + \frac12 kq^2 - mgq$. Hamilton's equations are $\dot{q}
+= p/m$ and $\dot{p} = -kq + mg$. The state does not change when both
+rates are zero: $p = 0$ and $q = mg/k$, where the spring holds up the
+weight.
+
+\solutionto{ex:ha-plane}$p_x = \partial\Lag/\partial\dot{x} = m\dot{x}$
+and $p_y = m\dot{y}$, so $H = (p_x^2 + p_y^2)/(2m) + mgy$. Hamilton's
+equations are $\dot{x} = p_x/m$, $\dot{y} = p_y/m$, $\dot{p}_x =
+-\partial H/\partial x = 0$ and $\dot{p}_y = -\partial H/\partial y =
+-mg$. $H$ does not contain $x$, so $p_x$ is conserved: nothing pushes the
+ball sideways.
+
+\solutionto{ex:ha-puck}$p_r = \partial\Lag/\partial\dot{r} = m\dot{r}$
+and $p_\theta = \partial\Lag/\partial\dot\theta = mr^2\dot\theta$. Then
+\begin{align*}
+   H &= p_r\dot{r} + p_\theta\dot\theta - \Lag
+   = m\dot{r}^2 + mr^2\dot\theta^2 - \frac12 m\dot{r}^2
+   - \frac12 mr^2\dot\theta^2 + U\\
+   &= \frac12 m\dot{r}^2 + \frac12 mr^2\dot\theta^2 + U
+   = \frac{p_r^2}{2m} + \frac{p_\theta^2}{2mr^2} + U(r) ,
+\end{align*}
+putting $\dot{r} = p_r/m$ and $\dot\theta = p_\theta/(mr^2)$ in the last
+step. $H$ does not contain $\theta$, so $\dot{p}_\theta = -\partial H/
+\partial\theta = 0$. For $r$, $\dot{r} = p_r/m$ and
+\begin{equation*}
+   \dot{p}_r = -\frac{\partial H}{\partial r}
+   = \frac{p_\theta^2}{mr^3} - U'(r)
+   = -\frac{\dd}{\dd r}\Bigl(U + \frac{L^2}{2mr^2}\Bigr) ,
+\end{equation*}
+with $L = p_\theta$, the derivative of $p_\theta^2/(2mr^2)$ being $-2
+\times p_\theta^2/(2mr^3)$ by the power rule. With $\dot{p}_r = m\ddot{r}$,
+this is the motion in the effective potential.
+
+\solutionto{ex:ha-bead}Write $A = 1 + h'(x)^2$, so that $H = p^2/(2mA) +
+mgh$ and $\dd A/\dd x = 2h'h''$. Hamilton's equations give $\dot{x} = p/(mA)$ and
+\begin{align*}
+   \dot{p} = -\frac{\partial H}{\partial x}
+   &= -\frac{p^2}{2m}\Bigl(-\frac{1}{A^2}\,\frac{\dd A}{\dd x}\Bigr) - mgh'\\
+   &= \frac{p^2}{2mA^2}\,2h'h'' - mgh' = m\dot{x}^2h'h'' - mgh' ,
+\end{align*}
+the derivative of $A^{-1}$ being $-A^{-2}\,\dd A/\dd x$ by the power rule
+and the chain rule, and $p = mA\dot{x}$ being put in at the last step. Differentiating $p =
+mA\dot{x}$ with respect to time instead, by the product rule, with $\dd A/\dd t = 2h'h''\dot{x}$,
+\begin{equation*}
+   \dot{p} = mA\ddot{x} + 2mh'h''\dot{x}^2 .
+\end{equation*}
+Setting the two equal and taking $2mh'h''\dot{x}^2$ to the right,
+$mA\ddot{x} = -mh'h''\dot{x}^2 - mgh'$, and dividing by $mA$,
+$\ddot{x} = -h'(g + h''\dot{x}^2)/(1 + h'^2)$, \cref{eq:la-bead}.
+
+\solutionto{ex:ha-separatrix}$p = 2mL^2\omega_0 = 2\times0.72\times2.8587 =
+\SI{4.117}{\kilogram\metre\squared\per\second}$. The bob's speed is
+$L\lvert\dot\theta\rvert = p/(mL) = 4.117/0.6 =
+\SI{6.861}{\metre\per\second}$. In symbols, $p/(mL) = 2L\omega_0 = 2L\sqrt{g/L} = 2\sqrt{gL}$, and
+$\frac12 mv^2 = mg\times2L$ gives the same $v = \sqrt{4gL}$, the speed
+that the fall of $2L$ from the top gives by energy.
+
+\solutionto{ex:ha-creep}By $\dot\varphi = -\omega_0\varphi$, the gap is
+$\varphi = \varphi_0\,\mathrm{e}^{-\omega_0t}$ (\cref{sec:ne-drag}), so it
+falls from \ang{10} to \ang{1}, by the factor 10, when
+$\mathrm{e}^{\omega_0t} = 10$, that is after $t = \ln 10/\omega_0 =
+2.3026/2.8587 = \SI{0.805}{\second}$. Only the ratio of the angles enters,
+so they need not be turned into radians.
+
+\solutionto{ex:ha-product}By the product rule, $\partial(BC)/\partial p =
+(\partial B/\partial p)\,C + B\,\partial C/\partial p$, and the same for
+$q$. Putting these into \cref{eq:ha-bracket},
+\begin{align*}
+   \pb{A}{BC} &= \frac{\partial A}{\partial q}\Bigl(\frac{\partial B}
+   {\partial p}C + B\frac{\partial C}{\partial p}\Bigr)
+   - \frac{\partial A}{\partial p}\Bigl(\frac{\partial B}{\partial q}C
+   + B\frac{\partial C}{\partial q}\Bigr)\\
+   &= \Bigl(\frac{\partial A}{\partial q}\frac{\partial B}{\partial p}
+   - \frac{\partial A}{\partial p}\frac{\partial B}{\partial q}\Bigr)C
+   + B\Bigl(\frac{\partial A}{\partial q}\frac{\partial C}{\partial p}
+   - \frac{\partial A}{\partial p}\frac{\partial C}{\partial q}\Bigr)
+   = \pb{A}{B}\,C + B\,\pb{A}{C} .
+\end{align*}
+
+\solutionto{ex:ha-lz}Differentiating $r^2 = x^2 + y^2$ with respect to
+$x$ gives $2r\,\partial r/\partial x = 2x$, so $\partial r/\partial x =
+x/r$ (\cref{sec:ro-system}), and by the chain rule $\partial U/\partial x
+= U'(r)\,x/r$; likewise $\partial U/\partial y = U'(r)\,y/r$. With one pair of terms for each of $(x, p_x)$ and $(y, p_y)$,
+\begin{align*}
+   \pb{L_z}{H} &= \frac{\partial L_z}{\partial x}\frac{\partial H}
+   {\partial p_x} - \frac{\partial L_z}{\partial p_x}\frac{\partial H}
+   {\partial x} + \frac{\partial L_z}{\partial y}\frac{\partial H}
+   {\partial p_y} - \frac{\partial L_z}{\partial p_y}\frac{\partial H}
+   {\partial y}\\
+   &= p_y\,\frac{p_x}{m} - (-y)\,\frac{U'x}{r} + (-p_x)\,\frac{p_y}{m}
+   - x\,\frac{U'y}{r} = 0 ,
+\end{align*}
+the first and third terms cancelling, and the second and fourth.
+
+\solutionto{ex:ha-spring-p}$\Liou p = \dot{p} = -kq$, then $\Liou^2p = -k\,
+\Liou q = -kp/m = -\omega^2p$, so each pair of steps again brings
+$-\omega^2$, and $\Liou^3p = -\omega^2(-kq)$. Putting these into
+\cref{eq:ha-series} at the start,
+\begin{equation*}
+   p(t) = p_0 - kq_0\,t - \omega^2p_0\,\frac{t^2}{2!}
+   + \omega^2kq_0\,\frac{t^3}{3!} + \dotsb ,
+\end{equation*}
+and gathering the terms in $p_0$ and in $q_0$, with $kq_0t =
+(kq_0/\omega)\,\omega t$,
+\begin{equation*}
+   p(t) = p_0\Bigl(1 - \frac{(\omega t)^2}{2!} + \dotsb\Bigr)
+   - \frac{kq_0}{\omega}\Bigl(\omega t - \frac{(\omega t)^3}{3!}
+   + \dotsb\Bigr)
+   = p_0\cos\omega t - m\omega q_0\sin\omega t ,
+\end{equation*}
+since $k/\omega = m\omega^2/\omega = m\omega$. This is $m$ times the rate
+of $q(t)$ found in \cref{sec:ha-brackets}.
+
+\solutionto{ex:ha-shear}The flow is $q = q_0 + p_0t/m = q_0 + 2p_0$ (in
+metres, with $p_0$ in \si{\kilogram\metre\per\second}) and $p = p_0$. The
+corners $(0, 0)$, $(0.1, 0)$, $(0.1, 0.1)$ and $(0, 0.1)$ go to $(0, 0)$,
+$(0.1, 0)$, $(0.3, 0.1)$ and $(0.2, 0.1)$: a parallelogram with a base of
+\SI{0.1}{\metre} and a height of \SI{0.1}{\kilogram\metre\per\second}, so
+its area is \SI{0.01}{\joule\second}, that of the square.
+
+\solutionto{ex:ha-halving}$\mathrm{e}^{-\gamma t} = \frac12$ gives $t = \ln
+2/\gamma = 0.6931/0.5 = \SI{1.386}{\second}$.
+
+\solutionto{ex:ha-carts}Moving both carts by $\alpha$, $x_1 \to x_1 +
+\alpha$ and $x_2 \to x_2 + \alpha$, leaves the rates and $x_2 - x_1$
+unchanged, and so $\Lag$. In Noether's theorem this is the change with $s_1 = s_2 = 1$,
+and $p_1 = \partial\Lag/\partial\dot{x}_1 = m_1\dot{x}_1$, $p_2 =
+m_2\dot{x}_2$, so $p_1s_1 + p_2s_2 = m_1\dot{x}_1 + m_2\dot{x}_2$ is
+conserved.
+
+\solutionto{ex:ha-gravity}$U_{\mathrm{int}}$ is unchanged by every move
+and turn. Moving the group along $x$ or $y$ leaves every $z_i$, and so
+$U$, unchanged, so $P_x$ and $P_y$ are conserved; moving it along $z$
+by $c$ changes $U$ by $\sum_im_igc = Mgc$, with $M$ the total mass, so
+$P_z$ is not. Turning about a vertical axis
+leaves every height unchanged, so the component of $\vb{L}$ along a
+vertical axis, $L_z$, is conserved. Turning about a horizontal axis
+raises some atoms and lowers others, so it changes $U$ for most
+arrangements of the group: it is not a symmetry, and the horizontal
+components of $\vb{L}$ are not conserved in general. The energy is conserved too, since $U$ does not contain the
+time.
+
+\solutionto{ex:ha-torque-point}About the point $\vb{a}$ the positions are
+measured from $\vb{a}$, so the torque is
+\begin{equation*}
+   \sum_i(\vb{r}_i - \vb{a})\times\vb{F}_i
+   = \sum_i\vb{r}_i\times\vb{F}_i - \vb{a}\times\sum_i\vb{F}_i
+   = \vb{G} ,
+\end{equation*}
+the second sum being zero. About the centre of the box,
+$(x_1 - 5) - (x_2 - 5) = x_1 - x_2$ and likewise for $y$, so the
+calculation of \cref{sec:ha-noether} is unchanged and $G_z =
+\SI{-1.056}{\electronvolt}$.
+
+\solutionto{ex:ha-even}The argument needs $H(q, -p) = H(q, p)$. $H_1$ has
+it, since $(-p)^2 = p^2$. $H_2(q, -p) = (p + c)^2/(2m)$, which differs from
+$(p - c)^2/(2m)$ by $2pc/m$, and $H_3(q, -p)$ differs from $H_3(q, p)$ by
+$-2bqp$, so neither has it: only $H_1$.
+
+\solutionto{ex:ha-doubling}$\omega\dt = 10\times0.005 = 0.05$, so each
+step multiplies the energy by $1 + 0.05^2 = 1.0025$, and $n$ steps by
+$1.0025^n = \mathrm{e}^{n\ln 1.0025}$, since $1.0025 = \mathrm{e}^{\ln
+1.0025}$ (\cref{sec:ne-drag}). This is $2 = \mathrm{e}^{\ln 2}$ when $n =
+\ln 2/\ln 1.0025 = 277.6$. After 278 steps, \SI{1.39}{\second}, the energy
+has doubled, a little over two periods of \SI{0.628}{\second}.
+
+\solutionto{ex:ha-other}$q' = q + \dt\,p/m$ and $p' = p - \dt\,k(q +
+\dt\,p/m) = -k\dt\,q + (1 - \omega^2\dt^2)\,p$. So
+\begin{equation*}
+   \vb{J} = \begin{pmatrix} 1 & \dt/m\\ -k\,\dt & 1 - \omega^2\dt^2
+   \end{pmatrix} ,
+   \qquad
+   \det\vb{J} = 1 - \omega^2\dt^2 + \frac{\dt}{m}\,k\,\dt = 1 .
+\end{equation*}
+It is a drift followed by a kick, each a shear.
+
+\solutionto{ex:ha-shadow}Write everything in terms of $q$ and the new
+momentum $p'$, using $p = p' + k\dt\,q$ and $q' = q + \dt\,p'/m$. Before
+the step,
+\begin{align*}
+   \tilde{H}(q, p) &= \frac{(p' + k\dt\,q)^2}{2m} + \frac12 kq^2
+   - \frac{k\dt}{2m}\,q\,(p' + k\dt\,q)\\
+   &= \frac{p'^2}{2m} + \frac{k\dt}{m}\,qp' + \frac{k^2\dt^2q^2}{2m}
+   + \frac12 kq^2 - \frac{k\dt}{2m}\,qp' - \frac{k^2\dt^2q^2}{2m}
+   && \text{expanding}\\
+   &= \frac{p'^2}{2m} + \frac12 kq^2 + \frac{k\dt}{2m}\,qp' .
+\end{align*}
+After it,
+\begin{align*}
+   \tilde{H}(q', p') &= \frac{p'^2}{2m} + \frac12 k\Bigl(q + \frac{\dt\,p'}
+   {m}\Bigr)^2 - \frac{k\dt}{2m}\Bigl(q + \frac{\dt\,p'}{m}\Bigr)p'\\
+   &= \frac{p'^2}{2m} + \frac12 kq^2 + \frac{k\dt}{m}\,qp'
+   + \frac{k\dt^2p'^2}{2m^2} - \frac{k\dt}{2m}\,qp'
+   - \frac{k\dt^2p'^2}{2m^2}
+   && \text{expanding}\\
+   &= \frac{p'^2}{2m} + \frac12 kq^2 + \frac{k\dt}{2m}\,qp' ,
+\end{align*}
+the same. $\tilde{H}$ differs from $H$ only by the small term
+$\bigl(k\dt/(2m)\bigr)\,qp$, which is why the energy stays in a band.

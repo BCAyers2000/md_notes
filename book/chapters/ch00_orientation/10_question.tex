@@ -1,0 +1,40 @@
+%=============================================================================!
+% 0.1  THE QUESTION THIS BOOK PREPARES FOR                                    !
+%=============================================================================!
+\section{The question this book prepares for}
+\label{sec:or-question}
+
+Molecular dynamics follows atoms by integrating Newton's equations in small
+steps of time. The forces may come from a prescribed function of the
+atomic positions, an electronic-structure calculation or a function fitted
+by machine learning. In each case, the step must resolve the fastest
+vibration retained in the model; Chapter~11 explains how fixing selected
+bond lengths removes some of these vibrations. In a graphite anode with a
+carbonate electrolyte, the stretches of carbon--hydrogen and carbon--carbon
+bonds hold it near a femtosecond, while lithium moving between sites,
+solvent reorganising around an ion and an interphase growing at the surface
+are many orders of magnitude slower.
+
+Machine-learned potentials can reduce the cost of each force evaluation,
+but a cheaper evaluation does not by itself permit a longer stable step.
+Learned propagators predict the motion over a longer interval. TrajCast maps
+the positions and velocities at time $t$ to those at $t + \Dt$, with $\Dt$
+ten to thirty times the reference step, and repeats the map to build a
+trajectory\cite{Thiemann2026}; ATOM predicts several future configurations
+in one evaluation and is pretrained across many molecules\cite{Thompson2026}.
+TrajCast was tested on a molecule, crystalline quartz and liquid water;
+ATOM was tested on trajectories of isolated molecules. Whether such
+models can describe an electrochemical system, with its periodic electrode,
+mobile ions, long-range electrostatics and rare activated events, is the
+question this book prepares its reader to investigate.
+
+Answering it draws on four bodies of knowledge, each resting on the one
+before: classical mechanics and its numerical integration, which define a
+trajectory and limit its step; statistical mechanics, which ties a
+trajectory to the ensemble it samples and explains what a thermostat does
+to it; the practice of molecular dynamics, from converged averages to the
+observables both papers use as evidence; and machine learning, as far as the
+equivariant networks and transformers on which the two models are built.
+The present edition develops the first three and begins the fourth with
+regression and optimisation; the course map identifies the planned
+continuation.

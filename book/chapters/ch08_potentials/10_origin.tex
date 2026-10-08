@@ -1,0 +1,104 @@
+%=============================================================================!
+% 8.1  WHERE THE POTENTIAL ENERGY COMES FROM                                  !
+%=============================================================================!
+\section{Where the potential energy comes from}
+\label{sec:pe-origin}
+
+An atom is a small, heavy nucleus surrounded by much lighter electrons.
+The forces between atoms are the electrical attractions and repulsions of
+these charges: nuclei repel nuclei, electrons repel electrons, and each
+attracts the other. This section explains how the motion of the electrons
+can be set aside, leaving a potential energy for the nuclei alone, and
+what it costs to compute it.
+
+\subsection*{Heavy nuclei, light electrons}
+
+A proton is 1836 times as heavy as an electron, and a lithium atom, of
+mass \SI{6.94}{amu} (\cref{sec:ne-atoms}), 12\,651 times, almost all of
+it in the nucleus. Pushed by forces of similar size, a body's acceleration is
+inversely proportional to its mass, and \cref{sec:os-small} showed that a
+body held by a spring of stiffness $k$ swings with $\omega_0 =
+\sqrt{k/m}$: with comparable stiffnesses, the electrons respond
+$\sqrt{1836} = 43$ times faster than a proton and 112 times faster than
+lithium. On the time scale on which the nuclei move, the electrons
+have time to settle into the arrangement of lowest energy for wherever
+the nuclei happen to be, and to follow them as they move.
+
+This is the picture of Born and Oppenheimer\cite{BornOppenheimer1927}.
+With the nuclei held still at the positions $\vb{r}^N$, the electrons
+settle into their state of lowest energy for those positions, and that
+energy, together with the repulsion of the nuclei for one another,
+depends only on $\vb{r}^N$; we call it $U(\vb{r}^N)$. When the nuclei move, the electrons
+follow, and the nuclei move as if pushed by the forces $-\grad_iU$
+(\cref{sec:en-atoms}). The function $U$ is called the potential energy
+surface: for a single coordinate it is a curve, for two a landscape like
+that of the lithium atom on its model layer (\cref{sec:en-surface}), and
+for $N$ atoms a surface in $3N$ dimensions. The picture fails when the
+motion of the nuclei carries the electrons from one state into another
+close in energy, as after light is absorbed or in some chemical
+reactions; every system in this book stays in its lowest state.
+
+\subsection*{The cost of computing it}
+
+Finding the lowest state of the electrons is a problem of quantum
+mechanics. Density-functional theory, one such method, turns it into the eigenvalues and eigenvectors (\cref{sec:os-modes}) of a
+matrix whose size $n$ grows in proportion to the number of atoms. The
+work of finding all of them grows as $n^3$, and \cref{fig:pe-cost}(a)
+measures it:
+with NumPy, doubling the size of a dense symmetric matrix multiplied the
+time to find its eigenvalues and eigenvectors by about 7.5, close to $2^3 =
+8$, and the times for the larger matrices lie near a line of slope 3 on
+logarithmic axes
+(\cref{sec:mo-taylor}): a time proportional to $n^3$ has a logarithm that
+grows by 3 times the logarithm of $n$. The energy of a model that adds up the energies of
+pairs of atoms needs one term for each pair: each of the $N$ atoms pairs
+with $N - 1$ others, which counts every pair twice, so there are $N(N -
+1)/2 \approx N^2/2$ pairs for large $N$, a number that doubling $N$
+multiplies by $2^2 = 4$; doubling $N$ multiplied its time by about 4
+(\cref{fig:pe-cost}b); with the cutoffs of \cref{sec:pe-cutoffs} and the
+neighbour lists of Chapter~10 it grows only as $N$. Computing $U$ from the
+electrons at every step of a simulation therefore limits it to far
+smaller systems and shorter times than a model allows, and most
+simulations use a model of $U$ fitted to such calculations, which is the subject of the rest of this
+chapter.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch08_potentials/cost}
+\caption{What computing the energy costs, with NumPy on one processor
+core; the times depend on the computer, the slope at large sizes does
+not. (a) Finding
+all the eigenvalues and eigenvectors of a dense symmetric matrix of size
+$n$ (one with no zero entries to exploit), against $n$, with a line of
+slope 3 (dashed). (b) The energy and forces of $N$ atoms interacting in
+pairs, every pair computed, against $N$, with a line of slope 2
+(dashed).}
+\label{fig:pe-cost}
+\end{figure}
+
+\begin{bridge}
+The forces on the nuclei follow from the electronic energy by the
+Hellmann--Feynman theorem\cite{Feynman1939}: at the converged density they
+are the electrostatic forces of the electrons and the other nuclei, plus
+Pulay corrections when the basis functions move with the atoms. The
+cubic cost is that of a dense eigensolver; linear-scaling methods use the
+nearsightedness of the density matrix to reach a cost proportional to
+$N$\cite{Kohn1996}, and machine-learned potentials (planned for the
+continuation of Part~V) build the same
+locality into a model fitted to the expensive calculations.
+\end{bridge}
+
+\begin{keyidea}
+Because the electrons are light and fast, they settle at every
+arrangement of the nuclei, and the energy of that settled state, with the
+repulsion of the nuclei, is the potential energy surface $U(\vb{r}^N)$ on
+which the nuclei move. Computing it from the electrons costs, in the usual
+methods, work growing as the cube of the system's size, which is why most simulations fit a
+model of it.
+\end{keyidea}
+
+\begin{selfcheck}
+Finding all the eigenvalues and eigenvectors of a matrix of size 1000
+takes \SI{0.1}{\second}. Roughly how long does it take for one of size
+4000?
+\end{selfcheck}

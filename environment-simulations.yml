@@ -1,0 +1,13 @@
+# Optional Chapter 17 calculations. Add to the existing environment:
+# conda env update -n mdbook -f environment-simulations.yml
+name: mdbook
+channels:
+  - conda-forge
+dependencies:
+  - lammps
+  - dftd3-python
+  - simple-dftd3
+  - pip
+  - pip:
+      - e3nn==0.4.4
+      - mace-torch==0.3.16

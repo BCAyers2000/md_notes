@@ -1,0 +1,168 @@
+%=============================================================================!
+% 7.1  FROM VELOCITIES TO MOMENTA                                             !
+%=============================================================================!
+\section{From velocities to momenta}
+\label{sec:ha-legendre}
+
+The state of the bead on its wire (\cref{sec:la-coordinates}) is its
+position $x$ and its rate $\dot{x}$, but it can equally be given by $x$
+and the momentum $p = \partial\Lag/\partial\dot{x}$ of
+\cref{eq:la-momentum}, which for the bead is $m(1 + h'^2)\dot{x}$
+(\cref{sec:la-constrained}): since $1 + h'^2$ is positive, each $\dot{x}$ gives
+one $p$, and $\dot{x} = p/\bigl(m(1 + h'^2)\bigr)$ gives the rate back.
+Hamilton's form of mechanics describes the state by the coordinates and
+their momenta. \Cref{sec:ha-liouville} shows that
+the motion keeps areas in the plane of $q$ and $p$, which it does not in
+general do in the plane of $q$ and $\dot{q}$. The new description needs a
+function of $q$ and $p$ that does the work that $\Lag$ does for $q$ and
+$\dot{q}$. The tool that exchanges a variable for the slope of a function
+of it is the Legendre transform.
+
+\begin{toolbox}[The Legendre transform]
+Let $f(v)$ be a function whose slope $f'(v)$ grows steadily with $v$,
+that is $f''(v) > 0$ (its graph curves upwards). Then each slope $p$ is
+reached at no more than one value of $v$, and we take $p$ among the slopes
+that $f$ has. The straight line $pv$ through the origin has that slope
+(\cref{fig:ha-legendre}a). The gap between line and
+curve, $pv - f(v)$, changes at the rate $p - f'(v)$ as $v$ grows: the
+rate is positive while $f'(v) < p$ and negative once $f'(v) > p$, so the
+gap rises to its largest value at the $v$ where $f'(v) = p$ and falls
+after it. That largest gap is the Legendre transform of $f$,
+\begin{equation*}
+   f^*(p) = pv - f(v) , \qquad\text{with $v$ such that } f'(v) = p .
+\end{equation*}
+The tangent to $f$ at that $v$ has slope $p$ and passes through $(v,
+f(v))$, so at the vertical axis, a distance $v$ to the left, it is at
+$f(v) - pv = -f^*(p)$: the transform is where the tangent of slope $p$
+meets the axis, with its sign reversed.
+
+As $p$ changes, $v$ changes with it. By the product rule and the chain
+rule,
+\begin{align*}
+   \frac{\dd f^*}{\dd p}
+   &= v + p\,\frac{\dd v}{\dd p} - f'(v)\,\frac{\dd v}{\dd p}
+   && \text{differentiating $pv$ and $f(v(p))$}\\
+   &= v
+   && \text{since $f'(v) = p$ cancels the last two terms.}
+\end{align*}
+The slope of $f^*$ is $v$, as the slope of $f$ is $p$
+(\cref{fig:ha-legendre}b). This slope grows with $p$: differentiating $f'\bigl(v(p)\bigr) = p$ with
+respect to $p$ by the chain rule gives $f''(v)\,\dd v/\dd p = 1$, so $\dd
+v/\dd p = 1/f''(v) > 0$, as for the inverse functions of
+\cref{sec:os-anharmonic}. So $f^*$ can be transformed in its turn. Its
+transform at the slope $v$ is $vp - f^*(p)$, with $p$ the slope of $f$ at
+which the slope of $f^*$ equals $v$, which is the $p = f'(v)$ we started
+from, and
+\begin{equation*}
+   vp - f^*(p) = vp - \bigl(pv - f(v)\bigr) = f(v) :
+\end{equation*}
+the transform of the transform is the function we started from, so
+$f^*$ carries the same information as $f$, written in terms of the slope.
+For example, $f(v) = \frac12 mv^2$ has $f'(v) = mv$, so $p = mv$ and $v =
+p/m$, and
+\begin{align*}
+   f^*(p) &= p\,\frac{p}{m} - \frac12 m\Bigl(\frac{p}{m}\Bigr)^2
+   && \text{putting $v = p/m$ into $pv - f(v)$}\\
+   &= \frac{p^2}{m} - \frac{p^2}{2m} = \frac{p^2}{2m} ,
+\end{align*}
+whose slope $p/m$ is indeed $v$.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch07_hamilton/legendre}
+\caption{The Legendre transform of $f(v) = \frac12 mv^2$ for a body of
+\SI{0.5}{\kilogram}. (a) The line $pv$ with $p =
+\SI{1}{\kilogram\metre\per\second}$ (dashed) differs from $f$ by $pv -
+f(v)$, which is largest, $f^*(p) = \SI{1}{\joule}$, at $v = p/m =
+\SI{2}{\metre\per\second}$, where the slope of $f$ is $p$; the tangent
+there (teal) meets the vertical axis at $-f^*(p)$. (b) The transform
+$f^*(p) = p^2/(2m)$, whose slope at $p$ is $v$.}
+\label{fig:ha-legendre}
+\end{figure}
+
+\subsection*{The Hamiltonian}
+
+For one coordinate, the Lagrangian $\Lag(q, \dot{q})$ is a function of
+$\dot{q}$ at each fixed $q$, and its slope in $\dot{q}$ is the momentum.
+Its Legendre transform in $\dot{q}$, with $q$ held fixed throughout, is
+the Hamiltonian,
+\begin{equation}
+   H(q, p) = p\,\dot{q} - \Lag(q, \dot{q}) ,
+   \qquad\text{with $\dot{q}$ such that }
+   \frac{\partial\Lag}{\partial\dot{q}} = p ,
+   \label{eq:ha-hamiltonian}
+\end{equation}
+written in terms of $q$ and $p$ alone by putting in $\dot{q}$ found from
+$p$; for several coordinates it is $H = \sum_k p_k\dot{q}_k - \Lag$. The
+transform needs $\partial\Lag/\partial\dot{q}$ to grow steadily with
+$\dot{q}$, which holds for every system met so far, because the kinetic
+energy is $K = \frac12 a(q)\,\dot{q}^2$ with a positive $a$: $m$ for a
+body on a line, $m(1 + h'^2)$ for the bead, $mL^2$ for the pendulum.
+
+For such a system $p = \partial\Lag/\partial\dot{q} = a\dot{q}$, since $U$
+does not contain $\dot{q}$, so $p\dot{q} = a\dot{q}^2 = 2K$, and
+\begin{equation*}
+   H = 2K - (K - U) = K + U :
+\end{equation*}
+the Hamiltonian is the energy, now written in terms of the momentum. It
+is the quantity $\dot{q}\,\partial\Lag/\partial\dot{q} - \Lag$ that
+\cref{ex:la-hamilton} found to be conserved. With several coordinates,
+when $K$ is a sum of terms $K_k = \frac12 a_k\dot{q}_k^2$, one for each,
+every term gives $p_k\dot{q}_k = a_k\dot{q}_k^2 = 2K_k$, and adding them
+again $H = K + U$; \cref{ex:ha-cross}
+shows that a kinetic energy with a product of two rates gives the same
+result. The examples of Chapter~6 become
+\begin{align*}
+   &\text{a block on a spring:}
+   && p = m\dot{x} ,
+   && H = \frac{p^2}{2m} + \frac12 kx^2 ,\\
+   &\text{the pendulum:}
+   && p = mL^2\dot\theta ,
+   && H = \frac{p^2}{2mL^2} + mgL(1 - \cos\theta) ,\\
+   &\text{the bead:}
+   && p = m(1 + h'^2)\dot{x} ,
+   && H = \frac{p^2}{2m\bigl(1 + h'(x)^2\bigr)} + mg\,h(x) ,
+\end{align*}
+each kinetic energy following from $K = \frac12 a\dot{q}^2$ with $\dot{q}
+= p/a$, which gives $K = \frac12 a(p/a)^2 = p^2/(2a)$. The pendulum's
+momentum is its angular momentum about the pivot (\cref{sec:ro-plane}).
+The bead's kinetic energy now depends on $x$ as well as on $p$, because
+the same momentum means a faster bead where the wire is flat than where
+it is steep.
+
+For $N$ atoms, with $\vb{p}_i = m_i\dot{\vb{r}}_i$,
+\begin{equation*}
+   H(\vb{r}^N, \vb{p}^N) = \sum_{i=1}^{N}\frac{\lvert\vb{p}_i\rvert^2}
+   {2m_i} + U(\vb{r}^N) ,
+\end{equation*}
+and the state is the point $\Gamma = (\vb{r}^N, \vb{p}^N)$ of $6N$
+numbers. For the puck of \cref{sec:la-polar}, \cref{ex:ha-puck} finds
+$H = p_r^2/(2m) + p_\theta^2/(2mr^2) + U(r)$, in which the effective
+potential of Chapter~6 appears with $p_\theta$ as the angular momentum $L$
+of \cref{sec:la-polar}, not the rod length.
+
+\begin{bridge}
+The same transform links the thermodynamic potentials. The free energy of
+the electrons at a fixed number $N_{\mathrm{e}}$ has the slope $\mu$, the
+chemical potential, with respect to $N_{\mathrm{e}}$; its Legendre
+transform in $N_{\mathrm{e}}$, with the sign reversed, is the grand
+potential, the free energy minus $\mu N_{\mathrm{e}}$, which is a function
+of $\mu$. Grand-canonical DFT holds the electrode's chemical potential
+fixed and lets $N_{\mathrm{e}}$ follow, so it minimises the grand
+potential, the transform, at fixed $\mu$, as Hamilton's form of mechanics
+holds $p$ as the variable in place of $\dot{q}$.
+\end{bridge}
+
+\begin{keyidea}
+The Hamiltonian $H(q, p) = \sum_k p_k\dot{q}_k - \Lag$ is the Legendre
+transform of the Lagrangian in the velocities, written in terms of the
+coordinates and the momenta. When the kinetic energy is quadratic in the
+velocities it is the energy, $H = K + U$.
+\end{keyidea}
+
+\begin{selfcheck}
+Write the Hamiltonian of a block of \SI{2}{\kilogram} on a spring of
+\SI{8}{\newton\per\metre}. If its energy is \SI{1}{\joule}, what is its
+momentum as it passes $x = 0$?
+\end{selfcheck}

@@ -1,0 +1,21 @@
+%=============================================================================!
+% 11.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+The code of Chapter~10 advances every atom with the same step. Chapter~9
+showed why that step must be short compared with the fastest vibration:
+in water, an oxygen--hydrogen bond stretches with a period of about
+\SI{9}{\femto\second}, restricting the step to around
+\SI{0.5}{\femto\second}. Molecular rotation and rearrangement take
+picoseconds, so resolving the bond vibration requires thousands of steps
+to follow these slower motions.
+
+We examine three ways to reduce that cost. Holding bonds at fixed lengths
+removes their vibrations; SHAKE and RATTLE calculate the constraint forces
+needed at each step. Splitting fast and slow forces allows the costly
+slow forces to be evaluated less often, although resonance limits the
+outer step. Moving some mass from the heavy atoms to their hydrogens
+slows the fastest vibrations without changing the potential energy. We
+compare these choices on a box of water and use its trajectories to
+identify their limits and common implementation faults. The constraints
+also change the number of degrees of freedom, which Chapter~12 needs to
+relate kinetic energy to temperature.

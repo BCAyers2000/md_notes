@@ -1,0 +1,278 @@
+%=============================================================================!
+% 16.4  REACTIONS AND THEIR RATES                                             !
+%=============================================================================!
+\section{Reactions and their rates}
+\label{sec:ob-reactions}
+
+Once molecules have been identified, a reaction is a change in which
+molecules a group of atoms belongs to. We record the reactants and
+products, then turn repeated events into rates. The uncertainty depends
+on the number of independent events, rather than the number of saved
+frames. We also measure the cost of doing this analysis during a run.
+
+\subsection*{Reactions from changes of species}
+
+Between two frames, each atom belongs to a molecule before and to a
+molecule after. Joining each old molecule to each new one that shares an
+atom with it gives a graph whose nodes are molecules, and its connected
+components are the reactions. A molecule that kept its atoms and its
+bonds is one old node joined to one new node with the same hash, and is
+passed over; every other component is a reaction, its old molecules the
+reactants and its new ones the products. A ring that opens is a
+component of one old and one new molecule with different hashes, C$_6$
+$\to$ C$_6'$; two molecules that exchange an atom, AB + B $\to$ B + AB, are
+a component of two old and two new molecules with the same names.
+\texttt{mdlab.bonds.ReactionLog} does this frame by frame, recording the
+time, the reactants and the products of each reaction, and the counts of
+each species.
+
+In the A-B gas at \SI{2000}{\kelvin} the 250 molecules AB lose partners
+at first (\cref{fig:ob-bonds}b), and after the first \SI{10}{\pico
+\second} the gas holds on average 139.3 AB, 104.1 free A and 103.9 free B,
+with 2.2 AB$_2$, 1.9 A$_2$B and a few larger complexes.
+Over \SI{100}{\pico\second} the log holds 57 kinds of reaction. The most
+frequent, counting every event with the band and no least lifetime, are
+\begin{center}
+\begin{tabular}{@{}lr@{\qquad}lr@{}}
+AB $\to$ A + B & 4517 & A + B $\to$ AB & 4421\\
+AB + B $\to$ AB$_2$ & 1618 & AB$_2$ $\to$ AB + B & 1602\\
+A + AB $\to$ A$_2$B & 1556 & A$_2$B $\to$ A + AB & 1566\\
+AB + AB $\to$ A$_2$B$_2$ & 301 & A$_2$B$_2$ $\to$ AB + AB & 298
+\end{tabular}
+\end{center}
+a reaction network: a graph whose nodes are the species and the
+reactions, each reaction joined to its reactants and its products and
+carrying its count. Each reaction and its reverse occur
+nearly equally often, as every process in a gas at equilibrium is
+balanced by its reverse: AB $\to$ A + B outnumbers its reverse by 96, about
+the 111 net breaks by which the molecules fell from 250 to 139.3 at the
+start, and the others differ by less than the $\sqrt n$ of the toolbox
+below. The complexes are brief. In a steady state the complexes present
+at any moment are those formed within one lifetime before it, so their
+number is the rate at which they form times the lifetime. AB$_2$ forms
+16.8 times per picosecond and 2.18 are present on average, so each lasts
+$2.18/16.8 = \SI{0.130}{\pico\second}$; A$_2$B lasts
+\SI{0.120}{\pico\second}. They are passing
+encounters of the kind the least lifetime of \cref{sec:ob-bonds} removes.
+
+\begin{toolbox}[Rates from counts, and the Poisson distribution]
+Events that happen independently, at a steady rate $\nu$ for each of
+many molecules, are counted over an exposure $X$, the sum over the
+molecules of the time each was able to react. Cut into $J$ small pieces,
+the exposure has in each an event with the small probability $p = \nu
+X/J$ and none otherwise, independently, so the count is a sum of $J$
+independent numbers each 0 or 1. Each such number has the mean $p$, and
+so does its square, which is the same 0 or 1, so its variance is $p -
+p^2 = p(1 - p)$. The count then has the mean $Jp = \nu X$ and, since the
+variances of independent numbers add (\cref{sec:cv-mean}), the variance
+$Jp(1 - p)$, which tends to $\nu X$ as the pieces shrink. The rate is
+estimated as $n/X$, with the standard error $\sqrt n/X$, a fraction
+$1/\sqrt n$ of itself: a rate from 100 events is known to a tenth, from
+10\,000 to a hundredth. The chance of $n$ events is the number of ways of
+choosing $n$ of the $J$ pieces, $J(J - 1)\cdots(J - n + 1)/n!$, times
+$p^n(1 - p)^{J - n}$, which with $p = \nu X/J$ is
+\begin{equation*}
+   \frac{J(J - 1)\cdots(J - n + 1)}{J^n}\,\frac{(\nu X)^n}{n!}\,
+   \Bigl(1 - \frac{\nu X}{J}\Bigr)^{J - n} .
+\end{equation*}
+As $J$ grows with $n$ fixed, the first fraction, a product of $n$
+factors each tending to 1, tends to 1, and the logarithm of the last
+factor, $(J - n)\ln(1 - \nu X/J)$, tends to $-\nu X$, since $\ln(1 + y)$
+is $y$ plus terms of order $y^2$ (\cref{sec:th-langevin}). The chance
+tends to the Poisson distribution
+\begin{equation*}
+   \mathcal{P}(n) = \frac{(\nu X)^n}{n!}\,\mathrm{e}^{-\nu X} ,
+\end{equation*}
+whose mean and variance are both $\nu X$, the limits of the count's.
+\end{toolbox}
+
+\noindent Counted events of a run can be correlated, a bond that breaks
+and re-forms twice counting thrice; the least lifetime of
+\cref{sec:ob-bonds} removes most of these. At \SI{2000}{\kelvin}, the bonds
+broken in 89 windows of \SI{1}{\pico\second} number 33.82 on average with
+variance 36.24, a ratio of 1.07, within the 0.15 by which that ratio
+scatters over 89 windows of a Poisson count, and their histogram lies
+close to the Poisson distribution of the same mean
+(\cref{fig:ob-rates}b).
+
+\subsection*{Rates against temperature}
+
+With the band and a least lifetime of \SI{0.5}{\pico\second}, after the
+first \SI{10}{\pico\second}, the rate of breaking is the number of bonds
+broken divided by the bond-picoseconds of exposure, and the rate constant
+of forming the number formed divided by the exposure of free pairs,
+$\int n_{\mathrm A}n_{\mathrm B}/V\,\dd t$. At \SI{1500}{\kelvin} 1828 bonds
+break over \num{18168} bond-picoseconds, $k_{\mathrm b} = (0.1006 \pm
+0.0024)$\,\si{\per\pico\second}, and at \SI{2500}{\kelvin} 3182 over 9500,
+$(0.3350 \pm 0.0059)$\,\si{\per\pico\second}; the rate constant of forming
+falls over the same range, from $(1911 \pm 45)$ to $(415 \pm
+7)$\,\si{\angstrom\cubed\per\pico\second} (\cref{fig:ob-rates}a). A rate
+that rises as $\mathrm{e}^{-E_{\mathrm a}/\kB T}$ has a logarithm that
+falls on a straight line of slope $-E_{\mathrm a}$ against $1/\kB T$, the
+Arrhenius form. The error of the logarithm of a rate from $n$ events is
+its fractional error, $1/\sqrt n$, so each point is weighted in the fit
+by $\sqrt n$, the misses being measured in units of their errors as in
+\cref{sec:cv-size}: breaking has $E_{\mathrm a} = \SI{0.389}{\electronvolt}$
+and forming $-\SI{0.478}{\electronvolt}$, a rate that falls as the
+temperature rises.
+
+Neither slope is the depth of the well, \SI{1}{\electronvolt}, and they
+need not be: each rate depends on how the buffer gas supplies and removes
+energy, as Chapter~13 found for hops. Their ratio does not. At
+equilibrium forming and breaking balance, $k_{\mathrm f}n_{\mathrm A}
+n_{\mathrm B}/V = k_{\mathrm b}n_{\mathrm{AB}}$, so $k_{\mathrm f}/k_{\mathrm
+b}$ is the equilibrium constant $K_{\mathrm{eq}} = n_{\mathrm{AB}}V/n_{\mathrm
+A}n_{\mathrm B}$ of the counts: 18\,994 against 20\,583
+\si{\angstrom\cubed} at \SI{1500}{\kelvin}, 3406 against 3266 at 2000 and
+1237 against 1177 at \SI{2500}{\kelvin}, within 8\%. The two are not
+the same average. With nearly as many bonds formed as broken,
+$k_{\mathrm f}/k_{\mathrm b}$ is the bond-picoseconds over the exposure of
+free pairs, 19\,162, 3416 and \SI{1235}{\angstrom\cubed}, a ratio of time
+averages that counts the bonds within complexes too, while $K_{\mathrm{eq}}$
+averages the ratio of the counts for the molecules AB alone. Since
+$\ln K_{\mathrm{eq}} = \ln k_{\mathrm f} - \ln k_{\mathrm b}$, its slope is the
+difference of theirs, $0.478 - (-0.389) = \SI{0.867}{\electronvolt}$, and
+the counts give \SI{0.912}{\electronvolt}.
+
+That constant can be predicted for a dilute gas of A and B whose only
+interaction is the pair potential, with a pair bonded when closer than
+$r_{\mathrm{on}}$. Arrangements with $n_{\mathrm{AB}}$ bonded pairs and
+with one more, made by joining a free A to a free B, are compared by the
+Boltzmann weights of \cref{sec:sm-canonical} integrated over the
+positions; the momenta, the same in both, cancel. A free pair, each atom
+anywhere, has the weight $V^2$; a bonded pair, its centre anywhere and
+its separation within $r_{\mathrm{on}}$, has $V\int_0^{r_{\mathrm{on}}}4\pi
+r^2\mathrm{e}^{-\beta\varphi(r)}\,\dd r$. The A and the B to join can be
+chosen in $n_{\mathrm A}n_{\mathrm B}$ ways, and each result is reached
+from $n_{\mathrm{AB}} + 1$ starting arrangements, one for each of its
+bonds, so one more bond is more probable than not by the factor
+\begin{equation*}
+   \frac{n_{\mathrm A}n_{\mathrm B}}{n_{\mathrm{AB}} + 1}\,\frac1V
+   \int_0^{r_{\mathrm{on}}}4\pi r^2\mathrm{e}^{-\beta\varphi(r)}\,\dd r .
+\end{equation*}
+At the most probable $n_{\mathrm{AB}}$, large enough that $n_{\mathrm{AB}} +
+1$ differs little from $n_{\mathrm{AB}}$, the factor is 1, so
+$K_{\mathrm{eq}}$ equals the integral, the mass action law. The integral falls
+sixteen-fold from \num{15756} to \SI{987}{\angstrom\cubed} between 1500
+and \SI{2500}{\kelvin}, and the constant from the single cutoff at
+$r_{\mathrm{on}}$, with the standard error of nine blocks, follows it at
+1.00, 0.89, 0.92, 0.95 and 0.91 of its value (\cref{fig:ob-bonds}c); the
+band, which also keeps pairs between $r_{\mathrm{on}}$ and $r_{\mathrm{off}}$
+that were once closer, gives 1.13 to 1.31. The integral treats the free
+atoms as an ideal gas, leaving out the attraction between unlike atoms
+and the repulsion between like ones beyond $r_{\mathrm{on}}$.
+
+\subsection*{Carbon from the melt}
+
+Carbon's bonds come and go in the melt. 216 atoms at
+\SI{2.0}{\gram\per\centi\metre\cubed}, with the potential of
+Tersoff\cite{Tersoff1989} through ASE's calculator, the parameters those
+that ship with ASE, are held at \SI{6000}{\kelvin} for
+\SI{2}{\pico\second} by CSVR with $\tau_{\mathrm T} = \SI{50}{\femto
+\second}$, and the thermostat's target is then lowered steadily to
+\SI{300}{\kelvin}, over \SI{10}{\pico\second} in one run and
+\SI{40}{\pico\second} in another, with steps of \SI{0.5}{\femto\second}.
+The model is carried by \texttt{io.AseModel}, which calls any ASE
+calculator with the positions and returns the energy and the forces as an
+\texttt{mdlab} model does. The default band, 1.2 to 1.4 times twice the
+covalent radius of carbon, \num{1.824} to \SI{2.128}{\angstrom}, brackets
+the first minimum of $g(r)$ in the melt, at \SI{1.963}{\angstrom}, and
+after the quench lies, all but its first \SI{0.03}{\angstrom}, in the gap
+from 1.85 to \SI{2.15}{\angstrom} where $g(r)$ is zero
+(\cref{fig:ob-carbon}a), so the criterion counts the first shell of
+neighbours and nothing beyond. In the melt, between 0.5 and
+\SI{2}{\pico\second}, 0.764 of the atoms have three bonds, 0.161 two and
+0.071 four, and the bonds form and break continually: after the first
+frame there are 1870 events over the faster run and 3479 over the slower,
+1221 of each in the first \SI{2}{\pico\second} at \SI{6000}{\kelvin}. As the melt cools the three-fold atoms grow at the expense of
+the others, and the last bond forms or breaks when the thermostat's
+target has fallen to \SI{2335}{\kelvin} in the faster run and
+\SI{2432}{\kelvin} in the slower (\cref{fig:ob-carbon}b). At \SI{300}{\kelvin} the faster quench leaves
+0.852 of the atoms with three bonds, 0.065 with two and 0.083 with four;
+the slower leaves 0.907, 0.042 and 0.051. Every atom is in one molecule,
+the solid itself. These are single runs, so the difference between the
+two quenches has no error bar yet; the trend, fewer defects for slower
+cooling, is what a repeat would test.
+
+\subsection*{Keeping up with the run}
+
+An analysis can read frames from a file after the run, or watch the run
+as it goes. \texttt{io.read\_frames} reads any trajectory file ASE can
+read, extended XYZ or ASE's own, converting velocities to
+\si{\angstrom\per\femto\second}. Watching needs no file: \texttt{md.run}
+and \texttt{thermostats.run} accept observers, functions called at every
+recorded frame with the time, the positions and the velocities, and the
+pairs that the force evaluation has just found are at hand in
+\texttt{PairModel.last\_pairs}, so an observer can feed them to a
+\texttt{ReactionLog} without searching for neighbours again. The gas runs
+above did so every \SI{10}{\femto\second}.
+
+Such analysis must cost little next to the forces. \Cref{fig:ob-timing}
+times one frame's analysis, bonds, molecules, hashes, formulas and
+reactions, against one force evaluation of a cheap model, liquid argon's Lennard-Jones forces with the neighbour list already
+built, from 864 to \num{97556} atoms. The bonds are taken between atoms
+closer than \SI{4.0}{\angstrom}, kept to \SI{4.4}{\angstrom}, 4.4 per atom, a
+denser graph than most molecules give. With the two loops of
+\cref{sec:ob-bonds} and the rounds of the hash compiled by Numba, and the
+pairs taken from the force evaluation, the analysis costs about 0.15 of a
+force evaluation at 864 atoms and about 0.10 from \num{10976} atoms up,
+in each of two sets of timings. From 864 to \num{97556} atoms, 113 times as
+many, both times grow roughly in proportion to $N$, the force
+evaluation's somewhat faster. Analysed at a
+frame saved every tenth step, the bonds cost about 1\% of the run, and
+with any learned potential, whose forces cost far more than these, much
+less.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/rates}
+\caption{The A-B gas. (a) The rate of breaking per bond and picosecond
+(circles) and the rate constant of forming in \SI{e3}{\angstrom\cubed\per
+\pico\second} (squares), counting events of the band that lived at least
+\SI{0.5}{\pico\second}, with the error $\sqrt n$ of each count, against
+$1/\kB T$, with straight lines fitted to their logarithms. (b) At
+\SI{2000}{\kelvin}, the fraction of 89 windows of \SI{1}{\pico\second} in
+which a given number of bonds broke (bars), against the Poisson
+distribution of the same mean (points).}
+\label{fig:ob-rates}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/carbon}
+\caption{216 carbon atoms at \SI{2.0}{\gram\per\centi\metre\cubed} with
+Tersoff's potential, quenched from \SI{6000}{\kelvin}. (a) $g(r)$ of the
+melt and of the solid after the slow quench, with $r_{\mathrm{on}}$ and
+$r_{\mathrm{off}}$ of the default band (dotted). (b) The fractions of atoms
+with two, three and four bonds against the thermostat's target, for the
+quench over \SI{10}{\pico\second} (thin) and over \SI{40}{\pico\second}
+(thick).}
+\label{fig:ob-carbon}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/timing}
+\caption{(a) The time of one force evaluation of liquid argon's model
+and of one frame's bond analysis, against the number of atoms, each
+relative to the force evaluation of 864 atoms, the least of three tries.
+(b) Their ratio, with the tenth that the analysis is meant to stay within
+(dotted).}
+\label{fig:ob-timing}
+\end{figure}
+
+\begin{keyidea}
+A reaction is a change of the molecules that some atoms belong to, found
+as a connected group of old and new molecules. Rates are counts over
+exposures, with the error $\sqrt n$ of a Poisson count; the ratio of the
+rate constants of a reaction and its reverse is the equilibrium constant,
+which statistical mechanics predicts. Observers analyse the run as it goes,
+reusing the force evaluation's pairs, at about a tenth of its cost.
+\end{keyidea}
+
+\notebook{16}{count reactions in the gas and put error bars on their rates}
+
+\begin{selfcheck}
+A rate is estimated from 25 counted events. To what fraction is it known,
+and how many events would halve that?
+\end{selfcheck}

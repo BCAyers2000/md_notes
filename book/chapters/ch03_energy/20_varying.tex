@@ -1,0 +1,163 @@
+%=============================================================================!
+% 3.3  WORK DONE BY A VARYING FORCE                                           !
+%=============================================================================!
+\section{Work done by a varying force}
+\label{sec:en-varying}
+
+Most forces change as a body moves: a spring pulls harder the further it
+is stretched, and the forces between atoms change with every step the
+atoms take. \Cref{sec:en-kinetic} relied on a constant force, through
+\cref{eq:mo-v2}. This section defines the work of a force that varies and
+shows that the change in kinetic energy still equals it.
+
+\subsection*{Work as an area}
+
+Let a force $F(x)$ act along a line, with a value that depends on the
+position $x$, while its body moves from $x_A$ to $x_B$. Divide the way
+into many short steps of length $\Delta x$, and let $x_k$ be the middle of
+the $k$th step. Over a step short enough that the force hardly changes,
+the force does about $F(x_k)\,\Delta x$ of work, the area of a thin
+rectangle of height $F(x_k)$ and width $\Delta x$ (\cref{fig:en-area}a).
+Adding the steps, and letting $\Delta x \to 0$ as in
+\cref{sec:mo-integrating},
+\begin{equation}
+   W = \lim_{\Delta x\to0}\sum_k F(x_k)\,\Delta x
+   = \int_{x_A}^{x_B} F(x)\,\dd x :
+   \label{eq:en-work-line}
+\end{equation}
+the work is the area under the graph of the force against position,
+counted as negative where $F$ is negative, and with the sign reversed
+again when the body moves towards smaller $x$, $x_B < x_A$, since every
+step $\Delta x$ is then negative. The force of \cref{fig:en-area}(a) is
+$F(x) = 3 + 1.5\sin(1.4x) + 0.4x$ in newtons, with $x$ in metres, from
+$x_A = \SI{0.5}{\metre}$ to $x_B = \SI{4.5}{\metre}$. The eight rectangles
+drawn give \SI{15.743}{\joule}, and 128 rectangles give
+\SI{15.748}{\joule}, the area itself to this precision: the area is $G(4.5)
+- G(0.5) = \SI{15.748}{\joule}$, with $G(x) = 3x + 0.2x^2 - (1.5/1.4)\cos
+1.4x$, whose derivative is $F$. For a constant force the integral is $F(x_B - x_A)$,
+which is \cref{eq:en-work-constant} along a line.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/area}
+\caption{The work of a varying force. (a) A force that changes along the
+way; over each short step $\Delta x$ it does about $F(x_k)\,\Delta x$ of
+work, the area of a rectangle, and the rectangles add up to the area under
+the curve. (b) The force $kx$ that a hand exerts to stretch a spring of
+stiffness \SI{50}{\newton\per\metre} slowly; the work to stretch it by
+\SI{4}{\centi\metre} is the shaded triangle, $\frac12 kx^2 =
+\SI{0.04}{\joule}$.}
+\label{fig:en-area}
+\end{figure}
+
+\subsection*{Stretching a spring}
+
+A hand that stretches a spring slowly, so that the end of the spring does
+not accelerate, must pull with a force equal and opposite to the pull of
+the spring, $+kx$ by Hooke's law (\cref{sec:ne-spring}). Stretching from
+$x = 0$ to $x$, it does the work
+\begin{equation*}
+   \int_0^x k x'\,\dd x' = \Bigl[\tfrac12 k x'^2\Bigr]_0^x
+   = \tfrac12 k x^2 ,
+\end{equation*}
+the area of a triangle of base $x$ and height $kx$
+(\cref{fig:en-area}b). The variable of integration is written $x'$ to
+keep it apart from the upper limit $x$, as in \cref{sec:mo-integrating}.
+For the spring of \SI{50}{\newton\per\metre} in \cref{sec:ne-spring},
+stretching by \SI{4}{\centi\metre} takes $\frac12\times50\times0.04^2 =
+\SI{0.04}{\joule}$. The spring's own force, $-kx$, does the opposite work
+when the stretch grows. When its end moves from $x_A$ to $x_B$, by
+whatever means,
+\begin{equation}
+   W_{\mathrm{spring}} = \int_{x_A}^{x_B}(-kx)\,\dd x
+   = \Bigl[-\tfrac12 k x^2\Bigr]_{x_A}^{x_B}
+   = \tfrac12 k x_A^2 - \tfrac12 k x_B^2 .
+   \label{eq:en-spring-work}
+\end{equation}
+
+\subsection*{Power}
+
+For a force that varies, we look at the rate at which the kinetic energy
+changes, in any number of dimensions. Write $K = \frac12 m(v_x^2 + v_y^2
++ v_z^2)$. By the chain rule of \cref{sec:mo-acceleration}, the rate of
+change of $v_x^2$ is $2v_x\,\dd v_x/\dd t = 2v_x a_x$, and likewise for
+the other components, so
+\begin{align*}
+   \frac{\dd K}{\dd t}
+   &= \tfrac12 m\,(2v_x a_x + 2v_y a_y + 2v_z a_z)
+      && \text{differentiating each square}\\
+   &= m\,\vb{a}\cdot\vb{v}
+      && \text{the scalar product of \cref{sec:mo-plane}}\\
+   &= \vb{F}\cdot\vb{v}
+      && \text{by the second law, $m\vb{a} = \vb{F}$,}
+\end{align*}
+where $\vb{F}$ is the net force. Since $\vb{F}\cdot\vb{v} = \lvert\vb{F}
+\rvert\,\lvert\vb{v}\rvert\cos\theta$, with $\theta$ the angle between the
+force and the velocity, a net force perpendicular to the velocity leaves
+the speed unchanged at that instant and only bends the path. The quantity
+$\vb{F}\cdot\vb{v}$ is the rate at which the force does work. Over a short interval $\Delta t$ the
+body moves through $\Delta\vb{r} \approx \vb{v}\,\Delta t$, and on so short
+a stretch the force is nearly constant, so by
+\cref{eq:en-work-constant} it does about $\vb{F}\cdot\vb{v}\,\Delta t$ of
+work. The rate at which a force does work is called its power, measured in
+joules per second, or watts (\si{\watt}). The trolley pushed by
+\SI{10}{\newton} while it moves at \SI{1}{\metre\per\second} receives
+\SI{10}{\watt}.
+
+\subsection*{The work-energy theorem}
+
+Integrating the rate of change of $K$ from a time $t_A$ to a time $t_B$,
+by \cref{eq:mo-integrals},
+\begin{equation}
+   K(t_B) - K(t_A) = \int_{t_A}^{t_B}\vb{F}\cdot\vb{v}\,\dd t = W .
+   \label{eq:en-work-energy}
+\end{equation}
+The integral adds up the work $\vb{F}\cdot\vb{v}\,\dd t$ done over every
+short interval of the motion, so it is the work done by the net force
+along the way the body actually goes. This is the work-energy theorem:
+\emph{the change in the kinetic energy of a body equals the work done on
+it by the net force}. It holds for any force, constant or varying, and
+for any motion; the second law is its only ingredient.
+
+When the motion is along a line and the force depends on position alone,
+the integral over time becomes the area of \cref{eq:en-work-line}. Let
+$G(x)$ be any function whose derivative is the force, $G'(x) = F(x)$. One
+such function is the area $G(x) = \int_{x_A}^{x} F(x')\,\dd x'$, because
+moving its upper limit from $x$ to $x + h$ adds a thin strip of area about
+$F(x)\,h$, so that $G'(x) = \lim_{h\to0}[G(x+h) - G(x)]/h = F(x)$. This is
+the fundamental theorem of calculus (\cref{sec:mo-integrating}) read the
+other way: integrating a function and then differentiating returns the
+function. Along the motion $x(t)$ the chain
+rule gives
+\begin{equation*}
+   \frac{\dd}{\dd t}\,G\bigl(x(t)\bigr) = G'(x)\,\frac{\dd x}{\dd t}
+   = F(x)\,v ,
+\end{equation*}
+so the integrand $F v$ is the rate of change of $G(x(t))$, and
+integrating it from $t_A$ to $t_B$ gives the change in $G$,
+\begin{equation*}
+   \int_{t_A}^{t_B} F(x)\,v\,\dd t = G(x_B) - G(x_A)
+   = \int_{x_A}^{x_B} F(x)\,\dd x ,
+\end{equation*}
+where $x_A$ and $x_B$ are the positions at the two times. This holds even
+if the body goes back and forth on the way, because only the ends enter.
+
+The block of \cref{sec:ne-spring}, of mass \SI{0.5}{\kilogram}, released
+from rest \SI{4}{\centi\metre} from its resting place, shows what this
+buys. As it moves to $x = 0$ the spring does, by
+\cref{eq:en-spring-work}, $\frac12\times50\times0.04^2 - 0 =
+\SI{0.04}{\joule}$ of work on it, and the block's kinetic energy grows
+from zero to \SI{0.04}{\joule}. Its speed at the centre is therefore
+\begin{equation*}
+   v = \sqrt{\frac{2\times0.04}{0.5}} = \SI{0.4}{\metre\per\second} ,
+\end{equation*}
+the largest speed $A\omega$ found in \cref{sec:ne-spring} from the full
+solution. The energy argument needed neither the sinusoid nor the time
+taken.
+
+\begin{selfcheck}
+How much work does it take to stretch the spring of
+\SI{50}{\newton\per\metre} from \SI{4}{\centi\metre} to
+\SI{8}{\centi\metre}? Why is it more than the work of the first
+\SI{4}{\centi\metre}?
+\end{selfcheck}

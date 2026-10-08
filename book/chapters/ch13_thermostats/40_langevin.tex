@@ -1,0 +1,247 @@
+%=============================================================================!
+% 13.4  FRICTION AND NOISE                                                    !
+%=============================================================================!
+\section{Friction and noise}
+\label{sec:th-langevin}
+
+A grain of pollen in water is struck by molecules from every side; on
+average the blows slow it down, a friction, and their irregularity jostles
+it, a noise. Langevin's equation keeps both and nothing else of the
+water. This section solves the equation for one velocity, finds the
+relation between friction and noise that gives the canonical
+distribution, builds the BAOAB step from it, and measures how the
+friction changes diffusion and the rate of hopping.
+
+\subsection*{Random kicks}
+
+\begin{toolbox}[A sum of random kicks]
+A velocity that receives, at each of many short intervals of length $h$,
+a kick $\sigma\sqrt h\,g$, with $g$ a fresh number from the normal
+distribution of mean 0 and variance 1, has after $n$ kicks the variance
+$n\sigma^2h = \sigma^2t$, with $t = nh$. Each kick has the variance
+$\sigma^2h$, since multiplying a quantity by a constant multiplies every
+deviation from its mean by that constant, and so its variance by the
+constant's square; and variances of independent kicks add
+(\cref{sec:sm-probability}). The variance grows in proportion to the
+time, whatever the length $h$ into which it is cut, which is why each
+kick is scaled by $\sqrt h$: kicks of $\sigma h\,g$ would give the
+variance $\sigma^2th$, which vanishes as $h$ shrinks. A sum of independent
+Gaussian numbers is itself Gaussian (\cref{ex:th-gauss-sum}), so after
+any time the velocity has a Gaussian distribution, fixed by its mean and
+variance. The limit of such kicks as $h$ shrinks is the Wiener process.
+\end{toolbox}
+
+\subsection*{Langevin's equation for one velocity}
+
+Without forces, one component of an atom's velocity under friction $\gamma$
+and noise of strength $\sigma$ changes over a short interval $h$ by
+\begin{equation*}
+   v_{k+1} = (1 - \gamma h)\,v_k + \sigma\sqrt h\,g_k ,
+\end{equation*}
+the change $-\gamma v_kh$ that the drag $\dd v/\dd t = -\gamma v$ of
+\cref{sec:ne-drag} makes over the interval, plus a random kick. After $n$ intervals,
+covering the time $\dt = nh$, applying this $n$ times gives
+\begin{equation*}
+   v_n = (1 - \gamma h)^nv_0 + \sigma\sqrt h\sum_{k=0}^{n-1}(1 - \gamma
+   h)^{n-1-k}g_k .
+\end{equation*}
+As $h$ shrinks with $\dt$ fixed, $(1 - \gamma h)^n$ tends to
+$\mathrm{e}^{-\gamma\dt}$: its logarithm is $n\ln(1 - \gamma h)$, and
+$\ln(1 + y)$ is $y$ plus terms of order $y^2$ for small $y$ (the Taylor
+series of \cref{sec:mo-taylor}, with the slope $1/(1 + y)$ of the
+logarithm, 1 at $y = 0$), so the logarithm is $-n\gamma h = -\gamma\dt$
+plus $n$ errors of order $\gamma^2h^2$, together of order
+$\gamma^2\dt^2/n$, which vanish as $n$ grows. The kick $g_k$ enters the sum
+multiplied by $\sigma\sqrt h\,(1 - \gamma h)^{n-1-k}$, which multiplies its
+variance by the square of that factor, and the variances of the
+independent kicks add, so, counting them backwards with $j = n - 1 - k$,
+the sum is Gaussian with the variance
+\begin{equation*}
+   \sigma^2h\sum_{j=0}^{n-1}(1 - \gamma h)^{2j}
+   = \sigma^2h\,\frac{1 - (1 - \gamma h)^{2n}}{1 - (1 - \gamma h)^2}
+   \;\to\; \sigma^2\,\frac{1 - \mathrm{e}^{-2\gamma\dt}}{2\gamma} .
+\end{equation*}
+The middle form is the geometric series: the sum $G =
+\sum_{j=0}^{n-1}z^j$, multiplied by $z$, loses its first term, 1, and
+gains $z^n$, so $zG = G - 1 + z^n$ and $G = (1 - z^n)/(1 - z)$, here with
+$z = (1 - \gamma h)^2$. In
+the limit $(1 - \gamma h)^{2n}$, the square of $(1 - \gamma h)^n$, tends to
+$\mathrm{e}^{-2\gamma\dt}$, and $h/[1 - (1 - \gamma h)^2] = 1/(2\gamma -
+\gamma^2h)$ tends to $1/2\gamma$. So over any step $\dt$, exactly,
+\begin{equation}
+   v(t + \dt) = c\,v(t) + \frac{\sigma}{\sqrt{2\gamma}}\sqrt{1 - c^2}\;g ,
+   \qquad c = \mathrm{e}^{-\gamma\dt} ,
+   \label{eq:th-ou}
+\end{equation}
+the Ornstein-Uhlenbeck process\cite{Uhlenbeck1930}. Over a long step $c$
+is close to 0, and the velocity is Gaussian with mean zero and variance
+$\sigma^2/2\gamma$, whatever it started at; \cref{ex:th-ou-variance} shows
+that no other variance is kept by the step.
+
+\subsection*{The fluctuation-dissipation relation}
+
+The canonical distribution needs that variance to be $\kB T/m$
+(\cref{eq:sm-maxwell}), so
+\begin{equation}
+   \sigma^2 = \frac{2\gamma\kB T}{m} :
+   \label{eq:th-fdr}
+\end{equation}
+the noise and the friction are not independent. The friction removes
+energy at a rate set by $\gamma$, the noise supplies it, and the
+temperature fixes their balance. With \cref{eq:th-fdr}, \cref{eq:th-ou}
+replaces $v$ by $cv + \sqrt{(1 - c^2)\kB T/m}\;g$, written $v \leftarrow cv
++ \sqrt{(1 - c^2)\kB T/m}\;g$, which takes a Maxwellian velocity to another
+Maxwellian velocity: the old velocity keeps the fraction $c^2$ of the
+variance and fresh noise supplies the rest, $1 - c^2$, which grows from 0
+at $\gamma = 0$ towards 1 as $\gamma\dt$ grows. For argon at
+\SI{135}{\kelvin}, $\sqrt{\kB T/m} = \SI{0.001676}{\angstrom\per\femto
+\second}$, and with steps of \SI{10}{\femto\second}, $\gamma =
+\SI{1}{\per\pico\second}$ gives $c = 0.99005$.
+
+\subsection*{BAOAB}
+
+With forces, Langevin's equation adds them to the drag and the noise. The
+splitting of \cref{sec:in-splitting} takes each part exactly for a
+while: B, a half kick by the forces; A, a half drift of the positions;
+and O, the exact step \cref{eq:th-ou} of the friction and noise over the
+whole step. The order B A O A B, which Leimkuhler and Matthews called
+BAOAB\cite{Leimkuhler2013}, puts O between the two half drifts of
+\cref{fig:th-step}, where \texttt{run} calls \texttt{Langevin.middle}:
+
+\begin{code}
+    c = math.exp(-self.friction * dt)
+    sigma = np.sqrt((1 - c * c) * self._kt(self.temperature)
+                    / (m * self.mv2_to_energy))
+    return c * v + rng.standard_normal(v.shape) * sigma[:, None]
+\end{code}
+
+\noindent Leimkuhler and Matthews showed that this order samples
+positions with unusual accuracy; for a harmonic oscillator its positions
+have the exact canonical distribution at any stable step. In reduced
+units, with mass, spring constant, $\kB T$ and friction all 1, so that
+the period is $2\pi$, \num{4000} oscillators followed with steps of 0.5,
+1.0 and 1.5 give $\ens{x^2} = 0.9986$, 0.9989 and 1.0003, against the
+exact value 1, while their whole-step velocities give $\ens{v^2} =
+0.9367$, 0.7503 and 0.4374, close to $1 - \dt^2/4$. A density
+$\mathrm{e}^{-\tilde H/[\kB T(1 - \omega^2\dt^2/4)]}$ of the whole-step
+pairs $(x, v)$, with $\tilde H$ the shadow energy of \cref{eq:in-shadow}
+and $\omega = 1$, would give exactly these variances, the positions'
+canonical and the velocities' lowered by that factor. A large step thus
+samples the arrangements correctly while the kinetic temperature reads
+low; with the steps of this book the difference is small: for the
+lithium atom, steps of \SI{5}{\femto\second} against its period of
+\SI{170.3}{\femto\second} give $1 - \omega^2\dt^2/4 = 0.991$, and its
+measured kinetic energy under Langevin's thermostat is 0.995 of $\kB T$.
+
+\subsection*{What the friction does to the motion}
+
+Every velocity is pulled towards zero at the rate $\gamma$, so friction
+slows diffusion as collisions did. For liquid argon (\cref{fig:th-coupling}
+(a)), $\gamma = 0.1$, 1 and \SI{10}{\per\pico\second} leave 0.97, 0.71 and
+0.17 of the diffusion coefficient at fixed energy, almost the same as
+Andersen's thermostat at the same rates. Like collisions, the noise
+changes the total momentum.
+
+For an atom whose only bath is the thermostat, the friction also decides
+how often it hops. A hop needs the barrier's energy, which only the bath
+supplies, and a hop, once begun, can be turned back by the friction and
+the kicks. A standard yardstick is the rate of transition-state theory,
+which counts the atoms crossing the edges of a hollow's cell outwards,
+from the canonical distribution\cite{Eyring1935}. In a short time $\dt$
+an atom leaves through a short piece $\dd l$ of an edge if it lies within
+$v_\perp\dt$ of the piece and moves outwards across it with the speed
+$v_\perp$. The probability of lying in that strip, of area $v_\perp\dt\,
+\dd l$, is $\mathrm{e}^{-\beta U}v_\perp\dt\,\dd l$ divided by the
+integral of $\mathrm{e}^{-\beta U}$ over the cell (\cref{sec:sm-canonical}).
+The velocity is independent of the position (\cref{sec:sm-maxwell}), so
+$v_\perp$ is averaged on its own over the Maxwellian, the atoms that move
+inwards contributing 0: with the Maxwellian's integral over all $v$,
+$\sqrt{2\pi\kB T/m}$, as the divisor, the average is
+$\int_0^\infty v\,\mathrm{e}^{-mv^2/2\kB T}\dd v\big/\sqrt{2\pi\kB T/m} =
+\sqrt{\kB T/2\pi m}$ (\cref{ex:th-flux}). Dividing by $\dt$ and adding the
+pieces round the cell gives the probability per unit time of leaving.
+Each hollow's cell is a hexagon whose six edges lie halfway between
+neighbouring hollows, pass through the bridges and are each $a/\sqrt3$
+long, so
+\begin{equation}
+   k_{\mathrm{TST}} = \sqrt{\frac{\kB T}{2\pi m}}\,
+   \frac{\oint\mathrm{e}^{-\beta U}\dd l}{\iint\mathrm{e}^{-\beta U}\dd A} ,
+   \label{eq:th-tst}
+\end{equation}
+the integrals round the edges and over the cell. For lithium at
+\SI{1000}{\kelvin}, $\sqrt{\kB T/2\pi m} =
+\SI{0.004367}{\angstrom\per\femto\second}$, the integral round the six
+edges is \SI{0.2151}{\angstrom} and that over the cell
+\SI{0.7475}{\angstrom\squared}, against the cell's area of
+\SI{5.2408}{\angstrom\squared}, so $k_{\mathrm{TST}} =
+0.004367\times0.2151/0.7475$ per femtosecond, \SI{1.257}{\per\pico
+\second}; at \SI{300}{\kelvin} it is one hop every
+\SI{1.69}{\nano\second}. An atom that crosses and turns back is counted
+by the theory but has not hopped, so the true rate is lower.
+
+\Cref{fig:th-coupling}(b) counts the hops of the 1000 lithium atoms, an
+atom being assigned to a hollow once it comes within \SI{0.7}{\angstrom}
+of it. From $\gamma = 0.01$ to \SI{3}{\per\pico\second} the rate lies
+between 0.89 and \SI{1.02}{\per\pico\second}, about 0.8 of
+$k_{\mathrm{TST}}$; beyond it falls, to 0.715, 0.347 and
+\SI{0.149}{\per\pico\second} at 30, 100 and \SI{300}{\per\pico\second},
+more and more nearly in proportion to $1/\gamma$, as friction turns each
+crossing into a slow struggle over the bridge in which the atom often
+turns back. That fall is one side of Kramers' theory of
+rates\cite{Kramers1940,Hanggi1990}. The theory also predicts a fall at
+low friction for an atom that must gain the barrier's energy from the
+bath, which the circles do not show: they start from the canonical
+distribution, in which 0.194 of the atoms already have more energy than
+the barrier, and on a periodic surface such atoms are never taken away,
+so hops go on however weak the friction. The slow supply of energy shows
+when the atoms start at the bottom of a hollow with the kinetic energy of
+\SI{1000}{\kelvin} but no potential energy: at $\gamma =
+\SI{0.01}{\per\pico\second}$ the thermostat supplies the missing energy so
+slowly that they make only 0.228 hops per picosecond over the first
+\SI{100}{\pico\second}, rising from 0.17 in the first \SI{20}{\pico
+\second} to 0.35 in the last, against 1.0 at \SI{3}{\per\pico\second}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch13_thermostats/coupling}
+\caption{(a) The diffusion coefficient of liquid argon, measured from the
+centre of mass, against the collision rate of Andersen's thermostat and
+the friction of Langevin's, each the mean of three runs with its
+standard error, against three runs at fixed energy (line and band). (b)
+Hops of lithium atoms between hollows of the model surface at
+\SI{1000}{\kelvin}, per atom and picosecond, against the friction:
+atoms started from the canonical distribution (circles, with the
+standard error over the atoms) and atoms started at the bottom of a
+hollow, counted over \SI{100}{\pico\second} (squares), against the rate of
+transition-state theory (dashed).}
+\label{fig:th-coupling}
+\end{figure}
+
+\begin{practice}
+Langevin dynamics samples the canonical ensemble reliably, even for a
+single atom, and is a good thermostat for averages over arrangements and
+for equilibration. A friction of \SI{1}{\per\pico\second} already slows
+the diffusion of liquid argon by more than a quarter; a diffusion coefficient or
+a rate measured under Langevin dynamics belongs to the friction as much
+as to the system, unless the friction is small against the system's own
+rates of losing momentum.
+\end{practice}
+
+\begin{keyidea}
+Friction and noise together give each velocity the exact step $v
+\leftarrow cv + \sqrt{(1 - c^2)\kB T/m}\,g$, $c = \mathrm{e}^{-\gamma\dt}$,
+whose noise is tied to the friction by $\sigma^2 = 2\gamma\kB T/m$. BAOAB
+puts it between the half drifts of velocity Verlet and samples positions
+accurately even at long steps. Friction slows diffusion and, for an atom
+whose bath is the thermostat, sets its rate of hopping: about 0.8 of the
+rate of transition-state theory at low friction, falling more and more
+nearly in proportion to $1/\gamma$ at high.
+\end{keyidea}
+
+\notebook{13}{set the friction and watch diffusion and hopping change}
+
+\begin{selfcheck}
+What is $c$ for $\gamma = \SI{10}{\per\pico\second}$ and steps of
+\SI{10}{\femto\second}, and what fraction of the velocity's variance is
+replaced by fresh noise at each step?
+\end{selfcheck}

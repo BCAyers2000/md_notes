@@ -1,0 +1,101 @@
+%=============================================================================!
+% 4.1  THE SHADOW OF A CIRCLE                                                 !
+%=============================================================================!
+\section{The shadow of a circle}
+\label{sec:os-circle}
+
+A block of mass $m$ on a spring of stiffness $k$ moves, by
+\cref{sec:ne-spring}, as
+\begin{equation}
+   x(t) = A\cos(\omega t + \phi) , \qquad \omega = \sqrt{\frac{k}{m}} ,
+   \label{eq:os-harmonic}
+\end{equation}
+where the amplitude $A$ and the phase $\phi$ are fixed by the position
+and velocity at the start. This motion is called simple harmonic motion,
+and the system that performs it a harmonic oscillator. This section
+gives the formula a picture that makes its phase, its velocity and its
+period easy to read.
+
+\subsection*{The reference circle}
+
+\Cref{sec:mo-circle} followed a point going round a circle at a steady
+angular speed, and found that its projection on the $x$ axis moves back
+and forth as a sinusoid. Now run the argument the other way. Let a point $P$ go anticlockwise
+round a circle of radius $A$ centred on the origin, at the angular speed
+$\omega$, starting at the angle $\phi$ from the $x$ axis, so that at time
+$t$ its angle is
+\begin{equation*}
+   \theta(t) = \omega t + \phi .
+\end{equation*}
+By the definition of the cosine, scaled to a circle of radius $A$
+(\cref{sec:mo-trig}), the $x$ coordinate of $P$ is $A\cos(\omega t +
+\phi)$, which is \cref{eq:os-harmonic}. The block therefore moves exactly
+as the shadow of $P$ on the $x$ axis, the point directly below or above
+it (\cref{fig:os-circle}). The circle is called the reference circle of
+the oscillation, and the phase $\phi$ is the angle at which $P$
+starts.
+
+The velocity follows the same picture. \Cref{eq:mo-circle} differentiated
+$R(\cos\omega t, \sin\omega t)$; here the radius is $A$ and the angle is
+$\omega t + \phi$, which also grows at the rate $\omega$, so the chain rule
+gives the same factor $\omega$ and the velocity of $P$ is $A\omega\,(-\sin
+\theta, \cos\theta)$. Its $x$ component, $-A\omega\sin(\omega t + \phi)$,
+is the derivative of $x(t)$: the velocity of the block is the shadow of the
+velocity of $P$.
+The point $P$ always moves at the speed $A\omega$, tangent to the circle.
+Where $P$ crosses the top or the bottom of the circle it moves parallel to
+the $x$ axis, so the shadow moves at the full speed $A\omega$; this is the
+centre of the swing. Where $P$ crosses the $x$ axis it moves straight up
+or down, so the shadow stands still for an instant; these are the turning
+points, $x = \pm A$. Likewise the acceleration of $P$ points towards the
+centre with size $\omega^2 A$ (\cref{sec:mo-circle}), and its $x$
+component is $-\omega^2 x$, the acceleration of the block.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/circle}
+\caption{The oscillation as the shadow of a circle. A block with $\omega =
+\SI{10}{\radian\per\second}$ starts \SI{3}{\centi\metre} out, moving
+outwards at \SI{0.4}{\metre\per\second}. (a) The point $P$, going
+anticlockwise round a circle of radius $A = \SI{5}{\centi\metre}$ from
+$\phi = \SI{-0.927}{\radian}$, at $t = 0$, 0.1, 0.2 and \SI{0.3}{\second}
+(dots), and its shadow on the $x$ axis (squares), one colour per moment.
+(b) The shadow's position against time, with time running downwards so
+that each square lies directly below the square of the same colour in
+panel (a).}
+\label{fig:os-circle}
+\end{figure}
+
+\subsection*{An example}
+
+Take the block of \cref{sec:ne-spring}, with $m = \SI{0.5}{\kilogram}$
+and $k = \SI{50}{\newton\per\metre}$, so that $\omega =
+\SI{10}{\radian\per\second}$, started \SI{3}{\centi\metre} from its
+resting place and moving outwards at \SI{0.4}{\metre\per\second}. That
+section found $A = \SI{5}{\centi\metre}$, $\cos\phi = x(0)/A = 0.6$ and
+$\phi = \arcsin(-0.8) = \SI{-0.927}{\radian}$. On the reference circle,
+$P$ starts \SI{0.927}{\radian}, or $0.927\times\ang{180}/\pi =
+\ang{53.1}$, below the positive $x$ axis, where
+its shadow is at $A\cos\phi = 5\times0.6 = \SI{3}{\centi\metre}$. Moving
+anticlockwise, $P$ climbs towards the axis, so the shadow moves outwards,
+as the block does. $P$ reaches the axis when $\omega t + \phi = 0$, at $t
+= 0.927/10 = \SI{0.0927}{\second}$, and there the block turns back, at
+$x = A = \SI{5}{\centi\metre}$.
+
+$P$ goes once round the circle while $\omega t$ grows by $2\pi$, so the
+period is $2\pi/\omega = 2\pi/10 = \SI{0.628}{\second}$, and the
+frequency, the number of oscillations per second (\cref{sec:mo-trig}),
+is
+\begin{equation*}
+   \nu = \frac{\omega}{2\pi} = \frac{10}{2\pi} = \SI{1.592}{\hertz} ,
+\end{equation*}
+written with the Greek letter nu. The angular frequency $\omega$ is the
+rate at which $P$ turns, in radians per second, and is $2\pi$ times the
+frequency because each oscillation is one full turn of $2\pi$ radians.
+
+\begin{selfcheck}
+A block oscillates with $\omega = \SI{10}{\radian\per\second}$ and $A =
+\SI{5}{\centi\metre}$. Where is the block, and which way and how fast is
+it moving, when the angle $\omega t + \phi$ of its point $P$ equals
+$\pi/2$?
+\end{selfcheck}

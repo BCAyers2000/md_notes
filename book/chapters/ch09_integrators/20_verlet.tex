@@ -1,0 +1,204 @@
+%=============================================================================!
+% 9.2  THE VERLET METHOD                                                      !
+%=============================================================================!
+\section{The Verlet method}
+\label{sec:in-verlet}
+
+Verlet's method, which Verlet introduced in 1967 for his simulations of a
+liquid of Lennard-Jones atoms\cite{Verlet1967}, gains a whole order over the forward
+Euler method at the same cost of one force evaluation per step. This
+section derives it from the Taylor series, writes it in the form that
+simulations use, and checks its order.
+
+\subsection*{Positions from two Taylor series}
+
+The Taylor series of the motion a step ahead and a step behind are
+\begin{align*}
+   x(t + \dt) &= x + v\,\dt + \tfrac12 a\,\dt^2 + \tfrac16\dot{a}\,\dt^3
+   + \tfrac1{24}\ddot{a}\,\dt^4 + \order{\dt^5} ,\\
+   x(t - \dt) &= x - v\,\dt + \tfrac12 a\,\dt^2 - \tfrac16\dot{a}\,\dt^3
+   + \tfrac1{24}\ddot{a}\,\dt^4 + \order{\dt^5} ,
+\end{align*}
+with $x$, $v$, $a$ and the derivatives of $a$ taken at $t$; the second is
+the first with $-\dt$ in place of $\dt$, which changes the sign of every
+odd power. Adding them, the odd powers cancel, the terms in $\dt^5$
+within $\order{\dt^5}$ among them, so the remainder is of order $\dt^6$:
+\begin{align*}
+   x(t + \dt) + x(t - \dt) &= 2x + a\,\dt^2 + \tfrac1{12}\ddot{a}\,\dt^4
+   + \order{\dt^6}
+   && \text{$\tfrac1{24} + \tfrac1{24} = \tfrac1{12}$}\\
+   x(t + \dt) &= 2x(t) - x(t - \dt) + \dt^2a(t) + \order{\dt^4}
+   && \text{subtracting $x(t - \dt)$,}
+\end{align*}
+the term in $\dt^4$ joining the remainder.
+Dropping the last term gives the Störmer--Verlet method,
+\begin{equation}
+   x_{n+1} = 2x_n - x_{n-1} + \dt^2\,a(x_n) ,
+   \label{eq:in-stormer}
+\end{equation}
+which advances the positions with an error of order $\dt^4$ in one step
+from two correct positions, using only the force at the present position.
+Its global error is nevertheless of order $\dt^2$, as for velocity Verlet
+below. An error made in one position, with the one before it correct,
+changes the difference between successive positions, which every later
+step carries forward, so over a fixed time each local error grows by a
+factor of order $t_{\mathrm f}/\dt$, and the $t_{\mathrm f}/\dt$ of them
+give $(t_{\mathrm f}/\dt)^2\times\order{\dt^4} = \order{\dt^2}$. The rule
+of \cref{sec:in-steps} that relates the two orders holds only for methods
+that step from the present state alone. The velocities do not appear, but
+can be recovered by the central difference of \cref{sec:mo-atoms}, $v_n =
+(x_{n+1} - x_{n-1})/(2\dt)$, with an error of order $\dt^2$.
+
+\subsection*{Velocity Verlet}
+
+Simulations need the velocities at the same times as the positions, for
+the kinetic energy and to start a run from a state. Expanding the
+position and the velocity over one step,
+\begin{align*}
+   x(t + \dt) &= x + v\,\dt + \tfrac12 a\,\dt^2 + \order{\dt^3} ,\\
+   v(t + \dt) &= v + a\,\dt + \tfrac12\dot{a}\,\dt^2 + \order{\dt^3} .
+\end{align*}
+The derivative $\dot{a}$ is not known, but $a(t + \dt) = a + \dot{a}\,\dt
++ \order{\dt^2}$, so $\dot{a}\,\dt = a(t + \dt) - a(t) + \order{\dt^2}$,
+and putting this into the velocity series,
+\begin{align*}
+   v(t + \dt) &= v + a\,\dt + \tfrac12\bigl[a(t + \dt) - a(t)\bigr]\dt +
+   \order{\dt^3}\\
+   &= v + \tfrac12\bigl[a(t) + a(t + \dt)\bigr]\dt + \order{\dt^3} :
+\end{align*}
+the velocity changes by the average of the accelerations at the two ends
+times the step. Dropping the error terms gives the velocity Verlet
+method\cite{Swope1982},
+\begin{equation}
+   x_{n+1} = x_n + \dt\,v_n + \tfrac12\dt^2a_n , \qquad
+   v_{n+1} = v_n + \tfrac12\dt\,(a_n + a_{n+1}) ,
+   \label{eq:in-vv}
+\end{equation}
+with $a_n = a(x_n)$. The method uses $a(x_{n+1})$ in place of the true
+$a(t + \dt)$; the two differ by order $\dt^3$, as $x_{n+1}$ and $x(t +
+\dt)$ do, which changes $v_{n+1}$ only at order $\dt^4$. Its local error
+is of order $\dt^3$ in both the position and the velocity. Written with the velocity at the middle of the
+step, $v_{n+\frac12} = v_n + \frac12\dt\,a_n$, it is three moves in turn:
+\begin{equation}
+   v_{n+\frac12} = v_n + \tfrac12\dt\,a(x_n) , \qquad
+   x_{n+1} = x_n + \dt\,v_{n+\frac12} , \qquad
+   v_{n+1} = v_{n+\frac12} + \tfrac12\dt\,a(x_{n+1}) ,
+   \label{eq:in-kdk}
+\end{equation}
+a half kick of the velocity, a drift of the position, and another half
+kick, in the language of \cref{sec:ha-symplectic}. The force at
+$x_{n+1}$ serves both the end of one step and the start of the next, so
+each step evaluates the forces once (\cref{fig:in-kdk}).
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.15,
+   arr/.style={-{Stealth[length=5pt]}, line width=0.8pt}]
+   \draw[black!40] (0,0) -- (8,0);
+   \foreach \x/\l in {0/{$t_n$}, 4/{$t_{n+1}$}, 8/{$t_{n+2}$}}
+      \draw[black!60] (\x,-0.12) -- (\x,0.12) node[below=7pt, black] {\l};
+   \foreach \s in {0,4} {
+      \draw[arr, accent] (\s+0.1,0.35) -- (\s+1.9,0.35)
+         node[midway, above] {\small kick $\tfrac12\delta t$};
+      \draw[arr, black!70] (\s+0.1,0.95) -- (\s+3.9,0.95)
+         node[midway, above] {\small drift $\delta t$};
+      \draw[arr, accent] (\s+2.1,0.35) -- (\s+3.9,0.35)
+         node[midway, above] {\small kick $\tfrac12\delta t$};
+   }
+   \foreach \x in {0,4,8}
+      \node[circle, fill=ochre, inner sep=1.4pt] at (\x,0) {};
+   \node[ochre, anchor=west] at (8.25,0.0) {\small forces};
+\end{tikzpicture}
+\caption{Velocity Verlet as a kick of the velocities over half a step, a
+drift of the positions over a whole step with the half-step velocities,
+and another half kick. The forces (dots) are evaluated once per step, at
+the new positions, and serve the last half kick of one step and the first
+of the next.}
+\label{fig:in-kdk}
+\end{figure}
+
+Started from the same first two positions, velocity Verlet and
+Störmer--Verlet produce the same positions after them. From
+\cref{eq:in-vv}, two successive steps give
+\begin{align*}
+   x_{n+1} - x_n &= \dt\,v_n + \tfrac12\dt^2a_n ,\\
+   x_n - x_{n-1} &= \dt\,v_{n-1} + \tfrac12\dt^2a_{n-1} ,
+\end{align*}
+and subtracting the second from the first,
+\begin{align*}
+   x_{n+1} - 2x_n + x_{n-1} &= \dt\,(v_n - v_{n-1})
+   + \tfrac12\dt^2(a_n - a_{n-1})\\
+   &= \tfrac12\dt^2(a_{n-1} + a_n) + \tfrac12\dt^2(a_n - a_{n-1})
+   && \text{$v_n - v_{n-1} = \tfrac12\dt\,(a_{n-1} + a_n)$}\\
+   &= \dt^2a_n && \text{the terms in $a_{n-1}$ cancel,}
+\end{align*}
+which is \cref{eq:in-stormer}. The leapfrog method, which keeps only the
+half-step velocities, $v_{n+\frac12} = v_{n-\frac12} + \dt\,a_n$ and $x_{n+1}
+= x_n + \dt\,v_{n+\frac12}$, gives the same positions too (\cref{ex:in-leapfrog}).
+Started consistently, the three are one method written three ways, and
+the tests of
+\texttt{mdlab} confirm that they agree to round-off.
+
+\subsection*{In code}
+
+The function \texttt{velocity\_verlet\_step} of \texttt{mdlab} takes one
+step for $N$ atoms:
+
+\begin{code}
+def velocity_verlet_step(
+    positions: ArrayLike,
+    velocities: ArrayLike,
+    masses: ArrayLike,
+    force: ForceFunction,
+    dt: float,
+    forces: ArrayLike | None = None,
+    force_to_accel: float = FORCE_TO_ACCEL,
+) -> tuple[NDArray, NDArray, NDArray]:
+    r = np.asarray(positions, dtype=float)
+    v = np.asarray(velocities, dtype=float)
+    m = np.asarray(masses, dtype=float)
+    f = force(r) if forces is None else np.asarray(forces, dtype=float)
+    v_half = v + 0.5 * dt * _accel(f, m, force_to_accel)
+    r_new = r + dt * v_half
+    f_new = force(r_new)
+    v_new = v_half + 0.5 * dt * _accel(f_new, m, force_to_accel)
+    return r_new, v_new, f_new
+\end{code}
+
+\noindent The helper \texttt{\_accel} divides each row of forces by its
+atom's mass and multiplies by the factor \texttt{FORCE\_TO\_ACCEL} of
+\cref{sec:ne-atoms}. \texttt{ForceFunction} names the kind of argument
+\texttt{force} is, a function that takes the positions and returns the
+forces. The argument \texttt{forces} may be left out, and then takes the
+value \texttt{None}, Python's word for nothing; the line that sets
+\texttt{f} then computes the forces at the starting positions, and
+otherwise uses those passed in. The forces returned are passed back in
+at the next step, so that after the first step \texttt{force} is called
+once per step.
+
+\subsection*{Its order, and a claim checked}
+
+In \cref{fig:in-orders}, the global error of velocity Verlet falls along a
+line of slope 2.00, so it is a method of order 2, and the error of one
+step along a line of slope 2.96: halving the step divides the error at a
+given time by 4 and the error of one step by about 8. The introduction of
+the TrajCast paper attributes the typical step of 0.5 to \SI{1.0}{\femto
+\second} of molecular dynamics to `the cubic scaling of the discretization
+error with the integration time step'\cite{Thiemann2026}. That is the
+local error of velocity Verlet, of order $\dt^3$, as derived here; over a
+fixed time it becomes the global error of order $\dt^2$.
+
+\begin{keyidea}
+Adding the Taylor series a step ahead and a step behind cancels the odd
+powers and gives the Störmer--Verlet method. Velocity Verlet, the same
+method with the velocities kept in step, is a half kick, a drift and a
+half kick, costs one force evaluation per step, and is of order 2, with a
+local error of order $\dt^3$.
+\end{keyidea}
+
+\notebook{09}{measure the order of each method}
+
+\begin{selfcheck}
+Show that velocity Verlet follows a body falling under a constant
+acceleration $-g$ exactly, whatever the step.
+\end{selfcheck}

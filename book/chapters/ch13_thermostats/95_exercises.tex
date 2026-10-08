@@ -1,0 +1,180 @@
+%=============================================================================!
+% 13.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:th-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:th-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~13 checks every numerical answer.
+
+\begin{exercise}[collisions in a step]
+\label{ex:th-collisions}
+Collisions come at the rate $\nu$, independently in every short interval.
+Show, by cutting a step $\dt$ into $n$ intervals each with the collision
+probability $\nu\dt/n$, that the probability of no collision in the step
+is $\mathrm{e}^{-\nu\dt}$. What is the probability of at least one for
+$\nu = \SI{1}{\per\pico\second}$ and $\dt = \SI{2}{\femto\second}$?
+\end{exercise}
+
+\begin{exercise}[one Berendsen step]
+\label{ex:th-lambda}
+Find $\lambda$ for a step of \SI{1}{\femto\second}, $\tau_{\mathrm T} =
+\SI{0.5}{\pico\second}$, a kinetic temperature of \SI{290}{\kelvin} and a
+target of \SI{300}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[the mean under Berendsen]
+\label{ex:th-mean}
+Show that a run under Berendsen coupling that has settled, so that the
+heat it receives averages to zero, has $\ens{T} = T_0$ exactly.
+\end{exercise}
+
+\begin{exercise}[how fast Langevin cools]
+\label{ex:th-langevin-tau}
+Show from \cref{eq:th-ou} that under Langevin dynamics the heat flows in
+at the rate $2\gamma(K_0 - K)$ when the forces are ignored for the moment,
+and hence that a liquid's temperature relaxes with the time constant
+$C_V/(2\gamma C_K)$. Give it for liquid argon at $\gamma =
+\SI{1}{\per\pico\second}$.
+\end{exercise}
+
+\begin{exercise}[how far the ice cube flies]
+\label{ex:th-ice}
+Under Berendsen coupling with $\tau_{\mathrm T} = \SI{0.1}{\pico\second}$
+and $\ens{(\delta T/T_0)^2} = \num{5e-4}$, by what factor does the kinetic energy of
+the centre of mass grow in \SI{1}{\nano\second}?
+\end{exercise}
+
+\begin{exercise}[sums of Gaussians]
+\label{ex:th-gauss-sum}
+Show that if $x$ and $y$ are independent and Gaussian with mean zero and
+variances $a$ and $b$, then $x + y$ is Gaussian with variance $a + b$,
+by finding the density of $s = x + y$, $\int\mathcal{P}(x)\mathcal{P}(s -
+x)\,\dd x$, and completing the square in $x$.
+\end{exercise}
+
+\begin{exercise}[the variance settles]
+\label{ex:th-ou-variance}
+Show from \cref{eq:th-ou} that the variance of $v$ after one step is
+$c^2$ times the variance before plus $(\sigma^2/2\gamma)(1 - c^2)$, and
+that $\sigma^2/2\gamma$ is the only variance that a step leaves unchanged.
+\end{exercise}
+
+\begin{exercise}[the noise in a step]
+\label{ex:th-noise}
+For argon at \SI{135}{\kelvin}, $\gamma = \SI{1}{\per\pico\second}$ and
+steps of \SI{10}{\femto\second}, find the standard deviation of the
+random part of one O step, $\sqrt{(1 - c^2)\kB T/m}$, in
+\si{\angstrom\per\femto\second}.
+\end{exercise}
+
+\begin{exercise}[no friction, no noise]
+\label{ex:th-baoab-vv}
+Show that BAOAB with $\gamma = 0$ is velocity Verlet.
+\end{exercise}
+
+\begin{exercise}[the outward flux]
+\label{ex:th-flux}
+Show that
+\begin{equation*}
+   \int_0^\infty v\,\mathrm{e}^{-mv^2/2\kB T}\dd v\Big/\sqrt{2\pi\kB T/m}
+   = \sqrt{\kB T/2\pi m} ,
+\end{equation*}
+and find it for lithium at \SI{1000}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[transition-state theory in one dimension]
+\label{ex:th-tst-1d}
+For an atom in one dimension in a well that is harmonic near its bottom,
+$U \approx \frac12m\omega^2x^2$, with a barrier $U_{\mathrm b}$ on one
+side, show that the one-dimensional form of \cref{eq:th-tst} gives
+$k_{\mathrm{TST}} \approx (\omega/2\pi)\,\mathrm{e}^{-U_{\mathrm b}/\kB
+T}$ when $U_{\mathrm b} \gg \kB T$. Evaluate it for the lithium atom's
+period of \SI{170.3}{\femto\second} and $U_{\mathrm b} =
+\SI{0.3}{\electronvolt}$ at \SI{300}{\kelvin}, in hops per second.
+\end{exercise}
+
+\begin{exercise}[the friction's own swing]
+\label{ex:th-nh-swing}
+Ignoring the forces, so that only the friction changes $K$, show that
+small departures $\delta K$ of $K$ from $K_0 = \frac12N_{\mathrm f}\kB T_0$
+under \cref{eq:th-nh}, with $Q = N_{\mathrm f}\kB T_0\tau_{\mathrm T}^2$,
+obey
+\begin{equation*}
+   \frac{\dd^2\,\delta K}{\dd t^2} = -\frac{2}{\tau_{\mathrm T}^2}\,\delta K .
+\end{equation*}
+What is the period for $\tau_{\mathrm T} = \SI{100}{\femto\second}$?
+\end{exercise}
+
+\begin{exercise}[from Nosé to Hoover]
+\label{ex:th-nose}
+Write Hamilton's equations for $H_{\mathrm N}$ of \cref{sec:th-nose} in
+its time $t'$, and show that with $\vb{p}_i = \tilde{\vb{p}}_i/s$, $\dd t
+= \dd t'/s$ and $\xi = p_s/Q$ they become \cref{eq:th-nh}.
+\end{exercise}
+
+\begin{exercise}[the divergence]
+\label{ex:th-divergence}
+For one atom in three dimensions under \cref{eq:th-nh}, with the
+coordinates $x, y, z, p_x, p_y, p_z, \xi$, find the divergence of the
+flow term by term.
+\end{exercise}
+
+\begin{exercise}[CSVR on average]
+\label{ex:th-csvr-mean}
+Show that the mean over the noise of \cref{eq:th-csvr} gives $\ens{K'} -
+K = (1 - c_1)(K_0 - K)$.
+\end{exercise}
+
+\begin{exercise}[a sum of squares from a gamma number]
+\label{ex:th-chi}
+Using \cref{eq:sm-gamma} with $\kB T = 1$, show that the sum of the
+squares of $n$ independent normal numbers is twice a number with the
+gamma distribution of shape $n/2$.
+\end{exercise}
+
+\begin{exercise}[TrajCast's coupling]
+\label{ex:th-trajcast}
+TrajCast's water runs use a stride of \SI{5}{\femto\second}. What is
+$\tau_{\mathrm T}$ in femtoseconds with no time constant given, and what
+is $c_1$? What is $\tau_{\mathrm T}$ for paracetamol, stride
+\SI{7}{\femto\second}, at ten strides?
+\end{exercise}
+
+\begin{exercise}[the wandering centre]
+\label{ex:th-com}
+Under Langevin dynamics one component $v_{\mathrm{com}}$ of the velocity
+of the centre of mass of $N$ atoms of total mass $M$ follows
+\cref{eq:th-ou} with the same $\gamma$ and stationary variance $\kB T/M$.
+Show that its displacement $x_{\mathrm{com}}$ along one axis over a long
+time $t$ has $\ens{x_{\mathrm{com}}^2} \approx 2Dt$ with $D = \kB
+T/(M\gamma)$, using $\ens{v_{\mathrm{com}}(t_1)v_{\mathrm{com}}(t_2)} =
+(\kB T/M)\mathrm{e}^{-\gamma\lvert t_1 - t_2\rvert}$. Evaluate $D$ for 256 argon atoms at \SI{135}{\kelvin} and
+$\gamma = \SI{0.1}{\per\pico\second}$.
+\end{exercise}
+
+\begin{exercise}[the wrong target for water]
+\label{ex:th-water}
+A thermostat targeting \SI{300}{\kelvin} counts three freedoms for each of
+the 192 atoms of 64 rigid water molecules, $3N = 576$, although their
+distances are held and their centre of mass is held still. What temperature does the
+water reach?
+\end{exercise}
+
+\begin{exercise}[a referee's objection]
+\label{ex:th-referee}
+A study reports the heat capacity of a liquid from the fluctuations of its
+energy, \cref{eq:sm-fluctuation}, in a run under Berendsen coupling with
+$\tau_{\mathrm T} = \SI{0.1}{\pico\second}$. What is wrong, which way is
+the result wrong, and which thermostat would fix it?
+\end{exercise}
+
+\begin{exercise}[a diagnosis]
+\label{ex:th-diagnose}
+A run of 256 argon atoms under Langevin dynamics with $\gamma =
+\SI{0.1}{\per\pico\second}$ reports a diffusion coefficient 1.2 times
+that of a run at fixed energy, although friction can only slow
+diffusion. What explains it, and what check settles it?
+\end{exercise}

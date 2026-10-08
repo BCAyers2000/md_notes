@@ -1,0 +1,172 @@
+%=============================================================================!
+% 1.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:motion}: Motion}
+\label{sec:mo-solutions}
+
+\solutionto{ex:mo-dimensions}We write $\mathsf{L}$ for length and
+$\mathsf{T}$ for time, and compare the two sides of each equation.
+\begin{itemize}
+\item[(i)] The left side is a length, $\mathsf{L}$. On the right, $v_0
+   t^2$ has dimension $\mathsf{L}\mathsf{T}^{-1}\times\mathsf{T}^2 =
+   \mathsf{L}\mathsf{T}$. The two differ, so (i) does not balance.
+\item[(ii)] $v^2$ and $v_0^2$ have dimension $\mathsf{L}^2\mathsf{T}^{-2}$,
+   and so does $2gx$, since $\mathsf{L}\mathsf{T}^{-2}\times\mathsf{L} =
+   \mathsf{L}^2\mathsf{T}^{-2}$; the number 2 has no dimension. Every
+   term agrees, so (ii) balances. It is \cref{eq:mo-v2} with $a = -g$
+   and $x_0 = 0$.
+\item[(iii)] Inside the root, $x/g$ has dimension
+   $\mathsf{L}/(\mathsf{L}\mathsf{T}^{-2}) = \mathsf{T}^2$, and the square
+   root of $\mathsf{T}^2$ is $\mathsf{T}$, matching the left side, so
+   (iii) balances. It is the time to fall a height $x$ from rest.
+\item[(iv)] The right side fails twice. A function such as the
+   exponential, built from a series of powers $1 + s + s^2/2 + \dotsb$,
+   can only take a pure number $s$, since the terms of the series would
+   otherwise have different dimensions; but $gt$ has dimension
+   $\mathsf{L}\mathsf{T}^{-2}\times\mathsf{T} = \mathsf{L}\mathsf{T}^{-1}$.
+   And even with a pure number in the exponent, $v_0$ times a number is a
+   velocity, not a length. So (iv) does not balance.
+\end{itemize}
+
+\solutionto{ex:mo-throw}By \cref{eq:mo-constant} with $a = -g$, the
+velocity is $v = v_0 - gt$. The ball reaches the top when $v = 0$, so
+\begin{equation*}
+   t_{\mathrm{top}} = \frac{v_0}{g} = \frac{15}{9.80665}
+   = \SI{1.530}{\second} .
+\end{equation*}
+\Cref{eq:mo-v2} with $v = 0$, $x_0 = 0$ and $a = -g$ gives $0 = v_0^2 -
+2gx$, so the greatest height is
+\begin{equation*}
+   x_{\mathrm{top}} = \frac{v_0^2}{2g} = \frac{15^2}{2\times9.80665}
+   = \SI{11.47}{\metre} .
+\end{equation*}
+Back at the hand $x = 0$ again, and \cref{eq:mo-v2} gives $v^2 = v_0^2$,
+so $v = -v_0$: the ball returns at \SI{15}{\metre\per\second}, moving
+downwards.
+
+\solutionto{ex:mo-distance}The object is at rest when $v = 0$, that is
+when $3t^2 = 12$, so $t^2 = 4$ and, since $t \ge 0$, $t =
+\SI{2}{\second}$. The acceleration is the derivative of the velocity, $a =
+\dd v/\dd t = 6t$, which at $t = 2$ is \SI{12}{\metre\per\second\squared}.
+The displacement is the integral of the velocity, by
+\cref{eq:mo-integrals}. The function $t^3 - 12t$ has derivative $3t^2 -
+12$, so
+\begin{equation*}
+   \int_0^3 (3t^2 - 12)\,\dd t = \bigl[t^3 - 12t\bigr]_0^3
+   = (27 - 36) - 0 = \SI{-9}{\metre} .
+\end{equation*}
+The object ends \SI{9}{\metre} behind where it started. For the distance
+travelled, the velocity is negative from $t = 0$ to $t = 2$ and positive
+from $t = 2$ to $t = 3$, so the two parts are integrated separately and
+both counted as positive:
+\begin{align*}
+   \int_0^2 \lvert v\rvert\,\dd t &= -\bigl[t^3 - 12t\bigr]_0^2
+      = -(8 - 24) = \SI{16}{\metre} ,\\
+   \int_2^3 \lvert v\rvert\,\dd t &= \bigl[t^3 - 12t\bigr]_2^3
+      = (27 - 36) - (8 - 24) = \SI{7}{\metre} .
+\end{align*}
+It travels $16 + 7 = \SI{23}{\metre}$ in all: \SI{16}{\metre} backwards,
+then \SI{7}{\metre} forwards, ending \SI{9}{\metre} behind its start.
+
+\solutionto{ex:mo-radians}A whole turn is $2\pi$ radians or \ang{360}, so
+one radian is $180/\pi$ degrees. Hence $1.1 \times 180/\pi = \ang{63.03}$,
+and $\ang{135} = 135\times\pi/180 = 3\pi/4 = \SI{2.356}{\radian}$. The arc
+cut off by an angle $\theta$ in radians on a circle of radius $R$ is
+$R\theta$, by the definition of the radian, so the arc is $0.35 \times
+2.356 = \SI{0.825}{\metre}$.
+
+\solutionto{ex:mo-identity}Using $\cos^2\theta = 1 - \sin^2\theta$ to
+replace the cosine in the double-angle formula,
+\begin{align*}
+   \cos 2\theta &= \cos^2\theta - \sin^2\theta\\
+   &= (1 - \sin^2\theta) - \sin^2\theta
+      && \text{since $\cos^2\theta + \sin^2\theta = 1$}\\
+   &= 1 - 2\sin^2\theta .
+\end{align*}
+Rearranging, $2\sin^2\theta = 1 - \cos 2\theta$, so $\sin^2\theta =
+\tfrac12(1 - \cos 2\theta)$. With $\theta = \pi/8$, $2\theta = \pi/4$,
+whose cosine is $1/\sqrt2$ (\cref{sec:mo-trig}), so
+\begin{align*}
+   \sin^2\frac{\pi}{8} = \frac12\Bigl(1 - \frac{1}{\sqrt2}\Bigr)
+   &= \frac12 - \frac{1}{2\sqrt2}\\
+   &= \frac12 - \frac{\sqrt2}{4}
+      && \text{multiplying top and bottom of $1/(2\sqrt2)$ by $\sqrt2$}\\
+   &= \frac{2 - \sqrt2}{4}
+      && \text{writing $\tfrac12$ as $\tfrac24$.}
+\end{align*}
+The angle $\pi/8$ lies in the first quarter turn, where the sine is
+positive, so we take the positive root, $\sin(\pi/8) = \tfrac12\sqrt{2 -
+\sqrt2} = 0.3827$.
+
+\solutionto{ex:mo-sinusoid}Comparing with $A\sin(\omega t + \phi)$ of
+\cref{eq:mo-sinusoid}, $A = \SI{0.2}{\metre}$, $\omega =
+\SI{5}{\radian\per\second}$ and $\phi = \pi/6$. The period is $2\pi/\omega
+= 2\pi/5 = \SI{1.257}{\second}$, and the frequency is its inverse,
+$5/2\pi = \SI{0.796}{\hertz}$. The velocity is $A\omega\cos(\omega t +
+\phi)$, whose largest size is $A\omega = 0.2\times5 =
+\SI{1.0}{\metre\per\second}$; the acceleration is $-A\omega^2\sin(\omega t
++ \phi)$, whose largest size is $A\omega^2 = 0.2\times25 =
+\SI{5.0}{\metre\per\second\squared}$. The coordinate is greatest when the
+sine equals 1, which first happens after $t = 0$ when $5t + \pi/6 =
+\pi/2$, so $5t = \pi/3$ and $t = \pi/15 = \SI{0.209}{\second}$.
+
+\solutionto{ex:mo-range}The sine never exceeds 1, so $d = v_0^2\sin
+2\alpha/g$ is largest when $\sin 2\alpha = 1$, that is when $2\alpha =
+\pi/2$, or $\alpha = \ang{45}$. For a range of \SI{10}{\metre} at
+\SI{12}{\metre\per\second} we need
+\begin{equation*}
+   \sin 2\alpha = \frac{gd}{v_0^2} = \frac{9.80665\times10}{12^2} = 0.6810 .
+\end{equation*}
+One angle with this sine is $2\alpha = \arcsin 0.6810 =
+\SI{0.7492}{\radian} = \ang{42.92}$. Since $0 < \alpha < \ang{90}$,
+$2\alpha$ lies between \ang{0} and \ang{180}, where exactly two angles
+have this sine (\cref{sec:mo-trig}), and by $\sin(\pi - \theta) =
+\sin\theta$ the other is $2\alpha = \ang{180} - \ang{42.92} = \ang{137.08}$. Halving, the two
+launch angles are $\alpha = \ang{21.46}$ and $\alpha = \ang{68.54}$. They
+add to \ang{90}: a low, fast throw and a high, slow one land at the same
+place.
+
+\solutionto{ex:mo-orbit}For uniform motion on a circle the speed is $v =
+R\omega$, so $\omega = v/R = 0.02/1.0 = \SI{0.02}{\radian\per
+\femto\second}$. By \cref{eq:mo-circle} the acceleration has size
+$R\omega^2 = v^2/R = 0.02^2/1.0 = \SI{4.0e-4}{\angstrom\per\femto\second
+\squared}$, directed at the centre. One turn is a distance $2\pi R$ at
+speed $v$, so the period is $2\pi R/v = 2\pi\times1.0/0.02 =
+\SI{314.2}{\femto\second}$.
+
+\solutionto{ex:mo-taylor}The cosine series is $\cos y = 1 - y^2/2! +
+y^4/4! - \dotsb$. Keeping the terms up to $y^2$ with $y = 0.1$,
+\begin{equation*}
+   \cos 0.1 \approx 1 - \frac{0.1^2}{2} = 1 - 0.005 = 0.995 .
+\end{equation*}
+The cosine series has no $y^3$ term, so the first term left out is
+$y^4/4! = 0.1^4/24 = \num{4.167e-6}$, which
+estimates the error. The exact value is $\cos 0.1 = 0.995\,004\,165$, so
+the true error is \num{4.165e-6}, within a fraction of a per cent of the
+estimate; the next term, $y^6/720$, is thousands of times smaller again.
+
+\solutionto{ex:mo-sampling}The forward difference is $[x(t + \tau) -
+x(t)]/\tau$. The Taylor series $x(t + \tau) = x + \dot{x}\tau + \tfrac12
+\ddot{x}\tau^2 + \order{\tau^3}$ turns it into
+\begin{equation*}
+   \frac{x(t+\tau) - x(t)}{\tau} = \dot{x} + \tfrac12\ddot{x}\,\tau
+   + \order{\tau^2} ,
+\end{equation*}
+so its error is $\tfrac12\ddot{x}\,\tau$ to leading order. For $x =
+A\sin\omega t$, $\ddot{x} = -A\omega^2\sin\omega t$, whose largest size is
+$A\omega^2$, so the largest error is $\tfrac12 A\omega^2\tau$. Dividing by
+the largest speed $A\omega$ gives the relative error $\omega\tau/2$.
+
+For the central difference, \cref{sec:mo-atoms} showed that every
+recovered velocity is too small by the factor $\sin(\omega\tau)/
+(\omega\tau)$, a relative error of about $(\omega\tau)^2/6$. Requiring
+\SI{1}{\percent},
+\begin{equation*}
+   \frac{(\omega\tau)^2}{6} \le 0.01
+   \quad\Longrightarrow\quad
+   \omega\tau \le \sqrt{0.06} = 0.245 .
+\end{equation*}
+A period of \SI{20}{\femto\second} gives $\omega = 2\pi/20 =
+\SI{0.3142}{\radian\per\femto\second}$, so $\tau \le 0.245/0.3142 =
+\SI{0.78}{\femto\second}$. Solving $1 - \sin(\omega\tau)/(\omega\tau) =
+0.01$ exactly, as Notebook~01 does, changes only the third figure.

@@ -1,0 +1,130 @@
+%=============================================================================!
+% 18.5  GRADIENT DESCENT                                                      !
+%=============================================================================!
+\section{Gradient descent}
+\label{sec:lo-descent}
+
+A walker caught in fog on a hillside, wanting the valley floor, feels the
+slope under their feet and steps downhill, then feels again. Short steps
+are safe but slow; a long step on a steep slope can carry the walker
+across a narrow valley and up the far side, higher than they started,
+and a run of such steps climbs out of the valley altogether. The normal
+equations solved the fits so far in one calculation, but most models,
+the networks of planned Chapter~19 among them, have losses that no formula
+minimises, and they are walked down instead.
+
+\subsection*{The step and its limit}
+
+\emph{Gradient descent} repeats the step
+\begin{equation}
+   \vb{w} \leftarrow \vb{w} - \eta\,\grad L(\vb{w}) ,
+   \label{eq:lo-descent}
+\end{equation}
+moving the weights against the gradient, the direction in which the loss
+falls fastest (\cref{sec:en-gradient}), by an amount set by the
+\emph{learning rate} $\eta$. Near a minimum with positive curvature in
+every direction, a smooth loss is approximated to second order by a
+quadratic bowl, just as a potential energy is near a stable minimum
+(\cref{sec:os-modes}). In this approximation, with $\vb{e} = \vb{w} - \vb{w}^\ast$ the
+departure from the minimum $\vb{w}^\ast$ and $A$ the matrix of second
+derivatives there, the Hessian,
+\begin{equation*}
+   L = L^\ast + \tfrac12\vb{e}^{\mathsf T}A\vb{e} , \qquad
+   \grad L = A\vb{e} .
+\end{equation*}
+For this quadratic, a step changes the departure by
+\begin{align*}
+   \vb{e} &\leftarrow \vb{e} - \eta A\vb{e} = (I - \eta A)\,\vb{e}
+      && \text{subtracting $\vb{w}^\ast$ from both sides of the step}\\
+   c_k &\leftarrow (1 - \eta\lambda_k)\,c_k
+      && \text{along each eigenvector of $A$, of eigenvalue $\lambda_k$,}
+\end{align*}
+the components $c_k$ of $\vb{e}$ along the eigenvectors changing
+independently, as the normal modes of a vibrating molecule do. Each
+shrinks only if $\lvert1 - \eta\lambda_k\rvert < 1$, that is $0 < \eta <
+2/\lambda_k$, and the steepest direction, with the largest eigenvalue
+$\lambda_{\max}$, sets the limit:
+\begin{equation}
+   \eta < \frac{2}{\lambda_{\max}} .
+   \label{eq:lo-limit}
+\end{equation}
+This is the stability limit of an integrator in another guise
+(\cref{sec:in-stability}): the fastest vibration of a molecule bounds the
+time step, and the steepest direction of a loss bounds the learning rate.
+Between $1/\lambda_{\max}$ and $2/\lambda_{\max}$ the factor $1 -
+\eta\lambda_{\max}$ is negative, and the steep component flips sign at
+every step while it shrinks, the zig-zag of the walker across the valley.
+
+\Cref{fig:lo-descent} walks a loss of two weights whose Hessian has the
+eigenvalues 1 and 10, so $2/\lambda_{\max} = 0.2$. At $\eta = 0.05$ the
+factors are 0.95 and 0.50, and the shallow direction crawls; at 0.18 they
+are 0.82 and $-0.80$, and the path zig-zags down the valley; at 0.205
+the steep factor is $-1.05$, and the path climbs out. The best fixed rate
+makes the slowest factor as small as it can be, which it is when the
+two extreme factors are equal and opposite, $1 - \eta\lambda_{\min} =
+-(1 - \eta\lambda_{\max})$:
+\begin{equation*}
+   \eta = \frac{2}{\lambda_{\min} + \lambda_{\max}} , \qquad
+   1 - \eta\lambda_{\min} = \frac{\lambda_{\max} - \lambda_{\min}}
+   {\lambda_{\max} + \lambda_{\min}} = \frac{\kappa - 1}{\kappa + 1} ,
+\end{equation*}
+with $\kappa = \lambda_{\max}/\lambda_{\min}$ the \emph{condition number}
+of the Hessian. Here $\eta = 0.182$, the factor is 0.818, and since the
+loss falls as the square of the factor, it falls a millionfold in
+$\ln10^6/(-2\ln0.818) = 34$ steps.
+
+\subsection*{The condition number decides}
+
+For a large condition number the factor is $1 - 2/(\kappa + 1)$, and the
+steps for a millionfold fall grow in proportion to $\kappa$, about
+$\kappa\ln10^6/4$. The least-squares loss has the Hessian $2X^{\mathsf
+T}X$, and the polynomial fits of \cref{sec:lo-basis} are badly
+conditioned: $X^{\mathsf T}X$ has $\kappa = 74$ for degree 3 in the scaled
+distance, \num{4.6e6} for degree 8 and \num{5.1e16} for degree 14, and
+for degree 8 in $r$ itself \num{3.3e26}, beyond what the 16 digits of
+double precision can even resolve. Gradient descent at its best fixed rate
+would need about 260 steps for degree 3 and \num{1.6e7} for degree 8.
+Scaling the variable, as \cref{sec:lo-basis} did, is the first remedy;
+the solvers of the normal equations are another; and the optimisers of
+\cref{sec:lo-momentum} are a third, for the losses that have no normal
+equations.
+
+A loss is \emph{convex} if the straight line between any two points of
+its graph lies on or above the graph; a quadratic with a Hessian whose
+eigenvalues are all positive or zero is convex, and the least-squares
+loss, with Hessian $2X^{\mathsf T}X$, is one. A convex loss has no local
+minima besides its least value, so gradient descent at a stable rate
+reaches it from any start. The losses of neural networks are not convex,
+and where gradient descent ends then depends on where it began
+(planned Chapter~19).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/descent}
+\caption{Gradient descent on a quadratic loss of two weights whose
+Hessian has the eigenvalues 1 and 10 along axes turned by \ang{30}. (a)
+The paths at learning rates of 0.05, 0.18 and 0.205 over the contours of
+the loss (first 25 steps, 9 for the rate that diverges). (b) The loss
+against the step for rates of 0.05, 0.1, 0.18 and 0.205, with the term of
+each rate's slowest direction, $\frac12\lambda c^2(1 - \eta\lambda)^{2t}$
+for $c$ the start's component along it (dashed).}
+\label{fig:lo-descent}
+\end{figure}
+
+\begin{keyidea}
+Gradient descent steps against the gradient by the learning rate $\eta$.
+Near the minimum each eigen-direction of the Hessian shrinks by $1 -
+\eta\lambda$ a step, so $\eta < 2/\lambda_{\max}$, the stability limit of
+an integrator again; at the best fixed rate the slowest direction
+shrinks by $(\kappa - 1)/(\kappa + 1)$, and the condition number $\kappa$
+sets how many steps are needed. A convex loss has one least value, which
+descent at a stable rate reaches.
+\end{keyidea}
+
+\notebook{18}{walk down a valley at different rates and condition numbers}
+
+\begin{selfcheck}
+A loss has a Hessian with eigenvalues 0.5 and 50. What is the largest
+stable learning rate, and what factor does the slow direction shrink by
+at the best fixed rate?
+\end{selfcheck}

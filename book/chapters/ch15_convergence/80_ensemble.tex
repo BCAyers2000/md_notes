@@ -1,0 +1,133 @@
+%=============================================================================!
+% 15.8  DOES THE RUN SAMPLE ITS ENSEMBLE?                                     !
+%=============================================================================!
+\section{Does the run sample its ensemble?}
+\label{sec:cv-ensemble}
+
+An error bar says how well a run knows its own averages. It is silent on
+whether they belong to the ensemble the run claims: Chapter~13 found
+thermostats
+that hold the mean temperature and get the spread of the energy wrong
+(\cref{sec:th-berendsen}). This section derives a test that needs no
+knowledge of the system, runs at two temperatures and the canonical
+density alone\cite{Shirts2013}, and sets out the resampling that gives its
+error bar.
+
+\subsection*{The ratio of two densities}
+
+In the canonical ensemble the probability of a microstate of energy $E$
+is $\mathrm{e}^{-\beta E}/Z$ (\cref{sec:sm-canonical}). The microstates
+with energies between $E$ and $E + \delta E$ number $\Omega(E)$, the
+volume of that shell (\cref{sec:sm-micro}), and grouping them, as
+\cref{sec:sm-kinetic} grouped the velocities by their kinetic energy,
+gives the density of $E$ at the inverse temperature $\beta$, written
+$\mathcal{P}(E \mid \beta)$:
+\begin{equation*}
+   \mathcal{P}(E \mid \beta) = \frac{\Omega(E)\,\mathrm{e}^{-\beta E}}
+   {Z(\beta)\,\delta E} .
+\end{equation*}
+No run knows $\Omega(E)$. At two temperatures the ratio of the densities
+removes it, with $\delta E$:
+\begin{equation*}
+   \frac{\mathcal{P}(E \mid \beta_2)}{\mathcal{P}(E \mid \beta_1)}
+   = \frac{Z(\beta_1)}{Z(\beta_2)}\,\mathrm{e}^{-(\beta_2 - \beta_1)E} ,
+   \qquad
+   \ln\frac{\mathcal{P}(E \mid \beta_2)}{\mathcal{P}(E \mid \beta_1)}
+   = \ln\frac{Z(\beta_1)}{Z(\beta_2)} + (\beta_1 - \beta_2)E .
+\end{equation*}
+The logarithm of the ratio of the two histograms of the energy must be a
+straight line in $E$ whose slope is $\beta_1 - \beta_2$, known in advance,
+whatever the system. The intercept, which holds the unknown $Z$, does not
+matter. For 130 and \SI{140}{\kelvin} the slope is
+\SI{6.376}{\per\electronvolt}. The test needs the two histograms to
+overlap. With $C_V = 2.347\,N\kB$ for the liquid (\cref{sec:sm-kinetic}),
+the mean energy rises by about $C_V\Delta T = \SI{0.518}{\electronvolt}$
+(\SI{0.520}{\electronvolt} between the runs below), about twice the
+canonical spread $\sqrt{\kB T^2C_V}$, \SI{0.275}{\electronvolt} at
+\SI{130}{\kelvin} and \SI{0.296}{\electronvolt} at \SI{140}{\kelvin}
+(\cref{eq:sm-fluctuation}), so the two share a range of energies. On
+100\,000 independent energies at each temperature drawn from a gamma
+density (\cref{sec:sm-kinetic}), which has the form $\Omega(E)\mathrm{e}^{-\beta
+E}$ with $\Omega \propto E^{399}$, a shape chosen only so that the two
+densities overlap, the fitted slope is $(6.350 \pm
+0.030)$\,\si{\per\electronvolt}, its error from the bootstrap below, 0.9
+errors from the required value.
+
+\subsection*{The bootstrap}
+
+The slope is fitted to histograms, and its error is not that of a mean.
+Efron's bootstrap finds the error of any quantity computed from samples
+by recomputing it on new sets, each drawn from the samples themselves
+with replacement and each as large as the original set, and taking the
+spread of the results\cite{Efron1979}. Drawing single samples would destroy the memory of
+a run and give too small an error; drawing whole blocks, longer than the
+memory, keeps it within each block, as in \cref{sec:cv-blocks}, and makes
+the resampled runs nearly as correlated as the real one, losing the memory
+only at the joins between blocks\cite{Kunsch1989} (\texttt{mdlab} draws
+non-overlapping blocks, a simpler variant of Künsch's moving blocks). The
+function \texttt{block\_bootstrap} of \texttt{mdlab.analysis.stats} does
+this for several runs at once, resampling each independently. On the
+\SI{2}{\nano\second} run, blocks of \SI{20}{\pico\second} give the error
+of the mean potential energy as \SI{0.0045}{\electronvolt}, against
+\SI{0.0047}{\electronvolt} from $g$. \Cref{sec:cv-observables} used the
+same resampling for the error of a heat capacity, a variance rather than a
+mean.
+
+\subsection*{Two thermostats}
+
+\Cref{fig:cv-ensemble} runs the liquid for \SI{1}{\nano\second} at 130 and
+\SI{140}{\kelvin} under CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$,
+and under Berendsen coupling with $\tau_{\mathrm T} = \SI{0.1}{\pico
+\second}$. After the start found from each run's total energy, the mean
+energies agree within 0.7 of their combined errors: $-8.6409$ and
+$-8.6306$\,\si{\electronvolt} at \SI{130}{\kelvin}, $-8.1209$ and
+$-8.1118$\,\si{\electronvolt} at \SI{140}{\kelvin}. The spreads do not:
+0.273 and \SI{0.287}{\electronvolt} under CSVR, close to the canonical 0.275
+and \SI{0.296}{\electronvolt}, and 0.112 and
+\SI{0.118}{\electronvolt} under Berendsen coupling. The slope of the
+logarithm of the ratio, with its error from the block bootstrap with
+blocks of \SI{20}{\pico\second}, is $(6.72 \pm 0.41)$\,\si{\per\electronvolt}
+under CSVR, $1.05 \pm 0.06$ times the required value and 0.8 errors from
+it: CSVR passes. Under Berendsen coupling it is $(35.1 \pm
+3.5)$\,\si{\per\electronvolt}, 5.5 times the required value and 8.2 errors
+from it. For two Gaussian densities of the same spread $\sigma_E$ whose
+means differ by $\Delta\bar E$, the logarithm of the ratio, $[(E - \bar
+E_1)^2 - (E - \bar E_2)^2]/2\sigma_E^2$, is a straight line of slope
+$\Delta\bar E/\sigma_E^2$. The canonical $\Delta\bar E = C_V\Delta T$ and
+$\sigma_E^2 = \kB T^2C_V$ make it $\Delta T/\kB T^2 \approx \beta_1 -
+\beta_2$; Berendsen coupling keeps $\Delta\bar E$ and narrows $\sigma_E$ by
+a factor of 2.43, which makes the line $2.43^2 = 5.9$ times too steep, close
+to the 5.5 found. A thermostat that gives the right mean and the
+wrong spread fails this test at once, whatever quantity was to be
+measured; the physical-validation package of Merz and Shirts carries out
+this test and others for the common simulation codes\cite{Merz2018}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/ensemble}
+\caption{Does the run sample its ensemble? The liquid for
+\SI{1}{\nano\second} at 130 (light) and \SI{140}{\kelvin} (dark), under
+CSVR (teal) and Berendsen coupling with $\tau_{\mathrm T} =
+\SI{0.1}{\pico\second}$ (ochre). (a) The densities of the total energy.
+(b) The logarithm of the ratio of the densities at the two temperatures,
+against the slope $\beta_{130} - \beta_{140}$ that the canonical ensemble
+requires (dashed).}
+\label{fig:cv-ensemble}
+\end{figure}
+
+\begin{keyidea}
+In the canonical ensemble $\ln[\mathcal{P}(E \mid \beta_2)/\mathcal{P}(E
+\mid \beta_1)]$ is a straight line in $E$ with the slope $\beta_1 -
+\beta_2$, whatever the system; runs at two nearby temperatures test it.
+The error of a fitted slope, or of any quantity that is not a mean, comes
+from the block bootstrap, which resamples blocks longer than the memory,
+recomputes the quantity and takes the spread of the results.
+\end{keyidea}
+
+\notebook{15}{test a thermostat at two temperatures}
+
+\begin{selfcheck}
+Why does the test not need $\Omega(E)$, and what would a run at the wrong
+temperature, \SI{132}{\kelvin} where \SI{130}{\kelvin} was claimed, do to
+the slope?
+\end{selfcheck}

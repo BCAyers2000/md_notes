@@ -1,0 +1,151 @@
+%=============================================================================!
+% 12.3  COUNTING STATES AT FIXED ENERGY                                       !
+%=============================================================================!
+\section{Counting states at fixed energy}
+\label{sec:sm-micro}
+
+A system that exchanges nothing with its surroundings keeps its energy,
+as the runs of Chapters~9 to~11 did. This section gives the ensemble of
+such a system, defines its entropy by counting its states, and finds that
+temperature is what two systems sharing energy come to have in common.
+
+\subsection*{The microcanonical ensemble}
+
+Of all the clouds $\mathcal{P} = f(H)$ that the motion leaves unchanged, an
+isolated system with energy $E$ calls for the one spread evenly over the
+states of that energy, those with $H$ between $E$ and $E + \delta E$ for a
+small $\delta E$, and zero elsewhere. If the system is ergodic, its
+trajectory spends equal times near equal volumes of that shell, so the
+even spread is the one its time averages sample. This is the
+microcanonical ensemble. The volume of the shell, $\Omega(E)$, measured in
+some fixed unit of phase-space volume, whose choice adds only a constant
+to $S$,
+counts the microstates of energy $E$ (it is not the bold matrix
+$\boldsymbol\Omega$ of \cref{sec:in-reversal}), and Boltzmann's entropy is
+\begin{equation}
+   S = \kB\ln\Omega ,
+   \label{eq:sm-entropy}
+\end{equation}
+with Boltzmann's constant $\kB = \SI{8.617333262e-5}{\electronvolt\per
+\kelvin}$, the value SciPy gives. Taking the logarithm turns the counts of
+two independent systems, which multiply, into entropies, which add.
+
+\subsection*{Sharing energy}
+
+Two systems placed in contact exchange energy, the total $E = E_1 + E_2$
+staying fixed. Every microstate of the first combines with every
+microstate of the second, so the pair has $\Omega_1(E_1)\,\Omega_2(E -
+E_1)$ microstates in which the first holds $E_1$, and in the
+microcanonical ensemble of the pair the probability of that division is
+proportional to this number. The most probable division makes it largest,
+or its logarithm, $\ln\Omega_1(E_1) + \ln\Omega_2(E - E_1)$, largest, which is
+the same division since the logarithm rises whenever its argument does;
+this needs its derivative with respect to $E_1$ to vanish:
+\begin{equation*}
+   \frac{\dd\ln\Omega_1}{\dd E_1} - \frac{\dd\ln\Omega_2}{\dd E_2} = 0 ,
+\end{equation*}
+by the chain rule, with $E_2 = E - E_1$ and $\dd E_2/\dd E_1 = -1$. The
+two systems end where each has the same value of $\dd\ln\Omega/\dd E$,
+which is therefore what they have in common in equilibrium. We call it
+$1/\kB T$:
+\begin{equation}
+   \frac{1}{\kB T} = \frac{\dd\ln\Omega}{\dd E} , \qquad\text{or}\qquad
+   \frac1T = \frac{\dd S}{\dd E} ,
+   \label{eq:sm-temperature}
+\end{equation}
+which defines the temperature $T$, in kelvin. When the first system's
+$\dd\ln\Omega/\dd E$ is the larger, moving energy into it raises the
+product, so energy flows from the system with the smaller $1/T$, the
+hotter one, to the colder, as it is found to.
+
+\subsection*{The ideal gas}
+
+$N$ atoms of mass $m$ in a box of volume $V$, with no forces between them,
+have the energy $E = \sum_i\lvert\vb{p}_i\rvert^2/2m$ whatever their
+positions. Each atom can be anywhere in the box, so the positions
+contribute the factor $V^N$. The momenta with energy below $E$ are those
+with $p_1^2 + p_2^2 + \dotsb + p_{3N}^2 \le 2mE$, listing all $3N$
+components; by Pythagoras' theorem extended to $3N$ directions, these are
+the points within the distance $R = \sqrt{2mE}$ of the origin, the inside
+of a sphere of radius $R$ in $3N$ dimensions. That sphere is the sphere of
+radius 1 with every coordinate stretched by the factor $R$, and
+stretching all $3N$ coordinates by $R$ multiplies the volume of every
+small box, the product of its $3N$ sides, by $R^{3N}$, so the volume
+inside it is $cR^{3N}$, with $c$ the volume inside the sphere of radius 1,
+a number that depends only on the dimension.
+The number of states with energy below $E$ is therefore $cV^N(2mE)^{3N/2}$,
+and those between $E$ and $E + \delta E$ number its derivative times
+$\delta E$:
+\begin{align*}
+   \Omega(E) &= c\,V^N(2m)^{3N/2}\,\tfrac{3N}{2}E^{3N/2 - 1}\,\delta E ,\\
+   \ln\Omega &= \bigl(\tfrac{3N}{2} - 1\bigr)\ln E + \text{a constant} ,\\
+   \frac{1}{\kB T} &= \frac{3N/2 - 1}{E} \approx \frac{3N}{2E}
+   && \text{by \cref{eq:sm-temperature}, for large $N$.}
+\end{align*}
+The third line uses the slope $1/E$ of $\ln E$: differentiating
+$\mathrm{e}^{\ln E} = E$ by the chain rule gives $E\,\dd(\ln E)/\dd E =
+1$.
+The energy of the gas is $E = \frac32N\kB T$: $\frac32\kB T$ for each atom,
+$\frac12\kB T$ for each direction of its motion, a sharing that
+\cref{sec:sm-equipartition} finds to hold far more widely.
+
+\subsection*{How sharp the sharing is}
+
+Two such gases of $N$ atoms each, sharing $E$, have $\Omega_1\Omega_2
+\propto E_1^{3N/2}(E - E_1)^{3N/2}$ for large $N$, so the probability that
+the first holds the fraction $x = E_1/E$ of the energy is proportional to
+$x^{3N/2}(1 - x)^{3N/2}$. It is largest at $x = \frac12$, equal energies
+and equal temperatures, and \cref{fig:sm-sharing} shows how it narrows as
+$N$ grows. Near the peak, the Taylor series of its logarithm
+(\cref{sec:mo-taylor}) gives its width:
+\begin{align*}
+   \ln\mathcal{P} &= \tfrac{3N}{2}\bigl[\ln x + \ln(1 - x)\bigr]
+   + \text{a constant} ,\\
+   \frac{\dd\ln\mathcal{P}}{\dd x} &= \tfrac{3N}{2}\Bigl[\frac1x
+   - \frac1{1 - x}\Bigr] = 0
+   && \text{at $x = \tfrac12$,}\\
+   \frac{\dd^2\ln\mathcal{P}}{\dd x^2} &= -\tfrac{3N}{2}\Bigl[\frac1{x^2}
+   + \frac1{(1 - x)^2}\Bigr] = -12N
+   && \text{at $x = \tfrac12$,}\\
+   \ln\mathcal{P} &\approx \text{a constant} - \tfrac12\times12N
+   \bigl(x - \tfrac12\bigr)^2 ,
+\end{align*}
+the chain rule giving the slope $-1/(1 - x)$ of $\ln(1 - x)$, and the
+last line being the Taylor series to second order, whose first-order term
+is zero at the peak. That last line is the logarithm of a Gaussian,
+\cref{eq:sm-gauss}, with
+$1/(2\sigma_x^2) = 6N$: the share has the standard deviation $\sigma_x =
+1/\sqrt{12N}$. For 100 atoms in each gas that is 0.0289, against 0.0288
+for the curve of \cref{fig:sm-sharing}, which counts the states in full,
+computed numerically; for a thousand, 0.0091; for a macroscopic sample of
+$10^{23}$ atoms, $\num{9e-13}$. A sample large enough to see is never
+found far from its most probable division, which is why its temperature
+is a definite number.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/sharing}
+\caption{Two gases of $N$ atoms each sharing a fixed energy: the
+probability density for the first to hold the fraction $x$ of it, proportional to
+$x^{3N/2 - 1}(1 - x)^{3N/2 - 1}$ by the full count $\Omega \propto
+E^{3N/2 - 1}$, each curve divided by its largest value, for $N$ = 1, 10
+and 100.}
+\label{fig:sm-sharing}
+\end{figure}
+
+\begin{keyidea}
+An isolated system, if it is ergodic, samples its energy shell evenly; the volume
+$\Omega(E)$ of the shell counts its states, and $S = \kB\ln\Omega$ is its
+entropy. Two systems sharing energy settle at the division with the most
+states, where $\dd\ln\Omega/\dd E$, which defines $1/\kB T$, is the same
+for both. An ideal gas holds $\frac32\kB T$ per atom, and the division of
+energy between large systems is sharp, with a relative spread of order
+$1/\sqrt N$.
+\end{keyidea}
+
+\notebook{12}{share energy between two gases of any size}
+
+\begin{selfcheck}
+For two gases of 10 atoms each, what does $1/\sqrt{12N}$ give for the
+standard deviation of the share?
+\end{selfcheck}

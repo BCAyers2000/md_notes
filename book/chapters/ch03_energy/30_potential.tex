@@ -1,0 +1,171 @@
+%=============================================================================!
+% 3.4  POTENTIAL ENERGY AND THE CONSERVATION OF ENERGY                        !
+%=============================================================================!
+\section{Potential energy and the conservation of energy}
+\label{sec:en-potential}
+
+A ball thrown upwards slows down, stops and falls back, arriving at the
+hand with the speed it left with. Its kinetic energy has gone and come
+back, as though it had been stored somewhere on the way up. This section
+makes the store precise for a position-dependent force along a line, and
+shows that Newton's second law then keeps the total fixed.
+
+\subsection*{Potential energy}
+
+The weight of a body and the pull of a spring both depend only on where
+the body is, not on how fast it moves or on the time. For such a force
+$F(x)$ along a line, \cref{eq:en-work-line} gives the work from $x_A$ to
+$x_B$ as an integral fixed by the two ends. Choose a fixed reference
+point $x_0$, which need not be where the motion starts, and define the
+potential energy
+\begin{equation}
+   U(x) = -\int_{x_0}^{x} F(x')\,\dd x' ,
+   \label{eq:en-potential}
+\end{equation}
+minus the work the force does as its body moves from $x_0$ to $x$. Two
+rules for integrals follow from writing each one, as in
+\cref{sec:en-varying}, as the change $G(b) - G(a)$ in a function with $G'
+= F$: reversing the limits changes the sign, since $G(a) - G(b) =
+-[G(b) - G(a)]$, and an integral can be split at any point $c$, inside the
+range or not, since $[G(c) - G(a)] + [G(b) - G(c)] = G(b) - G(a)$. Then,
+splitting the integral at $x_0$ and reversing the first part,
+\begin{align*}
+   W_{A\to B} &= \int_{x_A}^{x_B} F\,\dd x
+   = \int_{x_A}^{x_0} F\,\dd x + \int_{x_0}^{x_B} F\,\dd x
+      && \text{going by way of $x_0$}\\
+   &= -\int_{x_0}^{x_A} F\,\dd x + \int_{x_0}^{x_B} F\,\dd x
+      && \text{reversing the first integral}\\
+   &= U(x_A) - U(x_B)
+      && \text{by \cref{eq:en-potential}.}
+\end{align*}
+The work done by the force is the drop in potential energy. The force
+uses up potential energy when it does positive work, and stores it when
+it does negative work, as the weight does while the ball rises.
+
+Moving the reference point from $x_0$ to $x_1$ adds the same constant to
+$U$ everywhere, since splitting the integral at $x_0$ gives
+$-\int_{x_1}^{x} F\,\dd x' = -\int_{x_1}^{x_0} F\,\dd x' + U(x)$, whose
+first term does not depend on $x$; this changes no drop in $U$. Only differences of potential
+energy have a physical meaning, and we choose $x_0$ wherever it is
+convenient. The force follows from $U$: by the fundamental theorem of
+calculus, read as in \cref{sec:en-varying}, the derivative of
+$\int_{x_0}^{x}F(x')\,\dd x'$ with respect to its upper limit is $F(x)$,
+so
+\begin{equation}
+   F(x) = -\frac{\dd U}{\dd x} .
+   \label{eq:en-force-1d}
+\end{equation}
+The force points the way $U$ decreases, and the steeper the graph of $U$,
+the stronger the force.
+
+Two potential energies follow at once. For a body near the ground, with
+$x$ its height measured upwards, the weight is $F = -mg$, and with $x_0 =
+0$,
+\begin{equation*}
+   U(x) = -\int_0^x(-mg)\,\dd x' = mgx .
+\end{equation*}
+For a spring, $F = -kx$, and with $x_0 = 0$ at the natural length,
+\begin{equation*}
+   U(x) = -\int_0^x(-kx')\,\dd x' = \tfrac12 k x^2 ,
+\end{equation*}
+the work of \cref{sec:en-varying} now stored in the stretched spring.
+
+\subsection*{Conservation of energy}
+
+When the net force is of this kind, the work-energy theorem $K_B - K_A = W_{A\to
+B}$ and the drop $W_{A\to B} = U_A - U_B$ combine into $K_B - K_A = U_A -
+U_B$, or, moving $U_B$ to the left and $K_A$ to the right,
+\begin{equation*}
+   K_B + U_B = K_A + U_A .
+\end{equation*}
+The sum of the two energies is the same at every pair of points along the
+motion. We call it the total energy, $E = K + U$. The argument can also
+be run as a rate, which shows exactly where Newton's law enters.
+
+\begin{proposition}
+\label{prop:en-energy-1d}
+Let a body of mass $m$ move along a line under a net force $F(x) = -\dd
+U/\dd x$ that depends only on its position. Then its total energy
+\begin{equation*}
+   E = \tfrac12 m v^2 + U(x)
+\end{equation*}
+keeps the same value throughout the motion.
+\end{proposition}
+
+\begin{proof}
+Differentiate $E$ along the motion, using the chain rule on each term:
+$\frac12 mv^2$ changes at the rate $mv\,\dd v/\dd t$, and $U(x(t))$ at the
+rate $(\dd U/\dd x)\,(\dd x/\dd t) = -F v$. Hence
+\begin{align*}
+   \frac{\dd E}{\dd t} &= m v\,\frac{\dd v}{\dd t} - F v
+   = v\,\Bigl(m\,\frac{\dd v}{\dd t} - F\Bigr) = 0 ,
+\end{align*}
+because the bracket vanishes by the second law, $m\,\dd v/\dd t = F$. A
+quantity whose rate of change is zero does not change.
+\end{proof}
+
+Newton's second law enters at a single point: it turns the rate of change
+of the kinetic energy into the power of the force, which the potential
+energy then exactly cancels. Energy is therefore conserved, in the sense
+of \cref{sec:ne-bodies}, and \cref{prop:en-energy-1d} is the conservation
+of energy. Forces that have a potential energy, and so
+conserve $E$, are called conservative.
+
+\subsection*{Two checks}
+
+Energy reproduces the results of the earlier chapters with no equation
+of motion solved. A ball of \SI{0.5}{\kilogram} thrown up at
+\SI{12}{\metre\per\second} starts at $x = 0$, where $U = 0$, with $E = K =
+\frac12\times0.5\times12^2 = \SI{36}{\joule}$. At the top of its flight
+$K = 0$, so all of $E$ is potential energy, $mgx_{\max} = E$, and
+\begin{equation*}
+   x_{\max} = \frac{E}{mg} = \frac{36}{0.5\times9.80665}
+   = \SI{7.342}{\metre} ,
+\end{equation*}
+the height found in \cref{sec:mo-integrating}. Halfway up, at
+\SI{3.671}{\metre}, $U = mgx$ is half its value at the top, so half of $E$
+is potential energy and half kinetic: $\frac12 mv^2 = \SI{18}{\joule}$,
+half the kinetic energy of the throw, so $v^2$ is half of $12^2$ and $v =
+12/\sqrt2 = \SI{8.485}{\metre\per\second}$. \Cref{fig:en-ball} follows $K$ and $U$
+through the flight: they trade with each other while their sum stays at
+\SI{36}{\joule}. Plotted against height, $U = mgx$ is a straight line and
+so is $K = E - mgx$, which reaches zero exactly at the top.
+
+For the block on a spring, at a turning point $x = \pm A$ the block is at
+rest and $E = \frac12 kA^2$; at the centre $U = 0$ is at its smallest, so
+$K = E - U$ and the speed are at their largest, and $E = \frac12
+mv_{\max}^2$. Equating the two,
+\begin{equation*}
+   \tfrac12 m v_{\max}^2 = \tfrac12 k A^2
+   \quad\Longrightarrow\quad
+   v_{\max} = A\sqrt{\frac{k}{m}} = A\omega ,
+\end{equation*}
+with $\omega$ from \cref{eq:ne-spring-omega}, as in \cref{sec:ne-spring}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/ball}
+\caption{The energies of a ball of \SI{0.5}{\kilogram} thrown straight up
+at \SI{12}{\metre\per\second}. (a) Kinetic energy $K$, potential energy
+$U = mgx$ and their sum $E$ against time; the dotted line marks the top.
+(b) The same against height: $K$ and $U$ are straight lines, and $K$
+reaches zero at the top, \SI{7.342}{\metre}.}
+\label{fig:en-ball}
+\end{figure}
+
+\begin{keyidea}
+A force that depends only on position along a line has a potential energy
+$U(x) = -\int_{x_0}^{x} F(x')\,\dd x'$, with $F = -\dd U/\dd x$. Newton's second law then
+keeps the total energy $E = K + U$ constant: kinetic and potential energy
+are traded, never their sum.
+\end{keyidea}
+
+\notebook{03}{follow $K$, $U$ and $E$ through the throw with a time
+cursor}
+
+\begin{selfcheck}
+A ball is thrown at \SI{12}{\metre\per\second} from a balcony
+\SI{5}{\metre} above the ground. With what speed does it reach the
+ground? Does the answer depend on whether it is thrown upwards, sideways
+or downwards?
+\end{selfcheck}

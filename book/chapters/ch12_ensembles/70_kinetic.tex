@@ -1,0 +1,191 @@
+%=============================================================================!
+% 12.7  HOW MUCH THE TEMPERATURE FLUCTUATES                                   !
+%=============================================================================!
+\section{How much the temperature fluctuates}
+\label{sec:sm-kinetic}
+
+The kinetic temperature of a run is never still. This section derives the
+distribution of the kinetic energy in the canonical ensemble, finds that
+a run at fixed energy fluctuates less, and turns the difference into a
+measurement of the heat capacity. Chapter~13 tests every thermostat
+against the distribution found here.
+
+\subsection*{The kinetic energy in the canonical ensemble}
+
+In the $N_{\mathrm f}$ free components $c_k$ of
+\cref{sec:sm-equipartition}, the kinetic energy is $K =
+\frac12\sum_kc_k^2$. The velocities with kinetic energy below $K$ fill
+the inside of a sphere of radius $\sqrt{2K}$ in $N_{\mathrm f}$
+dimensions, whose volume, as for the ideal gas of \cref{sec:sm-micro}, is
+a constant times $K^{N_{\mathrm f}/2}$, and those between $K$ and $K +
+\dd K$ fill a shell whose volume is the derivative of that volume times
+$\dd K$, a constant times $K^{N_{\mathrm f}/2 - 1}\,\dd K$. Each
+velocity in the shell has the Boltzmann factor $\mathrm{e}^{-\beta K}$,
+so
+\begin{equation}
+   \mathcal{P}(K) \propto K^{N_{\mathrm f}/2 - 1}\,\mathrm{e}^{-K/\kB T} .
+   \label{eq:sm-gamma}
+\end{equation}
+This is the gamma distribution. For one atom, $N_{\mathrm f} = 3$, it is
+the $\sqrt{K}\,\mathrm{e}^{-K/\kB T}$ of \cref{eq:sm-atom-energy}; for an
+atom moving over a surface, $N_{\mathrm f} = 2$, it is
+$\mathrm{e}^{-K/\kB T}/\kB T$, and the probability that $K$ is at least
+some $U_{\mathrm b}$ is $\mathrm{e}^{-U_{\mathrm b}/\kB T}$. Its mean and
+variance follow as in \cref{sec:sm-canonical}, applied to the kinetic
+energy alone, which is independent of the positions: with $a =
+N_{\mathrm f}/2$, the factor $K^{a-1}$ that counts the velocities does not depend on $\beta$, so each
+derivative of the normalising integral with respect to $\beta$ brings
+down a factor $-K$, as each derivative of $Z$ brought down $-E_s$. The
+normalising integral is, with $s = \beta K$,
+\begin{equation*}
+   Z_K = \int_0^\infty K^{a - 1}\mathrm{e}^{-\beta K}\,\dd K
+   = \beta^{-a}\int_0^\infty s^{a - 1}\mathrm{e}^{-s}\,\dd s ,
+\end{equation*}
+and the last integral is a number, the gamma function of $a$, written
+$\Gamma(a)$ (no relation to the phase point $\Gamma$), which
+the function \texttt{kinetic\_\allowbreak energy\_\allowbreak density}
+evaluates through its logarithm. So $\ln Z_K = -a\ln\beta + \text{a
+constant}$, and
+\begin{equation*}
+   \ens{K} = -\frac{\dd\ln Z_K}{\dd\beta} = \frac a\beta
+   = \tfrac12N_{\mathrm f}\kB T , \qquad
+   \ens{K^2} - \ens{K}^2 = \frac{\dd^2\ln Z_K}{\dd\beta^2} = \frac a{\beta^2}
+   = \tfrac12N_{\mathrm f}(\kB T)^2 .
+\end{equation*}
+The first is equipartition again. The second gives the relative
+fluctuation of the kinetic energy, and of the kinetic temperature, which
+is proportional to it:
+\begin{equation}
+   \frac{\sigma_K}{\ens{K}} = \sqrt{\frac{2}{N_{\mathrm f}}} .
+   \label{eq:sm-relative}
+\end{equation}
+For one atom it is 0.82; for 256 argon atoms, with $N_{\mathrm f} = 765$,
+0.0511. A canonical run of 256 atoms at \SI{135}{\kelvin} has a kinetic
+temperature with a standard deviation of \SI{6.9}{\kelvin}, and the larger
+the system, the smaller the spread.
+
+\subsection*{At fixed energy, less}
+
+In a run at fixed energy $E$, the kinetic and the potential energy share
+$E$, as the two gases of \cref{sec:sm-micro} did. The probability that the
+kinetic energy is $K$ is proportional to the number of velocities with
+that kinetic energy, $K^{a - 1}$, times $\Omega_U(E - K)$, the volume of
+the positions with potential energy $E - K$, which counts them as
+$\Omega$ counted states in \cref{sec:sm-micro}. Its width follows as in
+\cref{sec:sm-micro}, from the second derivative of its logarithm at the
+peak, which is the sum of two terms, one from each partner:
+\begin{align*}
+   \frac{\dd^2}{\dd K^2}\bigl[(a - 1)\ln K\bigr] &= -\frac{a - 1}{K^2}
+   \approx -\frac{a}{(a\kB T)^2} = -\frac{1}{\kB T^2C_K} ,
+   && C_K = a\kB = \tfrac12N_{\mathrm f}\kB ,\\
+   \frac{\dd^2}{\dd K^2}\ln\Omega_U(E - K)
+   &= \frac{\dd^2\ln\Omega_U}{\dd U^2}
+   = \frac{\dd}{\dd U}\Bigl(\frac{1}{\kB T}\Bigr)
+   = -\frac{1}{\kB T^2C_U} ,
+   && C_U = \frac{\dd U}{\dd T} ,
+\end{align*}
+using in the first $a - 1 \approx a$ for many freedoms and $K = a\kB T$ at
+the peak, where, as for the two gases, both partners have the same
+temperature. In the second, $U = E - K$, so each derivative with respect
+to $K$ is minus that with respect to $U$ and the two signs cancel; then
+come the definition of temperature, \cref{eq:sm-temperature}, applied to
+the arrangements, and $\dd(1/\kB T)/\dd U = -(1/\kB T^2)\,\dd T/\dd U$ as
+in \cref{sec:sm-canonical}. $C_K$ is the kinetic energy taken up per
+degree and $C_U$ the potential energy, and together they make the heat
+capacity, $C_V = C_K + C_U$. The logarithm of the Gaussian of
+\cref{eq:sm-gauss} has the second derivative $-1/\sigma_x^2$, so the variance of $K$, written
+$\ens{\delta K^2}_E$ with $\delta K = K - \ens{K}$, is minus the
+reciprocal of the sum of the two curvatures:
+\begin{equation}
+   \ens{\delta K^2}_E = \frac{\kB T^2}{1/C_K + 1/C_U}
+   = \kB T^2C_K\Bigl(1 - \frac{C_K}{C_V}\Bigr)
+   = \tfrac12N_{\mathrm f}(\kB T)^2\Bigl(1 - \frac{N_{\mathrm f}\kB}
+   {2C_V}\Bigr) ,
+   \label{eq:sm-lpv}
+\end{equation}
+the result of Lebowitz, Percus and Verlet\cite{Lebowitz1967}. The bracket
+is the factor by which the variance at fixed energy falls below the
+canonical one, and its square root the factor for the standard
+deviation. An ideal gas, with no potential energy, has $C_U = 0$
+and a kinetic energy that cannot fluctuate at all; a harmonic crystal,
+with $C_U = C_K$, fluctuates by $1/\sqrt2$ of the canonical amount.
+
+\Cref{fig:sm-kinetic}(a) shows the kinetic energy of the 256 atoms of
+liquid argon over \SI{50}{\pico\second}: its relative standard deviation
+is 0.03068, against 0.05113 for the canonical ensemble, the ratio 0.600.
+The heat capacity measured below, $C_V = 2.376\,N\kB$, with $C_K =
+\frac12N_{\mathrm f}\kB = (765/512)\,N\kB = 1.4941\,N\kB$, predicts
+$\sqrt{1 - 1.4941/2.376} = 0.609$.
+The ratio stays near 0.6 for all four sizes of
+\cref{fig:sm-kinetic}(b), from 0.564 to 0.600, while each spread falls
+as $1/\sqrt N$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/kinetic}
+\caption{The kinetic energy at fixed total energy. (a) Liquid argon, 256
+atoms over \SI{50}{\pico\second}: the histogram of the kinetic energy
+divided by its mean, against the canonical density of
+\cref{eq:sm-gamma} with $N_{\mathrm f} = 765$ and the same mean (dashed).
+(b) The relative standard deviation of the kinetic energy for 108, 256,
+500 and 864 atoms (circles), against the canonical $\sqrt{2/N_{\mathrm
+f}}$ (dashed).}
+\label{fig:sm-kinetic}
+\end{figure}
+
+\subsection*{The heat capacity, two ways}
+
+\Cref{eq:sm-lpv} solved for $C_V$,
+\begin{equation*}
+   C_V = \frac{\frac12N_{\mathrm f}\kB}{1 - 2\ens{\delta K^2}_E/
+   \bigl(N_{\mathrm f}(\kB T)^2\bigr)} ,
+\end{equation*}
+gives the heat capacity from one run at fixed energy;
+\texttt{statmech.heat\_capacity\_nve} computes it, with $T$ the run's
+kinetic temperature. \Cref{fig:sm-heat} checks it against the definition,
+$C_V = \dd E/\dd T$. Five runs of the 256 atoms, prepared near 100, 115,
+130, 145 and \SI{160}{\kelvin} and run for \SI{50}{\pico\second} each,
+give five pairs of mean energy and mean kinetic temperature, from
+\SI{99.25}{\kelvin} to \SI{160.28}{\kelvin}. They lie on a straight line
+to within \SI{0.029}{\electronvolt}, whose slope is
+\SI{0.05242}{\electronvolt\per\kelvin}, or $C_V = 2.376\,N\kB$. The
+spreads of the five runs give between 2.249 and $2.444\,N\kB$, with the
+mean 2.347, and the four sizes near \SI{130}{\kelvin} between 2.198 and
+2.333. The liquid lies between an ideal gas, with $\frac32N\kB$ from its
+kinetic energy alone, and a harmonic crystal, with $3N\kB$ from equal
+kinetic and potential shares. The single-run estimates scatter about the
+slope by up to 7.5\%; whether that scatter is the noise of runs of
+\SI{50}{\pico\second} is a question Chapter~15 answers with error bars.
+In the canonical ensemble the total energy itself fluctuates, and
+\cref{eq:sm-fluctuation} gives $C_V$ directly, which Chapter~13 measures
+under its thermostats.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/heat}
+\caption{The heat capacity of liquid argon, 256 atoms. (a) The mean
+energy against the mean kinetic temperature of five runs at fixed energy,
+with the straight line through them, whose slope is $C_V$ (dashed).
+(b) $C_V$ per atom, in units of $\kB$, from the spread of the kinetic
+energy by \cref{eq:sm-lpv}, for the five runs (circles) and for runs of
+108 to 864 atoms near \SI{130}{\kelvin} (squares), against the slope of
+(a) (dashed).}
+\label{fig:sm-heat}
+\end{figure}
+
+\begin{keyidea}
+In the canonical ensemble the kinetic energy has the gamma distribution,
+$\mathcal{P}(K) \propto K^{N_{\mathrm f}/2 - 1}\mathrm{e}^{-K/\kB T}$, with
+mean $\frac12N_{\mathrm f}\kB T$ and relative spread
+$\sqrt{2/N_{\mathrm f}}$. At fixed energy the kinetic and potential
+energies share a fixed total, and the standard deviation of the kinetic
+energy is $\sqrt{1 - N_{\mathrm f}\kB/(2C_V)}$ times the canonical one,
+which gives the heat capacity from a single run.
+\end{keyidea}
+
+\notebook{12}{set the size and compare the kinetic energy at fixed energy with the canonical gamma distribution}
+
+\begin{selfcheck}
+By how much, relatively, does the kinetic temperature of 1000 atoms with
+their drift removed fluctuate in the canonical ensemble?
+\end{selfcheck}

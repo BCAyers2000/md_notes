@@ -1,0 +1,52 @@
+%=============================================================================!
+% 1.1  QUANTITIES AND UNITS                                                   !
+%=============================================================================!
+\section{Quantities and units}
+\label{sec:mo-units}
+
+Every quantity in mechanics is a number multiplied by a unit. A height of
+\SI{7.3}{\metre} is $7.3$ times the metre, and the same height expressed
+in centimetres is \SI{730}{\centi\metre}; the number depends on the unit
+chosen, whereas the height itself does not. This chapter requires only
+two units, the metre for length and the second for time, and every other
+unit it uses is built from these two, such as the metre per second
+(\si{\metre\per\second}) for the rate at which distance is covered. In
+this way of writing units, symbols set side by side are multiplied, and a
+power $-1$ means one divided by that unit, so that $\mathrm{s}^{-1} =
+1/\mathrm{s}$ and \si{\metre\per\second} is the metre divided by the
+second.
+
+The kind of quantity, as distinct from its size, is its dimension. We
+write $\mathsf{L}$ for length and $\mathsf{T}$ for time, so that a rate of
+covering distance, being a length divided by a time, has dimension
+$\mathsf{L}\mathsf{T}^{-1}$. Since a length cannot meaningfully be added
+to a time, only quantities of the same dimension can be added,
+subtracted, equated or compared. The number that a function such as
+$\sin$ acts on, called its argument, must be a pure number, one without
+a unit, because the function is defined for numbers: the sine of three
+metres has no meaning, and \cref{sec:mo-trig} shows that an angle
+measured in radians is such a pure number. Every correct equation must
+therefore balance in dimension, term by term. A car travelling at
+\SI{20}{\metre\per\second} for \SI{3}{\second} covers $20\times 3 =
+\SI{60}{\metre}$, and the dimensions of the product balance in the same
+way as the numbers:
+\begin{equation*}
+   \underbrace{\mathsf{L}\mathsf{T}^{-1}}_{\text{rate}}
+   \times\underbrace{\mathsf{T}}_{\text{time}} = \mathsf{L} .
+\end{equation*}
+This check costs nothing to apply. An equation that fails to balance is
+certainly wrong, although one that balances is not thereby shown to be
+right, since a missing pure number such as $\tfrac12$ leaves the
+dimensions unchanged.
+
+Atoms require much smaller units than everyday objects. Neighbouring atoms
+are a few \aa ngstr\"oms apart (Chapter~8), where $\SI{1}{\angstrom} =
+\SI{e-10}{\metre}$, and molecular dynamics advances in steps of about a
+femtosecond, $\SI{1}{\femto\second} = \SI{e-15}{\second}$, for reasons
+derived in Chapter~9. A speed of \SI{1}{\angstrom\per\femto\second} is
+therefore
+\begin{equation*}
+   \frac{\SI{e-10}{\metre}}{\SI{e-15}{\second}}
+   = 10^{-10-(-15)}\,\si{\metre\per\second}
+   = \SI{e5}{\metre\per\second}.
+\end{equation*}

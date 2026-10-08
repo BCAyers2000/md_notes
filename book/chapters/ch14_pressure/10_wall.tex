@@ -1,0 +1,150 @@
+%=============================================================================!
+% 14.1  FORCE ON A WALL                                                       !
+%=============================================================================!
+\section{Force on a wall}
+\label{sec:pr-wall}
+
+A bicycle pump with its outlet closed pushes back on the hand: the air
+inside presses on the piston, and the harder the air is squeezed the
+harder it presses. The push divided by the area of the piston is the
+pressure of the air. This section finds where that push comes from in a
+gas of atoms, and measures it.
+
+\subsection*{Pressure and its units}
+
+The pressure on a flat wall of area $A$ that feels the force
+$F_\perp$ at right angles to it is
+\begin{equation*}
+   P = \frac{F_\perp}{A} ,
+\end{equation*}
+in newtons per square metre, or pascals. The air around us presses with
+about $10^5$\,\si{\pascal}, one bar; deep in the Earth and in squeezed
+solids pressures reach gigapascals, \SI{1}{\giga\pascal} being $10^9$
+pascals, or $10^4$ bar. In the units of this book a pressure is an
+energy per volume, \si{\electronvolt\per\angstrom\cubed}, since a force is
+an energy per length and an area a length squared; one
+\si{\electronvolt\per\angstrom\cubed} is \SI{160.218}{\giga\pascal}
+(\cref{ex:pr-units}).
+
+\subsection*{The push of bouncing atoms}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=0.9]
+   \fill[housegrey!15] (6.0,-0.2) rectangle (6.4,2.2);
+   \draw[line width=0.6pt] (0,-0.2) -- (0,2.2);
+   \draw[line width=0.6pt] (6.0,-0.2) -- (6.0,2.2);
+   \node[font=\small, anchor=north] at (0,-0.25) {$x = 0$};
+   \node[font=\small, anchor=north] at (6.0,-0.25) {$x = L$};
+   \fill[accent] (5.55,1.45) circle (0.15);
+   \draw[-{Stealth[length=5pt]}, line width=0.8pt, accent] (4.2,1.45) --
+      node[above, font=\small] {$v_x$} (5.3,1.45);
+   \fill[accent!45] (5.55,0.55) circle (0.15);
+   \draw[-{Stealth[length=5pt]}, line width=0.8pt, accent!45] (5.3,0.55) --
+      node[below, font=\small] {$-v_x$} (4.2,0.55);
+   \node[font=\small, align=center] at (2.2,1.0)
+      {$2mv_x$ to the wall\\once every $2L/v_x$};
+\end{tikzpicture}
+\caption{An atom bouncing between walls at $x = 0$ and $x = L$. Each
+bounce off the right-hand wall turns $v_x$ into $-v_x$, and the atom
+returns to that wall after travelling $2L$ along $x$.}
+\label{fig:pr-bounce}
+\end{figure}
+
+One atom of mass $m$ moves in a box between walls at $x = 0$ and $x =
+L$, its velocity along $x$ being $v_x$ (\cref{fig:pr-bounce}). A hard
+wall takes no energy from the atom, so when it strikes the wall at $x =
+L$ it comes back at the same speed with $v_x$ turned to $-v_x$: its
+momentum along $x$ changes by $-2mv_x$, and by Newton's third law
+(\cref{sec:ne-third}) the wall receives $+2mv_x$. The atom then crosses
+the box and back, a distance $2L$ at the speed $v_x$, before it strikes
+the same wall again; bounces off the walls normal to $y$ and $z$ turn
+$v_y$ or $v_z$ and leave $v_x$ as it was. The bounces therefore come once
+every $2L/v_x$. The wall feels a short kick at each bounce and nothing
+between, and a force is the momentum delivered per unit time
+(\cref{sec:ne-second}), so the force on the wall, averaged over many
+bounces, is
+\begin{equation*}
+   \overline{F_\perp} = \frac{2mv_x}{2L/v_x} = \frac{mv_x^2}{L} .
+\end{equation*}
+For $N$ atoms that do not meet one another, each contributes its own
+share, and the pressure on the wall, of area $A$, is
+\begin{equation*}
+   P = \frac{1}{A}\sum_i\frac{m_iv_{ix}^2}{L} = \frac{1}{V}\sum_i
+   m_iv_{ix}^2 , \qquad V = AL .
+\end{equation*}
+Averaged over the velocities, each $\frac12m_iv_{ix}^2$ is $\frac12\kB T$
+by equipartition (\cref{sec:sm-equipartition}), so each $m_iv_{ix}^2$ is
+$\kB T$, the $N$ of them add to $N\kB T$, and
+\begin{equation}
+   PV = N\kB T ,
+   \label{eq:pr-ideal}
+\end{equation}
+the ideal gas law that \cref{sec:sm-other} found by counting states. The
+pressure of a gas is the momentum its atoms deliver to the walls per unit
+time and area. The argument holds for molecules too, with $m$ the mass of
+a molecule and $v_x$ the velocity of its centre of mass
+(\cref{sec:ne-bodies}). At \SI{300}{\kelvin}, where $\kB T =
+\SI{0.025852}{\electronvolt}$, and one bar,
+\SI{6.2415e-7}{\electronvolt\per\angstrom\cubed} (\cref{ex:pr-units}),
+\cref{eq:pr-ideal} gives $N/V = P/\kB T = \SI{2.414e-5}{\per\angstrom
+\cubed}$: 24.1 molecules of air in a cube \SI{10}{\nano\metre}, or
+\SI{100}{\angstrom}, on a side.
+
+\subsection*{Measured}
+
+A simulation has no hard walls, but soft ones serve: a spring that
+pushes back an atom which has gone a distance $\delta$ beyond the wall
+with the force $k\delta$, from the energy $\frac12k\delta^2$
+(\texttt{virial.harmonic\_walls}). The force the atoms exert on each
+wall is then the sum of these $k\delta$, recorded at every step. For 200
+argon atoms that do not interact, in a cube of side \SI{40}{\angstrom}
+with walls of stiffness \SI{5}{\electronvolt\per\angstrom\squared},
+followed at fixed energy for \SI{100}{\pico\second} with steps of
+\SI{5}{\femto\second}, the push on the six walls per unit area averages
+\SI{53.47}{bar} (\cref{fig:pr-wall}(a)), and the two halves of the run
+give 53.27 and \SI{53.67}{bar}. The kinetic energy of the run gives the
+temperature \SI{123.5}{\kelvin} by \cref{eq:sm-kinetic-temperature}, with
+$N_{\mathrm f} = 3N$ since the walls leave the total momentum free, and
+\cref{eq:pr-ideal} gives
+\SI{53.29}{bar}, within the difference between the halves.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/wall}
+\caption{Pressure as the push on the walls. (a) 200 argon atoms that do
+not interact, in a cube of \SI{40}{\angstrom} between soft walls: the push
+per unit area on the six walls, averaged over each picosecond (thin) and
+over the run so far (thick), against $N\kB T/V$ (dashed). (b) 256 argon
+atoms that interact, in a cube of \SI{23.26}{\angstrom} near
+\SI{135}{\kelvin}: the running means of the push per unit area and of the
+pressure from the virial, \cref{eq:pr-virial}, against $N\kB T/V$
+(dashed).}
+\label{fig:pr-wall}
+\end{figure}
+
+Atoms that interact push differently. The 256 atoms of the liquid argon
+of Chapter~13, held between walls of the same stiffness in a cube of
+\SI{23.26}{\angstrom} under CSVR at \SI{135}{\kelvin}, push on the walls
+with \SI{0.0624}{\giga\pascal} averaged over \SI{100}{\pico\second} (0.0616
+and \SI{0.0633}{\giga\pascal} in the two halves). Their kinetic energy
+gives the temperature \SI{133.3}{\kelvin} over the run, a little below the
+\SI{135}{\kelvin} the thermostat holds on average, and with it
+$N\kB T/V$ is only \SI{0.0374}{\giga\pascal} (\cref{fig:pr-wall}(b)). The atoms
+repel one another at close range and the repulsion adds to the push on
+the walls. The next section finds by how much.
+
+\begin{keyidea}
+Pressure is force per unit area. In a gas it is the momentum the atoms
+deliver to the walls per unit time and area, $\sum_im_iv_{ix}^2/V$,
+which averages to $N\kB T/V$ for atoms that do not interact. One
+\si{\electronvolt\per\angstrom\cubed} is \SI{160.218}{\giga\pascal}, and
+\SI{1}{\giga\pascal} is $10^4$ bar.
+\end{keyidea}
+
+\notebook{14}{let atoms bounce between walls and read their push}
+
+\begin{selfcheck}
+What pressure, in bar, do $10^4$ atoms that do not interact exert at
+\SI{300}{\kelvin} in a cube of side \SI{100}{\angstrom}?
+\end{selfcheck}

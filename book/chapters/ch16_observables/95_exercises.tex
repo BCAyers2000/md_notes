@@ -1,0 +1,214 @@
+%=============================================================================!
+% 16.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:ob-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:ob-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~16 checks every numerical answer.
+
+\begin{exercise}[the volume of a shell]
+\label{ex:ob-shell}
+For bins of \SI{0.05}{\angstrom}, by what fraction does $4\pi r^2\,\delta r$
+fall short of the exact volume of the shell from $r$ to $r + \delta r$,
+at $r = 1$ and at \SI{5}{\angstrom}? Show that the fraction is close to
+$\delta r/r$ when $\delta r \ll r$.
+\end{exercise}
+
+\begin{exercise}[the far value of g(r)]
+\label{ex:ob-far}
+What value does $g(r)$ approach far from any atom, with ASE's
+normalisation, for 256 and for 2048 atoms placed independently at random?
+Which normalisation would make it approach 1 for them, and why is the
+difference unimportant for the coordination number of the first shell?
+\end{exercise}
+
+\begin{exercise}[the shells of a face-centred cubic crystal]
+\label{ex:ob-fcc}
+In the fcc lattice of cube side $a$, the atoms sit at the corners of the
+cube and at the centres of its faces. Show that an atom's nearest
+neighbours are $a/\sqrt2$ away and number 12, and that the next shell is
+at $a$ and holds 6.
+\end{exercise}
+
+\begin{exercise}[structure without structure]
+\label{ex:ob-meanfield}
+Suppose $g(r) = 0$ for $r < \sigma$ and $g(r) = 1$ beyond. Show that the
+Lennard-Jones energy per atom is then $-\frac{16}{9}\pi\rho\sigma^3
+\varepsilon$, and evaluate it for liquid argon, $\rho\sigma^3 = 0.8$ and
+$\varepsilon = \SI{0.01034}{\electronvolt}$. Compare it with
+\SI{-56.16}{\milli\electronvolt}, the energy per atom that the run's $g(r)$
+gives with the full Lennard-Jones potential (the run itself switches the
+potential off between $2\sigma$ and $2.5\sigma$), and say what the
+difference measures.
+\end{exercise}
+
+\begin{exercise}[random atoms and a perfect crystal]
+\label{ex:ob-sq-limits}
+Show from \cref{eq:ob-sq} that $S(\vb{G})$ averages to 1 for atoms placed
+independently at random in the cell, at any allowed $\vb{G} \neq
+\vb{0}$, and is $N$ for a perfect crystal at a vector of its reciprocal
+lattice.
+\end{exercise}
+
+\begin{exercise}[compressibility from scattering]
+\label{ex:ob-s0}
+A liquid of number density \SI{0.03}{\per\angstrom\cubed} at
+\SI{300}{\kelvin} has $\kappa_T = \SI{0.5}{\per\giga\pascal}$. What is
+$S(0)$? Would a liquid twice as compressible scatter long waves more
+strongly or less?
+\end{exercise}
+
+\begin{exercise}[flicker]
+\label{ex:ob-flicker}
+A bonded pair vibrates with a period of \SI{60}{\femto\second}, and the
+far end of each vibration carries it beyond a single cutoff. How many
+events per picosecond does the cutoff record for this one pair? With
+$r_{\mathrm{on}}$ at the old cutoff, how wide must the band of hysteresis
+be to record none, and how wide to record none wherever the cutoff falls
+within the vibration?
+\end{exercise}
+
+\begin{exercise}[bonds as keys]
+\label{ex:ob-keys}
+Six atoms have the bonds 0-1, 1-2, 3-4 in one frame and 0-1, 2-3, 3-4,
+4-5 in the next. Write both sets as keys $iN + j$ with $N = 6$, find the
+bonds formed and broken by the merge of sorted lists, and find the
+molecules of each frame by the search of the toolbox in \cref{sec:ob-bonds}.
+\end{exercise}
+
+\begin{exercise}[two graphs that look alike]
+\label{ex:ob-hash}
+Six atoms of one element form a triangular prism (two triangles, each
+atom of one joined to the atom above it in the other); six others form
+a hexagon with each atom also joined to the opposite one. Show that every
+atom in both has three neighbours, and explain why every round of the
+hash of \cref{sec:ob-bonds} then gives every atom of both the same
+number. Are the two molecules the same?
+\end{exercise}
+
+\begin{exercise}[how many events]
+\label{ex:ob-poisson}
+A rate is wanted to 2\%. How many events must be counted? A run of
+\SI{1}{\nano\second} of 100 molecules shows 40 dissociations: give the
+rate per molecule with its error.
+\end{exercise}
+
+\begin{exercise}[a random walk in one dimension]
+\label{ex:ob-walk}
+An atom on a line hops by $+a$ or $-a$ with equal probability, at the
+rate $k_{\mathrm h}$. Show that its MSD after a time $t$ is $k_{\mathrm
+h}a^2t$ and that $D = k_{\mathrm h}a^2/2$.
+\end{exercise}
+
+\begin{exercise}[hops that keep their direction]
+\label{ex:ob-correlated}
+On a line, each step of length $a$ repeats the direction of the one
+before with probability $\frac12(1 + c)$, so that consecutive steps have
+the correlation $c$, and steps $k$ apart $c^k$. Show that for many steps
+the MSD is $na^2(1 + c)/(1 - c)$, and so that $f = (1 + c)/(1 - c)$, the
+statistical inefficiency of \cref{sec:cv-correlation}. What $c$ gives the
+memory of direction, $4D/k_{\mathrm h}\ens{\ell^2} = 3.46$, of the model
+surface at \SI{1}{\per\pico\second}?
+\end{exercise}
+
+\begin{exercise}[the end of the ballistic part]
+\label{ex:ob-water}
+For Chapter~11's water, $D = \SI{5.24e-4}{\angstrom\squared\per\femto
+\second}$ at \SI{304}{\kelvin}. Estimate when a molecule's motion stops
+being ballistic, taking its mass as \SI{18.015}{\amu}.
+\end{exercise}
+
+\begin{exercise}[an exponential memory]
+\label{ex:ob-exp}
+Show from \cref{eq:ob-msd-vacf} that $C_{vv} = C_0\mathrm{e}^{-t/\tau_{\mathrm
+c}}$ gives $\text{MSD} = 2C_0\tau_{\mathrm c}[t - \tau_{\mathrm c}(1 -
+\mathrm{e}^{-t/\tau_{\mathrm c}})]$, that this is $C_0t^2$ for $t \ll
+\tau_{\mathrm c}$ and $2C_0\tau_{\mathrm c}t$ for $t \gg \tau_{\mathrm c}$,
+and so that $D = C_0\tau_{\mathrm c}/3$.
+\end{exercise}
+
+\begin{exercise}[the viscosity on the back of an envelope]
+\label{ex:ob-eta}
+\Cref{tab:cv-observables} gives the shear stress of liquid argon a
+spread of \SI{0.0121}{\giga\pascal} and an integrated correlation time of
+\SI{0.18}{\pico\second}. Show that the Green-Kubo integral is $(V/\kB T)
+\sigma_{xy}^2\tau_{\mathrm{int}}$, with $\sigma_{xy}$ the spread, and
+evaluate it
+for 256 atoms at \SI{0.02035}{\per\angstrom\cubed} and \SI{135}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[Nernst-Einstein for the salt]
+\label{ex:ob-ne}
+From the mean diffusion coefficients of \cref{sec:ob-charge}, $5.19$ and
+$\SI{5.03e-4}{\angstrom\squared\per\femto\second}$ for 32 ions of each
+kind in a cell of side \SI{13.4}{\angstrom} at \SI{1487}{\kelvin},
+compute $\sigma_{\mathrm{NE}}$ in \si{\siemens\per\metre}.
+\end{exercise}
+
+\begin{exercise}[one number for layers]
+\label{ex:ob-trace}
+What would a single diffusion coefficient, a sixth of the slope of the
+full MSD, report for the guests of \cref{sec:ob-layers}? Why does it
+describe neither of their motions?
+\end{exercise}
+
+\begin{exercise}[Euler's formula at work]
+\label{ex:ob-euler}
+Show that $\lvert\mathrm{e}^{\mathrm{i}\theta}\rvert = 1$, and recover
+$\cos(A + B)$ and $\sin(A + B)$ from $\mathrm{e}^{\mathrm{i}A}
+\mathrm{e}^{\mathrm{i}B} = \mathrm{e}^{\mathrm{i}(A + B)}$.
+\end{exercise}
+
+\begin{exercise}[the transform of one cosine]
+\label{ex:ob-dft-cos}
+Show that the discrete transform of $x_n = \cos(2\pi mn/N_{\mathrm s})$,
+for a whole number $0 < m < N_{\mathrm s}/2$, is $N_{\mathrm s}/2$ at $k =
+m$ and at $k = N_{\mathrm s} - m$ and zero elsewhere.
+\end{exercise}
+
+\begin{exercise}[how fast is fast]
+\label{ex:ob-fft-cost}
+Show that $W(N_{\mathrm s}) = 2W(N_{\mathrm s}/2) + N_{\mathrm s}$ with $W(1)
+= 0$ gives $W(N_{\mathrm s}) = N_{\mathrm s}\log_2N_{\mathrm s}$ for
+$N_{\mathrm s}$ a power of 2, and find the ratio of $N_{\mathrm s}^2$ to
+$N_{\mathrm s}\log_2N_{\mathrm s}$ for $N_{\mathrm s} = 2^{20}$.
+\end{exercise}
+
+\begin{exercise}[a stride that hides a bond]
+\label{ex:ob-fold}
+The chain's stretch at \SI{18.25}{\tera\hertz} is seen in frames every
+\SI{35}{\femto\second}. Where does it appear? What is the longest stride
+at which it appears where it is?
+\end{exercise}
+
+\begin{exercise}[friction against resolution]
+\label{ex:ob-width}
+A spectrum is computed from a run under Langevin friction of
+\SI{1}{\per\pico\second} with correlations taken to \SI{10}{\pico\second}.
+Which widens its peaks more, the friction or the window?
+\end{exercise}
+
+\begin{exercise}[diffusion in a spectrum]
+\label{ex:ob-vdos-zero}
+What is $\mathcal{D}(0)$, in \si{\per\tera\hertz}, for the oxygen atoms of
+Chapter~11's water, $m = \SI{15.999}{\amu}$, with the $D$ of
+\cref{ex:ob-water}?
+\end{exercise}
+
+\begin{exercise}[where the free energy is lowest]
+\label{ex:ob-fd}
+Show that for $U \approx \frac12kr_{\mathrm h}^2$ the free energy along the distance
+$r_{\mathrm h}$ from a hollow, $F(r_{\mathrm h}) = -\kB T\ln[r_{\mathrm h}\,\mathrm{e}^{-\beta kr_{\mathrm h}^2/2}] +
+\text{constant}$, is least at $r_{\mathrm h} = \sqrt{\kB T/k}$, and evaluate it at
+\SI{300}{\kelvin} for $k = \SI{0.9785}{\electronvolt\per\angstrom\squared}$.
+\end{exercise}
+
+\begin{exercise}[crossings]
+\label{ex:ob-crossings}
+A run crosses a barrier between two wells $n$ times. Argue that the free
+energy difference between the wells is known to about $2\kB T/\sqrt n$,
+and find how many crossings give it to $0.1\,\kB T$.
+\end{exercise}

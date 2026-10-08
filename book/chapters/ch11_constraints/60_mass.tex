@@ -1,0 +1,95 @@
+%=============================================================================!
+% 11.6  HEAVIER HYDROGENS                                                     !
+%=============================================================================!
+\section{Heavier hydrogens}
+\label{sec:cs-mass}
+
+The potential energy depends only on where the atoms are; the masses
+enter only through Newton's law, and set how fast the
+atoms respond to the forces. A third way to lengthen the step changes the
+masses so that the fastest motions slow down, while keeping the energy
+surface, and with it the forces, as it was. This section works out what
+the change does to the vibrations of water and measures the step it buys.
+
+\subsection*{Moving mass}
+
+A bond between two atoms vibrates with $\omega = \sqrt{k/m_{\mathrm r}}$
+(\cref{sec:os-bodies}), and for a bond to hydrogen the reduced mass is
+close to the hydrogen's own: for O--H, $m_{\mathrm r} = 15.999\times1.008/
+(15.999 + 1.008) = \SI{0.9483}{\amu}$. Hydrogen mass repartitioning makes
+each hydrogen heavier and takes the same mass from the atom it is bonded
+to, so that every molecule keeps its total mass. Tripling the hydrogen's
+mass to \SI{3.024}{\amu} takes $2\times2.016$ from the oxygen of water,
+leaving \SI{11.967}{\amu}; the molecule still weighs \SI{18.015}{\amu}, so
+its centre of mass, now a little nearer the hydrogens
+(\cref{ex:cs-hmr-centre}), has the same acceleration, the total force
+over the total mass, as before. The O--H reduced mass becomes
+$11.967\times3.024/(11.967 + 3.024) = \SI{2.4140}{\amu}$, 2.55 times
+larger, and the stretch slows by $\sqrt{2.55} = 1.60$. The function
+\texttt{repartition\_masses} of \texttt{mdlab.constraints} makes the
+change for any list of bonds to hydrogen.
+
+The normal modes of the spring model of water (\cref{sec:ro-freedom})
+with the new masses show a similar slowing, by 1.68 for the fastest
+vibration, which falls from
+$\omega = 0.857$ to \SI{0.509}{\radian\per\femto\second}, its period rises
+from 7.33 to \SI{12.35}{\femto\second}, and the stability limit $2/\omega$
+of \cref{sec:in-stability} from 2.33 to \SI{3.93}{\femto\second}; the bend
+slows from a period of 20.9 to \SI{32.2}{\femto\second}, and with the O--H
+bonds held from 17.0 to \SI{27.2}{\femto\second}. A rigid molecule
+cannot vibrate, but it turns, and moving mass outwards from the oxygen to
+the hydrogens raises its moments of inertia (\cref{sec:ro-tensor}): the
+principal moments, at the TIP3P shape, go from 0.615, 1.155 and \SI{1.770}{\amu\,\angstrom
+\squared} to 1.379, 3.465 and \SI{4.844}{\amu\,\angstrom\squared}, so its
+turning in the cage of its neighbours slows too.
+
+\subsection*{What it buys}
+
+The open markers of \cref{fig:cs-step}(a) measure it on the box of 64
+molecules. At the 1\% level, water with its O--H bonds held goes from
+0.97 to \SI{1.31}{\femto\second} with heavier hydrogens, a factor of
+1.35, although its bend, the fastest motion left, slows by 1.60, so the
+bend is not all that sets its step; rigid water goes from 1.98 to
+\SI{3.38}{\femto\second}, a factor of 1.71, and is then 8.2 times the
+step of the flexible model with ordinary masses. Hopkins and co-workers,
+citing earlier studies in which repartitioning let the step be increased
+by up to a factor of two, ran a short chain of three amino acids and a
+protein with repartitioned masses and steps of
+\SI{4}{\femto\second}\cite{Hopkins2015}.
+
+\subsection*{What it keeps, and what it changes}
+
+Repartitioning leaves the potential energy and the forces unchanged, and
+Chapter~12 shows that the probability of finding the atoms in a given
+arrangement, at a given temperature, depends on the potential energy
+alone and not on the masses. Averages over the arrangements of the atoms,
+such as their mean potential energy or how the molecules are packed, are
+therefore unchanged, exactly so for molecules that are free or held wholly
+rigid; with only some distances held, as with the O--H bonds alone, the
+held distances make the masses enter the probability of the angles left
+free, a small effect that this book does not pursue. Everything that depends on how fast the atoms move is
+changed: heavier hydrogens move more slowly, so the rates at which
+molecules turn and diffuse, and the frequencies of their vibrations,
+belong to a system with different masses. Hopkins and co-workers report no
+significant difference in the rates and the equilibrium properties they
+computed with \SI{4}{\femto\second} steps and repartitioned
+masses\cite{Hopkins2015};
+that is a finding about their systems and properties, and a study of
+motion at the atomic scale should check its own.
+
+\begin{keyidea}
+Moving mass from heavy atoms to their hydrogens keeps the total mass and
+the forces, and raises the reduced masses of the fastest bonds: tripling
+hydrogen's mass in water slows the O--H stretch by a factor of 1.60. On
+64 molecules it lengthens the step at 1\% by 1.35 with only the O--H bonds
+held and by 1.71 for rigid water. Averages over arrangements are kept,
+exactly for free or rigid molecules; rates of motion are not.
+\end{keyidea}
+
+\notebook{11}{choose the hydrogen mass and watch the vibrations slow}
+
+\begin{selfcheck}
+In a C--H bond, carbon \SI{12.011}{\amu} and hydrogen \SI{1.008}{\amu}, the
+hydrogen is made three times heavier at the carbon's expense. By what
+factor does the stretch slow?
+\end{selfcheck}

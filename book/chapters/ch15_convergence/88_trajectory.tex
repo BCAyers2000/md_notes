@@ -1,0 +1,182 @@
+%=============================================================================!
+% 15.10  WHAT THE TRAJECTORY LOOKS LIKE                                       !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:cv-trajectory}
+
+Each fault of this chapter lies in the numbers drawn from a trajectory,
+and each shows on one of four plots of the quantity concerned, which
+together we call its dashboard: the series with the start found, the
+running mean from that start with its error band, the errors from blocks,
+and the autocorrelation function. This section shows the dashboard of a
+healthy run, then six runs or analyses that go wrong, each with the check
+that catches it.
+
+\subsection*{A healthy run}
+
+\Cref{fig:cv-healthy} is the dashboard of the volume in the
+\SI{1}{\nano\second} at constant pressure that ends the protocol of
+\cref{sec:cv-protocol}, drawn by \texttt{dashboard} of the chapter's
+scripts. (a) The series has settled by the start found at
+\SI{10}{\pico\second} and then wanders about its mean with no trend. (b)
+The running mean from the start swings while few independent samples are
+in it and then holds steady inside its error band, which narrows as one
+over the square root of the time since the start. (c) The error from
+blocks rises to a plateau, 9.6 with its own error of 1 against
+\SI{9.8}{\angstrom\cubed} from $g$. (d) The autocorrelation function falls
+to zero by \SI{8}{\pico\second}, where the estimate of $g$ stops. The
+report, given no target, passes all four checks: $V = (12310.4
+\pm 9.8)$\,\si{\angstrom\cubed} from 316 independent samples, with a slope
+0.85 of its error.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/healthy}
+\caption{The dashboard of a converged quantity: the volume over
+\SI{1}{\nano\second} at \SI{0.1}{\giga\pascal}. (a) The series, the start
+found (dotted) and the mean after it (dashed). (b) The running mean from
+the start with its error band. (c) The error of the mean from blocks,
+against $\sqrt{g s^2/n}$ (dashed). (d) The autocorrelation function, with
+the lag at which the estimate of $g$ stops (dotted).}
+\label{fig:cv-healthy}
+\end{figure}
+
+\subsection*{Six faults}
+
+\Cref{fig:cv-faults} and \cref{tab:cv-faults} set six faults against
+healthy runs.
+
+\begin{table}[htb]
+\centering
+\small
+\caption{The faults of \cref{fig:cv-faults}, the check that catches each,
+and its value in the healthy and the faulty run or analysis.}
+\label{tab:cv-faults}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+   >{\raggedright\arraybackslash}p{0.27\linewidth}
+   >{\raggedright\arraybackslash}p{0.21\linewidth}
+   >{\raggedright\arraybackslash}p{0.21\linewidth}@{}}
+\toprule
+fault & check & healthy & faulty\\
+\midrule
+(a) averaged from the start & the start found; the mean after it &
+start \SI{2.8}{\pico\second}, $\bar U/N = (-50.060 \pm
+0.085)$\,\si{\milli\electronvolt} &
+$\bar U/N = \SI{-50.173}{\milli\electronvolt}$ from $t = 0$\\
+(b) the naive error bar & pieces whose bars hold the mean of
+\SI{2}{\nano\second} & 11 of 20 with $\sqrt g$ & 0 of 20 with $s/\sqrt
+n$\\
+(c) too short for a plateau & independent samples; the blocks &
+1369 in \SI{2}{\nano\second} & 19.7 in \SI{20}{\pico\second}, no
+plateau\\
+(d) a drifting energy & the drift test & $-0.9$ errors at
+\SI{10}{\femto\second} & $+9.3$ errors at \SI{35}{\femto\second}\\
+(e) the wrong ensemble & slope of the ratio of densities, over the
+required & $1.05 \pm 0.06$ (CSVR) & $5.50 \pm 0.55$ (Berendsen)\\
+(f) a box too small & $\ens{\Delta r^2}/6t$ at \SI{20}{\pico\second}, in
+\SI{e-4}{\angstrom\squared\per\femto\second} &
+4.177 for 2048 atoms & 3.863 for 256\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{(a) Averaged from the start.} A run started on the lattice and
+averaged from its first step includes the melting: the mean of $U/N$ over
+the \SI{100}{\pico\second} is \SI{-50.173}{\milli\electronvolt}, while from
+the start found at \SI{2.8}{\pico\second} it is $(-50.060 \pm
+0.085)$\,\si{\milli\electronvolt}, against \SI{-50.092}{\milli\electronvolt}
+over \SI{2}{\nano\second}. The running mean from $t = 0$ in
+\cref{fig:cv-faults}(a) creeps up for the whole run, the offset fading
+only as one over the length of the run. In this run the shift is about one
+error bar; over the eight runs of \cref{sec:cv-equilibration} the discard
+moves the mean by \SI{0.106}{\milli\electronvolt}, 1.6 of their
+error bars. Even the \SI{2}{\nano\second} run, started from an
+equilibrated liquid, has its start found at \SI{30}{\pico\second}: the
+search costs little where there is nothing to discard.
+
+\emph{(b) The naive error bar.} $s/\sqrt n$ treats the 10\,000 samples of
+a piece of \SI{100}{\pico\second} as independent. Its bars are too short
+by the factor $\sqrt g$, about twelve, and none of the twenty holds the
+mean of the whole run, where the bars with $\sqrt g$ hold it in eleven,
+against the fourteen that 68\% would give, within the spread of two that
+twenty pieces allow (\cref{fig:cv-faults}(b)). The check is to report $g$ with every error
+bar.
+
+\emph{(c) Too short for a plateau.} The first \SI{20}{\pico\second} of the
+run hold 19.7 independent samples of $U$. Its block errors rise without
+levelling (\cref{fig:cv-faults}(c)), and its start falls in the second
+half of the run, at \SI{12}{\pico\second}: the report fails it on the start
+and on 100 independent samples. Its block check passes, because the
+\SI{8}{\pico\second} after that start give $g = 13$, a tenth of the value
+of the whole run, and blocks of $5g$ that short agree with an error as
+short; the plot of the blocks shows what the check cannot.
+
+\emph{(d) A drifting energy.} With steps of \SI{35}{\femto\second} the
+total energy of a run at fixed energy climbs by
+\SI{0.6}{\milli\electronvolt} per atom in a nanosecond
+(\cref{fig:cv-faults}(d)), 9.3 errors of the drift test, and moves the
+temperature by \SI{3.2}{\kelvin} per nanosecond; with steps of
+\SI{10}{\femto\second} its slope is $-0.9$ errors, no drift.
+
+\emph{(e) The wrong ensemble.} Berendsen coupling with $\tau_{\mathrm T} =
+\SI{0.1}{\pico\second}$ gives the right mean energies and the wrong
+spread, and the logarithm of the ratio of its energy densities at 130 and
+\SI{140}{\kelvin} rises 5.5 times too steeply (\cref{fig:cv-faults}(e)).
+None of the convergence checks finds this, since each run is converged in
+its own narrow ensemble; the test of \cref{sec:cv-ensemble} does, as does
+the spread of $K$ set against the canonical one (\cref{sec:th-compare}).
+
+\emph{(f) A box too small.} The squared displacement over $6t$, whose
+value at long times is $D$, reaches \SI{3.863e-4}{\angstrom\squared\per
+\femto\second} at \SI{20}{\pico\second} for 256 atoms and $4.177\times
+10^{-4}$ for 2048, so the smaller box gives 0.925 times the larger's
+(\cref{fig:cv-faults}(f)); these are single runs read at one time, near
+the 3.914 and 4.214 of \cref{sec:cv-size}. Each run fixes its own $D$
+to about 1\%; the smaller box fixes it at a different number, for the
+reason \cref{sec:cv-size} gives.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/faults}
+\caption{Faults of convergence (teal) against healthy runs (grey dashed).
+(a) The running mean of $U/N$ of a melting run from $t = 0$, against that
+from the start found, and the mean of \SI{2}{\nano\second} (dotted). (b)
+Twenty pieces of \SI{100}{\pico\second}: the mean of $U$ less that of the
+whole run, with $s/\sqrt n$ (teal, too short to see) and $\sqrt{g s^2/n}$
+(grey). (c) The error of $U$ from blocks over the first
+\SI{20}{\pico\second} and over \SI{2}{\nano\second}, each over its
+$\sqrt{g s^2/n}$. (d) The total energy per atom at fixed energy at 35 and
+\SI{10}{\femto\second}. (e) The logarithm of the ratio of the energy
+densities at 140 and \SI{130}{\kelvin} under Berendsen coupling (here in
+teal, as the fault) and CSVR, each about its mean. (f) The squared displacement over $6t$ for 256 and
+2048 atoms.}
+\label{fig:cv-faults}
+\end{figure}
+
+\begin{practice}
+A run is read through the dashboard of each quantity to be reported: the
+series with its start, the running mean with its error band, the block
+errors with their plateau, and the autocorrelation function. Every average
+is reported with its error bar, its number of independent samples and the
+start discarded, and passes \texttt{convergence\_report}; a run that fails
+is extended by the length \cref{eq:cv-length} gives. A thermostat is
+checked once by the test of \cref{sec:cv-ensemble}, a time step by the
+drift test at fixed energy, and a transport coefficient by a second box
+size.
+\end{practice}
+
+\begin{keyidea}
+Each fault of convergence shows on a plot of the dashboard or on one of the
+chapter's tests: the start for an average taken from the first step, $g$ for
+a naive error bar, the block plateau for a run too short, the drift test
+for a creeping energy, the ratio of densities for a thermostat that
+narrows the spread, and a second box for a size-dependent result.
+\end{keyidea}
+
+\notebook{15}{break each run in turn and watch which check catches it}
+
+\begin{selfcheck}
+A paper reports $D$ from one run of 256 argon atoms as $(3.87 \pm 0.04)
+\times10^{-4}$\,\si{\angstrom\squared\per\femto\second}. Is the error bar
+the error of $D$?
+\end{selfcheck}

@@ -1,0 +1,133 @@
+%=============================================================================!
+% 18.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:learning}: Learning as optimisation}
+\label{sec:lo-solutions}
+
+\solutionto{ex:lo-least}With $S_{xx} = \sum_ix_i^2$, $S_{xF} =
+\sum_ix_iF_i$ and $S_{FF} = \sum_iF_i^2$, the expanded loss is $L = S_{FF}
+- 2kS_{xF} + k^2S_{xx}$, and at $\hat k = S_{xF}/S_{xx}$
+\begin{equation*}
+   L(\hat k) = S_{FF} - 2\frac{S_{xF}^2}{S_{xx}} + \frac{S_{xF}^2}{S_{xx}^2}
+   S_{xx} = S_{FF} - \frac{S_{xF}^2}{S_{xx}} .
+\end{equation*}
+
+\solutionto{ex:lo-error}The stretches in metres are 0.01 to 0.10, and
+the sum of their squares is $385\times10^{-4} =
+\SI{0.0385}{\metre\squared}$, so the error is $0.05/\sqrt{0.0385} =
+\SI{0.255}{\newton\per\metre}$.
+
+\solutionto{ex:lo-intercept}The columns of $X$ are 1 and $x_i$, so
+\begin{equation*}
+   X^{\mathsf T}X = \begin{pmatrix} n & \sum_ix_i\\ \sum_ix_i &
+   \sum_ix_i^2\end{pmatrix} , \qquad
+   X^{\mathsf T}\vb{y} = \begin{pmatrix}\sum_iy_i\\ \sum_ix_iy_i
+   \end{pmatrix} .
+\end{equation*}
+The first equation, $nc + s\sum_ix_i = \sum_iy_i$, divided by $n$ gives
+$c = \bar y - s\bar x$. Substituting into the second, $(\bar y - s\bar
+x)\sum_ix_i + s\sum_ix_i^2 = \sum_ix_iy_i$, and with $\sum_ix_i = n\bar x$,
+\begin{equation*}
+   s\Bigl(\sum_ix_i^2 - n\bar x^2\Bigr) = \sum_ix_iy_i - n\bar x\bar y .
+\end{equation*}
+Expanding $\sum_i(x_i - \bar x)^2 = \sum_ix_i^2 - 2\bar x\,n\bar x + n\bar
+x^2 = \sum_ix_i^2 - n\bar x^2$, and likewise $\sum_i(x_i - \bar x)(y_i -
+\bar y) = \sum_ix_iy_i - n\bar x\bar y$, gives the slope of
+\cref{sec:cv-drift}.
+
+\solutionto{ex:lo-stiffness}With $U_{\mathrm M} = D(1 -
+\mathrm{e}^{-ax})^2$, the chain rule gives $F = -2Da\,\mathrm{e}^{-ax}(1 -
+\mathrm{e}^{-ax}) = -2Da(\mathrm{e}^{-ax} - \mathrm{e}^{-2ax})$, and
+\begin{equation*}
+   -\frac{\dd F}{\dd x} = 2Da(-a\mathrm{e}^{-ax} + 2a\mathrm{e}^{-2ax})
+   = 2Da^2(2\mathrm{e}^{-2ax} - \mathrm{e}^{-ax}) .
+\end{equation*}
+To first order $\mathrm{e}^{-2ax} \approx 1 - 2ax$ and $\mathrm{e}^{-ax}
+\approx 1 - ax$, so the bracket is $2 - 4ax - 1 + ax = 1 - 3ax$. At $x =
+\pm\SI{0.0345}{\angstrom}$, $3ax = 0.207$: the stiffness is 21\% below its
+value at the bottom on the outer side and 21\% above it on the inner.
+
+\solutionto{ex:lo-square}If $X$ has an inverse, so does $X^{\mathsf T}$,
+and multiplying the normal equations $X^{\mathsf T}X\vb{w} = X^{\mathsf
+T}\vb{y}$ by $(X^{\mathsf T})^{-1}$ on the left gives $X\vb{w} = \vb{y}$.
+
+\solutionto{ex:lo-shrink}As in \cref{sec:lo-ridge}, the component along
+$\vb{v}_k$ is $c_k = \vb{v}_k\cdot X^{\mathsf T}\vb{y}/(d_k + \lambda)$
+with the penalty and $c_k^0 = \vb{v}_k\cdot X^{\mathsf T}\vb{y}/d_k$
+without it, so $c_k = c_k^0\,d_k/(d_k + \lambda)$.
+
+\solutionto{ex:lo-prior}$\sigma_w = \sigma/\sqrt\lambda =
+0.2/\sqrt{10^{-3}} = \SI{6.32}{\milli\electronvolt}$; and $\lambda =
+\sigma^2/\sigma_w^2 = (0.2/1)^2 = 0.04$.
+
+\solutionto{ex:lo-condition}The mean is $(c/\sigma_b^2)\,b = (1.5/1)\times
+2 = 3$, and the variance $\sigma_a^2 - c^2/\sigma_b^2 = 4 - 2.25 = 1.75$.
+
+\solutionto{ex:lo-one}With one reading, $K$ is the number $h^2 +
+\sigma^2$ and $\vb{k}_\ast = h^2\mathrm{e}^{-(x - x_1)^2/2\ell^2}$, so
+\cref{eq:lo-gp} gives the mean $\vb{k}_\ast y_1/K$, the expression asked
+for, and the variance
+\begin{equation*}
+   h^2 - \frac{h^4\mathrm{e}^{-(x - x_1)^2/\ell^2}}{h^2 + \sigma^2} ,
+\end{equation*}
+which at $x_1$ is $h^2\sigma^2/(h^2 + \sigma^2)$, below both $h^2$ and
+$\sigma^2$, and far away returns to $h^2$.
+
+\solutionto{ex:lo-rate}The rate must be below the stability boundary $2/200 = 0.01$; the best
+fixed rate $2/(2 + 200) = 0.0099$; with $\kappa = 100$ the factor is $99/
+101 = 0.980$; and the loss falls as its square, so a millionfold takes
+$\ln10^6/(-2\ln0.980) = 345$ steps.
+
+\solutionto{ex:lo-kappa}The factor is $(\kappa - 1)/(\kappa + 1)$ and the
+loss falls as its square, so $t$ steps bring the factor $\varepsilon$ when
+\begin{align*}
+   t &= \frac{\ln(1/\varepsilon)}{2\ln[(\kappa + 1)/(\kappa - 1)]}
+      && \text{taking logarithms}\\
+   &= \frac{\ln(1/\varepsilon)}{2\ln[1 + 2/(\kappa - 1)]}
+   \approx \frac{(\kappa - 1)\ln(1/\varepsilon)}{4}
+      && \text{writing $(\kappa + 1)/(\kappa - 1) = 1 + 2/(\kappa - 1)$,}
+\end{align*}
+by $\ln(1 + y) \approx y$ for the small $y = 2/(\kappa - 1)$; for large
+$\kappa$ this is $\kappa\ln(1/\varepsilon)/4$.
+
+\solutionto{ex:lo-batch}$\sigma_g/\sqrt b = 0.05$ gives $b = (0.585/0.05)^2
+= 137$.
+
+\solutionto{ex:lo-memory}With no gradient $\vb{v}$ is multiplied by $\mu$
+each step, so after $t$ steps by $0.9^t = \mathrm{e}^{-1}$ when $t =
+-1/\ln0.9 = 9.5$ steps. The friction is $1 - \mu = 0.1$ per step.
+
+\solutionto{ex:lo-polyak}$\sqrt\kappa = 10$, so $\sqrt\mu = 9/11 = 0.818$,
+$\mu = 0.669$ and $\eta = 4/(10 + 1)^2 = 0.0331$. Using the asymptotic factors, shrinking by $10^{-4}$
+takes approximately $\ln10^{-4}/\ln0.818 = 46$ steps with momentum and $\ln10^{-4}/
+\ln0.980 = 461$ without.
+
+\solutionto{ex:lo-adam}$m = (1 - 0.9^{10})\,g = 0.651\,g$ and $s = (1 -
+0.999^{10})\,g^2 = 0.00996\,g^2$, so that $\sqrt s$ is
+$0.0998\lvert g\rvert$. The corrected step is $\eta g/\lvert g\rvert$; uncorrected it would be
+$\eta\times0.651/0.0998 = 6.5\eta$ in size, six and a half times too
+large, since $s$ starts far more biased than $m$.
+
+\solutionto{ex:lo-scale}Each $m$ is a weighted sum of the gradients, so
+it becomes $cm$; each $s$ a weighted sum of their squares, so $c^2s$, and
+$\sqrt{c^2s} = c\sqrt s$ for $c > 0$. The corrections divide both by the
+same numbers, and the step $\eta\hat m/\sqrt{\hat s}$ is unchanged.
+
+\solutionto{ex:lo-frames}\SI{2}{\pico\second} is 200 frames, about $200/
+109 = 1.8$ independent ones; \SI{20}{\pico\second}, about 18.
+
+\solutionto{ex:lo-neighbour}The frames on either side differ from it by
+\SI{10}{\femto\second} of motion, much less than the memory of the run,
+so their features and energies are nearly its own. A model that fits its
+training frames and interpolates smoothly between their features can
+therefore predict this validation frame with a similarly small miss.
+A new run need not supply such close neighbours. The random split then
+tests local interpolation more strongly than transfer to new configurations.
+
+\solutionto{ex:lo-plan}Split by whole runs, never by frames: for
+instance, if there are five runs at each of the ten temperatures, put
+three at each temperature in training, one in validation and one in test.
+This gives 30, 10 and 10 runs, with every temperature represented in each set. No two sets may share a run,
+and the scaling of the features, the choice of settings and the early
+stop come from the training and validation sets alone; the test runs are
+used once, at the end.

@@ -1,0 +1,239 @@
+%=============================================================================!
+% 17.6  LITHIUM ON THE MOVE                                                   !
+%=============================================================================!
+\section{Lithium on the move}
+\label{sec:ip-hops}
+
+A marble in an egg box that is being shaken rattles in its cup and now
+and then jumps into the next. Counting its jumps needs two decisions:
+what a cup is, and how long the marble must stay in a new cup for the
+visit to count, since a marble that touches the rim of a neighbour and
+falls back has gone nowhere. If the egg box itself slides about on the
+table, the cups move with it, and the marble's cup must be read in the
+frame of the box. A lithium atom in a gallery of graphite, the gap
+between two neighbouring sheets, is such a marble. This section counts its hops in dilute graphite, one lithium
+among 64 carbon atoms, and turns them into rates with error bars, taking
+Chapter~13's hops over a model surface (\cref{sec:th-langevin}) and
+Chapter~16's counting of events (\cref{sec:ob-reactions}) to a real
+material.
+
+\subsection*{The sites}
+
+Relaxed at \SI{0}{\kelvin}, lithium sits over the centre of a hexagon of
+the sheet below, a hollow, and under an atom of the sheet above, since in
+graphite's A, B stacking a hollow of one sheet lies under an atom of the
+next. Graphite has an inversion centre midway between an atom of the
+sheet below and the atom of the sheet above that lies over it: sending
+every point to the point as far beyond that centre on the opposite side
+swaps the two sheets and leaves the crystal as it was. It carries
+lithium's site to one over an atom of the sheet below, a corner of
+lithium's hexagon, and under a hollow of the sheet above: a second family
+of sites with the same energy, $a/\sqrt3 = \SI{1.42}{\angstrom}$ from the
+first, for the lattice constant $a = \SI{2.4648}{\angstrom}$ of the
+relaxed dilute cell. Each family is the hollows of one sheet, a
+triangular grid, and the two grids are offset by $a/\sqrt3$, so together
+they form a honeycomb on which the families alternate, as the two kinds
+of atom of a sheet do (\cref{ex:ip-honeycomb}).
+
+Moved along the straight line to the nearest site of the other family,
+with its position in the plane held at each of eight steps while its
+height and the carbon atoms relax, lithium's energy rises to
+\SI{73}{\milli\electronvolt} halfway and falls back to zero at the far
+site, as the inversion requires; along the line to the next site of its
+own family, across the middle of a C--C bond, it rises to
+\SI{107}{\milli\electronvolt} (\cref{fig:ip-hops}a). Without D3, at the
+same relaxed points, the two are 53 and \SI{94}{\milli\electronvolt}. One
+carbon atom of each sheet is held in the plane as well, since otherwise
+the sheets would slide to carry their sites back under lithium. Every
+path between two sites must cross the ridge that divides them, whose
+lowest point, the saddle, sets the barrier (\cref{sec:en-gradient}), so
+the highest point of any one path is at least the barrier, and
+\SI{73}{\milli\electronvolt} bounds it from above. The relaxation of the
+carbon atoms is part of every site. With them held where they relaxed
+around the first site, the other family's site lies
+\SI{136}{\milli\electronvolt} higher and is no minimum at all, the
+straight way to it passing 56, 123 and \SI{111}{\milli\electronvolt}, so
+a map over a frozen host finds only half the sites.
+
+\subsection*{Sheets that slide}
+
+Each run, at 300, 450 and \SI{600}{\kelvin}, lasted \SI{20}{\pico\second}
+under CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$ and steps of
+\SI{1}{\femto\second}, keeping lithium's position every
+\SI{10}{\femto\second} and every atom's every \SI{100}{\femto\second}.
+The cell was the one relaxed at \SI{0}{\kelvin}, held fixed, which at
+these temperatures holds the sheets closer than zero pressure would, as
+LiC$_6$'s pressure along $c$ in its own cell showed (\cref{sec:ip-lic6});
+the rates below belong to that cell. In them the sheets slide as wholes. The sheet
+below lithium slides by as much as 0.96, 2.40 and \SI{1.59}{\angstrom},
+and the sheet above by as much as 1.94, 4.76 and \SI{2.97}{\angstrom}
+against it, comparable with or further than the \SI{1.42}{\angstrom}
+between neighbouring sites, so a site fixed in the frame of the cell is
+soon in the wrong place. Each family is the hollows of one sheet, the
+first those of the sheet below and the second those of the sheet above.
+Lithium's position is therefore read in the frame of each sheet in turn,
+the sheet's slide being the mean displacement of its atoms, interpolated
+between the frames that hold them, and lithium is assigned to the
+nearest site of either family. Sites fixed in the cell where the sheets
+started give a count of hops that falls steadily as the least stay of the
+next subsection grows, from 85 to 20 at \SI{450}{\kelvin}.
+
+How far the sheets wander is a property of the small cell. Near its best
+stacking, sliding a sheet of $N$ atoms by $s$ along one direction costs
+about $\frac12N\kappa s^2$, with $\kappa$ the stiffness for one atom,
+since every atom of the sheet changes its stacking at once; equipartition
+gives this term $\frac12\kB T$ on average whatever $N$
+(\cref{sec:sm-equipartition}). The typical slide, $\sqrt{\kB T/N\kappa}$,
+therefore shrinks as the sheet grows, and the barrier between one
+stacking and the next, $N$ times that for one atom, grows. A sheet of 32
+atoms wanders much further than the sheets of a crystal, and a larger
+cell is the test of how much of what follows depends on it
+(\cref{sec:cv-size}).
+
+\subsection*{Counting hops}
+
+The runs start from the relaxed cell with velocities drawn at the target,
+and half the kinetic energy passes at once into the potential energy, as
+in the crystal of \cref{sec:sm-trajectory}: the first picosecond averages
+200, 301 and \SI{402}{\kelvin}. The test of \cref{sec:cv-equilibration}
+on the kinetic temperature finds the start at 2.5, 2.5 and
+\SI{7.6}{\pico\second}, after which the runs average 298, 447 and
+\SI{592}{\kelvin}, and hops are counted from there, over 17.5, 17.5 and
+\SI{12.4}{\pico\second}.
+
+A visit counts only if it lasts a least stay, the same device as the
+least lifetime of a bond (\cref{sec:ob-bonds}); a shorter visit is joined
+to the one before it. With both families of sites the count barely
+depends on the least stay up to \SI{50}{\femto\second}: 14, 14, 12 and
+12 hops at \SI{300}{\kelvin}, 45, 43, 43 and 42 at 450 and 44, 43, 42
+and 42 at \SI{600}{\kelvin}, for least stays of 10, 20, 30 and
+\SI{50}{\femto\second} (\cref{fig:ip-hops}b). Beyond, the least stay
+begins to discard visits that were real, most at \SI{600}{\kelvin}, where
+a visit lasts \SI{0.30}{\pico\second} on average. With the sites of the
+sheet below alone the count keeps falling at \SI{300}{\kelvin}, from 28
+at a least stay of \SI{10}{\femto\second} to 8 at
+\SI{200}{\femto\second}: a position over a site of the other family is
+equally far from three sites of the first, and the jitter shares it out
+among them, each change a hop. A count that falls steadily as the least
+stay grows is the sign of a wrong definition of a site; a plateau is the
+sign of a right one, and the least stay is chosen on it, here
+\SI{50}{\femto\second}. The hops then join the two families, all of them
+at \SI{300}{\kelvin}, 98\% at 450 and 95\% at \SI{600}{\kelvin}, as hops
+between neighbours on the honeycomb must; the few others join two sites
+of one family, the visit between them having been shorter than the least
+stay.
+
+Bonds would not have served. The bond tracker of \cref{sec:ob-bonds},
+with its thresholds of 2.45 and \SI{2.86}{\angstrom} for lithium and
+carbon, finds lithium bonded to ten carbon atoms in half the frames at
+\SI{300}{\kelvin} and to nine in 45\%: the six of the hexagon on one
+side, \SI{2.30}{\angstrom} away at \SI{0}{\kelvin}, the atom opposite,
+\SI{2.08}{\angstrom}, and that atom's three neighbours,
+\SI{2.45}{\angstrom}, on the threshold at which a bond forms. Those three
+flicker in and out with the vibrations, each flicker an event of the
+tracker, while a hop only exchanges which sheet holds the six and which
+the four. The sites count the hops; the bonds would count the
+vibrations.
+
+\subsection*{Rates}
+
+With a least stay of \SI{50}{\femto\second} the runs hold 12, 42 and 42
+hops. A rate from $n$ events is known to $1/\sqrt n$
+(\cref{sec:ob-reactions}), and we call a rate resolved at a fifth, which
+needs 25 of them: at \SI{450}{\kelvin} the rate is $(2.40 \pm
+0.37)$\,\si{\per\pico\second} and at \SI{600}{\kelvin} $(3.38 \pm
+0.52)$\,\si{\per\pico\second}, while at \SI{300}{\kelvin}, $(0.69 \pm
+0.20)$\,\si{\per\pico\second} from 12 hops, it is unresolved, and a run of
+\SI{36}{\pico\second} in all at that rate would resolve it. The error
+$\sqrt n$ assumes hops independent in time. Counted in ten equal windows
+of each run, their variance is 1.3, 1.3 and 1.8 times their mean, against
+$1 \pm 0.47$ for independent events (\cref{ex:cv-error-error}), within
+twice that scatter, so the Poisson errors stand. Over the whole runs,
+warming included, the ratios are 1.9, 2.2 and 2.3, beyond twice that
+scatter at 450 and \SI{600}{\kelvin}: while a run warms its hops come in
+bursts, one more reason to discard the start.
+
+The logarithm of the rate against $1/\kB T$, each point weighted by $\sqrt
+n$ as in \cref{sec:ob-reactions}, has the slope $-(80 \pm
+17)$\,\si{\milli\electronvolt} (\cref{fig:ip-hops}c): the rate rises 4.9
+times from 300 to \SI{600}{\kelvin}, where a barrier of
+\SI{73}{\milli\electronvolt} would raise it $\mathrm{e}^{0.073\times(38.68
+- 19.34)} = 4.1$ times, with $1/\kB T$ in \si{\per\electronvolt}. The
+apparent activation energy lies above the bound from the relaxed path by
+less than half its error, which at a fifth of its value is all that three
+points, one of them unresolved, can give; a barrier from rates to a few
+\si{\milli\electronvolt} needs more temperatures and many more hops at
+each.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch17_practice/hops}
+\caption{Lithium in dilute graphite, one lithium among 64 carbon atoms,
+with MACE-MP-0 and D3. (a) The energy along the straight line to the
+nearest site of the other family (teal) and to the next site of the
+same family across a C--C bond (ochre), every atom relaxed but lithium
+and one carbon of each sheet, whose positions in the plane are held.
+(b) Hops counted after each run's start against the least stay a visit
+needs to count, with the sites of both families (solid) and of the sheet
+below alone (dashed), and the 25 hops that resolve a rate to a fifth
+(dotted). (c) The rate of hops for a least stay of
+\SI{50}{\femto\second}, with its Poisson error (open: unresolved),
+against $1/\kB T$, with the line $\propto\mathrm{e}^{-E_{\mathrm a}/\kB
+T}$ through the point at \SI{450}{\kelvin}, for $E_{\mathrm a}$ the
+highest point of the teal path (dotted).}
+\label{fig:ip-hops}
+\end{figure}
+
+\subsection*{Diffusion}
+
+If each hop were independent of the last, the rate would give the
+diffusion coefficient, $D = k_{\mathrm h}\ell^2/4$ with $\ell =
+\SI{1.4231}{\angstrom}$ (\cref{ex:ip-honeycomb}): with $k_{\mathrm h} =
+\num{2.40e-3}$ and \num{3.38e-3} per femtosecond, $D =
+\num{2.40e-3}\times1.4231^2/4 =
+\SI{12.2e-4}{\angstrom\squared\per\femto\second}$ at \SI{450}{\kelvin} and
+\SI{17.1e-4}{\angstrom\squared\per\femto\second} at \SI{600}{\kelvin}.
+Lithium's own mean squared displacement after the start, read in the
+frame midway between the two sheets and fitted from 0.5 to
+\SI{2}{\pico\second} in four blocks, gives $(5.8 \pm 2.2)$, $(22.4 \pm
+16.0)$ and $(36.1 \pm 12.6)\times10^{-4}$\,\si{\angstrom\squared\per
+\femto\second}, fractional errors of 0.38, 0.71 and 0.35, which miss a
+target of 5\% by factors of seven to fourteen. Two
+departures from the random walk are measured. The hops are not
+independent: a hop returns to the site just left in $0.15 \pm 0.06$ of
+cases at both 450 and \SI{600}{\kelvin}, errors $\sqrt{p(1-p)/m}$ for a
+fraction $p$ of $m$ pairs of successive hops, three errors below the
+$1/3$ of a random walk on the honeycomb, where the site just left is one
+of three equally likely; at \SI{300}{\kelvin}, $0.27 \pm 0.13$, the
+difference is within its error. Lithium therefore tends to carry on the
+way it was going, and the correlation factor of \cref{sec:ob-layers}
+exceeds 1, as it did on the model surface. And lithium in a site is
+carried by its sheet, whose slides are as long as its hops. One lithium
+atom for \SI{20}{\pico\second} gives a rate to 15\% and no diffusion
+coefficient: the error of $D$ falls as one over the square root of the
+run's length, so 5\% at \SI{450}{\kelvin} needs $(0.71/0.05)^2 = 203$
+times the run, or as many lithium atoms in a larger cell, which would
+also hold the sheets still.
+
+The runs end with \SI{5}{\pico\second} at fixed energy from the last
+frame at \SI{600}{\kelvin}, and another from LiC$_6$ at its mean cell,
+each keeping 501 frames with their energies and forces. These are the
+trajectories on which planned Chapter~28 trains a learned propagator.
+
+\begin{keyidea}
+A site is defined in the frame of the atoms that make it, and a hop by a
+least stay chosen where the count is flat; a count that keeps falling as
+the least stay grows means the sites are wrong. Hops are counted after
+the start that the test of Chapter~15 finds. A rate is reported with its
+Poisson error once 25 hops are seen, after a check that they are
+independent, otherwise as unresolved with the run that would resolve it.
+One atom gives a rate long before it gives a diffusion coefficient.
+\end{keyidea}
+
+\notebook{17}{count lithium's hops with both families of sites and with
+one, and watch the count against the least stay}
+
+\begin{selfcheck}
+At \SI{450}{\kelvin}, how long a run of one lithium atom would resolve the
+rate to a tenth?
+\end{selfcheck}

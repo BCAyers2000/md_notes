@@ -1,0 +1,80 @@
+%=============================================================================!
+% 2.4  THE THIRD LAW                                                          !
+%=============================================================================!
+\section{The third law}
+\label{sec:ne-third}
+
+Forces do not appear from nowhere: every force on a body is exerted by
+some other body. The third law describes what happens at the other end,
+and it is what later lets us treat several bodies, and many atoms,
+together.
+
+We write $\vb{F}_{AB}$ for the force on body $A$ exerted by body $B$; the
+first subscript names the body that feels the force. The third law states
+that forces between two bodies come in matched pairs,
+\begin{equation*}
+   \vb{F}_{AB} = -\vb{F}_{BA} ,
+\end{equation*}
+equal in size and opposite in direction. Like the second law, this is a
+fact of experiment: hook two spring balances together and pull them apart,
+and they always show the same reading, however hard or unevenly you pull.
+When you push on a wall, the wall pushes back on you with an equal force.
+When the Earth pulls a falling ball down, the ball pulls the Earth up with
+a force of the same size. A ball of half a kilogram falls, with air
+resistance negligible, at the acceleration $g$ of Chapter~1, so by the
+second law the Earth's pull on it is $0.5\times9.80665 =
+\SI{4.9}{\newton}$, its weight (\cref{sec:ne-gravity}). The Earth's mass
+is about \SI{6e24}{\kilogram}, so by the second law again the Earth's
+acceleration is
+$4.9/(6\times10^{24}) = \SI{8e-25}{\metre\per\second\squared}$, far too
+small to notice.
+
+The two forces of a pair always act on different bodies, so they never
+cancel in the second law of either body. A book resting on a table shows
+the commonest confusion (\cref{fig:ne-third}). The Earth pulls the book
+down and the table pushes it up, and these two forces are equal and
+opposite, but they are not a third-law pair: both act on the book, and
+they are equal only because the book does not accelerate. The partner of
+the Earth's pull on the book is the book's pull on the Earth, and the
+partner of the table's push on the book is the book's push on the table.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt},
+   body/.style={line width=0.6pt, fill=black!8}]
+   % the book, the table and the Earth, drawn apart
+   \draw[body] (-0.6,2.6) rectangle (0.6,3.1);
+   \draw[body] (-2.9,1.2) rectangle (2.9,1.34);
+   \draw[line width=0.6pt] (-2.7,1.2) -- (-2.7,0.3) (2.7,1.2) -- (2.7,0.3);
+   \fill[black!10] (-3.2,-1.6) arc[start angle=140, end angle=40,
+      radius=4.18] -- cycle;
+   \node at (0,-1.25) {\small Earth};
+   \node at (1.05,2.85) {\small book};
+   \node[right] at (2.9,1.27) {\small table};
+   % one pair: the table pushes the book up, the book pushes the table down
+   \draw[force] (-0.25,3.1) -- (-0.25,3.9)
+      node[midway, left] {\small table on book};
+   \draw[force] (-0.25,1.34) -- (-0.25,0.4)
+      node[midway, left] {\small book on table};
+   % the other pair: the Earth pulls the book, the book pulls the Earth
+   \draw[force, accent] (0.25,2.6) -- (0.25,1.8)
+      node[midway, right] {\small Earth on book};
+   \draw[force, accent] (0.25,-0.1) -- (0.25,0.7)
+      node[midway, right] {\small book on Earth};
+\end{tikzpicture}
+\caption{The forces between a book resting on a table, the table and the
+Earth, with the three bodies drawn apart for clarity. The black arrows
+are one third-law pair, the table's push on the book and the book's push
+on the table; the teal arrows are another, the Earth's pull on the book
+and the book's pull on the Earth. The two forces on the book itself, one
+from each pair, balance because the book does not accelerate. Forces
+between the table and the Earth are not drawn.}
+\label{fig:ne-third}
+\end{figure}
+
+\begin{selfcheck}
+The Earth pulls an apple down and the apple pulls the Earth up with an
+equal force. Why does the apple fall towards the Earth, rather than the
+Earth towards the apple?
+\end{selfcheck}

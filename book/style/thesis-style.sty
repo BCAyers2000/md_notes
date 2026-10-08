@@ -1,0 +1,869 @@
+%=============================================================================!
+% THESIS HOUSE STYLE                                                          !
+% ------------------                                                          !
+% Within the University envelope: A4, margins >= 25 mm l/r and                !
+% >= 15 mm t/b, >= ~11 pt, 1.5 spacing. Load after uosthesis.cls.             !
+% Single electronic volume: one-sided, folio always top right, no blank       !
+% pages, no rules on display pages.                                           !
+%=============================================================================!
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{thesis-style}[2026/08/09 Southampton thesis house style v2]
+
+\RequirePackage[tracking=smallcaps]{microtype}
+\RequirePackage{needspace}
+\RequirePackage{flafter}
+% A paragraph may split into two-line fragments, but never single lines.
+\widowpenalty=10000
+\clubpenalty=10000
+\brokenpenalty=10000
+\widowpenalties 3 10000 0 0
+\clubpenalties  3 10000 0 0
+\displaywidowpenalties 3 10000 0 0
+% Keep displays with their lead-ins. A finite following penalty permits a
+% page-ending display when its punctuation closes the sentence; inspect
+% sentence boundaries in the final page-composition pass.
+\predisplaypenalty=10000
+\postdisplaypenalty=500
+% Theorem furniture is never split across a page boundary: a statement
+% is a single object, and half a definition is worse than a short page
+\RequirePackage{etoolbox}
+% submission year for the repository coversheet citation; kept beside
+% \date in thesis.tex so the two cannot drift apart
+\newcommand*{\submissionyear}[1]{\def\thesubyear{#1}}
+\newlength{\tpbyskip}
+\newcommand*{\datasetdoi}[1]{\def\thedatasetdoi{#1}}
+\providecommand{\thedatasetdoi}{}
+\providecommand{\thesubyear}{}
+
+% Declaration confirmations and date are supplied explicitly in thesis.tex.
+\newcommand{\housenobreak}[1]{%
+   \AtBeginEnvironment{#1}{\interlinepenalty=10000}}
+\SetTracking[spacing={25*,166,}]{encoding=*, shape=sc}{30}
+\RequirePackage{textcase}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric,shapes.misc,
+                patterns,decorations.pathmorphing,decorations.markings}
+\RequirePackage{longtable}
+\RequirePackage{siunitx}
+\RequirePackage[version=4]{mhchem}
+% skeletal formulae: the one solvent molecule of Chapter 1
+\RequirePackage{chemfig}
+\RequirePackage[section]{placeins}
+% Use titlesec's integrated titleps marks while retaining fancyhdr's layout.
+\let\thesissavedheadrule\headrule
+\let\thesissavedfootrule\footrule
+\let\headrule\@undefined
+\let\footrule\@undefined
+\RequirePackage[pagestyles,topmarks]{titlesec}
+\let\headrule\thesissavedheadrule
+\let\footrule\thesissavedfootrule
+\RequirePackage{titletoc}
+\RequirePackage{orcidlink}
+\RequirePackage{bookmark}
+
+% Adapter from the installed hyperref.sty titlesec integration (TeX Live 2026).
+% Restore hyperref's titlesec adapter when the class has loaded hyperref
+% first. Delay heading targets until titlesec selects the placed heading,
+% after its page-reserve check; keep the package's label/write handling.
+\@ifundefined{ttl@Hy@steplink}{%
+\@ifpackageloaded{titlesec}{%
+  \def\ttl@Hy@steplink#1{%
+    \Hy@MakeCurrentHrefAuto{#1*}%
+    \edef\ttl@Hy@saveanchor{%
+      \noexpand\Hy@raisedlink{%
+        \noexpand\hyper@anchorstart{\@currentHref}%
+        \noexpand\hyper@anchorend
+        \def\noexpand\ttl@Hy@SavedCurrentHref{\@currentHref}%
+        \noexpand\ttl@Hy@PatchSaveWrite
+      }%
+    }%
+  }%
+  \def\ttl@Hy@PatchSaveWrite{%
+    \begingroup
+      \toks@\expandafter{\ttl@savewrite}%
+      \edef\x{\endgroup
+        \def\noexpand\ttl@savewrite{%
+          \let\noexpand\@currentHref
+              \noexpand\ttl@Hy@SavedCurrentHref
+          \the\toks@
+        }%
+      }%
+    \x
+  }%
+  \def\ttl@Hy@refstepcounter#1{%
+    \let\ttl@b\Hy@raisedlink
+    \def\Hy@raisedlink##1{%
+      \def\ttl@Hy@saveanchor{\Hy@raisedlink{##1}}%
+    }%
+    \refstepcounter{#1}%
+    \let\Hy@raisedlink\ttl@b
+  }%
+}{}
+}{}
+
+%-----------------------------------------------------------------------------!
+% ACCENT: the marine teal of the group's theses. Used for the title-page
+% identity line, ORCiD, hyperlinks and citations. Nothing else.
+%-----------------------------------------------------------------------------!
+\definecolor{thesisaccent}{RGB}{4,90,117}
+% the neutral of the figure system, for incumbents and secondary marks
+\definecolor{thesisgrey}{RGB}{110,114,117}
+% Panel tags in captions, set in the accent like figure numbers; the
+% description that follows stays in text colour.
+\DeclareRobustCommand{\ptag}[1]{{\color{thesisaccent}(#1)}}
+
+%-----------------------------------------------------------------------------!
+% GEOMETRY: symmetric ~31.7 mm margins, one-sided page furniture, but every
+% section opens on an odd page with an empty verso before it where needed,
+% as in the group's bound theses.  The class only inserts that page under
+% twoside, so the clear is redefined to work from the folio alone.
+%-----------------------------------------------------------------------------!
+\geometry{a4paper, textwidth=146.5mm, hmarginratio=1:1, bindingoffset=0mm}
+\renewcommand{\cleardoublepage}{\clearpage
+   \ifodd\value{page}\else\hbox{}\thispagestyle{empty}\newpage\fi}
+
+%-----------------------------------------------------------------------------!
+% PARAGRAPHS: parskip convention (house preference)
+%-----------------------------------------------------------------------------!
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.0ex plus 0.4ex minus 0.2ex}
+\frenchspacing
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+%-----------------------------------------------------------------------------!
+% RUNNING HEADERS
+% ---------------
+% One-sided: folio ALWAYS top right, body size, upright. Wayfinding mark
+% top left in italic mixed case: current section, falling back to the
+% chapter title while a chapter has no section yet. Hairline rule on body
+% pages only; plain (display) pages carry the folio alone.
+%-----------------------------------------------------------------------------!
+% Capture Chapter/Appendix with each mark, before an appendix transition
+% can change the prefix while the preceding page is waiting to ship out.
+\newtitlemark{\chaptertitlename}
+% Explicit page breaks can precede the pre-heading mark. On a truly empty
+% page, both halves must name the incoming title rather than the old one.
+% A queued top float still belongs to the outgoing section, even when the
+% body page total is zero; retain that section until the float has shipped.
+\patchcmd{\ttl@premark}
+   {\protected@xdef\ttl@prevmarks{\ttl@marks}}
+   {\ifdim\pagetotal=\z@
+      \ifx\@toplist\@empty
+         \gdef\ttl@prevmarks{\ttl@marks}%
+      \else
+         \protected@xdef\ttl@prevmarks{\ttl@marks}%
+      \fi
+    \else
+      \protected@xdef\ttl@prevmarks{\ttl@marks}%
+    \fi}
+   {}{\PackageError{thesis-style}{Cannot patch empty-page title marks}{}}
+% Activate titleps's public mark setup, then retain fancyhdr for rendering.
+\newpagestyle{thesismarksetup}{}
+\pagestyle{thesismarksetup}
+\pagestyle{fancy}
+\newcommand{\thesisrunningtitle}{%
+   \begingroup
+   \toptitlemarks
+   \iftitle{section}{%
+      \ifthesection{\thesection.\ \ }{}\sectiontitle}{%
+      \ifthechapter{\chaptertitlename\ \thechapter.\ \ }{}\chaptertitle}%
+   \endgroup}
+% Adapt the explicit chapter-level marks used by the front matter. Legacy
+% class calls wrap References in MakeUppercase; store the original case.
+\setmarkboth{%
+   \begingroup
+   \let\MakeUppercase\@firstofone
+   \chaptermark{#1}%
+   \endgroup}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\color{black!55}\itshape\thesisrunningtitle}
+\renewcommand{\headrule}{%
+   \ifdim\headrulewidth>0pt
+      {\color{black!55}\hrule width\headwidth height\headrulewidth}%
+   \fi}
+\fancypagestyle{plain}{%
+   \fancyhf{}\fancyhead[R]{\thepage}%
+   \renewcommand{\headrulewidth}{0pt}}
+
+%-----------------------------------------------------------------------------!
+% CHAPTER OPENINGS
+% ----------------
+% Demeyere's geometry with Mostofi's label: "Chapter N" in regular-weight
+% letterspaced small caps (no double bold), \Huge bold ragged-right title,
+% deep drop, first body line ~0.37 of the page. No rules, no ornaments.
+%-----------------------------------------------------------------------------!
+\DeclareRobustCommand{\chapternumeral}[1]{%
+   {\color{thesisaccent}\liningfigs\fontsize{52}{52}\selectfont #1}}
+\newcommand*{\chapheadrow}{%
+   \hbox to \linewidth{%
+      \raisebox{0.55\height}{\color{black!55}\large\displaylabel{\@chapapp}}%
+      \hfil\chapternumeral{\thechapter}}}
+\titleformat{\chapter}[display]
+   {\normalfont\setlength{\parskip}{0pt}}
+   {\chapheadrow}
+   {14pt}
+   {\fontsize{27}{32}\selectfont\raggedright}
+\titleformat{name=\chapter,numberless}[display]
+   {\normalfont}{}{0pt}{\fontsize{27}{32}\selectfont\raggedright}
+\titlespacing*{\chapter}{0pt}{45pt}{40pt}
+\titleformat{\section}
+   {\fontsize{16}{19}\selectfont\raggedright}
+   {{\color{thesisaccent}\liningfigs\thesection}}{0.6em}{}
+\titlespacing*{\section}{0pt}{3.5ex}{2.3ex}
+\titleformat{\subsection}
+   {\fontsize{14.4}{16}\selectfont\raggedright}
+   {{\color{thesisaccent}\liningfigs\thesubsection}}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{3.25ex}{1.5ex}
+\titlespacing*{\subsubsection}{0pt}{3ex}{1.2ex}
+% A heading must not open in the foot of a page (notes/LAYOUT_RULES.md, H1
+% and H2): if less than \sectionneed of the block remains, a section opens
+% the next page instead; subsections need \subsectionneed.  titlesec calls
+% \sectionbreak and \subsectionbreak before the respective titles.
+\newlength{\sectionneed}\setlength{\sectionneed}{0.36\textheight}
+\newlength{\subsectionneed}\setlength{\subsectionneed}{0.24\textheight}
+\newcommand{\sectionbreak}{\Needspace{\sectionneed}}
+\newcommand{\subsectionbreak}{\Needspace{\subsectionneed}}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+%-----------------------------------------------------------------------------!
+% FLOATS AND CAPTIONS
+% -------------------
+% One caption system for figures and tables: small-caps label, ROMAN
+% single-spaced caption text one step down, justified in a measure inset
+% 1.5em each side. Figure captions below, table captions above. Floats
+% never stack a table and a figure on one page top, never drift past
+% their section (placeins), generous separation.
+%-----------------------------------------------------------------------------!
+\setlength{\captionmargin}{0pt}
+% the label number in accent-teal lining figures, threading the teal of
+% the chapter numeral through figures and tables as it already runs
+% through sections and equation tags
+\DeclareCaptionLabelFormat{house}{%
+   #1~{\color{thesisaccent}\liningfigs #2}}
+\captionsetup{font={small,singlespacing},
+              labelfont=sc,
+              labelformat=house,
+              labelsep=colon,
+              justification=justified,
+              singlelinecheck=true,
+              margin=1.5em,
+              skip=10pt}
+\captionsetup[sub]{labelformat=parens, labelfont={normalfont,color=thesisaccent},
+                   labelsep=space,
+                   font={small,singlespacing},
+                   justification=centering,
+                   singlelinecheck=true,
+                   margin=0pt,
+                   skip=4pt}
+\setlength{\intextsep}{14pt plus 3pt minus 2pt}
+\setlength{\textfloatsep}{22pt plus 4pt minus 4pt}
+\setlength{\floatsep}{16pt plus 3pt minus 2pt}
+\setlength{\abovecaptionskip}{10pt}
+\setlength{\belowcaptionskip}{0pt}
+\setcounter{topnumber}{2}
+\setcounter{totalnumber}{3}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+% Float-only pages begin at the same top measure as ordinary body pages.
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+
+%-----------------------------------------------------------------------------!
+% TABLES: booktabs with real rule contrast (2.4:1), quiet roman headers,
+% slightly open rows
+%-----------------------------------------------------------------------------!
+\setlength{\heavyrulewidth}{1.2pt}
+\setlength{\lightrulewidth}{0.5pt}
+\renewcommand{\arraystretch}{1.15}
+
+%-----------------------------------------------------------------------------!
+% MATHEMATICS
+% -----------
+% One vocabulary for the whole thesis, so no two displays drift: the
+% transpose, the paired delimiters and the operator names are macros,
+% never written by hand. \jot opens the rows of aligned blocks.
+%-----------------------------------------------------------------------------!
+\RequirePackage{mathtools}
+\newcommand{\T}{^{\mathsf{T}}}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\erfc}{erfc}
+\newcommand{\half}{\tfrac{1}{2}}
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\braket}[2]{\langle #1 \vert #2 \rangle}
+\newcommand{\melem}[3]{\langle #1 \vert #2 \vert #3 \rangle}
+\newcommand{\ip}[2]{\langle #1 , #2 \rangle}
+\AtBeginDocument{\setlength{\jot}{0.55\baselineskip}}
+
+%-----------------------------------------------------------------------------!
+% EQUATIONS: ~1.4 body-baselines of air each side of a display; tag numbers
+% in accent-teal lining figures inside black parentheses, matching the
+% section numbers, so a display is anchored on the page the way a heading is
+%-----------------------------------------------------------------------------!
+\def\tagform@#1{\maketag@@@{{\liningfigs
+   (\ignorespaces{\color{thesisaccent}#1}\unskip\@@italiccorr)}}}
+\AtBeginDocument{%
+   \setlength{\abovedisplayskip}{14pt plus 3pt minus 3pt}%
+   \setlength{\belowdisplayskip}{14pt plus 3pt minus 3pt}%
+   \setlength{\abovedisplayshortskip}{6pt plus 3pt}%
+   \setlength{\belowdisplayshortskip}{8pt plus 3pt minus 2pt}}
+
+%-----------------------------------------------------------------------------!
+% LINKS AND CITATIONS: one accent, nothing else coloured
+%-----------------------------------------------------------------------------!
+\hypersetup{colorlinks=true,
+            linkcolor=thesisaccent,
+            citecolor=thesisaccent,
+            urlcolor=thesisaccent,
+            filecolor=thesisaccent,
+            pdfdisplaydoctitle=true}
+% The class sets linkcolor black inside \tableofcontents and never restores
+% it. Keep the front-matter registers black and pick the accent back up at
+% the body, so cross-references there are not left black.
+\apptocmd{\mainmatter}{\hypersetup{linkcolor=thesisaccent}}{}{}
+\bookmarksetup{numbered, open, openlevel=1,
+   addtohook={\ifnum\bookmarkget{level}=0 \bookmarksetup{bold}\fi}}
+\pdfstringdefDisableCommands{%
+   \renewcommand*{\textls}[2][]{#2}%
+   \renewcommand*{\displaylabel}[1]{#1}%
+   \renewcommand*{\onetep}{ONETEP}}
+
+%-----------------------------------------------------------------------------!
+% TABLE OF CONTENTS
+% -----------------
+% Three registers: bold leaderless chapter rows with air above, medium
+% weight for front-matter rows, bold for the References row,
+% quiet spaced-dot ladders for sections and subsections.
+%-----------------------------------------------------------------------------!
+\contentsmargin{2.55em}
+\titlecontents{chapter}[1.5em]
+   {\addvspace{2.4ex}}
+   {\bfseries\contentslabel{1.5em}}
+   {\hspace*{-1.5em}}
+   {\hfill\contentspage}
+   [\addvspace{0.5ex}]
+% Switch only the back-matter row to the chapter weight in the saved ToC.
+\newcommand{\referencestocstyle}{%
+   \titlecontents{chapter}[1.5em]
+      {\addvspace{2.4ex}\bfseries}
+      {\contentslabel{1.5em}}
+      {\hspace*{-1.5em}}
+      {\hfill\contentspage}
+      [\addvspace{0.5ex}]}
+\apptocmd{\backmatter}{%
+   \addtocontents{toc}{\protect\referencestocstyle}}{}{}
+\contentsuse{appendixchapter}{toc}
+\providecommand*{\toclevel@appendixchapter}{0}
+% the label hangs, as the chapter label does, so that "Appendix A" starts at
+% the same left edge as a chapter number and the title clears it
+\titlecontents{appendixchapter}[6.6em]
+   {\addvspace{2.4ex}}
+   {\bfseries\contentslabel[\appendixname\ \thecontentslabel]{6.6em}}
+   {\hspace*{-6.6em}\bfseries}
+   {\hfill\contentspage}
+   [\addvspace{0.5ex}]
+% inside the appendices a section row must clear the wider parent label
+\newcommand{\appendixtocindent}{%
+   \titlecontents{section}[8.9em]
+      {}{\contentslabel{2.3em}}{}
+      {\enspace\titlerule*[1pc]{.}\contentspage}%
+   \titlecontents{subsection}[12.1em]
+      {}{\contentslabel{3.2em}}{}
+      {\enspace\titlerule*[1pc]{.}\contentspage}}
+\titlecontents{section}[3.8em]
+   {}{\contentslabel{2.3em}}{}
+   {\enspace\titlerule*[1pc]{.}\contentspage}
+\titlecontents{subsection}[7.0em]
+   {}{\contentslabel{3.2em}}{}
+   {\enspace\titlerule*[1pc]{.}\contentspage}
+
+% Compact chapter separators keep the figure register on two pages without
+% changing its type size or entries; the table register retains six points.
+% Scope this adjustment to reading the .lof/.lot files only.
+\newcommand{\thesisfloatregister}[2][6pt]{%
+   \begingroup
+   \let\registeraddvspace\addvspace
+   \renewcommand{\addvspace}[1]{\registeraddvspace{#1}}%
+   \@starttoc{#2}%
+   \endgroup}
+\patchcmd{\listoffigures}{\@starttoc{lof}}{\thesisfloatregister[3pt]{lof}}
+   {}{\PackageError{thesis-style}{Cannot set figure-register spacing}{}}
+\patchcmd{\listoftables}{\@starttoc{lot}}{\thesisfloatregister{lot}}
+   {}{\PackageError{thesis-style}{Cannot set table-register spacing}{}}
+
+%-----------------------------------------------------------------------------!
+% UNITS
+%-----------------------------------------------------------------------------!
+\sisetup{range-phrase={--}, range-units=single, separate-uncertainty=true, mode=match, number-mode=math,
+         retain-explicit-plus}
+% a range whose lower bound is negative reads badly with a dash
+% ("-2.0--2.0 V"); \SIto sets it as "-2.0 to +2.0 V", keeping an explicit
+% plus on the upper bound
+\newcommand{\SIto}[3]{\SIrange[range-phrase={ to }, retain-explicit-plus]{#1}{#2}{#3}}
+\newcommand{\numto}[2]{\numrange[range-phrase={ to }, retain-explicit-plus]{#1}{#2}}
+\DeclareSIUnit\angstrom{\text{\AA}}
+\DeclareSIUnit\hartree{\ensuremath{E_{\mathrm{h}}}}
+\DeclareSIUnit\bohr{\ensuremath{a_{0}}}
+\DeclareSIUnit\rydberg{Ry}
+\DeclareSIUnit\electroncharge{\ensuremath{e}}
+\DeclareSIUnit\molar{M}
+\DeclareSIUnit\dyne{dyn}
+\DeclareSIUnit\calorie{cal}
+% a small colour swatch for the facet keys of the charging tables
+\newcommand{\facetswatch}[1]{{\fcolorbox[HTML]{202124}{#1}{\rule{0pt}{1.25ex}\rule{1.25ex}{0pt}}}}
+
+%-----------------------------------------------------------------------------!
+% NAMES AND FURNITURE
+%-----------------------------------------------------------------------------!
+\DeclareRobustCommand{\displaylabel}[1]{%
+   \textls*[120]{\scshape\MakeTextLowercase{#1}}}
+% acronyms never hyphenate
+\hyphenation{NGWF NGWFs ONETEP}
+\newcommand*{\liningfigs}{\fontfamily{ppl}\selectfont}
+\newcolumntype{N}{>{\liningfigs}c}
+% All tabulated numbers are data; preserve each table's existing alignment.
+\AtBeginEnvironment{tabular}{\liningfigs}
+\AtBeginEnvironment{tabular*}{\liningfigs}
+\AtBeginEnvironment{longtable}{\liningfigs}
+% Shell and orbital labels are identifiers: lining digit beside the letter
+\newcommand*{\shell}[1]{{\liningfigs #1}}
+\newcommand{\onetep}{{\normalfont\scshape onetep}}
+% Footnotes sit at the foot of the PAGE, not under the last line of a
+% short page: the class sets \raggedbottom, which otherwise leaves
+% them floating mid-page
+\RequirePackage[bottom]{footmisc}
+% several figure PDFs with page groups on one page are legitimate.
+% Guarded because it is a pdfTeX primitive: unguarded, the "=1" falls through
+% as body text and every lualatex page proof in scripts/ dies on
+% "Missing \begin{document}".
+\ifdefined\pdfsuppresswarningpagegroup
+   \pdfsuppresswarningpagegroup=1
+\fi
+
+\setlength{\abovedisplayskip}{2.4ex plus 1.0ex minus 0.4ex}
+\setlength{\belowdisplayskip}{2.4ex plus 1.0ex minus 0.4ex}
+\setlength{\abovedisplayshortskip}{1.2ex plus 0.8ex}
+\setlength{\belowdisplayshortskip}{1.8ex plus 0.9ex minus 0.3ex}
+
+% \raggedbottom (the class default) is kept: filling the block instead
+% pours the slack of a short page into the paragraph and heading skips,
+% which reads worse than a clean margin at the foot
+
+% symbol footnote markers: numeric superscripts belong to citations
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\pubnote}[1]{%
+   \begingroup\setlength{\parskip}{0pt}%
+   \noindent{\small\displaylabel{Publications}}\par
+   \nobreak\vspace{2pt}%
+   \noindent{\small\itshape\emergencystretch=2em #1\par}%
+   \endgroup\vspace{3.5ex}}
+
+%-----------------------------------------------------------------------------!
+% EPIGRAPH AND DEDICATION: caption voice (italic text, tracked sc source)
+%-----------------------------------------------------------------------------!
+\RequirePackage{epigraph}
+\setlength{\epigraphwidth}{0.75\textwidth}
+\setlength{\epigraphrule}{0pt}
+\setlength{\beforeepigraphskip}{0.5\baselineskip}
+\setlength{\afterepigraphskip}{2\baselineskip}
+\renewcommand{\epigraphflush}{center}
+\renewcommand{\textflush}{center}
+\renewcommand{\sourceflush}{center}
+\newcommand{\dedicationpage}[1]{%
+   \thispagestyle{empty}\null\vspace*{0.28\textheight}%
+   {\centering\itshape #1\par}\vfill\null\cleardoublepage}
+
+%-----------------------------------------------------------------------------!
+% FRONT-MATTER HEADING: one voice for every display page, matching the
+% chapter openings (label optional, \Huge bold title, same drop)
+%-----------------------------------------------------------------------------!
+\newcommand{\thesistitledisplay}{}
+\newcommand{\displaytitle}[1]{\renewcommand{\thesistitledisplay}{#1}}
+\newcommand{\frontheading}[1]{%
+   \null\vspace*{45pt}%
+   {\Huge\bfseries\raggedright #1\par}%
+   \vspace{40pt}}
+
+%-----------------------------------------------------------------------------!
+% COPYRIGHT COVERSHEET: official wording, body face (no sans), logo right,
+% single-line grey heading
+%-----------------------------------------------------------------------------!
+\renewcommand\copyrightDeclaration[1]{%
+   \btypeout{Copyright declaration}
+   \thispagestyle{empty}
+   \null\vspace*{2mm}
+   \noindent\hfill\includegraphics[width=62mm]{UoSLogo-print.pdf}\par
+   \vspace{16mm}
+   \begingroup\centering
+      {\LARGE\color{custGray} University of Southampton Research
+       Repository\par}
+   \endgroup
+   \vspace{10mm}
+   \begingroup\small\begin{spacing}{1.2}\setlength{\parskip}{1.2ex}%
+   \noindent Copyright \textcopyright{} and Moral Rights for this thesis
+   and, where applicable, any accompanying data are retained by the author
+   and/or other copyright owners. A copy can be downloaded for personal
+   non-commercial research or study, without prior permission or charge.
+   This thesis and the accompanying data cannot be reproduced or quoted
+   extensively from without first obtaining permission in writing from the
+   copyright holder/s. The content of the thesis and accompanying research
+   data (where applicable) must not be changed in any way or sold
+   commercially in any format or medium without the formal permission of
+   the copyright holder/s.
+
+   When referring to this thesis and any accompanying data, full
+   bibliographic details must be given, e.g.
+
+   \par\addvspace{6pt}
+   \settowidth{\dimen0}{\displaylabel{Thesis}\quad}%
+   \noindent\hangindent=\dimen0\hangafter=1
+   {\displaylabel{Thesis}\quad \authornames\ ({\liningfigs\thesubyear})
+   ``\thetitle'', \univname, \facname, \deptname, PhD Thesis,
+   {\liningfigs\pageref{LastPage}}~pp.}\par\addvspace{4pt}
+   \noindent\hangindent=\dimen0\hangafter=1
+   {\displaylabel{Data}\quad
+   \ifthenelse{\equal{\thedatasetdoi}{}}%
+     {Author (Year) Title. URI [dataset]}%
+     {\authornames\ ({\liningfigs\thesubyear}) \thetitle.
+      \href{https://doi.org/\thedatasetdoi}{{\liningfigs
+      https://doi.org/\thedatasetdoi}} [dataset].}}\par
+   \end{spacing}\endgroup
+   \vfil\null\cleardoublepage}
+
+%-----------------------------------------------------------------------------!
+% TITLE PAGE
+% ----------
+% Demeyere's three-zone architecture: teal letterspaced small-caps
+% identity line over plain roman faculty/school/group; bold ~2x title at
+% the optical centre; author and degree descending in weight. No rules,
+% no crest, no ornament. Guidance 9.5 content order preserved.
+%-----------------------------------------------------------------------------!
+%=============================================================================!
+% TITLE PAGE A - after Bacanu (Chemistry 2021, eprint 455367 p3), the
+% cleanest instance of the Southampton "uosthesis" Palatino layout.
+%
+% The mechanism, not just the look: two FIXED anchor blocks with a
+% FLOATING middle. Masthead baselines pinned at y/H 0.2006 / 0.2349 /
+% 0.2549, colophon at 0.7697 / 0.7898 / 0.8581, and the title+author
+% group optically box-centred in the 433.4 pt band between them by the
+% template's own rule (three equal glues; the +3.70 / -9.60 pt offsets
+% below are the ascender artefacts measured across Bacanu, Ashton,
+% Bramley and Chowdhury). Five sizes, the 12 pt LaTeX ladder:
+% 20.66 / 17.22 / 14.35 / 11.96 / 10.91. Bold on exactly two items,
+% italic on the connective words, one accent colour.
+%
+% Deviations forced by Brad's content and by the rules: the identity
+% line is set in REAL Palatino small caps at medium weight (the family
+% has no bold small caps; Bacanu's is a faked bold small cap), and the
+% axis is the text-block centre of a single-sided electronic volume,
+% which here coincides with the paper centre - Bacanu's +18 pt recto
+% offset is meaningless without a binding edge.
+%=============================================================================!
+\renewcommand\maketitle{%
+   \btypeout{Title Page}
+   \clearpage
+   \newgeometry{top=25mm,bottom=25mm,left=31.75mm,right=31.75mm,
+                headheight=0pt,headsep=0pt,footskip=0pt}%
+   \thispagestyle{empty}%
+   \begingroup
+   \singlespacing
+   \setlength{\parskip}{0pt}\setlength{\parindent}{0pt}%
+   % \tpline{<baseline advance>}{<line>}: places one line, centred on the
+   % measure, whose baseline sits exactly the given distance below the
+   % previous baseline. \smash makes each line zero-height so the page is
+   % built from baselines alone, as the measured model is.
+   \def\tpline##1##2{\vspace*{##1}\nointerlineskip
+      \noindent\makebox[\linewidth][c]{\smash{##2}}\par\nointerlineskip}%
+   \null                                    % baseline at 25 mm + \topskip
+   %-- masthead: fixed at y/H 0.2006 / 0.2349 / 0.2549 ------------------!
+   \tpline{87.38pt}{\color{thesisaccent}\fontsize{17.28}{17.28}\selectfont
+      \textsc{\univname}}
+   \tpline{28.96pt}{\fontsize{12}{12}\selectfont\facname}
+   \tpline{16.95pt}{\fontsize{12}{12}\selectfont\deptname}
+   %-- floating middle: title (hand-balanced breaks, 30.21 pt leading) ---!
+   \tpline{106.80pt}{\fontsize{20.74}{20.74}\selectfont\bfseries
+      Atomistic Simulations of Morphology}
+   \tpline{30.32pt}{\fontsize{20.74}{20.74}\selectfont\bfseries
+      and Interphase Chemistry}
+   \tpline{30.32pt}{\fontsize{20.74}{20.74}\selectfont\bfseries
+      at the Lithium Anode}
+   % the thesis DOI sits between the title and "by", as the Quality Handbook
+   % order has it.  The two advances sum to the original 103.09 pt, so the
+   % colophon below keeps its measured position whether or not it is set.
+   \ifthenelse{\equal{\doicode}{}}%
+     {\setlength{\tpbyskip}{103.09pt}}{\setlength{\tpbyskip}{59.09pt}}%
+   \ifthenelse{\equal{\doicode}{}}{}%
+     {\tpline{44.00pt}{\fontsize{10.95}{10.95}\selectfont
+        \href{https://doi.org/\doicode}%
+        {\color{thesisaccent}\liningfigs DOI \doicode}}}%
+   \tpline{\tpbyskip}{\fontsize{17.28}{17.28}\selectfont\itshape by}
+   \tpline{29.69pt}{\fontsize{17.28}{17.28}\selectfont\bfseries\authornames}
+   \tpline{21.83pt}{\fontsize{14.4}{14.4}\selectfont\quals}
+   \tpline{19.49pt}{\fontsize{10.95}{10.95}\selectfont
+      \orcidlink{\orcid}\,\href{https://orcid.org/\orcid}%
+      {\color{thesisaccent}\liningfigs ORCID iD \orcid}}
+   %-- colophon: fixed at y/H 0.7697 / 0.7898 / 0.8581 -------------------!
+   \tpline{93.45pt}{\fontsize{12}{12}\selectfont\itshape
+      Thesis for the degree of}
+   \tpline{16.96pt}{\fontsize{12}{12}\selectfont\itshape\degreename}
+   \tpline{57.78pt}{\fontsize{14.4}{14.4}\selectfont\liningfigs\@date}
+   \endgroup
+   \cleardoublepage
+   \restoregeometry}
+
+%-----------------------------------------------------------------------------!
+% ABSTRACT: mandated header stack at the top (teal roman university line,
+% underlined compliance keywords, title measured so it cannot widow),
+% body single spaced, one page
+%-----------------------------------------------------------------------------!
+\renewenvironment{abstract}{%
+   \btypeout{Abstract Page}
+   \thispagestyle{plain}
+   \null\vspace*{10mm}
+   \begingroup\centering\setlength{\parskip}{0pt}%
+      {\large\color{thesisaccent}University of Southampton\par}
+      \vspace{3ex}
+      {\underline{Abstract}\par}
+      \vspace{3ex}
+      {\facname\par}
+      \vspace{0.6ex}
+      {\deptname\par}
+      \vspace{3ex}
+      {\underline{\degreename}\par}
+      \vspace{3ex}
+      {\large\bfseries\parbox{0.82\textwidth}{%
+         \centering\begin{spacing}{1.1}\large\bfseries\@title
+         \end{spacing}}\par}
+      \vspace{2ex}
+      {by \authornames\par}
+   \endgroup
+   \vspace{7ex}
+   \begin{spacing}{1.0}\noindent\ignorespaces}%
+  {\end{spacing}\vfil\null\cleardoublepage}
+
+%-----------------------------------------------------------------------------!
+% DECLARATION OF AUTHORSHIP
+% -------------------------
+% Author-confirmed statements in the preferred two-page layout, with a
+% small-caps overline, numbered rows and a tick column at the right.
+%-----------------------------------------------------------------------------!
+\newcounter{declno}
+\newcommand{\declgroup}[1]{%
+   \par\addvspace{20pt}%
+   \noindent{\small\displaylabel{#1}}\par
+   \nobreak\addvspace{0pt}}
+\newcommand{\declrow}[1]{%
+   \par\addvspace{8pt}\noindent\stepcounter{declno}%
+   \begin{minipage}[t]{\dimexpr\textwidth-10mm\relax}
+      \small\setlength{\parskip}{0pt}%
+      % a statement carrying a citation and a DOI needs room to break
+      \emergencystretch=2em\hbadness=4000
+      \hangindent 7mm \hangafter 1
+      \makebox[7mm][l]{\liningfigs\thedeclno.}#1\par
+   \end{minipage}\hfill
+   \begin{minipage}[t]{6mm}\small\hfill\declarationtickbox\end{minipage}\par}
+\renewcommand\authorshipdeclaration[1]{%
+   \btypeout{Declaration of Authorship}
+   \addtotoc{Declaration of Authorship}
+   \thispagestyle{plain}
+   \markboth{Declaration of Authorship}{Declaration of Authorship}
+   \null\vspace*{45pt}
+   {\large\displaylabel{Research Thesis}\par}
+   \vspace{14pt}
+   {\Huge\bfseries\raggedright Declaration of Authorship\par}
+   \vspace{28pt}
+   Candidate full name: \textbf{\authornames}\par
+   Thesis title: \textbf{\thetitle}\par
+   \begingroup\setlength{\parskip}{0pt}%
+   \declgroup{Declaration}
+   \declrow{I declare that this thesis and the work presented in it is
+   my own, has been generated by me as the result of my own original
+   research, and has been done wholly or mainly whilst I have been in
+   candidature for a research degree at the University of Southampton.}
+   \declrow{I have read the
+   \href{https://www.southampton.ac.uk/about/governance/regulations-policies/policies/ethics}{Ethics
+   Policy for Research at University of Southampton} and understand that
+   research undertaken without the necessary ethical approval will not be
+   accepted for assessment and will be reported as a potential breach of
+   the Academic Responsibility and Conduct Regulations.}
+   \declrow{I have read the
+   \href{https://www.southampton.ac.uk/about/governance/regulations-policies/student-regulations/academic-responsibility-conduct}{Regulations
+   Governing Academic Responsibility and Conduct}.}
+   \par\clearpage
+   % fill above as well as below, so the confirmations sit centred
+   \null\vfil
+   \declgroup{I confirm that}
+   \declrow{Where any part of this thesis has previously been submitted
+   for a degree or any other qualification at this University or any
+   other institution, this has been clearly stated within the thesis.}
+   \declrow{All sources of ideas, arguments, and other content presented
+   have been acknowledged and clearly attributed.}
+   \declrow{Where I have quoted from the work of others, the source is
+   always given. With the exception of such quotations, this written
+   thesis is entirely my own work.}
+   \declrow{I have acknowledged all main sources of help.}
+   \declrow{Where the thesis is based on work done by myself jointly
+   with others, I have made clear exactly what was done by others and
+   what I have contributed myself.}
+   \declrow{I have observed required ethical standards in the design,
+   conduct and reporting of the research that is presented for
+   assessment and all necessary approvals where required, including that
+   of external bodies, have been obtained.}
+   \declrow{\ifthenelse{\isempty{#1}}%
+     {None of this work has been published before submission.}%
+     {Parts of this work have been published as: #1}}
+   \endgroup
+   \vspace{12mm}
+   % both blocks share one shape: value, rule, label, so the rules and the
+   % labels sit on common baselines
+   \noindent
+   \begin{minipage}[t]{62mm}\centering
+      \begin{spacing}{1}
+      {\small\liningfigs
+       \ifthenelse{\equal{\decldate}{}}{\vphantom{0}}{\decldate}}\\[1pt]
+      \rule{\linewidth}{0.4pt}\\[3pt]
+      {\scriptsize\displaylabel{Date (DD/MM/YYYY)}}
+      \end{spacing}
+   \end{minipage}\hfill
+   \begin{minipage}[t]{62mm}\centering
+      \begin{spacing}{1}
+      \authornames\\[1pt]
+      \rule{\linewidth}{0.4pt}\\[3pt]
+      {\scriptsize\displaylabel{Candidate, print as signature}}
+      \end{spacing}
+   \end{minipage}
+   \vfil\null\cleardoublepage}
+
+%-----------------------------------------------------------------------------!
+% ACKNOWLEDGEMENTS: house heading voice, justified body
+%-----------------------------------------------------------------------------!
+\renewcommand\acknowledgements[1]{%
+   \btypeout{Acknowledgements}
+   \addtotoc{Acknowledgements}
+   \thispagestyle{plain}
+   \markboth{Acknowledgements}{Acknowledgements}
+   \frontheading{Acknowledgements}
+   {\normalsize #1\par}
+   \vfil\null\cleardoublepage}
+
+%-----------------------------------------------------------------------------!
+% DEFINITIONS AND ABBREVIATIONS: flush left, quiet booktabs-free list
+%-----------------------------------------------------------------------------!
+\renewcommand\listofsymbols[2]{%
+   \btypeout{Definitions and Abbreviations}
+   \addtotoc{Definitions and Abbreviations}
+   \thispagestyle{plain}
+   \markboth{Definitions and Abbreviations}{Definitions and Abbreviations}
+   \frontheading{Definitions and Abbreviations}
+   \begin{spacing}{1}
+   \small
+   % the register is one page's worth; this keeps it there rather than
+   % stranding its last few rows overleaf
+   \renewcommand{\arraystretch}{0.95}%
+   \noindent\begin{longtable}[l]{@{}#1@{}}#2\end{longtable}
+   \end{spacing}
+   \cleardoublepage}
+
+% Unnumbered symbol register, separate from the numbered tables of the
+% thesis: one breaking table per subject group.  The head repeats itself,
+% marked "continued", wherever a group runs over the page, so no page break
+% is placed by hand.  The three columns span the 146.5 mm text width.  The
+% longtable lives here rather than in the front-matter source so that the
+% front-matter checker does not count it as a captioned table.
+\newcommand{\symbolcolumns}{%
+   \textcolor{thesisgrey}{Symbol} & \textcolor{thesisgrey}{Meaning} &
+   \textcolor{thesisgrey}{Dimension or unit}\\*[3pt]\midrule[0.3pt]}
+\newenvironment{symbolgroup}[1]{%
+   \Needspace*{8\baselineskip}%
+   \begin{spacing}{1}\small
+   \setlength{\LTpre}{0pt}%
+   \setlength{\LTpost}{14pt}%
+   \setlength{\extrarowheight}{2pt}%
+   \noindent\begin{longtable}[l]{@{}>{\raggedright\arraybackslash}p{27mm}%
+      @{\hspace{3mm}}>{\raggedright\arraybackslash}p{80mm}%
+      @{\hspace{3mm}}>{\raggedright\arraybackslash}p{33.5mm}@{}}%
+   \multicolumn{3}{@{}l}{\color{thesisaccent}\normalsize #1}\\*[5pt]
+   \symbolcolumns
+   \endfirsthead
+   \multicolumn{3}{@{}l}{\color{thesisaccent}\normalsize #1\enspace
+      {\small\itshape continued}}\\*[5pt]
+   \symbolcolumns
+   \endhead
+   \endfoot
+   \endlastfoot
+   }{\end{longtable}\end{spacing}}
+
+%-----------------------------------------------------------------------------!
+% THEOREM FURNITURE
+% -----------------
+% Two registers, both quiet. Statements (proposition, definition) carry a
+% small-caps head and an italic body; remarks carry the same head with an
+% upright body. Numbered within chapters, sharing one counter so the
+% reader can navigate by number alone. Use sparingly: a Definition to fix
+% an object, a Proposition for a result the text leans on, a Remark for a
+% caveat worth setting apart. Lining figures in the heads via the shared
+% counter format.
+%-----------------------------------------------------------------------------!
+\RequirePackage{amsthm}
+% The class predefines theorem/proposition/definition/corollary/remark, all
+% sharing one counter, so clear the names and let the house versions below
+% own them.
+\@for\thmname:={proposition,definition,corollary,remark,theorem,lemma}\do{%
+   \expandafter\let\csname\thmname\endcsname\@undefined
+   \expandafter\let\csname end\thmname\endcsname\@undefined}
+% The counters need clearing as well.  Every one of these is written in the
+% class as \newtheorem{name}[theorem], an alias, and on a TeX Live older
+% than 2025 that leaves \c@name behind as a \let copy of \c@theorem; the
+% \newtheorem calls below then stop with "already defined".
+%
+% The kernel's own record of the alias has to go with it.  Leave
+% \alias@ctr@proposition behind and the \newtheorem below still counts as
+% resetting an alias, which is the "Alias counters can not be used in a
+% counter reset" warning.
+%
+% Aliases only.  \c@theorem and \c@example are real counters sitting on
+% chapter's reset list, and undefining either kills the next \chapter with
+% "You can't use \relax after \the".
+\@for\thmname:={proposition,definition,corollary,remark,lemma,axiom}\do{%
+   \expandafter\let\csname c@\thmname\endcsname\@undefined
+   \expandafter\let\csname the\thmname\endcsname\@undefined
+   \expandafter\let\csname p@\thmname\endcsname\@undefined
+   \expandafter\let\csname alias@ctr@\thmname\endcsname\@undefined}
+\let\theproposition\@undefined
+\newtheoremstyle{housestatement}
+   {12pt plus 2pt}{8pt plus 2pt}
+   {\itshape}
+   {0pt}
+   {\normalfont\scshape}
+   {.}{0.6em}{}
+\newtheoremstyle{houseremark}
+   {12pt plus 2pt}{8pt plus 2pt}
+   {\normalfont}
+   {0pt}
+   {\normalfont\scshape}
+   {.}{0.6em}{}
+\theoremstyle{housestatement}
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{corollary}[proposition]{Corollary}
+\theoremstyle{houseremark}
+\newtheorem{remark}[proposition]{Remark}
+% the statement number in accent-teal lining figures, as everywhere else
+\def\theproposition{{\liningfigs\textcolor{thesisaccent}%
+   {\thechapter.\arabic{proposition}}}}
+\housenobreak{proposition}
+\housenobreak{definition}
+\housenobreak{corollary}
+\housenobreak{remark}

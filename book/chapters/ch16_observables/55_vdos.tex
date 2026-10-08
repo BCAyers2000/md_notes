@@ -1,0 +1,267 @@
+%=============================================================================!
+% 16.10  THE VIBRATIONAL DENSITY OF STATES                                    !
+%=============================================================================!
+\section{The vibrational density of states}
+\label{sec:ob-vdos}
+
+Infrared and neutron spectra report, each weighting the atoms in its own
+way, at which frequencies the atoms of a material move, and so does a
+trajectory: an atom's velocity, taken apart
+into frequencies, says how much of its motion happens at each. Summed
+over the atoms this is the vibrational density of states, the spectrum
+by which a learned model of motion is first compared with the simulation
+it learned from\cite{Thiemann2026}.
+
+\subsection*{The power spectrum of a signal}
+
+For a signal $x(t)$ recorded over a long time $t_{\mathrm f}$, the power at the
+frequency $\nu$ is $\lvert\hat x(\nu)\rvert^2/t_{\mathrm f}$, with $\hat x$ the
+transform of \cref{eq:ob-ft} over the record. Writing the squared length
+as the transform times its conjugate,
+\begin{equation*}
+   \lvert\hat x(\nu)\rvert^2 = \int_0^{t_{\mathrm f}}\!\!\int_0^{t_{\mathrm f}}x(t)\,x(t')\,
+   \mathrm{e}^{-2\pi\mathrm{i}\nu(t - t')}\,\dd t\,\dd t' ,
+\end{equation*}
+and averaging over many such records turns $x(t)x(t')$ into the
+autocorrelation function $C(t - t')$, which in a settled signal depends on
+the separation alone. Counting the pairs of times by their separation
+$s$, as for \cref{eq:ob-msd-vacf}, each $s$ occurs over a length $t_{\mathrm f} -
+\lvert s\rvert$, so
+\begin{equation*}
+   \frac{\ens{\lvert\hat x(\nu)\rvert^2}}{t_{\mathrm f}} = \int_{-t_{\mathrm f}}^{t_{\mathrm f}}\Bigl(1 -
+   \frac{\lvert s\rvert}{t_{\mathrm f}}\Bigr)C(s)\,\mathrm{e}^{-2\pi\mathrm{i}\nu s}\,
+   \dd s \to \int_{-\infty}^{\infty}C(s)\,\mathrm{e}^{-2\pi\mathrm{i}\nu s}
+   \,\dd s
+\end{equation*}
+once $t_{\mathrm f}$ is long against the time over which $C$ dies away. The power
+spectrum is the Fourier transform of the autocorrelation function, the
+theorem of Wiener and Khinchin. Since $C$ is even, the imaginary part of
+$\mathrm{e}^{-2\pi\mathrm{i}\nu s}$ cancels between $s$ and $-s$, leaving
+$2\int_0^\infty C(s)\cos(2\pi\nu s)\,\dd s$.
+
+\subsection*{The density of states}
+
+Applied to the mass-weighted velocity autocorrelation function per atom,
+$C_m(t) = \ens{m\vb{v}(t_0)\cdot\vb{v}(t_0 + t)}$, the theorem gives the
+vibrational density of states, scaled so that its area counts the three
+directions of each atom:
+\begin{equation}
+   \mathcal{D}(\nu) = \frac{4}{\kB T}\int_0^\infty C_m(t)\cos(2\pi\nu t)\,
+   \dd t , \qquad \int_0^\infty\mathcal{D}(\nu)\,\dd\nu = 3 .
+   \label{eq:ob-vdos}
+\end{equation}
+With $\hat C_m(\nu) = 2\int_0^\infty C_m(t)\cos(2\pi\nu t)\,\dd t$ the
+transform of $C_m$, even in $\nu$, $\mathcal{D} = 2\hat C_m/\kB T$, and the
+area follows from the inverse transform at $t = 0$: $C_m(0) =
+\int_{-\infty}^\infty\hat C_m\,\dd\nu = 2\int_0^\infty\hat C_m\,\dd\nu$, so
+the area of $\mathcal{D}$ is $C_m(0)/\kB T$, and $C_m(0) = \ens{mv^2} =
+3\kB T$ by equipartition. For a harmonic solid the motion is a sum of
+normal modes (\cref{sec:os-modes}), each oscillating at its own
+frequency $\nu_k$ with the energy $\kB T$ on average. Each mode adds
+$\kB T\cos(2\pi\nu_kt)/N$ to $C_m$ per atom, a spike of area $1/N$ in
+$\mathcal{D}$ at $\nu_k$, so $\mathcal{D}$ is the histogram of the mode
+frequencies, $3N$ spikes for $N$ atoms making the area 3: the classical
+density of states. In a liquid, atoms that wander contribute at zero
+frequency, where \cref{eq:ob-vdos} and \cref{eq:ob-gk} give
+\begin{equation*}
+   \mathcal{D}(0) = \frac{4}{\kB T}\int_0^\infty C_m(t)\,\dd t =
+   \frac{12\,mD}{\kB T} ,
+\end{equation*}
+so the density of states holds the diffusion coefficient too.
+
+A run gives $C_m$ only out to some lag $t_{\mathrm c}$, and cutting the
+integral off sharply there adds ripples to $\mathcal{D}$, as cutting
+$g(r)$ at half the cell did to $S(G)$ in \cref{sec:ob-sq}.
+\texttt{spectra.vdos} multiplies $C_m$ by the window $\cos^2(\pi t/
+2t_{\mathrm c})$, which falls smoothly from 1 to 0, transforms it by the
+discrete transform of a record extended to negative times, and scales the
+result to the area 3. The window blurs each peak over about
+$1/t_{\mathrm c}$; a longer $t_{\mathrm c}$ sharpens the peaks and needs a
+longer run to keep the noise down.
+
+\subsection*{A crystal, with and without friction}
+
+The fcc crystal at \SI{21}{\kelvin}, \SI{50}{\pico\second} at fixed energy
+with velocities every \SI{10}{\femto\second} and $C_m$ taken to
+\SI{10}{\pico\second}, has peaks at 0.50, 0.75, 0.95, 1.15, 1.40 and
+\SI{1.90}{\tera\hertz} (\cref{fig:ob-vdos}a). Its exact harmonic
+frequencies come from the Hessian of the same 256-atom cell
+(\cref{sec:os-modes}), by finite differences of the forces: three zero
+eigenvalues, the translations of the whole cell, and 765 modes up to
+\SI{1.991}{\tera\hertz}. A finite cell has a few distinct frequencies,
+and their bare histogram has spikes that the run's windowed spectrum
+cannot show, so the fair comparison passes the modes' own $C_m(t) \propto
+\sum_k\cos(2\pi\nu_kt)$ through the same window and transform. The overlap
+of the two spectra is 0.839 by the score defined below. They agree in
+the positions of the peaks, but the run's tallest peak is 3.74 per
+terahertz against the modes' 4.28, and the run puts 0.192 of its area of
+3 above the highest harmonic frequency, against 0.011 for the modes
+through the same window: the run's motion is not exactly harmonic. These
+overlaps are taken below \SI{3}{\tera\hertz}, where the crystal's
+spectrum lies.
+
+Friction widens every peak, as Chapter~4 found for the response of a
+driven spring. A mode
+of angular frequency $\omega_0$ damped by Langevin friction $\gamma$ swings
+at $\omega_{\mathrm d} = \sqrt{\omega_0^2 - \gamma^2/4}$ (\cref{sec:os-damped}),
+and when the friction is small against $\omega_0$ its velocity correlation
+decays as $\mathrm{e}^{-\gamma\lvert t\rvert/2}\cos\omega_{\mathrm d}t$, with a
+term in $\sin\omega_{\mathrm d}t$ of relative size $\gamma/2\omega_{\mathrm d}$
+left out; at the crystal's lowest peak, \SI{0.5}{\tera\hertz}, that size
+is 0.32, so the form is rough there. Each half of the cosine,
+$\frac12\mathrm{e}^{\pm\mathrm{i}\omega_{\mathrm d}t}$, transforms into
+\begin{equation*}
+   \frac12\int_{-\infty}^{\infty}\mathrm{e}^{-\gamma\lvert t\rvert/2}\,
+   \mathrm{e}^{-\mathrm{i}\delta t}\,\dd t
+   = \frac12\Bigl[\frac{1}{\gamma/2 + \mathrm{i}\delta}
+   + \frac{1}{\gamma/2 - \mathrm{i}\delta}\Bigr]
+   = \frac{\gamma/2}{\gamma^2/4 + \delta^2} ,
+\end{equation*}
+with $\delta = \omega\mp\omega_{\mathrm d}$ and $\omega = 2\pi\nu$, the
+integral over positive times being $\int_0^\infty\mathrm{e}^{-(\gamma/2 +
+\mathrm{i}\delta)t}\,\dd t$ and that over negative times its conjugate.
+This is a peak at $\pm\omega_{\mathrm d}$, a Lorentzian, that falls to
+half its height where $\delta = \pm\gamma/2$: a full width of $\gamma$ in
+angular frequency, or $\gamma/2\pi$ in $\nu$. Under friction of
+\SI{2}{\per\pico\second} that is \SI{0.318}{\tera\hertz}. Spreading the
+fixed-energy spectrum by a Lorentzian of that width reproduces the
+Langevin run's (\cref{fig:ob-vdos}b): the overlap rises from 0.797 for
+the unspread spectrum to 0.950, and the tallest peak falls from 3.74 per
+terahertz to 2.01 in the Langevin run and 2.13 in the spread
+spectrum. A spectrum computed
+under a thermostat that acts on each atom belongs to the thermostat as
+much as to the material.
+
+\subsection*{A liquid, and two kinds of atom}
+
+The argon liquid's density of states (\cref{fig:ob-vdos}c) has no sharp
+peaks, a broad band near \SI{0.5}{\tera\hertz}, and a value at zero of
+1.659 per terahertz, against $12mD/\kB T = 1.651$ with the Green-Kubo $D$
+of the same run. In the molten salt of \cref{sec:ob-charge} each kind of
+ion has its own spectrum (\cref{fig:ob-salt}c), computed from that kind's
+velocities alone: the cations' band peaks at 3.70 and the anions' at
+\SI{3.50}{\tera\hertz}, and the anions, of 1.54 times the mass and nearly
+the same $D$, have the larger value at zero, 0.160 per terahertz against
+0.098. Spectra of this kind, one for each element, are how TrajCast's
+predictions are compared with molecular dynamics\cite{Thiemann2026}.
+
+The comparison is condensed into a number by the overlap score of
+Schran and co-workers\cite{Schran2021},
+\begin{equation*}
+   \text{overlap} = 1 - \frac{\int\lvert\mathcal{D}_1 - \mathcal{D}_2\rvert
+   \,\dd\nu}{\int\mathcal{D}_1\,\dd\nu + \int\mathcal{D}_2\,\dd\nu} ,
+\end{equation*}
+which is 1 for identical curves and 0 for curves that do not overlap at
+all. The two ions of the salt score 0.790 against each other; the
+crystal's run against its harmonic modes 0.839.
+
+\subsection*{A stride's Nyquist limit}
+
+A learned propagator predicts frames a stride $\Delta t$ apart, and its
+spectrum can be computed only from those frames; so can that of the
+reference simulation, if it is to be compared fairly. By
+\cref{sec:ob-fourier}, frames every $\Delta t$ show frequencies only up
+to $1/2\Delta t$. For the strides of TrajCast's tests, below
+\SI{7}{\femto\second}, that is \SI{71.4}{\tera\hertz} or
+\SI{2383}{\per\centi\metre}, about the \SI{2400}{\per\centi\metre} that the
+paper quotes as the range it can resolve\cite{Thiemann2026}. A faster
+vibration reappears folded below the limit.
+
+A chain of four beads of \SI{14.5}{\amu}, each standing for a group
+CH$_2$ or CH$_3$, shows this. Its bonds have the energy $\kappa_r(r -
+r_{\mathrm{eq}})^2$ with $\kappa_r = \SI{5}{\electronvolt\per\angstrom\squared}$, its
+angles likewise, and a torsion twists it about its middle bond;
+\cref{sec:ob-fes} sets the model out in full. Twenty copies are run at
+fixed energy after \SI{10}{\pico\second} at \SI{300}{\kelvin}, with each
+copy's centre-of-mass velocity removed (\cref{fig:ob-stride}). From every
+frame, \SI{1}{\femto\second} apart, the spectrum has peaks at 0.50, 4.00,
+9.00 and \SI{12.25}{\tera\hertz} and two stretches of the bonds at 18.25
+and \SI{21.00}{\tera\hertz}. The bond alone, a spring of stiffness
+$2\kappa_r$, the slope of the force $-2\kappa_r(r - r_{\mathrm{eq}})$, between two
+beads of reduced mass $m_{\mathrm r}$ (\cref{sec:os-bodies}), would vibrate
+at $\sqrt{2\kappa_r/m_{\mathrm r}}/2\pi = \SI{18.36}{\tera\hertz}$. From
+every 20th frame, with its limit at \SI{25}{\tera\hertz}, the spectrum is
+the same, and the overlap with that from every frame, both cut at
+\SI{25}{\tera\hertz}, is 1.000. From every 30th, sampled at
+$1/\Dt = \SI{33.33}{\tera\hertz}$ with its limit at
+\SI{16.67}{\tera\hertz}, the two stretches fold to $33.33 - 18.25 = 15.08$
+and $33.33 - 21.00 = \SI{12.33}{\tera\hertz}$, and the spectrum has peaks
+at 15.15 and \SI{12.37}{\tera\hertz}, where nothing moves. The overlap
+falls from 1.000 at \SI{20}{\femto\second} to 0.899 at 25 and 0.795 to
+0.797 from 30 to \SI{40}{\femto\second}, the change coming as the
+stride passes $1/(2\times\SI{21.00}{\tera\hertz}) = \SI{23.8}{\femto
+\second}$. Spectra from strided frames must therefore be compared with
+reference spectra taken at the same stride, and peaks near or beyond the
+limit read with suspicion.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/vdos}
+\caption{(a) The vibrational density of states of the fcc crystal at
+\SI{21}{\kelvin} at fixed energy, against the histogram of the harmonic
+frequencies of the same cell (bars) and those frequencies passed through
+the same window and transform (dashed). (b) The crystal under Langevin
+friction of \SI{2}{\per\pico\second}, against the fixed-energy spectrum
+spread by a Lorentzian of full width $\gamma/2\pi$ (dashed). (c) Liquid
+argon at fixed energy, with $12mD/\kB T$ at $\nu = 0$ (point).}
+\label{fig:ob-vdos}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/stride}
+\caption{The four-bead chain at fixed energy, 20 copies, velocities
+every \SI{1}{\femto\second} with each copy's centre-of-mass velocity
+removed. (a) The vibrational density of states from every frame
+(dashed), from every 20th and from every 30th, each to its own Nyquist
+frequency (dotted lines). (b) The overlap score of the spectrum from
+every $\Delta t$-th frame with that from every frame, both cut at the
+Nyquist frequency of $\Delta t$, against $\Delta t$; the dotted line
+marks $1/2\nu_{\mathrm b}$, with $\nu_{\mathrm b}$ the frequency of the
+highest peak.}
+\label{fig:ob-stride}
+\end{figure}
+
+\subsection*{How often an atom tries}
+
+Chapter~12 noted that how often an atom hops depends also on how often it
+tries, and left the measurement to this chapter. A lithium atom in a
+hollow of the model surface vibrates, and each swing towards a bridge is
+an attempt. Its density of states (\cref{fig:ob-layers}c) peaks at 5.25
+and \SI{5.00}{\tera\hertz} at 600 and \SI{1000}{\kelvin}, below the
+\SI{5.87}{\tera\hertz} of small vibrations in the hollow, because the
+hollow widens as the atom climbs. That frequency is $\nu_0 =
+\sqrt{k/m}/2\pi$, with $k$ the curvature of the energy at the bottom of
+the hollow (\cref{sec:os-small}). Near a hollow each of the model's three
+ripples (\cref{sec:en-surface}) has $\cos(\vb{g}_k\cdot\vb{r}) \approx 1 -
+(\vb{g}_k\cdot\vb{r})^2/2$, and the squared cosines of the angles between
+$\vb{r}$ and the three $\vb{g}_k$, \ang{120} apart, add to $\frac32$, so the
+energy rises as $\frac{3}{16}U_{\mathrm b}\lvert\vb{g}\rvert^2r^2$ and $k =
+3U_{\mathrm b}\lvert\vb{g}\rvert^2/8 = 2\pi^2U_{\mathrm b}/a^2 =
+\SI{0.9785}{\electronvolt\per\angstrom\squared}$. With six bridges out of each hollow,
+the estimate $6\nu\,\mathrm{e}^{-\beta U_{\mathrm b}}$ with this $\nu$
+gives 0.095 and 0.923 hops per picosecond, against 0.134 and 0.898
+counted and the transition-state rates 0.162 and 1.257 of
+\cref{eq:th-tst}. The estimate takes the attempt frequency from the
+spectrum and ignores how wide the passage over each bridge is compared
+with the hollow, and it lies within a factor of 1.41 of the counted
+rates: the frequency of attempts and the Boltzmann factor of the barrier
+give a rate's size, and the counted hops give its value.
+
+\begin{keyidea}
+The vibrational density of states is the Fourier transform of the
+mass-weighted velocity autocorrelation function, with area three per
+atom; for a harmonic solid it is the histogram of the normal-mode
+frequencies, and at zero frequency it is $12mD/\kB T$. Friction widens
+each peak by $\gamma/2\pi$. Frames a stride $\Delta t$ apart show
+frequencies only up to $1/2\Delta t$ and fold faster ones below it, so
+spectra are compared at the same stride, by an overlap score.
+\end{keyidea}
+
+\notebook{16}{set the length of the correlation window and the stride, and watch the spectrum}
+
+\begin{selfcheck}
+The spectrum of one atom of a liquid is computed with $C_m$ cut at
+\SI{1}{\pico\second}. Roughly how close can two peaks be and still be
+seen as two?
+\end{selfcheck}

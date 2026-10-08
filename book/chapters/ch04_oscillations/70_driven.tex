@@ -1,0 +1,157 @@
+%=============================================================================!
+% 4.7  DRIVING AND RESONANCE                                                  !
+%=============================================================================!
+\section{Driving and resonance}
+\label{sec:os-driven}
+
+A child on a swing, pushed gently at just the right moment of each swing,
+soon swings high; the same pushes at the wrong rhythm achieve little. This
+section drives the damped oscillator with a force that rises and falls as
+a sinusoid and finds how the size of the response depends on the rhythm of
+the push.
+
+\subsection*{The steady response}
+
+Add to the block of \cref{sec:os-damped} a force $F_0\cos\omega t$, where
+$\omega$ is now the angular frequency of the push, chosen freely, and
+$\omega_0$ remains that of the spring alone. The second law becomes
+$m\ddot{x} = -kx - b\dot{x} + F_0\cos\omega t$; dividing by $m$, writing
+$f = F_0/m$ and moving the spring and drag terms to the left,
+\begin{equation}
+   \ddot{x} + \gamma\dot{x} + \omega_0^2 x = f\cos\omega t .
+   \label{eq:os-driven}
+\end{equation}
+After the start has been forgotten, we expect the block to swing in step
+with the push, at the same angular frequency but lagging behind it, so we
+try
+\begin{equation*}
+   x = A\cos(\omega t - \delta) ,
+\end{equation*}
+with an amplitude $A$ and a lag $\delta$ to be found. Writing $\psi =
+\omega t - \delta$ for short, the chain rule with $\dd\psi/\dd t = \omega$
+gives $\dot{x} = -A\omega\sin\psi$ and $\ddot{x} = -A\omega^2\cos\psi$,
+so the left side of \cref{eq:os-driven} is
+\begin{equation*}
+   A\bigl(\omega_0^2 - \omega^2\bigr)\cos\psi - A\gamma\omega\sin\psi .
+\end{equation*}
+On the right, $\omega t = \psi + \delta$, and the addition formula of
+\cref{sec:mo-trig} gives $f\cos\omega t = f\cos\delta\cos\psi - f\sin
+\delta\sin\psi$. Both sides are now combinations of $\cos\psi$ and $\sin
+\psi$, and they must agree at every instant. At the instants when $\psi$
+is a whole number of turns, $\cos\psi = 1$ and $\sin\psi = 0$; at those a
+quarter turn later, $\cos\psi = 0$ and $\sin\psi = 1$. Comparing the two
+sides at these instants,
+\begin{equation*}
+   A\bigl(\omega_0^2 - \omega^2\bigr) = f\cos\delta , \qquad
+   A\gamma\omega = f\sin\delta .
+\end{equation*}
+Squaring both, adding them and using $\cos^2\delta + \sin^2\delta = 1$
+gives $A^2[(\omega_0^2 - \omega^2)^2 + \gamma^2\omega^2] = f^2$, and
+dividing the second equation by the first gives $\tan\delta$:
+\begin{equation}
+   A = \frac{f}{\sqrt{\bigl(\omega_0^2 - \omega^2\bigr)^2 + \gamma^2\omega^2}} ,
+   \qquad
+   \tan\delta = \frac{\gamma\omega}{\omega_0^2 - \omega^2} .
+   \label{eq:os-resonance}
+\end{equation}
+Since $\sin\delta = A\gamma\omega/f$ is positive, $\delta$ lies between 0
+and $\pi$: the block always lags behind the push. Below resonance, where
+$\omega < \omega_0$, $\cos\delta$ is positive too, and $\delta =
+\arctan\bigl(\gamma\omega/(\omega_0^2 - \omega^2)\bigr)$ lies between 0
+and $\pi/2$, inside the range of the arctangent. Above it $\cos\delta$ is
+negative and $\delta$ lies between $\pi/2$ and $\pi$; since $\pi -
+\delta$ has the same sine as $\delta$ and the opposite cosine
+(\cref{sec:mo-trig}), $\tan(\pi - \delta) = -\tan\delta$, and $\delta =
+\pi - \arctan\bigl(\gamma\omega/(\omega^2 - \omega_0^2)\bigr)$.
+
+This is one motion that obeys \cref{eq:os-driven}, but it does not start
+from an arbitrary position and velocity. Adding to it any motion $x_{\mathrm
+h}$ of the undriven damped block, for which $\ddot{x}_{\mathrm h} + \gamma
+\dot{x}_{\mathrm h} + \omega_0^2x_{\mathrm h} = 0$, gives another, since
+the derivative of a sum is the sum of the derivatives: putting $x +
+x_{\mathrm h}$ into the left side of \cref{eq:os-driven} gives the left
+side for $x$, which is $f\cos\omega t$, plus that for $x_{\mathrm h}$,
+which is zero. The two constants of $x_{\mathrm h}$ (\cref{sec:os-damped})
+can match any starting state, so by the uniqueness of solutions
+(\cref{sec:ne-equations}) every driven motion is the steady response plus
+a damped motion, and the damped part dies away, as $\mathrm{e}^{-\gamma
+t/2}$ for light drag.
+Combining solutions by adding them works only because \cref{eq:os-driven}
+contains $x$ and its derivatives to the first power alone; such an
+equation is called linear.
+
+\subsection*{Resonance}
+
+The amplitude is largest when the denominator of \cref{eq:os-resonance} is
+smallest, which, for light drag, is close to $\omega = \omega_0$, where the
+first term vanishes. Driving a system at its own angular frequency is
+called driving it at resonance. There $\omega_0^2 - \omega^2 = 0$, so the
+first of the two equations above gives $\cos\delta = 0$; with $\sin\delta$
+positive, $\delta = \pi/2$ and $\sin\delta = 1$, and the second gives
+$A\gamma\omega_0 = f$:
+\begin{equation*}
+   A = \frac{f}{\gamma\omega_0} , \qquad \delta = \frac{\pi}{2} .
+\end{equation*}
+Push the block of \cref{sec:os-circle}, with $m = \SI{0.5}{\kilogram}$,
+$k = \SI{50}{\newton\per\metre}$ and so $\omega_0 =
+\SI{10}{\radian\per\second}$, with a force of amplitude
+\SI{0.5}{\newton}, so that $f = 0.5/0.5 = \SI{1}{\metre\per\second
+\squared}$. Held still, that force would stretch the spring by $F_0/k =
+0.5/50 = \SI{1}{\centi\metre}$, which is also the amplitude for a very slow
+push, $\omega \to 0$, where $A \to f/\omega_0^2 = (F_0/m)/(k/m) =
+F_0/k$. At resonance, with
+$\gamma = \SI{2}{\per\second}$, the amplitude is $1/(2\times10) =
+\SI{5}{\centi\metre}$, five times larger; with $\gamma =
+\SI{1}{\per\second}$ it is \SI{10}{\centi\metre}, and with $\gamma =
+\SI{4}{\per\second}$, \SI{2.5}{\centi\metre} (\cref{fig:os-resonance}a).
+The ratio of the amplitude at resonance to that for a very slow push,
+$\bigl(f/(\gamma\omega_0)\bigr)\big/\bigl(f/\omega_0^2\bigr) =
+\omega_0/\gamma$, is called the quality factor of the oscillator: the
+lighter the drag, the higher and narrower the peak. The peak's width,
+measured where $A$ exceeds its largest value divided by $\sqrt2$, is close
+to $\gamma$. Near the peak, $\omega_0^2 - \omega^2 = (\omega_0 -
+\omega)(\omega_0 + \omega) \approx 2\omega_0(\omega_0 - \omega)$ and
+$\gamma\omega \approx \gamma\omega_0$, so the square root in
+\cref{eq:os-resonance} is about $\omega_0\sqrt{4(\omega_0 - \omega)^2 +
+\gamma^2}$, which is $\sqrt2$ times its value at $\omega_0$ when
+$4(\omega_0 - \omega)^2 = \gamma^2$, at $\omega = \omega_0 \pm
+\frac12\gamma$, a distance $\gamma$ apart. Solved exactly by computer, the
+widths are 1.00, 2.02 and \SI{4.19}{\radian\per\second} for $\gamma = 1$,
+2 and \SI{4}{\per\second}.
+
+The lag explains why the rhythm matters (\cref{fig:os-resonance}b). At
+resonance $\delta = \pi/2$: the block is at the centre of its swing,
+moving fastest, when the push is strongest, so the push always acts along
+the velocity and its power $F v$ is never negative. Pushed slowly, the
+block follows the push, $\delta \to 0$; pushed fast, it moves against it,
+$\delta \to \pi$, and in both cases the push spends half of each cycle
+working against the motion.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/resonance}
+\caption{The block of \cref{sec:os-circle} driven by a force of amplitude
+\SI{0.5}{\newton} at angular frequency $\omega$, for three drag rates.
+(a) The steady amplitude; the dotted line is the \SI{1}{\centi\metre} by
+which the same force would stretch the spring if held still. (b) The lag
+of the motion behind the push, which passes through $\pi/2$ at
+resonance.}
+\label{fig:os-resonance}
+\end{figure}
+
+Resonance returns several times. Molecules absorb infrared light at the
+frequencies of many of their vibrations (\cref{sec:os-molecules}); the width of a resonance
+reflects the damping, which Chapter~16 meets in the spectra of atomic
+motion; and Chapter~11 shows that a simulation that updates some forces
+only every few steps pushes the atoms in a rhythm that can hit a
+resonance.
+
+\notebook{04}{drive the block at any rhythm and watch the steady state
+emerge}
+
+\begin{selfcheck}
+For the block with $\gamma = \SI{0.5}{\per\second}$ and $f =
+\SI{1}{\metre\per\second\squared}$, what is the amplitude when it is
+pushed at $\omega = \SI{10}{\radian\per\second}$, and what is it for a
+very slow push?
+\end{selfcheck}

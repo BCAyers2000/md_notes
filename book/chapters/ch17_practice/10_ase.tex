@@ -1,0 +1,196 @@
+%=============================================================================!
+% 17.1  MOLECULAR DYNAMICS WITH ASE                                           !
+%=============================================================================!
+\section{Molecular dynamics with ASE}
+\label{sec:ip-ase}
+
+A travel adaptor lets one plug fit the sockets of many countries: the
+kettle is the same, and only the connection changes. The Atomic
+Simulation Environment (ASE)\cite{Larsen2017} is such an adaptor for
+atomistic calculations. One Python object holds the atoms, and any of
+dozens of programs that compute energies and forces, from a pair
+potential to a learned model or a first-principles code, can be plugged
+into it as a \emph{calculator}; the same integrators, thermostats,
+optimisers and file readers then work with every one of them. Earlier
+chapters checked \texttt{mdlab}'s integrators and thermostats against
+ASE's (\cref{sec:md-loop,sec:th-tests}); this section sets out how a run
+is written in ASE, and runs \texttt{mdlab}'s own liquid argon through it.
+
+\subsection*{Atoms, calculators and units}
+
+An \texttt{ase.Atoms} object holds the chemical symbols, the positions in
+\si{\angstrom}, the cell, the masses in \si{\amu} and the momenta. ASE
+stores the lattice vectors as the \emph{rows} of the cell, where
+\texttt{mdlab} stores them as the columns of $\vb{h}$ (\cref{sec:md-periodic}),
+so one is the transpose of the other. A calculator attached to the atoms
+answers \texttt{get\_potential\_energy}, \texttt{get\_forces} and
+\texttt{get\_stress}, the last in \si{\electronvolt\per\angstrom\cubed}.
+The stress is the pressure tensor of \cref{sec:pr-tensor} with its sign
+reversed, so that a compressed solid has a negative stress. By default it
+holds only the part from the forces; the kinetic part of
+\cref{eq:pr-tensor} is added only with
+\texttt{get\_stress(include\_\allowbreak ideal\_gas=True)}, whose omission
+was a fault of \cref{sec:pr-trajectory}, and with it the pressure is minus
+a third of the stress's trace.
+
+ASE measures energy in \si{\electronvolt}, length in \si{\angstrom} and
+mass in \si{\amu}, and computes an acceleration as force over mass with
+no conversion factor. Its unit of time $t_{\mathrm A}$ is therefore the
+one for which a force of \SI{1}{\electronvolt\per\angstrom} on
+\SI{1}{\amu} gives \SI{1}{\angstrom} per $t_{\mathrm A}^2$, with the
+joule, and so the electronvolt, being a mass times a length squared over
+a time squared:
+\begin{align*}
+   \frac{\si{\electronvolt}}{\si{\angstrom}}
+      &= \si{\amu}\,\frac{\si{\angstrom}}{t_{\mathrm A}^2}
+      && \text{$F = ma$ with every number 1}\\
+   t_{\mathrm A}^2 &= \frac{\si{\amu}\,\si{\angstrom}^2}{\si{\electronvolt}}
+      && \text{multiplying by $t_{\mathrm A}^2\,\si{\angstrom}/
+         \si{\electronvolt}$}\\
+   t_{\mathrm A} &= \si{\angstrom}\sqrt{\frac{\si{\amu}}{\si{\electronvolt}}}
+      && \text{taking the root}\\
+   &= \SI{1e-10}{\metre}\times\sqrt{\frac{\SI{1.6605e-27}{\kilogram}}
+        {\SI{1.6022e-19}{\kilogram\metre\squared\per\second\squared}}}
+      && \text{in SI units}\\
+   &= \SI{1e-10}{\metre}\times\SI{1.018e-4}{\second\per\metre}
+      = \SI{10.18}{\femto\second} .
+\end{align*}
+A time step and a thermostat's time constant are given to ASE in this
+unit, and a friction in its reciprocal. ASE supplies the femtosecond as
+\texttt{ase.units.fs}, so a step of \SI{10}{\femto\second} is written
+\texttt{10 * units.fs}, and a friction of \SI{0.001}{\per\femto\second}
+\texttt{0.001 / units.fs}. Velocities are lengths per $t_{\mathrm A}$: an
+atom that covers \SI{1}{\angstrom} in a femtosecond covers
+\SI{10.18}{\angstrom} in one $t_{\mathrm A}$, so \texttt{mdlab}'s
+velocities, in \si{\angstrom\per\femto\second}, are multiplied by 10.18 on
+the way in, the factor whose omission was one of the faults of
+\cref{sec:cs-trajectory}.
+
+Any \texttt{mdlab} model becomes a calculator through
+\texttt{mdlab.io.mdlab\_calculator}, which passes ASE's positions to the
+model and its energy, forces and, from its virial, stress back:
+
+\begin{code}
+def mdlab_calculator(model):
+    from ase.calculators.calculator import Calculator, all_changes
+    class MdlabCalculator(Calculator):
+        implemented_properties = ["energy", "free_energy", "forces",
+                                  "stress"]
+
+        def calculate(self, atoms=None, properties=("energy",),
+                      system_changes=all_changes):
+            super().calculate(atoms, properties, system_changes)
+            h = np.array(self.atoms.get_cell()).T
+            # any change at all, since a strain of 1e-5 must be seen
+            if hasattr(model, "set_cell") and not np.array_equal(
+                    h, model.cell):
+                model.set_cell(h)
+            energy, forces = model(self.atoms.get_positions())
+            self.results = {"energy": float(energy),
+                            "free_energy": float(energy),
+                            "forces": np.array(forces)}
+            if hasattr(model, "virial"):
+                w = -np.asarray(model.virial) / self.atoms.get_volume()
+                # Voigt order: xx, yy, zz, yz, xz, xy
+                self.results["stress"] = w[[0, 1, 2, 1, 0, 0],
+                                           [0, 1, 2, 2, 2, 1]]
+
+    return MdlabCalculator()
+\end{code}
+
+\noindent The stress is $-\mathcal{W}_{\alpha\beta}/V$, the virial tensor of
+\cref{sec:pr-tensor} over the volume, in ASE's order $xx$, $yy$, $zz$,
+$yz$, $xz$, $xy$. A test strains the cell by $\pm\num{1e-5}$ in each of
+its six components, three stretches and three shears, and compares the change of the energy with this stress, to
+\SI{1e-8}{\electronvolt\per\angstrom\cubed}; the comment marks why the cell
+is compared exactly, since a tolerance would hide so small a strain.
+
+\subsection*{Dynamics}
+
+An integrator in ASE is an object built on the atoms with a time step,
+whose \texttt{run(n)} takes $n$ steps and calls any function attached
+with \texttt{attach(f, interval)} every so many steps, as \texttt{mdlab}'s
+observers do (\cref{sec:ob-reactions}). \texttt{VelocityVerlet} is the
+integrator of \cref{sec:in-verlet}; \texttt{Langevin} adds the friction
+and random kicks of \cref{sec:th-langevin}, with the friction $\gamma$ in
+reciprocal time units; \texttt{Bussi} is CSVR (\cref{sec:th-csvr}); and
+\texttt{NoseHooverChainNVT} is the chain of \cref{sec:th-nose}, but
+counts $3N$ freedoms where \texttt{mdlab} counts $N_{\mathrm f}$: in its
+first mass, $3N\kB T\tau_{\mathrm T}^2$ against $N_{\mathrm f}\kB
+T\tau_{\mathrm T}^2$, and in its target, which raises the temperature of a
+run whose centre of mass is still by $3N/N_{\mathrm f}$
+(\cref{sec:th-trajectory}). For constant pressure, \texttt{IsotropicMTKNPT} is
+the isotropic piston of \cref{sec:pr-piston}, \texttt{MTKNPT} lets every
+component of the cell move, and \texttt{MaskedMTKNPT} lets chosen lattice
+vectors change length while keeping their directions, which a layered
+solid needs (\cref{sec:pr-shape}). \Cref{tab:ip-methods} sets these
+beside \texttt{mdlab}'s and LAMMPS's.
+
+One change in ASE's own advice shows why a version should be recorded
+with every run. Its \texttt{Langevin} once held the centre of mass still
+with an option, \texttt{fixcm}; from version 3.28 ASE warns that this
+option does not sample the canonical ensemble exactly and asks for a
+constraint, \texttt{FixCom}, instead. The runs below follow the warning.
+
+\subsection*{The same liquid in two codes}
+
+Chapter~12's liquid argon, 256 atoms of the switched Lennard-Jones model
+at \SI{135}{\kelvin}, was run from one starting state by \texttt{mdlab}
+and by ASE with \texttt{mdlab\_calculator}, with steps of
+\SI{10}{\femto\second}, converted with \texttt{mdlab}'s constants rather
+than \texttt{units.fs}, whose older constants put a difference of 4.6
+parts in $10^9$ into the clock (\cref{sec:md-loop}). At fixed energy the
+two runs share their energy to the last digit printed, its spread over
+\SI{5}{\pico\second} being \SI{0.469}{\milli\electronvolt} in both, and
+their positions differ by \SI{3.9e-14}{\angstrom} after
+\SI{1}{\pico\second}, \num{3.1e-13} after 2 and \num{1.2e-10} after
+\SI{5}{\pico\second} (\cref{fig:ip-codes}a). The two codes add the same
+forces in different orders, and the chaos of \cref{sec:md-loop} amplifies
+the rounding about 3000 times over the four picoseconds from 1 to
+\SI{5}{\pico\second}, some seven times a picosecond, as it would any
+difference.
+
+Under the three thermostats, at a friction of \SI{1}{\per\pico\second} and
+time constants of \SI{1}{\pico\second}, each code was run for
+\SI{200}{\pico\second}. The mean temperatures lie within three standard
+errors of \SI{135}{\kelvin}, the spreads of the kinetic temperature
+within 0.989 and 1.016 of the canonical $\sqrt{2/N_{\mathrm f}}\,T$
+(\cref{sec:sm-kinetic}), and the diffusion coefficients, from the MSD
+over 2 to \SI{20}{\pico\second} in five blocks (\cref{sec:ob-msd}), agree
+within their errors (\cref{fig:ip-codes}b): $(3.94 \pm 0.14)$ and
+$(4.11 \pm 0.19)\times10^{-4}$\,\si{\angstrom\squared\per\femto\second}
+under CSVR, $(3.92 \pm 0.05)$ and $(3.95 \pm 0.10)\times10^{-4}$ under the
+chain, $(2.61 \pm 0.06)$ and $(2.66 \pm 0.08)\times10^{-4}$ under the
+friction, which slows diffusion as \cref{sec:ob-trajectory} found. A step
+costs \SI{1.32}{\milli\second} in \texttt{mdlab} and \SI{1.44}{\milli
+\second} in ASE, since the forces are \texttt{mdlab}'s in both.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch17_practice/codes}
+\caption{Chapter~12's liquid argon, 256 atoms at \SI{135}{\kelvin}, in
+three codes with one model. (a) The largest difference of any coordinate
+from \texttt{mdlab}'s, at fixed energy from one start, for ASE and for
+LAMMPS with its table. (b) The diffusion coefficient from the MSD over 2
+to \SI{20}{\pico\second} of \SI{200}{\pico\second} runs under Langevin
+friction of \SI{1}{\per\pico\second}, CSVR and a Nosé-Hoover chain, with
+time constants of \SI{1}{\pico\second}, and its standard error from five
+blocks. (c) The time of one step of \SI{10}{\femto\second}.}
+\label{fig:ip-codes}
+\end{figure}
+
+\begin{keyidea}
+ASE holds atoms in one object and plugs any energy-and-force program into
+it as a calculator, so its integrators, thermostats and barostats serve
+every model. Its unit of time is \SI{10.18}{\femto\second}, and its cell
+is the transpose of \texttt{mdlab}'s. With the same model the two codes
+give the same trajectory until chaos amplifies their rounding, and the
+same temperatures and diffusion coefficients.
+\end{keyidea}
+
+\notebook{17}{run one liquid in mdlab and in ASE and compare the paths}
+
+\begin{selfcheck}
+An ASE script sets \texttt{timestep=2} without \texttt{units.fs}. What step
+does the run take, in femtoseconds?
+\end{selfcheck}

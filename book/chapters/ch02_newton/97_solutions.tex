@@ -1,0 +1,302 @@
+%=============================================================================!
+% 2.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:newton}: Forces and Newton's laws}
+\label{sec:ne-solutions}
+
+\solutionto{ex:ne-lift}The passenger moves at constant velocity, so by
+the first law the net force on them is zero: the floor pushes up exactly
+as hard as their weight pulls down. A frame of reference fixed to the
+lift moves at constant velocity relative to the ground, which is very
+nearly inertial, so by \cref{sec:ne-frames} it is very nearly inertial
+too. While the
+lift speeds up, it accelerates, and a frame of reference fixed to it is
+no longer inertial. Seen from the ground, the passenger then accelerates
+upwards with the lift, so the net force on them points up: the floor
+pushes harder than their weight, which is why they feel heavier.
+
+\solutionto{ex:ne-frames}By \cref{eq:ne-velocity-frames}, $v' = v - u$,
+and adding $u$ to both sides, the velocity seen from the ground is $v =
+v' + u$, the velocity seen from the bicycle plus the velocity of the
+bicycle. Taking forwards as positive, $u =
+\SI{6}{\metre\per\second}$. Thrown forwards, $v' = +4$ and $v = 6 + 4 =
+\SI{10}{\metre\per\second}$. Thrown backwards, $v' = -4$ and $v = 6 - 4 =
+\SI{2}{\metre\per\second}$: the ball still moves forwards relative to the
+ground, only more slowly than the bicycle.
+
+\solutionto{ex:ne-net}Taking east as $x$ and north as $y$, the net force
+is $\vb{F} = (4, 0) + (0, 3) = (4, 3)$\,\si{\newton}. Its size is $(4^2 +
+3^2)^{1/2} = \SI{5}{\newton}$, and its direction makes an angle $\theta$
+north of east with $\tan\theta = 3/4$, so $\theta = \arctan(3/4) =
+\ang{36.9}$. By the second law the acceleration points the same way and
+has size $F/m = 5/3 = \SI{1.67}{\metre\per\second\squared}$.
+
+\solutionto{ex:ne-mass}The same force gives accelerations in the inverse
+ratio of the masses, $m_2/m_1 = a_1/a_2$, so
+\begin{equation*}
+   m_2 = m_1\,\frac{a_1}{a_2} = 2\times\frac{0.6}{1.5}
+   = \SI{0.8}{\kilogram} .
+\end{equation*}
+The force follows from either trolley by the second law: $F = m_1 a_1 =
+2\times0.6 = \SI{1.2}{\newton}$, and as a check $m_2 a_2 = 0.8\times1.5 =
+\SI{1.2}{\newton}$.
+
+\solutionto{ex:ne-horse}The free-body diagrams below draw the cart and
+the horse apart, moving to the right. The weight and normal force on each
+balance, the teal arrows are the third-law pair between them, and the
+lengths of the horizontal arrows show which forces are larger.
+\begin{center}
+\begin{tikzpicture}[line cap=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt},
+   body/.style={line width=0.6pt, fill=black!8}]
+   % the cart, on the left
+   \draw[body] (-0.7,-0.4) rectangle (0.7,0.4);
+   \node at (0,0) {\small cart};
+   \draw[force, accent] (0.7,0.1) -- (2.0,0.1)
+      node[midway, above=0.3cm] {\small horse on cart};
+   \draw[force] (-0.7,-0.25) -- (-1.2,-0.25)
+      node[left] {\small ground on wheels};
+   \draw[force] (0,0.4) -- (0,1.1) node[right] {\small normal force};
+   \draw[force] (0,-0.4) -- (0,-1.1) node[right] {\small weight};
+   % the horse, on the right
+   \begin{scope}[xshift=5.0cm]
+      \draw[body] (-0.7,-0.4) rectangle (0.7,0.4);
+      \node at (0,0) {\small horse};
+      \draw[force, accent] (-0.7,0.1) -- (-2.0,0.1)
+         node[midway, above=0.3cm] {\small cart on horse};
+      \draw[force] (0.7,-0.25) -- (2.2,-0.25)
+         node[right] {\small ground on hooves};
+      \draw[force] (0,0.4) -- (0,1.1) node[right] {\small normal force};
+      \draw[force] (0,-0.4) -- (0,-1.1) node[right] {\small weight};
+   \end{scope}
+\end{tikzpicture}
+\end{center}
+The two forces of the third-law pair act on
+different bodies, the horse's pull on the cart and the cart's pull on the
+horse, so they never cancel in the second law of either. Whether each
+body speeds up depends on all the forces on that body. On the cart, the
+horse's forward pull is larger than the backward friction at its wheels,
+so the cart accelerates forwards. On the horse, the ground pushes forwards
+on the hooves, the third-law partner of the hooves' backward push on the
+ground,
+and this push is larger than the cart's backward pull, so the horse
+accelerates forwards too. Taking horse and cart together, their pulls on
+each other are internal and cancel (\cref{sec:ne-bodies}); the pair speeds
+up because the forward push of the ground on the hooves exceeds the
+backward friction on the wheels.
+
+\solutionto{ex:ne-rope}The free-body diagram of the box has two forces,
+the tension $F_{\mathrm{rope}}$ upwards and the weight $mg$ downwards,
+the tension drawn longer because the box accelerates upwards.
+\begin{center}
+\begin{tikzpicture}[scale=1.25, line cap=round,
+   force/.style={-{Stealth[length=6pt]}, line width=1.2pt},
+   body/.style={line width=0.6pt, fill=black!8}]
+   \draw[line width=0.8pt] (0,0.3) -- (0,1.9);
+   \draw[body] (-0.4,-0.3) rectangle (0.4,0.3);
+   \draw[force] (0,0) -- (0,1.45)
+      node[midway, right=2pt] {\small $F_{\mathrm{rope}}$};
+   \draw[force] (0,0) -- (0,-1.15) node[right] {\small $mg$};
+   \fill (0,0) circle (1.4pt);
+   \draw[accent, -{Stealth[length=5pt]}, dashed, line width=0.8pt]
+      (1.3,-0.4) -- (1.3,0.5) node[right] {\small $a$};
+\end{tikzpicture}
+\end{center}
+Taking upwards as positive, the second law gives
+\begin{equation*}
+   F_{\mathrm{rope}} - mg = ma
+   \quad\Longrightarrow\quad
+   F_{\mathrm{rope}} = m(g + a) = 2\times(9.80665 + 1.5)
+   = \SI{22.6}{\newton} .
+\end{equation*}
+The rope must hold up the weight, \SI{19.6}{\newton}, and supply a further
+$ma = \SI{3}{\newton}$ to accelerate the box.
+
+\solutionto{ex:ne-moon}Mass measures inertia and is the same everywhere,
+so the astronaut's mass on the Moon is \SI{70}{\kilogram}. The weight is
+$mg$ with the Moon's value of $g$, $70\times1.62 = \SI{113}{\newton}$. On
+the Earth it is $70\times9.80665 = \SI{686}{\newton}$, so on the Moon the
+astronaut weighs $1.62/9.80665 = 0.165$ of their weight on the Earth, about
+a sixth.
+
+\solutionto{ex:ne-state}Measuring the height $x$ upwards from the ground,
+the state at $t = 0$ is $x_0 = \SI{3}{\metre}$, $v_0 =
+\SI{-2}{\metre\per\second}$, and by \cref{eq:mo-constant} with $a = -g$,
+\begin{equation*}
+   x(t) = 3 - 2t - \tfrac12 g t^2 .
+\end{equation*}
+The ball reaches the ground when $x = 0$. Multiplying by $-1$ to make the
+leading coefficient positive, $\tfrac12 g t^2 + 2t - 3 = 0$, a quadratic
+$At^2 + Bt + C = 0$ with $A = \tfrac12 g = 4.9033$, $B = 2$ and $C = -3$. Its roots are
+$t = [-B \pm (B^2 - 4AC)^{1/2}]/2A$, and the positive one is
+\begin{equation*}
+   t = \frac{-2 + \sqrt{4 + 4\times4.9033\times3}}{2\times4.9033}
+   = \frac{-2 + 7.927}{9.807} = \SI{0.604}{\second} ,
+\end{equation*}
+the red curve of \cref{fig:ne-state}(a).
+
+\solutionto{ex:ne-euler}One step of length $\tau$ from $x = 0$, $v = v_0$
+gives $x = v_0\tau$, while the true height is $v_0\tau - \tfrac12 g\tau^2$
+by \cref{eq:mo-ball}. The step overshoots by $v_0\tau - (v_0\tau -
+\tfrac12 g\tau^2) = \tfrac12 g\tau^2$. Two steps of $\tau/2$ go as
+follows. The first gives $x_1 = v_0\tau/2$ and $v_1 = v_0 - g\tau/2$; the
+second starts from this state, so
+\begin{align*}
+   x_2 &= x_1 + v_1\,\frac{\tau}{2}
+      = \frac{v_0\tau}{2} + \Bigl(v_0 - \frac{g\tau}{2}\Bigr)\frac{\tau}{2}\\
+   &= v_0\tau - \tfrac14 g\tau^2
+      && \text{expanding; the two $v_0\tau/2$ add.}
+\end{align*}
+The overshoot is now $(v_0\tau - \tfrac14 g\tau^2) - (v_0\tau - \tfrac12
+g\tau^2) = \tfrac14 g\tau^2$, half that of the single step. Halving the
+step halves the error over a fixed time, though each step's own error
+falls by four.
+
+\solutionto{ex:ne-above}With $\gamma = \SI{5}{\per\second}$ the terminal
+velocity is $v_\infty = 9.80665/5 = \SI{1.961}{\metre\per\second}$, and
+the starting gap is $v_0 - v_\infty = 4 - 1.961 =
+\SI{2.039}{\metre\per\second}$. At $t = \SI{0.2}{\second}$, $\gamma t = 1$,
+so by \cref{eq:ne-drag-v} the gap has shrunk by the factor $\mathrm{e}^{-1}
+= 0.368$:
+\begin{equation*}
+   v = 1.961 + 2.039\times0.368 = 1.961 + 0.750
+   = \SI{2.711}{\metre\per\second} .
+\end{equation*}
+The bead slows towards $v_\infty$ from above.
+
+\solutionto{ex:ne-approach}From rest, $v = v_\infty(1 -
+\mathrm{e}^{-\gamma t})$, so \SI{99}{\percent} of $v_\infty$ is reached
+when $\mathrm{e}^{-\gamma t} = 0.01$. Taking the natural logarithm of both
+sides, $-\gamma t = \ln 0.01 = -4.605$, so $t = 4.605/5 =
+\SI{0.921}{\second}$. Each further factor of ten closer to $v_\infty$
+needs $\mathrm{e}^{-\gamma t}$ to shrink by another factor of 10. Since
+$\mathrm{e}^{-\gamma(t + \Delta t)} = \mathrm{e}^{-\gamma t}\,
+\mathrm{e}^{-\gamma\Delta t}$, this takes a further $\Delta t$ with
+$\mathrm{e}^{-\gamma\Delta t} = 0.1$, that is $\Delta t = 2.303/\gamma =
+\SI{0.461}{\second}$, as in \cref{sec:ne-drag}.
+
+\solutionto{ex:ne-drag-check}Differentiating \cref{eq:ne-drag-x} term by
+term, the derivative of $v_\infty t$ is $v_\infty$, and the derivative of
+$1 - \mathrm{e}^{-\gamma t}$ is $\gamma\,\mathrm{e}^{-\gamma t}$ by the
+chain rule, so
+\begin{equation*}
+   \frac{\dd x}{\dd t} = v_\infty - \frac{v_\infty}{\gamma}\,
+   \gamma\,\mathrm{e}^{-\gamma t} = v_\infty\bigl(1 - \mathrm{e}^{-\gamma
+   t}\bigr) ,
+\end{equation*}
+the velocity of a bead released from rest. Differentiating again,
+$\dd^2 x/\dd t^2 = \gamma v_\infty\,\mathrm{e}^{-\gamma t}$. The right
+side of \cref{eq:ne-drag} is
+\begin{align*}
+   g - \gamma\,\frac{\dd x}{\dd t}
+   &= g - \gamma v_\infty + \gamma v_\infty\,\mathrm{e}^{-\gamma t}
+      && \text{multiplying out the bracket}\\
+   &= \gamma v_\infty\,\mathrm{e}^{-\gamma t}
+      && \text{since $\gamma v_\infty = g$,}
+\end{align*}
+which equals $\dd^2 x/\dd t^2$, as required.
+
+\solutionto{ex:ne-spring}By \cref{eq:ne-spring-omega}, $\omega =
+\sqrt{k/m} = \sqrt{80/0.2} = \sqrt{400} = \SI{20}{\radian\per\second}$ and
+the period is $2\pi/\omega = 2\pi/20 = \SI{0.314}{\second}$. Released from
+rest at \SI{3}{\centi\metre}, the amplitude is $A = \SI{0.03}{\metre}$.
+The largest speed, at the centre, is $A\omega = 0.03\times20 =
+\SI{0.6}{\metre\per\second}$, and the largest acceleration, at the turning
+points, is $A\omega^2 = 0.03\times400 = \SI{12}{\metre\per\second
+\squared}$.
+
+\solutionto{ex:ne-kick}Here $x_0 = 0$ and $v_0 = \SI{0.5}{\metre\per
+\second}$, so
+\begin{equation*}
+   A = \sqrt{x_0^2 + (v_0/\omega)^2} = \sqrt{0 + 0.05^2}
+   = \SI{0.05}{\metre} ,
+\end{equation*}
+with $\cos\phi = x_0/A = 0$ and $\sin\phi = -v_0/(\omega A) =
+-0.5/(10\times0.05) = -1$. The angle with cosine 0 and sine $-1$ is $\phi =
+-\pi/2$. The motion is therefore $x = 0.05\cos(10t - \pi/2)$. By
+$\cos(-\theta) = \cos\theta$ and $\cos(\pi/2 - \theta) = \sin\theta$ from
+\cref{sec:mo-trig}, $\cos(\omega t - \pi/2) = \cos(\pi/2 - \omega t) =
+\sin\omega t$, so $x = 0.05\sin 10t$: the block starts at the centre and
+moves outwards.
+
+\solutionto{ex:ne-hanging}Let the spring be stretched by $s$ when the
+block hangs at rest. The spring then pulls up with $ks$ and the weight
+pulls down with $mg$, and since the block does not accelerate, $ks = mg$,
+so $s = mg/k$. Now let the block be a distance $x$ below this resting
+place, so that the spring is stretched by $s + x$. Taking downwards as
+positive, the net force is
+\begin{align*}
+   mg - k(s + x) &= (mg - ks) - kx
+      && \text{multiplying out the bracket}\\
+   &= -kx
+      && \text{since $ks = mg$,}
+\end{align*}
+and the second law gives $m\,\dd^2 x/\dd t^2 = -kx$, or $\dd^2 x/\dd t^2 =
+-(k/m)\,x$. This is \cref{eq:ne-spring}, so the block oscillates about its
+new resting place with the same $\omega = \sqrt{k/m}$ and period as on the
+table. Gravity only moves the centre down by $mg/k$.
+
+\solutionto{ex:ne-coupling}On the level, smooth track no external force
+acts along the track, so the total momentum is the same before and after
+the carts couple:
+\begin{equation*}
+   2\times3 + 1\times0 = (2 + 1)\,v
+   \quad\Longrightarrow\quad
+   v = \frac{6}{3} = \SI{2}{\metre\per\second} .
+\end{equation*}
+
+\solutionto{ex:ne-boat}No horizontal external force acts on the person
+and boat together, and they start at rest, so their centre of mass stays
+where it is. Let the person move $\Delta x_{\mathrm p}$ and the boat
+$\Delta x_{\mathrm b}$ relative to the water, positive in the direction
+the person walks. The centre of mass is at $X = (70\,x_{\mathrm p} +
+140\,x_{\mathrm b})/210$, and when the person moves by $\Delta
+x_{\mathrm p}$ and the boat by $\Delta x_{\mathrm b}$ it moves by $(70\,
+\Delta x_{\mathrm p} + 140\,\Delta x_{\mathrm b})/210$. Keeping it fixed
+therefore requires $70\,\Delta x_{\mathrm p} + 140\,\Delta x_{\mathrm b} =
+0$. Walking \SI{3}{\metre}
+along the boat means $\Delta x_{\mathrm p} = \Delta x_{\mathrm b} + 3$.
+Substituting,
+\begin{align*}
+   70(\Delta x_{\mathrm b} + 3) + 140\,\Delta x_{\mathrm b} &= 0\\
+   70\,\Delta x_{\mathrm b} + 210 + 140\,\Delta x_{\mathrm b} &= 0
+      && \text{multiplying out}\\
+   210\,\Delta x_{\mathrm b} &= -210
+      && \text{collecting $\Delta x_{\mathrm b}$, subtracting 210}\\
+   \Delta x_{\mathrm b} &= \SI{-1}{\metre}
+      && \text{dividing by 210.}
+\end{align*}
+The boat moves \SI{1}{\metre} backwards, and the person \SI{2}{\metre}
+forwards, relative to the water.
+
+\solutionto{ex:ne-oxygen}By \cref{sec:ne-atoms}, a force in
+\si{\electronvolt\per\angstrom} divided by a mass in \si{\amu} and
+multiplied by \num{9.648533e-3} gives the acceleration in
+\si{\angstrom\per\femto\second\squared}:
+\begin{equation*}
+   a = \frac{0.5}{15.999}\times9.648533\times10^{-3}
+   = \SI{3.015e-4}{\angstrom\per\femto\second\squared} .
+\end{equation*}
+From rest, after \SI{5}{\femto\second} the velocity is $at = 5\times3.015
+\times10^{-4} = \SI{1.508e-3}{\angstrom\per\femto\second}$. Since
+$\SI{1}{\angstrom\per\femto\second} = \SI{e-10}{\metre}/\SI{e-15}{\second}
+= \SI{e5}{\metre\per\second}$, this is \SI{151}{\metre\per\second}.
+
+\solutionto{ex:ne-drift}Write $\vb{u} = \vb{P}/M$ for the drift and
+$\vb{v}_i' = \vb{v}_i - \vb{u}$ for the new velocities. The new total
+momentum is
+\begin{align*}
+   \sum_i m_i\vb{v}_i'
+   &= \sum_i m_i\bigl(\vb{v}_i - \vb{u}\bigr)
+      && \text{substituting $\vb{v}_i'$}\\
+   &= \sum_i m_i\vb{v}_i - \sum_i m_i\vb{u}
+      && \text{multiplying out each term}\\
+   &= \sum_i m_i\vb{v}_i - \Bigl(\sum_i m_i\Bigr)\vb{u}
+      && \text{$\vb{u}$ is common to every term}\\
+   &= \vb{P} - M\,\frac{\vb{P}}{M} = \vb{0} .
+\end{align*}
+Subtracting the same constant $\vb{u}$ from every velocity is the change
+to a frame of reference moving at $\vb{u}$ (\cref{sec:ne-frames}), in
+which $\vb{a}' = \vb{a}$, so no acceleration changes. Every atom's
+position is shifted by the same amount $\vb{u}t$, so the distances
+between atoms, on which their forces depend, are unchanged as well.

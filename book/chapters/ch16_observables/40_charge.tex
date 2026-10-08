@@ -1,0 +1,164 @@
+%=============================================================================!
+% 16.7  CHARGE TRANSPORT                                                      !
+%=============================================================================!
+\section{Charge transport}
+\label{sec:ob-charge}
+
+An electrolyte carries current through the motion of its ions. If each
+ion moved independently, its diffusion coefficient would determine its
+contribution to the conductivity. But a cation and an anion that move
+together as a neutral pair can diffuse without carrying net charge.
+We first derive the independent-ion estimate, then include correlations
+and measure their effect in a model molten salt.
+
+\subsection*{Drift against diffusion}
+
+Suppose each ion of some kind feels a steady force $F_x$ along $x$, for
+instance from an electric field. Its collisions with its neighbours act,
+on average, as a friction that grows with its velocity, so it does not
+speed up for ever: it drifts with a mean velocity $v_{\mathrm d}$ in the
+direction of the force, at which the friction balances the force, while
+diffusion spreads it. The drift and the diffusion are tied together. If
+the force comes from a potential energy $U(x)$, so that $F_x = -\dd U/\dd
+x$, the ions settle into the canonical density $\rho(x) \propto
+\mathrm{e}^{-\beta U(x)}$ (\cref{sec:sm-canonical}), whose slope is
+$\dd\rho/\dd x = -\beta\rho\,\dd U/\dd x = \beta F_x\rho$. At equilibrium no
+net flow remains, so the drift's flow $\rho\,v_{\mathrm d}$ and Fick's flow
+$-D\,\dd\rho/\dd x$ cancel:
+\begin{equation*}
+   \rho\,v_{\mathrm d} - D\beta F_x\rho = 0 , \qquad
+   v_{\mathrm d} = \beta D\,F_x ,
+\end{equation*}
+the Einstein relation: the drift velocity per unit force is the
+diffusion coefficient divided by $\kB T$. The same atom that wanders
+fast also drifts fast when pushed.
+
+In an electric field $\mathcal{E}$ along $x$, ion $i$, of charge $q_i$,
+feels $F_x = q_i\mathcal{E}$ and drifts at $\beta D_iq_i\mathcal{E}$, with
+$D_i$ the diffusion coefficient of its kind. The current density, the
+charge carried across unit area in unit time, is the sum over the ions of
+each charge times its drift velocity, divided by the volume, $\sum_iq_i
+\times \beta D_iq_i\mathcal{E}/V$. Divided by $\mathcal{E}$, this is the
+conductivity of independent ions, the Nernst-Einstein value
+\begin{equation}
+   \sigma_{\mathrm{NE}} = \frac{1}{V\kB T}\sum_iq_i^2D_i ;
+   \label{eq:ob-ne}
+\end{equation}
+cations and anions add, $q_i^2$ being positive for both. In the units of
+\texttt{mdlab}, $e^2$ per \si{\angstrom}, \si{\femto\second} and
+\si{\electronvolt}, a conductivity of 1 is \SI{1.602e6}{\siemens\per\metre},
+the siemens being the ampere per volt.
+
+\subsection*{The conductivity of the whole}
+
+Ions do not move independently. The general result has the form of
+\cref{eq:ob-einstein} for the charge displacement $\vb{M}_q(t) =
+\sum_iq_i\vb{r}_i(t)$, the sum of every ion's position weighted by its
+charge:
+\begin{equation}
+   \sigma_{\mathrm e} = \frac{1}{6V\kB T}\lim_{t\to\infty}\frac{\dd}{\dd t}
+   \ens{\lvert\vb{M}_q(t_0 + t) - \vb{M}_q(t_0)\rvert^2} ,
+   \label{eq:ob-sigma}
+\end{equation}
+whose derivation, like the viscosity's, uses the response of the system
+to a weak field\cite{AllenTildesley2017}. Expanding the square shows how
+it differs from \cref{eq:ob-ne}. With $\Delta\vb{r}_i$ the displacement of
+ion $i$,
+\begin{equation*}
+   \ens{\lvert\Delta\vb{M}_q\rvert^2}
+   = \sum_iq_i^2\ens{\lvert\Delta\vb{r}_i\rvert^2}
+   + \sum_i\sum_{j\neq i}q_iq_j\ens{\Delta\vb{r}_i\cdot\Delta\vb{r}_j} .
+\end{equation*}
+The first sum grows as $\sum_iq_i^2\,6D_it$ and gives
+\cref{eq:ob-ne}; the second holds the correlations between different
+ions. A cation and an anion that move together have $q_iq_j < 0$ and
+$\ens{\Delta\vb{r}_i\cdot\Delta\vb{r}_j} > 0$, a negative term, and lower
+the conductivity below $\sigma_{\mathrm{NE}}$. Their ratio is the Haven
+ratio $H_{\mathrm R} = \sigma_{\mathrm{NE}}/\sigma_{\mathrm e}$. Like $D$,
+$\sigma_{\mathrm e}$ also follows from a Green-Kubo integral, of the
+autocorrelation function of the charge current $\sum_iq_i\vb{v}_i$, by
+the steps of \cref{eq:ob-msd-vacf}.
+
+\subsection*{A model molten salt}
+
+The test system is 64 ions in a cubic cell of side \SI{13.4}{\angstrom},
+32 of charge $+e$ with the mass of sodium and 32 of $-e$ with that of
+chlorine. Every pair repels as $A\mathrm{e}^{-r/r_{\mathrm{rep}}}$ with
+$r_{\mathrm{rep}} = \SI{0.3}{\angstrom}$, and $A = \SI{6231}{\electronvolt}$ is
+set so that a pair of opposite charges has its least energy at
+\SI{2.8}{\angstrom}, where the repulsion's slope $A\mathrm{e}^{-r/r_{\mathrm
+{rep}}}/r_{\mathrm{rep}}$ balances the
+Coulomb pull $k_{\mathrm e}e^2/r^2$; the Coulomb energy is summed by Ewald's
+method (\cref{sec:md-ewald}). The model is illustrative, chosen to
+resemble an alkali halide, a salt of a metal such as sodium with a
+halogen such as chlorine, and is not fitted to sodium chloride. Eight
+runs each melt the lattice at \SI{4000}{\kelvin}, hold
+\SI{1500}{\kelvin} with CSVR for \SI{40}{\pico\second} and then run
+\SI{1}{\nano\second} at fixed energy with steps of \SI{2}{\femto\second}.
+Their energies differ, since 64 ions leave the thermostatted stage with an
+energy that fluctuates widely, so they sit at temperatures from 1362 to
+\SI{1721}{\kelvin}.
+
+The liquid is ordered by charge (\cref{fig:ob-salt}a). Around a cation
+the anions crowd at \SI{3.07}{\angstrom}, where $g_{+-}$ rises to 3.65,
+and other cations lie farther out, $g_{++}$ peaking at 1.66 at
+\SI{4.37}{\angstrom}, $g_{--}$ alike at \SI{4.32}{\angstrom}; each cation
+has 6.76 anions out to the first minimum of $g_{+-}$, at
+\SI{4.87}{\angstrom}.
+
+Each run gives $\sigma_{\mathrm e}$ from \cref{eq:ob-sigma}, with the
+charge displacement recorded at every step and fitted over 1 to
+\SI{5}{\pico\second}, and $\sigma_{\mathrm{NE}}$ from the two kinds' $D$
+over the same window. The Green-Kubo route agrees with the displacement
+in every run to within 0.6\%. Both conductivities rise with the run's
+temperature (\cref{fig:ob-salt}b), and the Nernst-Einstein value lies
+above the true one by more than half a percent in six runs of eight,
+within it in one and below it in one. Over the eight, at $(1487 \pm
+45)$\,\si{\kelvin}, $\sigma_{\mathrm e} = (158 \pm 9)$\,\si{\siemens\per
+\metre} and $\sigma_{\mathrm{NE}} = (168 \pm 10)$\,\si{\siemens\per\metre},
+errors that come mostly from the spread of the runs' temperatures. Their
+ratio, taken run by run, shows no trend with the temperature in the
+figure, and averages
+\begin{equation*}
+   H_{\mathrm R} = 1.062 \pm 0.022 ,
+\end{equation*}
+2.8 errors above 1, beyond the 2.365 that Student's factor for eight
+runs, seven degrees of freedom, sets at 95\% (\cref{sec:cv-mean}): the
+ions' motions are correlated, and treating them as independent
+overstates the conductivity of this melt by about 6\%. The diffusion
+coefficients of the two kinds over the eight runs, $(5.19 \pm 0.46)$ and
+$(5.03 \pm 0.45)\times10^{-4}$\,\si{\angstrom\squared\per\femto\second}
+for the cations and the anions, are the same within errors that again
+reflect the temperatures; taken run by run, which removes the
+temperature, their ratio is $1.033 \pm 0.008$, the cations faster in
+seven runs of eight.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/salt}
+\caption{The model molten salt, 64 ions in eight runs of
+\SI{1}{\nano\second} at fixed energy. (a) The partial radial distribution
+functions $g_{+-}$, $g_{++}$ and $g_{--}$. (b) The conductivity of each
+run from the charge displacement (circles) and from Nernst-Einstein with
+the ions' own diffusion coefficients (squares), against the run's
+temperature. (c) The vibrational density of states of the cations and of
+the anions in the first run (\cref{sec:ob-vdos}).}
+\label{fig:ob-salt}
+\end{figure}
+
+\begin{keyidea}
+An ion pushed by a force $F_x$ drifts at $\beta DF_x$, so independent ions
+conduct as $\sigma_{\mathrm{NE}} = \sum_iq_i^2D_i/V\kB T$. The true
+conductivity comes from the mean squared displacement of the total charge
+displacement $\sum_iq_i\vb{r}_i$, whose cross terms hold the correlations
+between ions; the Haven ratio $\sigma_{\mathrm{NE}}/\sigma_{\mathrm e}$
+measures them.
+\end{keyidea}
+
+\notebook{16}{compare the charge displacement with the ions' own displacements}
+
+\begin{selfcheck}
+If every cation were permanently bound to one anion, moving as a neutral
+pair, what would $\sigma_{\mathrm e}$ be, and what would
+$\sigma_{\mathrm{NE}}$ still give?
+\end{selfcheck}

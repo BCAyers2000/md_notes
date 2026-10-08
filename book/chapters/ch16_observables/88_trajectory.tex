@@ -1,0 +1,150 @@
+%=============================================================================!
+% 16.12  WHAT THE TRAJECTORY LOOKS LIKE                                       !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:ob-trajectory}
+
+The observables of this chapter are computed after the run, from saved
+frames, and most of their faults are made then: in the frames chosen, in
+how they are prepared, or in where a curve is read. A healthy set of
+observables checks itself through the identities derived above. For the
+liquid argon of this chapter, $g(r)$ with the pair potential gives the
+run's energy and pressure, to 0.6 and 0.2 of their errors (\cref{sec:ob-rdf}); $S(G)$ from the positions agrees with
+the transform of $g(r)$ where the cut at half the cell does not matter
+and tends to $\rho\kB T\kappa_T$ at small $G$ (\cref{sec:ob-sq}); the slope
+of the MSD and the integral of $C_{vv}$ give the same $D$
+(\cref{sec:ob-vacf}); the density of states has the value $12mD/\kB T$
+at zero frequency (\cref{sec:ob-vdos}); and where
+the free energy is known exactly, the histogram reproduces it within its
+errors (\cref{sec:ob-fes}). Each of these fails, in a recognisable way,
+when something has gone wrong. \Cref{fig:ob-faults} and
+\cref{tab:ob-faults} show six faults on liquid argon and gather those of
+earlier sections.
+
+\textit{Wrapped positions.} Positions put back into the cell, as most
+trajectory files store them, give an MSD that jumps whenever an atom
+crosses a face. From the run of \cref{sec:ob-msd} wrapped every
+\SI{100}{\femto\second}, it is \SI{167.8}{\angstrom\squared} at
+\SI{20}{\pico\second} against the true 45.2, and 222.0 and
+\SI{258.0}{\angstrom\squared} at 50 and \SI{100}{\pico\second}, levelling
+off towards \SI{270}{\angstrom\squared}, $L^2/2$, the mean squared distance
+between two points placed at random in the cell (\cref{fig:ob-faults}a). The check is
+the largest move between frames, which must be a small fraction of the
+cell (\texttt{diagnostics.largest\_jump}, \cref{sec:cs-trajectory}), and
+the cure is unwrapping (\texttt{diagnostics.unwrap}).
+
+\textit{A drift of the centre of mass.} Starting velocities drawn without
+removing their total momentum give the centre of mass a speed of about
+$\sqrt{3\kB T/Nm}$, \SI{1.80e-4}{\angstrom\per\femto\second} here, which
+it keeps for ever at fixed energy. Added to the same paths, it makes
+the MSD curve upwards and the fit over 2 to \SI{20}{\pico\second} give $D$
+31\% too high (\cref{fig:ob-faults}b); removing the centre of mass, as
+\texttt{msd} does by default, restores \num{3.764e-4}. The check is the
+path of the centre of mass (\texttt{diagnostics.centre\_of\_mass\_path}).
+
+\textit{A fit in the ballistic part.} A window that ends before the motion
+has forgotten its velocity fits a straight line to a curve: over 0.02 to
+\SI{0.2}{\pico\second} it gives $D$ a third too low, while windows starting
+at \SI{0.05}{\pico\second} or later and ending ten times later agree with
+the 2 to \SI{20}{\pico\second} value within 6\% (\cref{fig:ob-faults}c). The
+check is the slope of $\ln\text{MSD}$ against $\ln t$, which must be 1
+over the window.
+
+\textit{$g(r)$ past half the cell.} Separations reduced to their nearest
+image cannot exceed half the cell's width along any axis, so beyond
+$L/2$ the shells are partly empty. Computed out to \SI{16}{\angstrom} in
+the 256-atom cell of side \SI{23.26}{\angstrom}, $g$ falls to 0.50 at
+\SI{14}{\angstrom}, where the 2048-atom liquid shows 1.010
+(\cref{fig:ob-faults}d). \texttt{rdf} refuses a range beyond half the
+smallest width, as the cell list does.
+
+\textit{Transport under a local thermostat.} Langevin friction of
+\SI{10}{\per\pico\second} damps every velocity: $C_{vv}$ falls to half its
+first value in \SI{60}{\femto\second} instead of 160, and to zero in 170
+instead of 320, and its integral gives $D = \SI{0.682e-4}{\angstrom\squared\per
+\femto\second}$, 82\% below the value at fixed energy
+(\cref{fig:ob-faults}e). Transport coefficients and spectra come from runs
+at fixed energy or under a global thermostat such as CSVR, which
+Chapter~15 found leaves $D$ unchanged within its error; under friction
+they belong to the friction (\cref{sec:th-langevin}).
+
+\textit{A Green-Kubo integral read too late.} The integral of a
+correlation function settles when the correlation has died and then
+wanders as noise accumulates. For one \SI{1}{\nano\second} run of 256
+atoms the shear viscosity read at \SI{2}{\pico\second}, on the plateau, is
+\SI{2.18e-4}{\pascal\second}, 18\% above the \num{1.853e-4} from all
+\SI{14}{\nano\second}, the spread of a single run; read later, at 10, 20
+and \SI{40}{\pico\second}, it is 1.91, 1.78 and \num{2.01e-4}
+(\cref{fig:ob-faults}f), wandering by as much again. The check is to read
+the plateau where the correlation has died, here 1 to
+\SI{3}{\pico\second}, and to take the error from independent runs.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/faults}
+\caption{Six faults on liquid argon, each against the correct curve
+(teal). (a) The MSD from positions wrapped into the cell. (b) The MSD of
+paths whose centre of mass drifts at $\sqrt{3\kB T/Nm}$, not removed. (c)
+$D$ fitted to windows from $t_1$ to $10t_1$, against $t_1$, with the 2 to
+\SI{20}{\pico\second} value (dotted). (d) $g(r)$ of the 256-atom cell taken
+past half its side (dotted) with the nearest image, against the
+2048-atom $g(r)$. (e) $C_{vv}$ under Langevin friction of
+\SI{10}{\per\pico\second}. (f) The Green-Kubo integral of the shear stress
+from one \SI{1}{\nano\second} run, read out to \SI{40}{\pico\second},
+against the value from \SI{14}{\nano\second} (dotted).}
+\label{fig:ob-faults}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\small
+\caption{Faults of observables, the check that finds each, and its size
+in this chapter's runs.}
+\label{tab:ob-faults}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}
+   >{\raggedright\arraybackslash}p{0.36\linewidth}
+   >{\raggedright\arraybackslash}p{0.29\linewidth}@{}}
+\toprule
+fault & check & measured\\
+\midrule
+wrapped positions in an MSD & largest move between frames; unwrap &
+\SI{168}{\angstrom\squared} at \SI{20}{\pico\second}, not 45\\
+centre of mass drifting & path of the centre of mass; remove it & $D$
+31\% high\\
+fit in the ballistic part & slope of $\ln$MSD against $\ln t$ is 1 & $D$
+32\% low\\
+$g(r)$ past half the cell & range at most half the smallest width & $g =
+0.50$ at \SI{14}{\angstrom}, not 1.01\\
+transport under friction & run at fixed energy or with CSVR & $D$ 82\%
+low at \SI{10}{\per\pico\second}\\
+Green-Kubo read too late & read the plateau; errors from runs &
+$\eta_{\mathrm s}$ from 1.78 to \num{2.18e-4}\\
+bonds from one cutoff & band of hysteresis; least lifetime & 3.2 times
+the events (\cref{sec:ob-bonds})\\
+frames too sparse for a spectrum & stride below $1/2\nu_{\max}$; same
+stride for both & overlap 0.795 at \SI{30}{\femto\second}
+(\cref{sec:ob-vdos})\\
+errors of $F$ from short blocks & errors over independent copies &
+squared misses over squared errors 3.26, not 1 (\cref{sec:ob-fes})\\
+energy distributions from two ensembles & same thermostat for both &
+overlap 0.882, not 0.980 (\cref{sec:ob-fes})\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyidea}
+Observables check one another: $g(r)$ gives the energy and the pressure,
+the MSD and the velocity autocorrelation give the same $D$, and the
+density of states holds $D$ at zero frequency. Their common faults
+are wrapped positions, an unremoved drift, a fit window in the ballistic
+part, a range past half the cell, transport under a local thermostat, an
+integral read too late, frames too sparse, and error bars from blocks
+shorter than the slowest motion.
+\end{keyidea}
+
+\notebook{16}{break each observable and find the check that catches it}
+
+\begin{selfcheck}
+An MSD from a long run levels off at a value close to $L^2/2$. What is
+the most likely fault?
+\end{selfcheck}

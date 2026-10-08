@@ -1,0 +1,211 @@
+%=============================================================================!
+% 5.6  REMOVING TRANSLATION AND ROTATION                                      !
+%=============================================================================!
+\section{Removing translation and rotation}
+\label{sec:ro-remove}
+
+A simulation of a single molecule starts from velocities chosen at random.
+Their total momentum is not zero, so the molecule drifts, and their
+angular momentum is not zero, so it tumbles. \Cref{sec:ne-atoms} removed
+the drift by a change of frame. This section removes the tumbling too, and
+shows that what remains is the motion of the atoms relative to one
+another, with a kinetic energy of its own. The angular velocity of the
+tumbling must be found from the angular momentum, which needs one more
+tool.
+
+\begin{toolbox}[Linear systems and the inverse matrix]
+Three equations for three unknowns, such as
+\begin{equation*}
+   2x + y = 5 , \qquad x + 3y + z = 8 , \qquad y + 2z = 7 ,
+\end{equation*}
+are solved by elimination: use one equation to remove an unknown from the
+others, and repeat. The first gives $x = (5 - y)/2$; putting this into the
+second and multiplying by 2 gives $5 - y + 6y + 2z = 16$, or $5y + 2z =
+11$; subtracting the third, $y + 2z = 7$, removes $z$ and leaves $4y = 4$,
+so $y = 1$, then $z = 3$ from the third and $x = 2$ from the first. In
+matrix form the equations are $\vb{A}\vb{u} = \vb{b}$, with $\vb{A}$ the
+matrix of the numbers multiplying the unknowns, rows $(2, 1, 0)$, $(1, 3,
+1)$ and $(0, 1, 2)$, $\vb{u} = (x, y, z)$ and $\vb{b} = (5, 8, 7)$.
+
+When elimination gives one answer for every $\vb{b}$, the matrix has an
+inverse $\vb{A}^{-1}$, the matrix that undoes it, $\vb{A}^{-1}(\vb{A}\vb{u})
+= \vb{u}$, and multiplying both sides of $\vb{A}\vb{u} = \vb{b}$
+by $\vb{A}^{-1}$ gives the solution $\vb{u} = \vb{A}^{-1}\vb{b}$. When
+elimination instead removes a whole equation, leaving $0 = 0$ or $0 =$ a
+number that is not zero, the matrix has no inverse and there are many
+solutions or none. With $\vb{b} = \vb{0}$ there is always the solution
+$\vb{u} = \vb{0}$, so a matrix with no inverse turns some vector $\vb{u}
+\neq \vb{0}$ into $\vb{0}$. NumPy solves $\vb{A}\vb{u} = \vb{b}$ with
+\texttt{np.linalg.solve}; \texttt{np.linalg.lstsq} also handles a matrix
+with no inverse, returning, when there are many solutions, the shortest.
+\end{toolbox}
+
+\subsection*{The recipe}
+
+Take the masses $m_i$, positions $\vb{r}_i$ and velocities $\vb{v}_i$ of
+the atoms, and measure positions from the centre of mass, $\vb{r}_i' =
+\vb{r}_i - \vb{R}$.
+\begin{enumerate}
+\item Subtract the velocity of the centre of mass, $\vb{V} = \vb{P}/M$,
+   from every velocity: $\vb{v}_i' = \vb{v}_i - \vb{V}$.
+\item Find the angular momentum about the centre of mass, $\vb{L}' =
+   \sum_i m_i\vb{r}_i'\times\vb{v}_i'$, and the inertia tensor
+   $\mathsf{I}$ about it, \cref{eq:ro-tensor}, and solve
+   $\mathsf{I}\boldsymbol{\omega} = \vb{L}'$ for $\boldsymbol{\omega}$, the
+   angular velocity of the rigid turning that carries this angular
+   momentum.
+\item Subtract that turning from every velocity: $\vb{u}_i = \vb{v}_i' -
+   \boldsymbol{\omega}\times\vb{r}_i'$.
+\end{enumerate}
+The velocities $\vb{u}_i$ that remain have no total momentum and no
+angular momentum. For the momentum, $\sum_i m_i\vb{u}_i = \sum_i m_i
+\vb{v}_i' - \boldsymbol{\omega}\times\sum_i m_i\vb{r}_i' = \vb{0} - \vb{0}$,
+by the two sums of \cref{sec:ro-system}. For the angular momentum,
+\begin{equation*}
+   \sum_i m_i\vb{r}_i'\times\vb{u}_i
+   = \vb{L}' - \sum_i m_i\vb{r}_i'\times(\boldsymbol{\omega}\times
+   \vb{r}_i') = \vb{L}' - \mathsf{I}\boldsymbol{\omega} = \vb{0} ,
+\end{equation*}
+by the calculation that led to \cref{eq:ro-tensor}. The inertia tensor has an inverse unless all the atoms lie on one line:
+if $\mathsf{I}\vb{n} = \vb{0}$ with $\vb{n} \neq \vb{0}$, turning with
+$\boldsymbol{\omega} = \vb{n}$ has, by \cref{eq:ro-kinetic},
+$\sum_i\frac12 m_i\lvert\vb{n}\times\vb{r}_i'\rvert^2 =
+\frac12\vb{n}\cdot\mathsf{I}\vb{n} = 0$, so every $\vb{n}\times\vb{r}_i' =
+\vb{0}$ and every atom lies on the line through the centre of mass along
+$\vb{n}$. For a linear molecule along the $z$ axis, $\mathsf{I}$ is
+diagonal with entries $J$, $J$ and 0, where $J = \sum_i m_iz_i'^2$, and
+$\vb{L}'$ has no $z$ part (every $\vb{r}_i'\times\vb{v}_i'$ is at right
+angles to $\vb{r}_i'$, which lies along $z$). Then $\omega_x = L_x'/J$ and
+$\omega_y = L_y'/J$, while $\omega_z$ may be anything, since turning about
+the line moves no atom. We take $\omega_z = 0$, the shortest of these
+solutions, which is what \texttt{lstsq} returns.
+
+\subsection*{Three kinds of kinetic energy}
+
+Every velocity is now a sum of three parts, $\vb{v}_i = \vb{V} +
+\boldsymbol{\omega}\times\vb{r}_i' + \vb{u}_i$: the drift, the turning and
+the rest. Expanding $\lvert\vb{v}_i\rvert^2 = \vb{v}_i\cdot\vb{v}_i$ term
+by term,
+\begin{equation*}
+   \lvert\vb{v}_i\rvert^2 = V^2 + \lvert\boldsymbol{\omega}\times
+   \vb{r}_i'\rvert^2 + \lvert\vb{u}_i\rvert^2
+   + 2\vb{V}\cdot(\boldsymbol{\omega}\times\vb{r}_i') + 2\vb{V}\cdot
+   \vb{u}_i + 2(\boldsymbol{\omega}\times\vb{r}_i')\cdot\vb{u}_i ,
+\end{equation*}
+and adding $\frac12 m_i$ times this over the atoms gives three squares and
+three cross terms, each with $\frac12\times2 = 1$, and the cross terms all
+vanish:
+\begin{itemize}
+\item $\sum_i m_i\vb{V}\cdot(\boldsymbol{\omega}\times\vb{r}_i') =
+   \vb{V}\cdot\bigl(\boldsymbol{\omega}\times\sum_i m_i\vb{r}_i'\bigr) = 0$;
+\item $\sum_i m_i\vb{V}\cdot\vb{u}_i = \vb{V}\cdot\sum_i m_i\vb{u}_i = 0$;
+\item $\sum_i m_i(\boldsymbol{\omega}\times\vb{r}_i')\cdot\vb{u}_i =
+   \boldsymbol{\omega}\cdot\sum_i m_i\,\vb{r}_i'\times\vb{u}_i = 0$, moving
+   the vectors round in a cycle (\cref{sec:ro-tensor}).
+\end{itemize}
+With \cref{eq:ro-kinetic} for the turning, therefore,
+\begin{equation}
+   K = \tfrac12 MV^2 + \tfrac12\,\boldsymbol{\omega}\cdot\mathsf{I}
+   \boldsymbol{\omega} + \sum_i\tfrac12 m_i\lvert\vb{u}_i\rvert^2 :
+   \label{eq:ro-split}
+\end{equation}
+the kinetic energy of the drift, of the turning and of the motion of the
+atoms relative to one another, each separate from the others.
+
+\Cref{fig:ro-remove} applies the recipe to a model ring of six carbon
+atoms, \SI{1.4}{\angstrom} from its centre, given velocities that drift,
+turn and jostle. At the start $\vb{P} = (0.4524, 0.1738, 0)$\,\si{\amu\angstrom\per
+\femto\second} and $L_z' = \SI{0.7616}{\amu\angstrom\squared\per
+\femto\second}$. Removing the drift leaves $L_z'$ unchanged, since
+$\sum_i m_i\vb{r}_i'\times\vb{V} = \bigl(\sum_i m_i\vb{r}_i'\bigr)\times
+\vb{V} = \vb{0}$. The ring lies flat with its velocities in its plane, so,
+as for water, $I_{xz} = I_{yz} = 0$ and $\vb{L}'$ points along $z$, and
+$\boldsymbol{\omega} = (0, 0, L_z'/I_{zz})$. With $M = 6\times12.011 =
+\SI{72.066}{\amu}$ and $I_{zz} = 6\times12.011\times1.4^2 =
+\SI{141.25}{\amu\angstrom\squared}$, $\omega_z = 0.7616/141.25 =
+\SI{0.00539}{\radian\per\femto\second}$, and removing that turning leaves
+both at zero. The kinetic energy of \SI{0.4317}{\electronvolt} splits into
+$\lvert\vb{P}\rvert^2/2M = 0.2349/(2\times72.066)\times103.6427 =
+\SI{0.1689}{\electronvolt}$ of drift, $L_z'^2/2I_{zz} = 0.7616^2/(2\times
+141.25)\times103.6427 = \SI{0.2128}{\electronvolt}$ of turning, and the
+remaining \SI{0.0500}{\electronvolt} of motion within the ring.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch05_rotation/remove}
+\caption{A model ring of six carbon atoms with velocities in its plane
+(arrows) made of a drift, a turn and a random part. (a) As made. (b)
+After subtracting the velocity of the centre of mass (cross): no drift,
+but the ring still turns. (c) After also subtracting the rigid turning
+$\boldsymbol{\omega}\times\vb{r}'$: what remains moves the atoms relative
+to one another.}
+\label{fig:ro-remove}
+\end{figure}
+
+\Needspace{24\baselineskip}
+\subsection*{In code}
+
+The function \texttt{remove\_rigid\_motion} of \texttt{mdlab} follows the
+recipe:
+
+\begin{code}
+def remove_rigid_motion(
+    masses: ArrayLike,
+    positions: ArrayLike,
+    velocities: ArrayLike,
+    rotation: bool = True,
+) -> NDArray:
+    masses = np.asarray(masses, dtype=float)
+    positions = np.asarray(positions, dtype=float)
+    velocities = np.asarray(velocities, dtype=float)
+    total = masses.sum()
+    drift = masses @ velocities / total  # V = P/M
+    velocities = velocities - drift
+    if rotation:
+        centre = masses @ positions / total  # R
+        omega = angular_velocity(masses, positions, velocities)
+        velocities = velocities - np.cross(omega, positions - centre)
+    return velocities
+\end{code}
+
+\texttt{masses @ velocities} is NumPy's matrix product of the list of $N$
+masses with the table of velocities, $N$ rows of three: it multiplies each
+row by its mass and adds the rows, giving $\sum_i m_i\vb{v}_i = \vb{P}$.
+\texttt{velocities - drift} takes the three numbers of \texttt{drift}
+from every row: NumPy lines up the last dimensions (\cref{sec:ne-atoms})
+and repeats the shorter array down the $N$ rows, and \texttt{positions -
+centre} works the same way.
+\texttt{angular\_velocity} computes $\vb{L}'$ and $\mathsf{I}$ about the
+centre of mass and solves for $\boldsymbol{\omega}$ with
+\texttt{np.linalg.lstsq}, and \texttt{np.cross} takes the cross product of
+$\boldsymbol{\omega}$ with every row of \texttt{positions - centre}. With
+\texttt{rotation=False} only the drift is removed. The tests check the
+result against ASE, an independent library for atomistic simulation, and
+check \cref{eq:ro-split}.
+
+\Needspace{16\baselineskip}
+\begin{practice}
+Most simulations follow a box of atoms repeated periodically in every
+direction (Chapter~10). There the
+forces still sum to zero, so the total momentum is conserved and its drift
+is removed, with \texttt{rotation=False}; but turning the atoms while the box
+and its copies stay fixed changes their energy, so (Chapter~7) the angular
+momentum is not conserved, and
+removing it would be wrong. For an isolated molecule both are removed. The
+learned propagator TrajCast (discussed in the planned Chapter~28) applies the same correction to
+the velocities it predicts: it adds the one velocity that restores the
+total momentum to its value before the step, and, for isolated molecules,
+the rigid turning $\boldsymbol{\omega}\times(\vb{r}_i - \vb{R})$ with
+$\boldsymbol{\omega}$ found from the inertia tensor, at the predicted
+positions, and the change in
+angular momentum.
+\end{practice}
+
+\notebook{05}{switch the drift and the turning off and on, and watch the
+three energies}
+
+\begin{selfcheck}
+Two atoms of \SI{1}{\amu} at $(\mp1, 0, 0)$\,\si{\angstrom} move with
+velocities $(0, 0.01, 0)$ and $(0, 0.03, 0)$\,\si{\angstrom\per
+\femto\second}. Find $\vb{V}$ and $\boldsymbol{\omega}$. What is left?
+\end{selfcheck}

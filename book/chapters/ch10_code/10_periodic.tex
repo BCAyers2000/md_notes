@@ -1,0 +1,153 @@
+%=============================================================================!
+% 10.1  A BOX REPEATED IN EVERY DIRECTION                                     !
+%=============================================================================!
+\section{A box repeated in every direction}
+\label{sec:md-periodic}
+
+A sample small enough to simulate is mostly surface. This section counts
+how much, removes the surface by repeating a box of atoms in every
+direction, and sets up the coordinates that describe such a box.
+
+\subsection*{Most of a small sample is surface}
+
+We place $N = n^3$ atoms on a cubic grid, $n$ along each edge. The atoms that
+are not on a face form a smaller cube of $(n - 2)^3$, so the fraction on
+the surface is
+\begin{align*}
+   1 - \frac{(n - 2)^3}{n^3} &= 1 - \Bigl(1 - \frac2n\Bigr)^3\\
+   &= \frac6n - \frac{12}{n^2} + \frac8{n^3}
+   && \text{expanding $(1 - x)^3 = 1 - 3x + 3x^2 - x^3$ with $x = 2/n$,}
+\end{align*}
+close to $6/n$ when $n$ is large. A thousand atoms ($n = 10$) have 49\%
+of them on the surface, about ten thousand ($n = 22$) 25\%, and a million ($n =
+100$) still 5.9\%. A surface atom has fewer neighbours than one inside,
+and a sample this small would measure the properties of its surface as
+much as those of its bulk.
+
+\subsection*{The periodic box}
+
+The surface is removed by repeating the box. The atoms sit in a cell,
+and the cell and its contents are copied without end in every direction,
+so that space is filled with identical cells. An atom that leaves through
+one face of the cell comes in through the opposite face, as its copy from
+the neighbouring cell enters, and every atom has neighbours on all sides;
+a ship in an old arcade game that leaves the screen at the right edge and
+reappears at the left lives in such a box, in two dimensions. Each atom
+feels the others and their copies. The price is an imposed periodicity:
+the sample repeats with the period of the cell, no wave longer than the
+cell, such as a long sound wave, can occur, and for a short-ranged
+potential the cell must be large enough that an atom does not feel its
+own copies (\cref{sec:md-image}); the Coulomb energy of
+\cref{sec:md-ewald} includes them by design.
+
+The cell is a parallelepiped, a box whose six faces are parallelograms,
+spanned by three lattice vectors $\vb{a}$,
+$\vb{b}$ and $\vb{c}$, which we place as the columns of the cell matrix
+\begin{equation}
+   \vb{h} = \begin{pmatrix} \vb{a} & \vb{b} & \vb{c} \end{pmatrix} .
+   \label{eq:md-cell}
+\end{equation}
+For a cubic cell of side $L$, $\vb{a} = (L, 0, 0)$, $\vb{b} = (0, L, 0)$,
+$\vb{c} = (0, 0, L)$ and $\vb{h}$ is $L$ times the identity. Any position
+can be written as $\vb{r} = s_1\vb{a} + s_2\vb{b} + s_3\vb{c}$, which is
+$\vb{h}$ times the vector $\vb{s} = (s_1, s_2, s_3)$: row $x$ of $\vb{h}$
+is $(a_x, b_x, c_x)$, so the $x$ component of $\vb{h}\vb{s}$ is $a_xs_1 +
+b_xs_2 + c_xs_3$, the $x$ component of $s_1\vb{a} + s_2\vb{b} +
+s_3\vb{c}$, and likewise for $y$ and $z$. So
+\begin{equation}
+   \vb{r} = \vb{h}\vb{s} , \qquad \vb{s} = \vb{h}^{-1}\vb{r} ,
+   \label{eq:md-fractional}
+\end{equation}
+with the inverse matrix of \cref{sec:ro-remove}. The inverse exists: a
+matrix without one turns some $\vb{s} \neq \vb{0}$ into $\vb{0}$, and
+$s_1\vb{a} + s_2\vb{b} + s_3\vb{c} = \vb{0}$ would put the three lattice
+vectors in one plane, a flat cell with no volume. The numbers $s_1$, $s_2$
+and $s_3$ are the fractional coordinates of the position: the point lies
+inside the cell when each is between 0 and 1, and its copies are at
+$\vb{h}(\vb{s} + \vb{n})$, with $\vb{n}$ any vector of three whole
+numbers, positive, negative or zero.
+
+The volume of the cell is its base times its height. The face spanned by
+$\vb{b}$ and $\vb{c}$ is a parallelogram of area $\lvert\vb{b}\times\vb{c}
+\rvert$ (\cref{sec:ro-cross}), and $\vb{b}\times\vb{c}$ is at right
+angles to that face. The height of the cell above it is the size of the
+part of $\vb{a}$ along that direction, the scalar product of $\vb{a}$
+with the vector of length one $(\vb{b}\times\vb{c})/\lvert\vb{b}\times
+\vb{c}\rvert$ (\cref{sec:mo-plane}), taken without its sign, since
+$\vb{a}$ may lie on either side of the face. Then
+\begin{align}
+   V &= \lvert\vb{b}\times\vb{c}\rvert\,
+        \frac{\lvert\vb{a}\cdot(\vb{b}\times\vb{c})\rvert}
+             {\lvert\vb{b}\times\vb{c}\rvert}
+     && \text{base times height}\notag\\
+     &= \lvert\vb{a}\cdot(\vb{b}\times\vb{c})\rvert ,
+     && \text{cancelling $\lvert\vb{b}\times\vb{c}\rvert$}
+   \label{eq:md-volume}
+\end{align}
+the scalar triple product of \cref{sec:ro-tensor}. For the cubic cell, $V =
+L^3$.
+
+\subsection*{Wrapping and unwrapping}
+
+To put a position back into the cell, we take its fractional coordinates
+and subtract from each its floor,
+\begin{equation*}
+   \vb{s} \to \vb{s} - \lfloor\vb{s}\rfloor ,
+\end{equation*}
+where the floor $\lfloor x\rfloor$ of a number $x$ is the largest whole
+number not above it, and $\lfloor\vb{s}\rfloor$ takes the floor of each
+coordinate: $\lfloor 2.3\rfloor = 2$ and $\lfloor -0.4\rfloor = -1$, so
+2.3 becomes 0.3 and $-0.4$ becomes 0.6.
+This is wrapping. The function \texttt{wrap} of \texttt{mdlab.cell} does
+it for $N$ atoms:
+
+\begin{code}
+def wrap(positions: ArrayLike, cell: ArrayLike) -> NDArray:
+    s = to_fractional(positions, cell)
+    return to_cartesian(s - np.floor(s), cell)
+\end{code}
+
+\noindent where \texttt{to\_fractional} solves $\vb{h}\vb{s} = \vb{r}$
+for each atom and \texttt{to\_cartesian} multiplies back.
+
+The integration itself does not need wrapped positions: the forces depend
+only on separations, and \cref{sec:md-image} reduces each separation to
+its nearest copy whichever copy of each atom the code holds. \texttt{mdlab} therefore follows
+each atom's path without wrapping, so that its displacement over a run can
+be read off directly, and wraps the positions only when it writes them to
+a file, as files of periodic systems usually hold them. To recover a
+continuous path from wrapped frames, each frame's position is replaced by
+its copy nearest to the previous frame's, which is right as long as no
+atom moves more than half the narrowest width of the cell between frames
+(\cref{sec:md-image}): a longer move is mistaken for a shorter one the
+other way, as too few frames per period hid an oscillation in
+\cref{sec:mo-atoms}.
+
+\subsection*{Momentum in a periodic box}
+
+Moving every atom by the same displacement moves each of its copies with
+it and changes no separation, so the forces still add to zero and the
+total momentum is conserved, as \cref{sec:ha-noether} found, whether a
+pair interacts through its nearest copy (\cref{sec:md-image}) or through
+all of them (\cref{sec:md-ewald}). Turning the atoms is not
+a symmetry of the box, and the angular momentum is not conserved. In the
+run of 500 atoms of \cref{sec:md-loop} the largest component of the total
+momentum after 2000 steps is $\num{3.8e-15}$\,amu\,\AA/fs, the rounding of
+the arithmetic.
+
+\begin{keyidea}
+A cell repeated in every direction removes the surface that would
+dominate any sample small enough to simulate. The cell is described by
+the matrix $\vb{h}$ of its lattice vectors; positions have fractional
+coordinates $\vb{s} = \vb{h}^{-1}\vb{r}$, the cell has volume $\lvert
+\vb{a}\cdot(\vb{b}\times\vb{c})\rvert$, and wrapping subtracts from
+each fractional coordinate its floor.
+\end{keyidea}
+
+\notebook{10}{wrap atoms into a cubic and a hexagonal cell}
+
+\begin{selfcheck}
+In the cell with $\vb{a} = (4, 0, 0)$, $\vb{b} = (0, 5, 0)$ and $\vb{c} =
+(0, 0, 6)$\,\AA, what are the fractional coordinates of $\vb{r} = (9,
+-1, 3)$\,\AA, and where does wrapping put it?
+\end{selfcheck}

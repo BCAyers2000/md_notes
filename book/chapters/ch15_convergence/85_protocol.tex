@@ -1,0 +1,187 @@
+%=============================================================================!
+% 15.9  A PROTOCOL AND A CRITERION                                            !
+%=============================================================================!
+\section{A protocol and a criterion}
+\label{sec:cv-protocol}
+
+The chapter's tools combine into a procedure that takes a system from a
+rough start to numbers with error bars, and a criterion, with numbers,
+for when a quantity counts as converged. This section follows the liquid
+from atoms placed at random to a converged run at constant pressure, with
+the plot to read at each stage.
+
+\subsection*{From random positions}
+
+Atoms placed at random in a box overlap: 256 argon atoms dropped into the
+liquid's cell start with $U = \SI{7.91e10}{\electronvolt}$ and a largest
+force of \SI{2.95e12}{\electronvolt\per\angstrom}, and the first step of a
+run of \SI{10}{\femto\second} would carry the atom that feels it some
+\SI{4e10}{\angstrom}, across more than $10^9$ copies of the periodic box. The overlaps are
+removed first by walking downhill on the energy. Moving every atom a small
+distance along its own force, $\dd\vb{r}_i = h\vb{F}_i$ with $h > 0$, changes
+the energy by
+\begin{equation*}
+   \dd U = \sum_i\grad_iU\cdot\dd\vb{r}_i = -\sum_i\vb{F}_i\cdot h\vb{F}_i
+   = -h\sum_i\lvert\vb{F}_i\rvert^2 ,
+\end{equation*}
+which is negative unless every force vanishes: the forces point downhill,
+and a step along them lowers the energy if it is short enough for the
+forces not to change much along it. This is steepest descent. The function
+\texttt{minimise} of \texttt{mdlab.md} sets $h$ by the atom with the
+largest force, which moves the distance \texttt{step}, so that $h =
+\texttt{step}/\max_i\lvert\vb{F}_i\rvert$; it keeps a trial that lowers
+the energy and lengthens the next by a fifth, and refuses one that does
+not and halves the distance:
+
+\begin{code}
+def minimise(
+    model: EnergyForces,
+    positions: ArrayLike,
+    step: float = 0.1,
+    force_tolerance: float = 1e-2,
+    max_steps: int = 10000,
+) -> tuple[NDArray, NDArray, NDArray]:
+    r = np.array(positions, dtype=float)
+    u, f = model(r)
+    energies, largest = [u], [np.max(np.linalg.norm(f, axis=-1))]
+    for _ in range(max_steps):
+        if largest[-1] < force_tolerance:
+            break
+        trial = r + step * f / largest[-1]
+        u_trial, f_trial = model(trial)
+        if u_trial < u:
+            r, u, f = trial, u_trial, f_trial
+            energies.append(u)
+            largest.append(np.max(np.linalg.norm(f, axis=-1)))
+            step *= 1.2
+        else:
+            step *= 0.5
+    return r, np.array(energies), np.array(largest)
+\end{code}
+
+\noindent From a lattice disturbed by \SI{0.2}{\angstrom} it reaches the same
+minimum as ASE's FIRE optimiser, to \SI{1e-3}{\angstrom} in every position
+(\texttt{test\_stats.py}). From the random start it takes 75 accepted moves
+to bring the largest force below \SI{0.05}{\electronvolt\per\angstrom}, at
+$U = \SI{-15.357}{\electronvolt}$ (\cref{fig:cv-protocol}(a)). The aim is
+only to remove the overlaps, and any minimum close to the start will
+do.
+
+\subsection*{Temperature, then pressure}
+
+The stages that follow each settle one thing, and each has its plot.
+Velocities drawn at \SI{135}{\kelvin} for the minimised atoms give a
+temperature that falls within the first picosecond to \SI{70.1}{\kelvin},
+about half, as the kinetic energy shares itself with the potential energy
+of atoms that sat at the bottom of their wells (\cref{sec:sm-equipartition});
+CSVR brings its average over the preceding \SI{1}{\pico\second} back above
+\SI{130}{\kelvin}, within \SI{5}{\kelvin} of the target, by
+\SI{3.8}{\pico\second} (\cref{fig:cv-protocol}(b)), and over the last
+\SI{25}{\pico\second} of \SI{50}{\pico\second} the mean is $(136.6 \pm
+1.2)$\,\si{\kelvin}, 1.4 errors from the target. The running mean from the start, which lags, shows
+why such a stage is discarded. Stochastic cell rescaling at
+\SI{0.1}{\giga\pascal} then lets the volume move from that of
+$0.8\sigma^{-3}$, \SI{12577}{\angstrom\cubed}, to the one the liquid takes
+at that pressure (\cref{fig:cv-protocol}(c)), and the run continues for \SI{1}{\nano
+\second}. Each quantity then goes through the criterion.
+
+\begin{definition}
+A quantity $A$, recorded at $n$ equal intervals $\dt$ over a run, is
+converged to the error $\sigma^\ast$ when
+\begin{enumerate}
+\item the start $t_0$ that maximises $n_{\mathrm{eff}}(t_0)$ lies in the
+   first half of the run (\cref{sec:cv-equilibration});
+\item the $n'$ samples after it, with their own $g$ and $s$, hold at least
+   100 independent samples, $n_{\mathrm{eff}} = n'/g \ge 100$
+   (\cref{sec:cv-blocks});
+\item the error from blocks of $5g$ samples agrees with $\sqrt{g s^2/n'}$
+   within twice its own error (\cref{sec:cv-blocks});
+\item the slope of the samples after $t_0$ is within two of its errors of
+   zero (\cref{sec:cv-drift});
+\item and $\sqrt{g s^2/n'} \le \sigma^\ast$, or else \cref{eq:cv-length}
+   gives the run that would make it so (\cref{sec:cv-observables}).
+\end{enumerate}
+The result is reported as $\bar A \pm \sqrt{g s^2/n'}$, one standard
+error, with the number of independent samples.
+\end{definition}
+
+The first check catches a run too short to locate its own start; the
+second leaves at least twenty blocks of $5g$, so that the block error the
+third check compares with is itself known to about a sixth,
+$1/\sqrt{2\times19}$, and keeps the bias that the search for a start
+brings small, as below; the third catches a slow memory that the estimate
+of $g$ cut off; the fourth catches a drift or a transient left in. The
+function \texttt{convergence\_report} of \texttt{mdlab.analysis.stats}
+applies the first four, and the fifth when given a target, and returns
+the evidence for each. The criterion says nothing about whether the run samples the
+right ensemble, for which \cref{sec:cv-ensemble} gives a test, or about
+the size of the box, which \cref{sec:cv-size} shows can bias a converged
+number.
+
+After \SI{300}{\pico\second} at constant pressure the report finds the
+volume and the potential energy not yet converged: their starts are at
+16.5 and \SI{12.0}{\pico\second}, but they hold only 64.6 and 47.8
+independent samples, the potential energy now having $\tau_{\mathrm{int}}
+= \SI{3.0}{\pico\second}$ over these \SI{300}{\pico\second}, as it
+follows the slow swings of the volume. A
+hundred independent samples need 439 and \SI{603}{\pico\second} after the
+start. The pressure and the temperature pass, with 813 and 139. After
+\SI{1}{\nano\second} all four pass: $V = (12310 \pm 10)$\,\si{\angstrom
+\cubed} with 316 independent samples, the volume of
+\cref{sec:pr-npt} within its error; $P = (0.0997 \pm 0.0004)$\,\si{\giga
+\pascal} against the \SI{0.1}{\giga\pascal} asked for; $T = (135.27 \pm
+0.28)$\,\si{\kelvin}; and $U = (-13.049 \pm 0.014)$\,\si{\electronvolt}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/protocol}
+\caption{A protocol, stage by stage, for 256 argon atoms placed at random.
+(a) Steepest descent: the largest force after each accepted move, against
+the tolerance (dotted). (b) \SI{50}{\pico\second} of CSVR at fixed volume:
+the temperature (grey) and its running mean (teal), against
+\SI{135}{\kelvin} (dotted). (c) \SI{1}{\nano\second} of stochastic cell
+rescaling at \SI{0.1}{\giga\pascal}: the volume, the start found (dotted)
+and the mean after it (dashed). (d) The same for the potential energy per
+atom.}
+\label{fig:cv-protocol}
+\end{figure}
+
+\subsection*{Does the criterion keep its promise?}
+
+An error bar of one standard error should hold the true mean in 68\% of
+runs. On series of known mean from \cref{eq:cv-ou}, 300 of each length,
+the error bar the report gives, whether or not the series passes, holds it
+in 0.55 of the series with 25
+independent samples, 0.57 with 50, 0.68 with 100 and 0.70 with 200; the
+error bar $\sqrt{g s^2/n}$ of the whole series, without the search for a
+start, holds it in 0.64, 0.64, 0.71 and 0.72. The search favours a start
+after which $g$ happens to come out small (\cref{sec:cv-equilibration}),
+which makes the error bar small too, and only with about a hundred
+independent samples does that bias fade, which sets the threshold of the
+second check. With the offset of \cref{fig:cv-equilibration}(a) added to
+series of \SI{200}{\pico\second}, 182 of 200 pass the criterion, and of
+those 0.70 hold the true mean within one error and 0.95 within two. On the
+liquid itself the evidence is thinner: of the sixty pieces of
+\SI{100}{\pico\second} of $U$, $T$ and $P$ in the \SI{2}{\nano\second} run,
+ten pass, and of those four hold the mean of the whole run within one
+error and seven within two, fewer than 68\% and 95\% would give, which
+fits pieces that pass only where $g$ came out small.
+
+\begin{keyidea}
+A protocol removes overlaps by steepest descent, brings the temperature,
+then the pressure, to their targets, and discards each stage. A quantity
+is converged when its start lies in the first half of the run, at least
+100 independent samples follow it, blocks confirm the error, no drift
+remains and the error meets its target; \texttt{convergence\_report} checks
+all five. So reported, one error bar holds the true mean of test series in
+about 68\% of runs; on the liquid's pieces that only just pass, less
+often.
+\end{keyidea}
+
+\notebook{15}{run the criterion on any series, from mdlab or from ASE}
+
+\begin{selfcheck}
+A run of \SI{500}{\pico\second} has $g = 300$ for a quantity sampled every
+\SI{10}{\femto\second}. Does it pass the second check, and if not, how long
+must it be?
+\end{selfcheck}

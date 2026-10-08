@@ -1,0 +1,231 @@
+%=============================================================================!
+% 16.2  WHAT DIFFRACTION SEES                                                 !
+%=============================================================================!
+\section{What diffraction sees}
+\label{sec:ob-sq}
+
+A street lamp seen through a fine net curtain shows a pattern of bright
+spots: light passing between the threads is scattered from each gap, and
+in some directions the waves from all the gaps arrive in step and add,
+while in others they arrive out of step and cancel. The pattern is set by
+the spacing of the threads, and from it the spacing can be read without
+looking at the curtain. X-rays and neutrons scattered by the atoms of a
+liquid or a crystal do the same at the scale of ångströms, and what they
+measure is the structure factor, the counterpart of $g(r)$ in waves.
+
+\subsection*{Waves scattered by atoms}
+
+A plane wave of wave vector $\vb{k}$ has the phase $\vb{k}\cdot\vb{r}$ at
+the point $\vb{r}$, its crests lying where that is a multiple of $2\pi$.
+Scattered by an atom at $\vb{r}_j$ towards a distant detector, it leaves
+as a wave of the same wavelength, its wave vector $\vb{k}'$ of the same
+length as $\vb{k}$ and pointing at the detector. The incoming wave
+reaches the atom with the phase $\vb{k}\cdot\vb{r}_j$; the path on to the
+detector is shorter than the path from the origin by the length of
+$\vb{r}_j$ along $\vb{k}'$, which takes off the phase
+$\vb{k}'\cdot\vb{r}_j$. So the wave arrives with the phase
+$\vb{k}\cdot\vb{r}_j - \vb{k}'\cdot\vb{r}_j$ plus a part that is the same
+for every atom, and the waves from different atoms differ in phase by
+$-\vb{G}\cdot\vb{r}_j$, with $\vb{G} = \vb{k}' - \vb{k}$ the scattering
+vector. The wave from atom $j$ can be drawn as an arrow of unit length
+turned through that angle, and the total as the sum of $N$ such arrows.
+Turning every arrow the other way changes no length, so the angles may
+be taken as $+\vb{G}\cdot\vb{r}_j$, and the total has the components
+\begin{equation*}
+   \mathcal{C}(\vb{G}) = \sum_j\cos(\vb{G}\cdot\vb{r}_j) , \qquad
+   \mathcal{S}(\vb{G}) = \sum_j\sin(\vb{G}\cdot\vb{r}_j) ,
+\end{equation*}
+the sums of \cref{sec:md-ewald} with every charge 1. A detector
+measures the intensity, which grows as the square of a wave's height,
+here the square of the total's length; per atom it is the structure
+factor
+\begin{equation}
+   S(\vb{G}) = \frac1N\Bigl[\mathcal{C}(\vb{G})^2 + \mathcal{S}(\vb{G})^2
+   \Bigr] .
+   \label{eq:ob-sq}
+\end{equation}
+Expanding the squares and using $\cos A\cos B + \sin A\sin B = \cos(A -
+B)$ (\cref{eq:mo-addition}) writes it as a double sum,
+\begin{equation*}
+   S(\vb{G}) = \frac1N\sum_i\sum_j\cos\bigl(\vb{G}\cdot(\vb{r}_j -
+   \vb{r}_i)\bigr) = 1 + \frac1N\sum_i\sum_{j\neq i}\cos(\vb{G}\cdot
+   \vb{r}_{ij}) ,
+\end{equation*}
+the terms with $j = i$ each being 1. Atoms placed at random give cross
+terms that average to zero, so $S(\vb{G}) = 1$; atoms of a crystal at a
+vector $\vb{G}$ that makes every $\vb{G}\cdot\vb{r}_{ij}$ a multiple of
+$2\pi$ give $S(\vb{G}) = N$, a Bragg peak. Such vectors form the
+crystal's reciprocal lattice, built as in \cref{sec:md-ewald} on the
+crystal's own repeating unit instead of the simulation cell. A liquid has
+$S(\vb{G})$ above 1 near the repeat of its shells of neighbours and below
+1 elsewhere.
+
+In a periodic cell only waves that repeat with the cell are allowed, the
+vectors $\vb{G} = m_1\vb{a}^* + m_2\vb{b}^* + m_3\vb{c}^*$ of
+\cref{sec:md-ewald}, the shortest of length $2\pi/L$ for a cube of side
+$L$. The function \texttt{structure\_factor} of \texttt{mdlab} evaluates
+\cref{eq:ob-sq} on each of them, averages over the frames and over the
+vectors of each length $G$, which in a liquid differ only by noise, and
+returns $S(G)$ against $G$.
+
+\subsection*{The structure factor from the arrangement}
+
+The double sum can also be written with $g(r)$. Around each atom of a
+liquid, which has no preferred direction, \cref{eq:ob-rdf} spreads its
+$\rho g(r)\,4\pi r^2\,\dd r$ partners evenly over the shell, so it puts
+$\rho g(r)\,\dd^3r$ in each small volume $\dd^3r$ at the separation
+$\vb{r}$, and the mean of the double sum is
+\begin{equation*}
+   S(\vb{G}) = 1 + \rho\int g(r)\cos(\vb{G}\cdot\vb{r})\,\dd^3r
+   = 1 + \rho\int\bigl[g(r) - 1\bigr]\cos(\vb{G}\cdot\vb{r})\,\dd^3r ,
+\end{equation*}
+the second form subtracting $\rho\int\cos(\vb{G}\cdot\vb{r})\,\dd^3r$,
+which is zero over the cell for every allowed $\vb{G} \neq \vb{0}$
+(\cref{sec:md-ewald}), and which makes the integrand vanish far away
+where $g(r)$ is 1. On a shell of radius $r$, with $\theta$ the angle
+between $\vb{r}$ and $\vb{G}$, the part at angles between $\theta$ and
+$\theta + \dd\theta$ is a band of radius $r\sin\theta$ and width
+$r\,\dd\theta$, of area $2\pi r^2\sin\theta\,\dd\theta$, out of $4\pi
+r^2$, so the average of the cosine over the shell is, with $u =
+\cos\theta$ and $\dd u = -\sin\theta\,\dd\theta$, the minus sign turning
+the limits $u = 1$ to $-1$ round,
+\begin{equation*}
+   \frac12\int_0^\pi\cos(Gr\cos\theta)\sin\theta\,\dd\theta
+   = \frac12\int_{-1}^{1}\cos(Gru)\,\dd u
+   = \frac12\Bigl[\frac{\sin Gru}{Gr}\Bigr]_{-1}^{1}
+   = \frac{\sin Gr}{Gr} .
+\end{equation*}
+The volume integral is then one over shells,
+\begin{equation}
+   S(G) = 1 + 4\pi\rho\int_0^\infty r^2\bigl[g(r) - 1\bigr]
+   \frac{\sin Gr}{Gr}\,\dd r ,
+   \label{eq:ob-sq-rdf}
+\end{equation}
+which depends only on the length $G$, as it must in a liquid that has no
+preferred direction.
+
+\Cref{fig:ob-sq}(a) compares the two routes for liquid argon at
+\SI{135}{\kelvin}. From the positions, on 250 frames of the
+\SI{2}{\nano\second} run, $S(G)$ has its first peak of 2.271 at $G =
+\SI{1.985}{\per\angstrom}$. That peak lies near the repeat of the shells
+of neighbours: the first three peaks of $g(r)$ lie at 3.68, 7.04 and
+\SI{10.30}{\angstrom}, \SI{3.31}{\angstrom} apart on average, and
+$2\pi/3.31 = \SI{1.90}{\per\angstrom}$, 4\% below the peak. Through
+\cref{eq:ob-sq-rdf}, with $g(r)$ known only to half the cell, the peak is
+2.126, 0.15 below, and at the smallest allowed $G$,
+\SI{0.270}{\per\angstrom}, the positions give 0.058 and the transform
+0.074, with ripples on either side that take it as low as $-0.05$, which
+no intensity can be. Stopping the integral at $L/2$ cuts off whatever
+$g(r) - 1$ holds beyond. Near the peak the oscillations of $g(r)$ beyond
+the cut keep step with $\sin Gr$, so what is cut off adds up: the $g(r)$
+of the 2048-atom runs, stopped at \SI{11.6}{\angstrom} and at
+\SI{23.3}{\angstrom}, gives 2.116 and 2.240 there. At small $G$ the loss
+is smaller but large beside $S(G)$ itself. The direct route has no such
+error and is the one to trust wherever the two differ.
+
+\subsection*{The long-wave limit and the compressibility}
+
+As $G$ shrinks towards 0, $\sin(Gr)/Gr$ tends to 1 and
+\cref{eq:ob-sq-rdf} tends to $S(0) = 1 + \rho\int[g(r) - 1]\,\dd^3r$; at
+$\vb{G} = \vb{0}$ itself \cref{eq:ob-sq} gives $N$, the beam that passes
+straight through, so $S(0)$ means this limit. The same integral measures
+how much the number of atoms $N_{\mathrm r}$ in a region of volume
+$V_{\mathrm r}$ fluctuates. The
+ordered pairs of distinct atoms both inside the region number $N_{\mathrm r}(N_{\mathrm r} -
+1)$. Each atom inside has on average $\rho g(r)\,\dd^3r$ partners in each
+small volume at the separation $\vb{r}$, and for a region large against
+the reach of $g(r) - 1$ nearly every atom is far from its surface, so
+\begin{equation*}
+   \ens{N_{\mathrm r}(N_{\mathrm r} - 1)}
+   = \ens{N_{\mathrm r}}\,\rho\int_{V_{\mathrm r}}g(r)\,\dd^3r
+   = \ens{N_{\mathrm r}}\Bigl[\rho\int\bigl[g(r) - 1\bigr]\dd^3r
+   + \ens{N_{\mathrm r}}\Bigr] ,
+\end{equation*}
+since $\rho\int_{V_{\mathrm r}}\dd^3r$ is $\rho V_{\mathrm r} =
+\ens{N_{\mathrm r}}$. Subtracting $\ens{N_{\mathrm r}}^2 -
+\ens{N_{\mathrm r}}$ from both sides leaves $\operatorname{var}(N_{\mathrm r}) = \ens{N_{\mathrm r}}[1
++ \rho\int[g(r) - 1]\,\dd^3r]$, so $S(0) = \operatorname{var}(N_{\mathrm r})/
+\ens{N_{\mathrm r}}$. That fluctuation follows from Chapter~14. A fixed number of
+atoms held at fixed pressure has $\operatorname{var}(V) =
+\kB T\ens{V}\kappa_T$ (\cref{eq:pr-volume}), and so has a group of atoms
+inside a large liquid, the liquid around it acting as the barostat. Such
+a group of $N_{\mathrm r}$ atoms has the density $N_{\mathrm r}/V$, which
+changes by $\delta\rho/\rho = -\delta V/V$ as its volume $V$ fluctuates;
+the region of fixed volume $V_{\mathrm r}$ has the density $N_{\mathrm
+r}/V_{\mathrm r}$, which changes by $\delta\rho/\rho = \delta N_{\mathrm
+r}/N_{\mathrm r}$ as its number fluctuates. Both are the fluctuation of the
+liquid's density over the same volume, so
+\begin{equation*}
+   \frac{\operatorname{var}(N_{\mathrm r})}{\ens{N_{\mathrm r}}^2} =
+   \frac{\operatorname{var}(V)}{\ens{V}^2} = \frac{\kB T\kappa_T}{\ens{V}} ,
+   \qquad
+   S(0) = \frac{\operatorname{var}(N_{\mathrm r})}{\ens{N_{\mathrm r}}} = \rho\kB T\kappa_T ,
+\end{equation*}
+the second following on multiplying the first by $\ens{N_{\mathrm r}} =
+\rho\ens{V}$. With Chapter~14's $\kappa_T = (1.46 \pm
+0.11)$\,\si{\per\giga\pascal}, from the slope $\dd P/\dd V$ of runs at fixed
+volume near \SI{0.1}{\giga\pascal}, $\rho\kB T\kappa_T = 0.0554 \pm
+0.0042$.
+
+The 256-atom cell has only four lengths of wave vector below
+\SI{0.6}{\per\angstrom}, too few to follow $S(G)$ towards $G = 0$, so
+\cref{fig:ob-sq}(b) uses Chapter~15's runs of 1372 and 2048
+atoms, two of each, whose cells allow $G$ down to
+\SI{0.135}{\per\angstrom}. Each value carries the standard error of its
+frames' values. A straight line in $G^2$ through the 29 values below
+\SI{0.6}{\per\angstrom}, fitted as in \cref{sec:cv-size} with each squared
+miss divided by the square of that value's error, reaches $S(0) = 0.0589$
+at $G = 0$. The sum of its squared misses in units of the errors is 72,
+where scatter alone gives $27 \pm 7$ for 29 values less the two fitted
+numbers, so the errors understate the misses by about $\sqrt{72/27} =
+1.63$, and the line's error, 0.0002, enlarged by that factor becomes
+0.0004. The two values, $0.0589 \pm 0.0004$ from the positions and
+$0.0554 \pm 0.0042$ from the change of pressure with volume, lie 0.8
+combined errors apart: the long waves of the structure and the liquid's
+stiffness against squeezing measure the same compressibility. The test
+is loose in one respect: Chapter~14 took its slope at a volume 2.2\%
+smaller than this run's, where the denser liquid is the stiffer.
+
+The same integral fixes the far value of $g(r)$ in a fixed cell
+(\cref{sec:ob-rdf}). With the divisor $N\rho$, an atom's partners over
+the whole cell number $N - 1$, so $\rho\int_V[g(r) - 1]\,\dd^3r = -1$. In a
+cell large enough for $g(r) - 1$ to die away well inside it, the part of
+the integral near the atom is $S(0) - 1$, and the remaining $-S(0)$ is
+spread over the rest of the cell, where $g(r) - 1$ is then $-S(0)/\rho V =
+-S(0)/N$\cite{Lebowitz1961}: $1 - 1/N$ for atoms at random, whose $S(0)$
+is 1, and $1 - 0.059/N$ for this liquid. In the corners of the 2048-atom
+cell the partners fall short of $\rho$ by a fraction $(3.3 \pm
+0.5)\times10^{-5}$, which is $S(0)/N$ for $S(0) = 0.067 \pm 0.009$, the
+value above within its error.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/sq}
+\caption{(a) The structure factor of liquid argon at \SI{135}{\kelvin}
+from the positions, averaged over the wave vectors of the 256-atom cell
+of each length up to $12\times2\pi/L = \SI{3.24}{\per\angstrom}$ (points),
+against the
+transform of $g(r)$ cut at half the cell (dashed). (b) $S(G)$ at the
+smallest wave vectors of the 1372- and 2048-atom runs of Chapter~15, two
+runs of each, with their standard errors, and a straight line in $G^2$
+fitted below \SI{0.6}{\per\angstrom} (dashed), against $\rho\kB T\kappa_T$
+with Chapter~14's compressibility (band, its error).}
+\label{fig:ob-sq}
+\end{figure}
+
+\begin{keyidea}
+The structure factor $S(G) = [\mathcal{C}^2 + \mathcal{S}^2]/N$ is the
+intensity, per atom, of waves scattered with the change of wave vector
+$\vb{G}$, and what diffraction measures. It is the transform of
+$g(r) - 1$ by $\sin(Gr)/Gr$, which a cut at half the cell spoils, by
+0.15 at the peak and by a large fraction at small $G$, so it is computed
+from the positions on the cell's own wave vectors. Its limit at $G = 0$ is $\rho\kB T\kappa_T$.
+\end{keyidea}
+
+\notebook{16}{compare S(G) from the positions and from g(r)}
+
+\begin{selfcheck}
+For a crystal at $T = 0$, what is $S(\vb{G})$ at a vector $\vb{G}$ of
+its reciprocal lattice, and at a vector of the cell that is not one of
+them?
+\end{selfcheck}

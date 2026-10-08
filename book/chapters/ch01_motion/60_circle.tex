@@ -1,0 +1,95 @@
+%=============================================================================!
+% 1.7  CIRCULAR MOTION                                                        !
+%=============================================================================!
+\section{Circular motion}
+\label{sec:mo-circle}
+
+A stone whirled on a string at a steady rate moves around a circle of
+radius $R$, centred on the origin, at constant speed. Its angle from the
+$x$ axis grows at a steady rate $\omega$, the angular speed in radians
+per second, and we start the clock as it crosses the positive $x$ axis,
+so that the angle is $\omega t$ at time $t$. By the definition of sine and cosine in
+\cref{sec:mo-trig}, scaled to a circle of radius $R$, the position of the
+stone is
+\begin{equation*}
+   \vb{r}(t) = R\,(\cos\omega t,\ \sin\omega t) ,
+\end{equation*}
+and it completes one revolution when $\omega t$ has grown by $2\pi$, in
+the period $2\pi/\omega$.
+
+\subsection*{Velocity and acceleration}
+
+Each component is a sinusoid, and the chain rule with the derivatives of
+\cref{eq:mo-trig-derivs} gives
+\begin{equation*}
+   \frac{\dd}{\dd t}\cos\omega t = -\omega\sin\omega t, \qquad
+   \frac{\dd}{\dd t}\sin\omega t = \omega\cos\omega t .
+\end{equation*}
+Differentiating the position once and then a second time therefore gives
+\begin{equation}
+   \vb{v}(t) = R\omega\,(-\sin\omega t,\ \cos\omega t), \qquad
+   \vb{a}(t) = -R\omega^2\,(\cos\omega t,\ \sin\omega t) = -\omega^2\vb{r}(t).
+   \label{eq:mo-circle}
+\end{equation}
+The scalar product of the velocity with the position is
+\begin{equation*}
+   \vb{v}\cdot\vb{r} = R^2\omega\,\bigl(-\sin\omega t\cos\omega t
+   + \cos\omega t\sin\omega t\bigr) = 0 ,
+\end{equation*}
+so the velocity is perpendicular to the radius and hence tangent to the
+circle, as \cref{sec:mo-plane} requires. Its magnitude is
+\begin{equation*}
+   v = R\omega\,\bigl(\sin^2\omega t + \cos^2\omega t\bigr)^{1/2} = R\omega ,
+\end{equation*}
+which does not change in time. The radian, being a ratio of lengths,
+drops out of the units, so $R\omega$ is in metres per second. The
+acceleration $-\omega^2\vb{r}$ points
+from the stone towards the centre, opposite to the position vector, with
+magnitude $\omega^2 R$. Since $\omega = v/R$, this magnitude can also be
+written $\omega^2 R = v^2/R$ (\cref{fig:mo-plane}b). A stone on a string
+of \SI{0.5}{\metre} going round twice a second, for example, has $\omega
+= 2\times2\pi = \SI{12.57}{\radian\per\second}$, a speed of
+$\SI{6.28}{\metre\per\second}$ and an acceleration of
+$\SI{79}{\metre\per\second\squared}$ towards the centre, about eight
+times $g$.
+
+\subsection*{Constant speed with non-zero acceleration}
+
+Uniform circular motion therefore has a constant speed but a non-zero
+acceleration at every instant, because acceleration measures any change of
+velocity, including a change of direction alone. The relation between
+speed and acceleration found in \cref{sec:mo-acceleration} extends to
+vectors. Writing $v^2 = \vb{v}\cdot\vb{v} = v_x^2 + v_y^2 + v_z^2$ and
+applying that result to each component,
+\begin{equation*}
+   \frac{\dd}{\dd t}\bigl(v_x^2 + v_y^2 + v_z^2\bigr)
+   = 2v_x a_x + 2v_y a_y + 2v_z a_z = 2\,\vb{v}\cdot\vb{a} .
+\end{equation*}
+The speed is therefore constant over an interval exactly when
+$\vb{v}\cdot\vb{a} = 0$ at every instant of that interval, which is the
+case on the circle. On the parabola of \cref{sec:mo-plane}, by contrast,
+$\vb{v}\cdot\vb{a} = v_0\cos\alpha\times0 + (v_0\sin\alpha - gt)(-g) =
+-g\,v_y$, where $v_y = v_0\sin\alpha - gt$ is the vertical velocity. This
+is negative while the ball rises ($v_y > 0$) and positive while it falls,
+so the ball slows as it rises and speeds up as it falls; only at the top
+is it zero.
+
+\subsection*{The projection onto a line}
+
+The $x$ coordinate of the stone, the projection of its motion onto the $x$
+axis, moves back and forth along a line as $x(t) = R\cos\omega t$, a
+sinusoid of amplitude $R$ and angular frequency $\omega$. The $x$
+component of \cref{eq:mo-circle} gives this projection the acceleration
+$-R\omega^2\cos\omega t$, which is $-\omega^2$ times $x(t)$ itself:
+\begin{equation*}
+   \frac{\dd^2 x}{\dd t^2} = -\omega^2 x ,
+\end{equation*}
+the property of every sinusoid found in \cref{sec:mo-trig}. The
+acceleration of the projection is proportional to its distance from the
+centre and directed back towards it, so it is greatest at the ends of the
+swing and zero as it passes through the middle. \Cref{sec:ne-spring}
+shows that a block attached to a spring obeys this equation, and
+Chapter~4 that the small vibrations of atoms obey it to a good
+approximation.
+
+\notebook{01}{circular motion and its projection}

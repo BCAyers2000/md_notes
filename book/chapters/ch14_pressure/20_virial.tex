@@ -1,0 +1,99 @@
+%=============================================================================!
+% 14.2  THE VIRIAL                                                            !
+%=============================================================================!
+\section{The virial}
+\label{sec:pr-virial}
+
+Atoms that pull on and push one another deliver momentum to the walls
+differently from atoms that only bounce. This section finds the pressure
+of interacting atoms from the equipartition theorem applied to their
+positions, as Chapter~12 promised, and checks it against the push
+measured in \cref{sec:pr-wall}.
+
+\subsection*{Equipartition for positions}
+
+\Cref{eq:sm-equipartition} says that $\ens{x\,\partial H/\partial x} =
+\kB T$ for any coordinate $x$ of a system in the canonical ensemble whose
+range is closed by a potential that rises without limit, walls included.
+For atoms in a box, $H = K + U + U_{\mathrm w}$, with $U$ the energy of
+their interactions and $U_{\mathrm w}$ that of the walls. $K$ depends on
+the momenta alone, so the slope of $H$ along the coordinate $x_i$ of atom
+$i$ is minus the force along it, $\partial H/\partial x_i = -F_{ix} -
+F^{\mathrm w}_{ix}$, the first from the other atoms and the second from
+the walls. The theorem for $x_i$ then reads $\ens{x_iF_{ix}} +
+\ens{x_iF^{\mathrm w}_{ix}} = -\kB T$, and likewise for $y_i$ and $z_i$;
+since $x_iF_{ix} + y_iF_{iy} + z_iF_{iz} = \vb{r}_i\cdot\vb{F}_i$, adding
+the $3N$ of them gives
+\begin{equation*}
+   \Bigl\langle\sum_i\vb{r}_i\cdot\vb{F}_i\Bigr\rangle
+   + \Bigl\langle\sum_i\vb{r}_i\cdot\vb{F}^{\mathrm w}_i\Bigr\rangle
+   = -3N\kB T .
+\end{equation*}
+The first sum is the virial $\mathcal{W}$ of \cref{sec:pe-forces}, which
+for atoms that interact in pairs is $\mathcal{W} = -\sum_{i<j}r_{ij}
+\varphi'(r_{ij})$, \cref{eq:pe-virial}: positive when the atoms repel one
+another, negative when they attract.
+
+\subsection*{The walls' share}
+
+The second sum comes only from atoms touching a wall. A wall pushes only
+at right angles to itself, so an atom touching the wall at $x = L$ has
+$\vb{r}_i\cdot\vb{F}^{\mathrm w}_i = x_iF^{\mathrm w}_{ix}$, with $x_i
+\approx L$ and the force pointing back into the box; the sum over those
+atoms is
+\begin{equation*}
+   \sum_ix_iF^{\mathrm w}_{ix} \approx L\sum_iF^{\mathrm w}_{ix} =
+   -LF_\perp ,
+\end{equation*}
+with $F_\perp$ the force the atoms exert on the wall, equal and opposite
+to the wall's force on them by the third law. On average $F_\perp$ is
+$PA$, so this wall contributes $-PAL = -PV$. At the wall $x = 0$ the
+atoms have $x_i \approx 0$ and contribute nothing; with the origin at the
+centre of the box the two walls share $-PV$ equally instead
+(\cref{ex:pr-centre}). The walls normal to $y$ and $z$ do the same, so the
+walls' share is $-3PV$. That holds without error for hard walls. An atom
+that has gone the depth $\delta$ into a soft wall adds a further
+$-k\delta^2$, at $x = 0$ as at $x = L$, so soft walls enlarge the share by
+a fraction of about $2\delta/L$. Putting it into the sum,
+\begin{equation*}
+   \ens{\mathcal{W}} - 3PV = -3N\kB T ,
+\end{equation*}
+and so
+\begin{equation}
+   PV = N\kB T + \tfrac13\ens{\mathcal{W}} .
+   \label{eq:pr-virial}
+\end{equation}
+The first term is the ideal gas's, \cref{eq:pr-ideal}; the second is the
+interactions' share, raising the pressure when the atoms repel one
+another and lowering it when they attract. Since $\ens{2K} = 3N\kB T$ by
+equipartition for the momenta, the instantaneous value
+\begin{equation*}
+   P = \frac{2K + \mathcal{W}}{3V}
+\end{equation*}
+averages to the pressure, and can be computed at every step from the
+positions, velocities and forces the run already has.
+
+\subsection*{Checked}
+
+For the walled liquid of \cref{fig:pr-wall}(b), $(2K + \mathcal{W})/3V$
+averages \SI{0.0628}{\giga\pascal} over the run (0.0621 and
+\SI{0.0635}{\giga\pascal} in the halves), against \SI{0.0624}{\giga\pascal}
+from the push on the walls: the two agree within their scatter. Of the
+\SI{0.0628}{\giga\pascal}, \SI{0.0374}{\giga\pascal} is $N\kB T/V$ and
+\SI{0.0254}{\giga\pascal} is $\ens{\mathcal{W}}/3V$: at this density the
+repulsion between close neighbours outweighs the pull of distant ones.
+
+\begin{keyidea}
+Equipartition applied to the positions, $\ens{x\,\partial H/\partial x}
+= \kB T$, gives $PV = N\kB T + \frac13\ens{\mathcal{W}}$: the ideal gas's
+pressure plus the virial's share, positive for repulsion and negative for
+attraction. The instantaneous pressure $(2K + \mathcal{W})/3V$ averages
+to it and needs only the positions, velocities and forces.
+\end{keyidea}
+
+\begin{selfcheck}
+Two argon atoms alone in a box sit \SI{3.0}{\angstrom} apart, closer than
+the minimum of the Lennard-Jones potential at $2^{1/6}\sigma =
+\SI{3.82}{\angstrom}$. Does their pair raise or lower the pressure from
+that of two atoms that do not interact, and why?
+\end{selfcheck}

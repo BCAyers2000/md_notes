@@ -1,0 +1,133 @@
+%=============================================================================!
+% 2.5  WEIGHT, FREE FALL AND FREE-BODY DIAGRAMS                               !
+%=============================================================================!
+\section{Weight, free fall and free-body diagrams}
+\label{sec:ne-gravity}
+
+With the second law in hand we can explain the first motion of
+Chapter~1, the thrown ball, which was there described without a cause.
+
+\subsection*{Weight}
+
+Near the surface of the Earth every body is pulled downwards by a force,
+its weight. Hanging a body at rest from a spring balance measures its
+weight: the body does not accelerate, so by the second law the balance's
+upward pull equals the Earth's downward pull (the lamp below works this
+through). Such measurements show that the weight is proportional to the
+mass: twice, three times or half the mass gives twice, three times or
+half the reading. We therefore write the weight as $m\vb{g}$, where $\vb{g}$ is a vector
+pointing straight down whose length $g$ is the same for every body. Since
+weight divided by mass is in newtons per kilogram, which by the definition
+of the newton is \si{\metre\per\second\squared}, $g$ has the units of an
+acceleration. Its standard value is $g = \SI{9.80665}{\metre\per\second
+\squared}$, and the free-fall argument below shows that it is the $g$ of
+Chapter~1. An apple of \SI{100}{\gram} weighs $0.1\times
+9.80665 = \SI{0.981}{\newton}$, about one newton.
+
+In everyday speech weight often means mass, as in `a bag of flour weighs
+a kilogram'. This book keeps them apart. Mass, in kilograms, measures
+inertia and is the same everywhere; weight, in newtons, is the pull of the
+Earth, and on the Moon, whose pull is weaker, the same bag would weigh
+about a sixth as much. A kitchen scale measures the force and divides by
+$g$ to display a mass.
+
+\subsection*{Free fall}
+
+A ball in flight, with air resistance negligible, feels its weight and
+nothing else, a motion called free fall. The second law gives $m\vb{a} =
+m\vb{g}$, and dividing both sides by $m$,
+\begin{equation*}
+   \vb{a} = \vb{g} .
+\end{equation*}
+The mass cancels, so every body falls with the same acceleration, whatever
+its mass. This is why $g$ in Chapter~1 was the same for every object, and
+it rests on the experimental fact that weight is proportional to mass. A
+feather and a coin dropped together in a room do not land together, but
+only because the drag of the air (\cref{sec:ne-drag}) is large compared
+with the feather's tiny weight. Without air they fall together, as an
+astronaut showed on the Moon in 1971 by dropping a hammer and a feather
+side by side.
+
+We can now derive the motion of the ball that Chapter~1 took from
+observation. The motion is along a single vertical line, so, as in
+\cref{eq:mo-ball}, we call the height $x$ and measure it upwards. The
+component of $\vb{a} = \vb{g}$ along this line is
+\begin{equation*}
+   \frac{\dd^2 x}{\dd t^2} = -g ,
+\end{equation*}
+the minus sign because $\vb{g}$ points down. Integrating once from $t =
+0$, as in \cref{sec:mo-integrating}, gives $\dd x/\dd t = v_0 - gt$, where
+$v_0$ is the launch velocity. Integrating again, with the ball leaving the
+hand at $x = 0$, gives
+\begin{equation*}
+   x(t) = v_0 t - \tfrac12 g t^2 ,
+\end{equation*}
+which is \cref{eq:mo-ball}. The projectile follows in the same way: the
+horizontal component of $\vb{g}$ is zero, so the horizontal velocity
+stays constant.
+
+For atoms, gravity hardly matters: \cref{sec:ne-atoms} shows that the
+weight of an atom is some $10^{16}$ times smaller than the forces its
+neighbours exert on it.
+
+\subsection*{Free-body diagrams}
+
+Applying the second law to a body starts with a free-body diagram: a
+sketch of the body alone, with an arrow for every force acting on it and
+for nothing else. \Cref{fig:ne-free-body}(a) shows the ball in flight,
+which feels only its weight; its velocity is drawn dashed, because a
+velocity is not a force. \Cref{fig:ne-free-body}(b) shows a lamp of
+\SI{2}{\kilogram} hanging at rest from a cord. Two forces act on it: its
+weight, $mg$ downwards, and the pull of the cord, called its tension,
+upwards, which we write $F_{\mathrm{cord}}$. The lamp does not accelerate,
+so by the second law the net force on it is zero, and taking upwards as
+positive,
+\begin{equation*}
+   F_{\mathrm{cord}} - mg = 0
+   \quad\Longrightarrow\quad
+   F_{\mathrm{cord}} = mg = 2\times9.80665\ \si{\newton}
+   = \SI{19.6}{\newton} .
+\end{equation*}
+The arrows of a free-body diagram are labelled with the sizes of the
+forces, and their directions are shown by the arrows themselves.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.25, line cap=round,
+   force/.style={-{Stealth[length=6pt]}, line width=1.2pt},
+   body/.style={line width=0.6pt, fill=black!8}]
+   % (a) the ball in flight
+   \begin{scope}
+      \node at (-1.3,1.55) {\small (a)};
+      \draw[body] (0,0) circle (0.3);
+      \draw[accent, -{Stealth[length=5pt]}, dashed, line width=0.8pt]
+         (0.3,0.17) -- (1.0,0.85) node[right] {\small $\vb{v}$};
+      \draw[force] (0,0) -- (0,-1.25) node[right] {\small $mg$};
+      \fill (0,0) circle (1.4pt);
+      \node at (0,-1.75) {\small ball in flight};
+   \end{scope}
+   % (b) the lamp hanging at rest from a cord
+   \begin{scope}[xshift=4.0cm]
+      \node at (-1.3,1.55) {\small (b)};
+      \fill[black!35] (-0.6,1.45) rectangle (0.6,1.55);
+      \draw[line width=0.8pt] (0,1.45) -- (0,0.3);
+      \draw[body] (-0.35,0.3) -- (0.35,0.3) -- (0.5,-0.2) -- (-0.5,-0.2)
+         -- cycle;
+      \draw[force] (0,0.05) -- (0,1.2)
+         node[midway, right=2pt] {\small $F_{\mathrm{cord}}$};
+      \draw[force] (0,0.05) -- (0,-1.25) node[right] {\small $mg$};
+      \fill (0,0.05) circle (1.4pt);
+      \node at (0,-1.75) {\small hanging lamp};
+   \end{scope}
+\end{tikzpicture}
+\caption{Free-body diagrams. (a) A ball in flight feels only its weight;
+its velocity is dashed, because it is not a force. (b) A lamp hanging at
+rest feels its weight and the tension $F_{\mathrm{cord}}$ of the cord,
+which balance.}
+\label{fig:ne-free-body}
+\end{figure}
+
+\begin{selfcheck}
+A hammer and a feather are dropped together, first in a vacuum, then in
+air. Which lands first in each case, and why?
+\end{selfcheck}

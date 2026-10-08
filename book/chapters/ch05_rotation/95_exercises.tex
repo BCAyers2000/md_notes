@@ -1,0 +1,162 @@
+%=============================================================================!
+% 5.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:ro-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:ro-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~05 checks every numerical answer.
+
+\begin{exercise}[a door pushed at a slant]
+\label{ex:ro-door}
+Why are door handles placed far from the hinges? A push of
+\SI{10}{\newton} at the handle, \SI{0.8}{\metre} from the hinge, is made at
+\ang{30} to the face of the door instead of at right angles. What is its
+torque about the hinge?
+\end{exercise}
+
+\begin{exercise}[pulling the puck further]
+\label{ex:ro-pull}
+The puck of \cref{sec:ro-plane} ($m = \SI{0.2}{\kilogram}$, circling at
+\SI{0.5}{\metre} and \SI{1.2}{\metre\per\second}) is pulled in to
+\SI{0.1}{\metre}. Find its speed of going round, its kinetic energy and the
+work done by the hand, neglecting the slow inward motion.
+\end{exercise}
+
+\begin{exercise}[a straight line]
+\label{ex:ro-straight}
+Show that a body moving at constant velocity, with no force on it, has a constant
+angular momentum $m\,(\vb{r} - \vb{a})\times\vb{v}$ about any point
+$\vb{a}$, its position measured from $\vb{a}$, and explain, with the triangles
+swept in equal times, why it sweeps equal areas in equal times.
+\end{exercise}
+
+\begin{exercise}[a cross product]
+\label{ex:ro-product}
+Find $(2, 0, 1)\times(1, 3, -1)$, check that it is at right angles to both
+vectors, and find the area of the parallelogram they span in two ways.
+\end{exercise}
+
+\begin{exercise}[motion in a plane]
+\label{ex:ro-plane}
+A body moves with a constant angular momentum $\vb{L} \neq \vb{0}$ about the
+origin. Show that it stays in the plane through the origin at right angles
+to $\vb{L}$.
+\end{exercise}
+
+\begin{exercise}[changing the point]
+\label{ex:ro-origin}
+Show that the angular momentum of a group of bodies about the point
+$\vb{a}$, $\sum_i(\vb{r}_i - \vb{a})\times\vb{p}_i$, equals $\vb{L} -
+\vb{a}\times\vb{P}$, with $\vb{L}$ its angular momentum about the origin
+and $\vb{P}$ its total momentum. When is it the same about every point?
+\end{exercise}
+
+\begin{exercise}[a rod]
+\label{ex:ro-rod}
+Show that a thin uniform rod of mass $M$ and length $\ell$ has the moment
+of inertia $M\ell^2/12$ about an axis through its middle at right angles to
+it, and $M\ell^2/3$ about a parallel axis through one end.
+\end{exercise}
+
+\begin{exercise}[the parallel axis]
+\label{ex:ro-parallel}
+A body has the moment of inertia $I_{\mathrm{cm}}$ about an axis through
+its centre of mass. Show that about a parallel axis a distance $s$ away its
+moment of inertia is $I_{\mathrm{cm}} + Ms^2$, and check the result
+against \cref{ex:ro-rod}.
+\end{exercise}
+
+\begin{exercise}[the stool again]
+\label{ex:ro-stool}
+The stool of \cref{sec:ro-rigid}, now with $I_0 =
+\SI{2}{\kilogram\metre\squared}$ and weights of \SI{3}{\kilogram} held at
+\SI{0.7}{\metre}, turns at \SI{1.5}{\radian\per\second}. The weights are
+pulled in to \SI{0.3}{\metre}. Find the new angular speed and the work done
+by the arms.
+\end{exercise}
+
+\begin{exercise}[a rolling ball]
+\label{ex:ro-sphere}
+A solid ball has $I = \frac25 MR^2$ about any axis through its centre.
+Rolling from rest, how fast is it moving after a drop of \SI{1}{\metre}, and
+how long does it take to roll \SI{2}{\metre} down a slope of \ang{30}?
+Where does it finish in the race of \cref{fig:ro-rolling}?
+\end{exercise}
+
+\begin{exercise}[the grip a disc needs]
+\label{ex:ro-friction}
+Using Newton's second law for the centre of mass along the slope, find the
+friction force that the slope must supply to a disc of \SI{1}{\kilogram}
+rolling down at \ang{30}, and show that in general it is $\kappa Mg\sin
+\alpha/(1 + \kappa)$.
+\end{exercise}
+
+\begin{exercise}[a square of atoms]
+\label{ex:ro-square}
+Four atoms of \SI{1}{\amu} sit at $(\pm1, \pm1, 0)$\,\si{\angstrom}. Find
+their inertia tensor about the origin and its principal moments. Why is
+every axis through the origin in the plane of the square a principal axis?
+\end{exercise}
+
+\begin{exercise}[a flat molecule]
+\label{ex:ro-flat}
+Show that for a body whose parts all lie in the plane $z = 0$, $I_{zz} =
+I_{xx} + I_{yy}$, and that $I_{xz} = I_{yz} = 0$, so that the $z$ axis is a
+principal axis.
+\end{exercise}
+
+\begin{exercise}[a diatomic molecule]
+\label{ex:ro-diatomic}
+Two atoms of masses $m_1$ and $m_2$ lie on the $z$ axis a distance $d$
+apart. Show that their inertia tensor about their centre of mass is
+diagonal, with entries $m_{\mathrm r}d^2$, $m_{\mathrm r}d^2$ and 0.
+\end{exercise}
+
+\begin{exercise}[elimination]
+\label{ex:ro-solve}
+Solve, by elimination, $4\omega_x + \omega_y = 6$, $\omega_x + 4\omega_y +
+\omega_z = 12$, $\omega_y + 4\omega_z = 14$.
+\end{exercise}
+
+\begin{exercise}[what is left]
+\label{ex:ro-left}
+Two atoms of \SI{1}{\amu} at $(\mp1, 0, 0)$\,\si{\angstrom} move with
+velocities $(0.01, 0.01, 0)$ and $(-0.01, 0.03,
+0)$\,\si{\angstrom\per\femto\second}. Remove the drift and the turning,
+describe the motion that remains, check \cref{eq:ro-split} in
+\si{\amu\angstrom\squared\per\femto\second\squared}, and give the total
+kinetic energy in \si{\electronvolt}.
+\end{exercise}
+
+\begin{exercise}[counting]
+\label{ex:ro-count}
+How many internal degrees of freedom have ammonia, NH$_3$, and hydrogen
+peroxide, H$_2$O$_2$, neither of them linear?
+\end{exercise}
+
+\begin{exercise}[a zero mode by hand]
+\label{ex:ro-null}
+A single spring of stiffness $k$ joins an atom at the origin to one at $(0,
+0, d)$. Write down its $6\times6$ Hessian, and show directly that it turns
+the displacements of a small turning about the $x$ axis into zero. Why does
+a turning about the $z$ axis not count?
+\end{exercise}
+
+\begin{exercise}[a spinning bond stretches]
+\label{ex:ro-stretch}
+The separation of a turning LiF molecule goes round a circle, which needs a
+pull $m_{\mathrm r}\omega^2 r$ towards the centre, supplied by the bond as
+a spring, $k(r - d)$. Show that the bond stretches by about $d\,(\omega/
+\omega_0)^2$, with $\omega_0 = \sqrt{k/m_{\mathrm r}}$
+the angular frequency of the vibration, and evaluate it for the turning of
+\cref{sec:ro-molecules}.
+\end{exercise}
+
+\begin{exercise}[a hotter molecule]
+\label{ex:ro-hot}
+At \SI{1000}{\kelvin} a LiF molecule carries on average $\kB T =
+\SI{0.08617}{\electronvolt}$ in its turning. How long does one turn take?
+\end{exercise}

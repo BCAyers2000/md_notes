@@ -1,0 +1,34 @@
+%=============================================================================!
+% 10.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+A sample small enough to simulate is mostly surface, and repeating a cell
+of atoms in every direction removes the surface. The cell is the matrix
+$\vb{h}$ of its lattice vectors; fractional coordinates $\vb{s} =
+\vb{h}^{-1}\vb{r}$ wrap positions into it and, rounded, give the nearest
+copy of a separation, in any cell, for every separation shorter than half
+the smallest perpendicular width $w_{\min}$, the least of widths such as
+$V/\lvert\vb{b}\times\vb{c}\rvert$, which bounds the cutoff.
+
+Charges in a periodic cell need the Ewald sum: $1/r$
+split by Gaussian integrals into a short-ranged part summed over near
+copies and a smooth part summed as a Fourier series over the reciprocal
+vectors, less the self term, with the $\vb{G} = \vb{0}$ term dropped for
+a neutral cell; it reproduces the Madelung constant of rock salt for any
+splitting and any equivalent cell.
+
+Cell lists find the pairs within the
+cutoff at a cost that grows as $N$, and Verlet lists with a skin reuse
+them until an atom has moved half the skin. A run starts from a crystal
+at its model's own spacing, with random velocities stripped of drift, and
+the loop is velocity Verlet over a model that returns energy and forces.
+The code agrees with ASE to the rounding of the arithmetic once both use
+the same physical constants, conserves energy and momentum in a periodic
+box, and passes the $\dt^2$ test with Ewald forces. A profiler found the
+time in the neighbour list; the force loop, compiled by Numba or written
+in Fortran, runs hundreds of times faster than the Python loop that does
+each pair's arithmetic with NumPy, and agrees with it to rounding.
+
+Chapter~11 holds the fastest vibrations fixed with constraints, so that
+the step can be longer, and splits the forces by how fast they change.

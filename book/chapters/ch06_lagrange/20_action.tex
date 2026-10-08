@@ -1,0 +1,169 @@
+%=============================================================================!
+% 6.2  THE ACTION AND HAMILTON'S PRINCIPLE                                    !
+%=============================================================================!
+\section{The action and Hamilton's principle}
+\label{sec:la-action}
+
+Newton's laws work forwards from a starting state, one instant to the
+next. There is a second way to single out the true motion: compare whole
+paths that start at one place at one time and end at another place at a
+later time, and pick the one that makes a certain number stationary. This
+section defines that number and tests the statement on a thrown ball;
+\cref{sec:la-euler} shows that it is equivalent to Newton's laws.
+
+\subsection*{The Lagrangian and the action}
+
+The Lagrangian of a system is its kinetic energy minus its potential
+energy,
+\begin{equation}
+   \Lag(q, \dot{q}) = K - U ,
+   \label{eq:la-lagrangian}
+\end{equation}
+written, as in \cref{sec:la-coordinates}, in terms of the generalised
+coordinates and velocities, $q$ standing for all of $q_1, \dots, q_n$ and
+$\dot{q}$ for all of $\dot{q}_1, \dots, \dot{q}_n$. For a path $q(t)$ from the time $t_1$ to the
+time $t_2$, its action is the integral
+\begin{equation}
+   \Act = \int_{t_1}^{t_2}\Lag\bigl(q(t), \dot{q}(t)\bigr)\,\dd t ,
+   \label{eq:la-action}
+\end{equation}
+one number for the whole path, in joule seconds. Each path, true or not,
+has an action: put its $q(t)$ and $\dot{q}(t)$ into $\Lag$ and integrate.
+
+\emph{Hamilton's principle} states that, among all paths that start at
+$q_{\mathrm{A}}$ at the time $t_1$ and end at $q_{\mathrm{B}}$ at the time
+$t_2$, the path the system actually follows makes the action stationary:
+changing the path from $q(t)$ to $q(t) + \zeta\eta(t)$, with $\eta$ any bump
+that is zero at $t_1$ and $t_2$ and $\zeta$ a small number, changes $\Act$
+by no amount proportional to $\zeta$ itself, only by amounts of order
+$\zeta^2$ (\cref{sec:mo-taylor}), as at the bottom of a valley or the top
+of a hill of $\Act$ against $\zeta$.
+
+\subsection*{A thrown ball}
+
+A ball of \SI{0.145}{\kilogram} is thrown straight up at
+\SI{12}{\metre\per\second}, as in Chapters~1 to~3. Its height is $x(t) =
+12t - \frac12 gt^2$ (\cref{sec:mo-integrating}), and after
+\SI{2}{\second} it is \SI{4.387}{\metre} up and falling. Now invent other
+paths between the same two events (an event is a place at a given time), starting at $x = 0$ at $t = 0$ and
+ending at \SI{4.387}{\metre} at \SI{2}{\second}: add to the true height
+$\zeta\eta(t)$, with $\eta(t) = \sin(\pi t/\tau)$ and $\tau =
+\SI{2}{\second}$, a bump that is zero at both ends. Each trial path has its
+own action, with $\Lag = \frac12 m\dot{x}^2 - mgx$, and the function
+\texttt{action} of \texttt{mdlab} computes it by splitting the path into
+short straight steps (\cref{fig:la-action}). For the true path, $\zeta =
+0$, the integral can also be done by hand. With $\dot{x} = 12 - gt$,
+\begin{align*}
+   \Lag &= \tfrac12 m\,(12 - gt)^2 - mg\,\bigl(12t - \tfrac12 gt^2\bigr)\\
+   &= 72m - 12mg\,t + \tfrac12 mg^2t^2 - 12mg\,t + \tfrac12 mg^2t^2\\
+   &= 72m - 24mg\,t + mg^2t^2 ,
+\end{align*}
+expanding the square and the bracket, then collecting like terms,
+and, integrating each term by the power rule and the fundamental theorem
+(\cref{sec:mo-integrating}),
+\begin{equation*}
+   \Act = \Bigl[72m\,t - 12mg\,t^2 + \tfrac13 mg^2t^3\Bigr]_0^{2}
+   = 20.8800 - 68.2543 + 37.1859 = \SI{-10.1884}{\joule\second} ,
+\end{equation*}
+as \texttt{action} also finds. The paths with $\zeta = \pm\SI{1}{\metre}$
+have \SI{-10.0095}{\joule\second}, and those with $\pm\SI{2}{\metre}$ have
+\SI{-9.4729}{\joule\second}. The excess grows as $\zeta^2$: \num{0.1789}
+and \num{0.7155}, four times as much for twice the change, even for bumps
+of metres, which are not small; the next paragraph shows why. Among these
+paths the true one has the least action.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch06_lagrange/action}
+\caption{Trial paths of a ball of \SI{0.145}{\kilogram} thrown up at
+\SI{12}{\metre\per\second}, all starting at $x = 0$ at $t = 0$ and ending
+\SI{4.387}{\metre} up at \SI{2}{\second}. (a) The true path (teal) and the
+trial paths with $\zeta = \pm1$ (grey) and $\pm\SI{2}{\metre}$ (ochre).
+(b) The action of each trial path against $\zeta$, least at $\zeta = 0$.}
+\label{fig:la-action}
+\end{figure}
+
+The excess can be found exactly. The change of path changes the velocity
+by $\zeta\dot\eta$ and the height by $\zeta\eta$, so
+\begin{align*}
+   \Act(\zeta) &= \int_0^\tau\Bigl[\tfrac12 m(\dot{x} + \zeta
+      \dot\eta)^2 - mg\,(x + \zeta\eta)\Bigr]\dd t\\
+   &= \int_0^\tau\Bigl[\bigl(\tfrac12 m\dot{x}^2 - mgx\bigr)
+      + \zeta\bigl(m\dot{x}\dot\eta - mg\eta\bigr)
+      + \zeta^2\,\tfrac12 m\dot\eta^2\Bigr]\dd t\\
+   &= \Act(0) + \zeta\int_0^\tau\bigl(m\dot{x}\dot\eta - mg\eta\bigr)\,
+      \dd t + \zeta^2\,\tfrac12 m\int_0^\tau\dot\eta^2\,\dd t ,
+\end{align*}
+expanding the square, grouping by powers of $\zeta$, and splitting the
+integral.
+There are no higher powers of $\zeta$, which is why even large bumps
+follow $\zeta^2$ exactly. \Cref{sec:la-euler} shows that the middle
+integral vanishes for the true path and any bump $\eta$. The last needs
+$\dot\eta$ and the identity $\cos^2\theta = \frac12 + \frac12\cos2\theta$
+of \cref{sec:os-energy}:
+\begin{align*}
+   \int_0^\tau\dot\eta^2\,\dd t
+   &= \Bigl(\frac{\pi}{\tau}\Bigr)^2\int_0^\tau\cos^2\frac{\pi t}{\tau}\,
+      \dd t
+      && \text{$\dot\eta = \frac{\pi}{\tau}\cos\frac{\pi t}{\tau}$ by the
+         chain rule,}\\
+   &= \Bigl(\frac{\pi}{\tau}\Bigr)^2\int_0^\tau\Bigl(\tfrac12
+      + \tfrac12\cos\frac{2\pi t}{\tau}\Bigr)\dd t
+      && \text{the identity, with $\theta = \pi t/\tau$,}\\
+   &= \Bigl(\frac{\pi}{\tau}\Bigr)^2\Bigl[\frac{t}{2}
+      + \frac{\tau}{4\pi}\sin\frac{2\pi t}{\tau}\Bigr]_0^\tau
+      && \text{the fundamental theorem,}\\
+   &= \Bigl(\frac{\pi}{\tau}\Bigr)^2\frac{\tau}{2} = \frac{\pi^2}{2\tau}
+      && \text{as $\sin 2\pi = \sin 0 = 0$.}
+\end{align*}
+The term in $\zeta^2$ is therefore $\zeta^2\times\frac12 m\times\pi^2/(2
+\tau) = \zeta^2\,m\pi^2/(4\tau)$, and $m\pi^2/(4\tau) = 0.145\times9.8696/8
+= \SI{0.17889}{\joule\second\per\metre\squared}$, the excess found above
+for $\zeta = \SI{1}{\metre}$.
+
+\subsection*{When the action is not least}
+
+The true path is not always the one of least action. Take the block of
+\cref{sec:os-circle}, with $m = \SI{0.5}{\kilogram}$ and $k =
+\SI{50}{\newton\per\metre}$, so that $\omega = \sqrt{k/m} =
+\SI{10}{\radian\per\second}$, oscillating for $\tau = \SI{0.5}{\second}$,
+longer than half its period, $\pi/\omega = \SI{0.3142}{\second}$. Now
+$\Lag = \frac12 m\dot{x}^2 - \frac12 kx^2$, and the potential energy of the
+changed path, $\frac12 k(x + \zeta\eta)^2 = \frac12 kx^2 + \zeta kx\eta +
+\zeta^2\,\frac12 k\eta^2$, brings a second term in $\zeta^2$. The term in
+$\zeta$ again vanishes for the true path (\cref{sec:la-euler}), whatever
+its amplitude, so for $\eta = \sin(\pi t/\tau)$ the excess is
+\begin{align*}
+   \Act(\zeta) - \Act(0)
+   &= \zeta^2\Bigl(\tfrac12 m\int_0^\tau\dot\eta^2\,\dd t
+      - \tfrac12 k\int_0^\tau\eta^2\,\dd t\Bigr)
+      && \text{expanding as for the ball,}\\
+   &= \zeta^2\Bigl(\tfrac12 m\Bigl(\frac{\pi}{\tau}\Bigr)^2\frac{\tau}{2}
+      - \tfrac12 k\,\frac{\tau}{2}\Bigr)
+      && \text{as above, with $\sin^2\theta = \tfrac12 - \tfrac12\cos2\theta$,}\\
+   &= \zeta^2\,\frac{\tau}{4}\Bigl(m\Bigl(\frac{\pi}{\tau}\Bigr)^2 - k\Bigr)
+      && \text{taking out $\tau/4$.}
+\end{align*}
+The bracket is negative whenever $\pi/\tau < \sqrt{k/m} = \omega$, that is
+whenever $\tau$ is longer than $\pi/\omega$: here it is $0.125\times(0.5
+\times39.48 - 50)\,\zeta^2 = -3.783\,\zeta^2$, and the action falls. For the
+faster bump $\sin(2\pi t/\tau)$ the same steps with $2\pi$ in place of $\pi$
+give $0.125\times(0.5\times157.91 - 50)\,\zeta^2 = +3.620\,\zeta^2$, and the
+action rises. Against the sizes of the two bumps the true path sits at a
+saddle of the action, like the saddle points of \cref{sec:en-gradient}:
+stationary, which is all Hamilton's principle claims.
+
+\begin{keyidea}
+The Lagrangian is $\Lag = K - U$ and the action of a path is $\Act =
+\int\Lag\,\dd t$. Among all paths with the same ends in space and time,
+the true motion makes the action stationary: a small change of path, of
+size $\zeta$, changes it only by an amount of order $\zeta^2$.
+\end{keyidea}
+
+\notebook{06}{bend the path of the ball and watch its action}
+
+\begin{selfcheck}
+For a body with no forces on it, $U = 0$, the true path between two
+events is a straight line at constant speed. Using the expansion above,
+why is its action less than that of every other path with the same ends?
+\end{selfcheck}

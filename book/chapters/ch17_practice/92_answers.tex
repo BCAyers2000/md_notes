@@ -1,0 +1,46 @@
+%=============================================================================!
+% 17.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:ip-answers}
+
+\answerto{sec:ip-ase}Two of ASE's time units, $2\times\SI{10.18}{\femto
+\second} = \SI{20.4}{\femto\second}$: ten times the \SI{2}{\femto\second}
+that bonds of carbon allow (\cref{sec:ip-learned}), and twenty to forty
+times the 0.5 to \SI{1}{\femto\second} that bonds to hydrogen allow
+(\cref{sec:cs-water}).
+
+\answerto{sec:ip-lammps}In \texttt{metal} units times are picoseconds, so
+the step is \SI{1000}{\femto\second}, a hundred times the
+\SI{10}{\femto\second} that liquid argon can take; the atoms would run
+into one another in the first steps and the energy would explode.
+
+\answerto{sec:ip-learned}The interface: the surface and the water next to
+it, configurations unlike the bulk metals of the training data. Forces
+and energies from the reference method on frames of the interface, taken
+from a short run with the model, show how far the model can be trusted
+there.
+
+\answerto{sec:ip-aimd}Four times the atoms costs $4^3 = 64$ times as much,
+$64\times\SI{192}{\second} = \SI{12288}{\second}$, about three and a half
+hours a step. In this frame finding the eigenvectors took
+\SI{38}{\second} of the \SI{385}{\second}, so at a few dozen atoms the cost
+grows more slowly than this; the cube is where it ends.
+
+\answerto{sec:ip-lic6}Three. Each hexagon has six corners, each shared by
+three hexagons, so a sheet has two carbon atoms for every hexagon; one
+lithium over every third hexagon gives one lithium for six carbon atoms.
+
+\answerto{sec:ip-hops}A tenth needs $1/0.1^2 = 100$ hops, which at
+\SI{2.40}{\per\pico\second} take \SI{42}{\pico\second} after the start.
+
+\answerto{sec:ip-protocol}Use Langevin dynamics only to bring the system
+to its temperature, then switch it off and measure $D$ at fixed energy,
+as the protocol prefers. If the run must stay under friction, measure $D$
+at two or three small frictions and follow the trend to zero friction
+(\cref{sec:th-langevin} found 0.97, 0.71 and 0.17 of it at 0.1, 1 and
+\SI{10}{\per\pico\second}), reporting the frictions with the result.
+
+\answerto{sec:ip-trajectory}The orientation of the cell: whether both
+codes hold the structure turned the same way. Equal energies with unequal
+forces point first to the same structure seen in two frames.

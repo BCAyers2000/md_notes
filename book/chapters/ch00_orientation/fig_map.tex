@@ -1,0 +1,89 @@
+%=============================================================================!
+% FIGURE 0.1  CHAPTER MAP                                                     !
+% Rows are parts; Parts I, V and VI take two rows each. Solid outline: on     !
+% the fast track; dashed: off it. Chapters that the TrajCast chapter draws    !
+% on directly carry an accent dot.                                            !
+%=============================================================================!
+\begin{tikzpicture}[
+   x=1cm, y=1cm, font=\small,
+   ch/.style={draw=black!40, line width=0.4pt, rounded corners=2pt,
+      minimum width=2.7cm, minimum height=0.95cm, align=center,
+      text width=2.55cm, inner sep=2pt, fill=white,
+      execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
+   off/.style={ch, dashed},
+   goal/.style={ch, draw=accent, line width=0.8pt},
+   flow/.style={-{Stealth[length=4.5pt]}, draw=black!40, line width=0.4pt},
+   part/.style={anchor=east, align=right, inner sep=0pt},
+]
+% \partlabel{numeral}{name}: teal lining numeral over a grey small-caps name
+\newcommand{\partlabel}[2]{%
+   {\color{accent}\liningfigs\normalsize #1}\\[1pt]%
+   {\color{black!55}\footnotesize\textsc{#2}}}
+% % column centres; rows close within a part and open between parts
+\def\ca{2.4}\def\cb{5.6}\def\cc{8.8}\def\cd{12.0}
+\def\ra{0}\def\rb{-1.35}\def\rc{-3.0}\def\rd{-4.65}
+\def\re{-6.3}\def\rf{-7.95}\def\rg{-9.3}\def\rh{-10.95}\def\ri{-12.3}
+\def\lx{0.75}
+
+% PART I
+\node[part] at (\lx,{(\ra+\rb)/2}) {\partlabel{I}{mechanics}};
+\node[ch]  (c1)  at (\ca,\ra) {1\enskip Motion};
+\node[ch]  (c2)  at (\cb,\ra) {2\enskip Newton's laws};
+\node[ch]  (c3)  at (\cc,\ra) {3\enskip Work and energy};
+\node[ch]  (c4)  at (\cd,\ra) {4\enskip Oscillations};
+\node[ch]  (c5)  at (\ca,\rb) {5\enskip Rotation};
+\node[ch]  (c6)  at (\cb,\rb) {6\enskip Lagrangian mechanics};
+\node[ch]  (c7)  at (\cc,\rb) {7\enskip Hamiltonian mechanics};
+\node[ch]  (c8)  at (\cd,\rb) {8\enskip Potential energy surfaces};
+
+% PART II
+\node[part] at (\lx,\rc) {\partlabel{II}{integration}};
+\node[ch]  (c9)  at (\ca,\rc) {9\enskip Integrators};
+\node[ch]  (c10) at (\cb,\rc) {10\enskip Building an MD code};
+\node[off] (c11) at (\cc,\rc) {11\enskip Constraints and RESPA};
+
+% PART III
+\node[part] at (\lx,\rd) {\partlabel{III}{ensembles}};
+\node[ch]  (c12) at (\ca,\rd) {12\enskip Ensembles};
+\node[ch]  (c13) at (\cb,\rd) {13\enskip Thermostats};
+\node[off] (c14) at (\cc,\rd) {14\enskip Pressure and barostats};
+
+% PART IV
+\node[part] at (\lx,\re) {\partlabel{IV}{practice}};
+\node[ch]  (c15) at (\ca,\re) {15\enskip Convergence and error};
+\node[ch]  (c16) at (\cb,\re) {16\enskip Observables};
+\node[ch]  (c17) at (\cc,\re) {17\enskip Lithium in graphite};
+
+% PART V
+\node[part] at (\lx,{(\rf+\rg)/2}) {\partlabel{V}{learning}};
+\node[ch]  (c18) at (\ca,\rf) {18\enskip Learning as optimisation};
+\node[ch]  (c19) at (\cb,\rf) {19\enskip Neural networks};
+\node[ch]  (c20) at (\cc,\rf) {20\enskip Symmetry and descriptors};
+\node[ch]  (c21) at (\cd,\rf) {21\enskip Spherical harmonics};
+\node[ch]  (c22) at (\ca,\rg) {22\enskip Message passing, MACE};
+\node[off] (c23) at (\cb,\rg) {23\enskip Training potentials};
+\node[off] (c24) at (\cc,\rg) {24\enskip Electrodes and electrolytes};
+
+% PART VI
+\node[part] at (\lx,{(\rh+\ri)/2}) {\partlabel{VI}{propagators}};
+\node[ch]  (c25) at (\ca,\rh) {25\enskip Time coarsening};
+\node[ch]  (c26) at (\cb,\rh) {26\enskip Small propagators};
+\node[off] (c27) at (\cc,\rh) {27\enskip Attention and operators};
+\node[goal](c28) at (\ca,\ri) {28\enskip TrajCast};
+\node[goal,dashed] (c29) at (\cb,\ri) {29\enskip ATOM};
+\node[off] (c30) at (\cc,\ri) {30\enskip Outlook for electrodes};
+
+% reading order within rows
+\foreach \a/\b in {c1/c2,c2/c3,c3/c4,c5/c6,c6/c7,c7/c8,c9/c10,c10/c11,
+                   c12/c13,c13/c14,c15/c16,c16/c17,c18/c19,c19/c20,c20/c21,
+                   c22/c23,c23/c24,c25/c26,c26/c27,c28/c29,c29/c30}
+   \draw[flow] (\a) -- (\b);
+% row wraps
+\draw[flow] (c4.south) |- ++(0,-0.2) -| (c5.north);
+\draw[flow] (c21.south) |- ++(0,-0.2) -| (c22.north);
+\draw[flow] (c27.south) |- ++(0,-0.2) -| (c28.north);
+
+% chapters the TrajCast chapter draws on directly
+\foreach \n in {c5,c9,c10,c13,c16,c17,c21,c22,c25,c26}
+   \fill[accent] (\n.north east) ++(-0.13,-0.13) circle (1.5pt);
+\end{tikzpicture}

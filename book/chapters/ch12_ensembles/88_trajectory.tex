@@ -1,0 +1,204 @@
+%=============================================================================!
+% 12.9  WHAT THE TRAJECTORY LOOKS LIKE                                        !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:sm-trajectory}
+
+\Cref{sec:cs-trajectory} read a run through its energy, its bonds and its
+centre of mass. This section reads it through its temperature and its
+velocities: a healthy run of liquid argon first, then six faults that
+show in them, each with the check that catches it.
+
+\subsection*{A healthy run}
+
+\Cref{fig:sm-healthy} follows the 256 atoms of liquid argon of
+\cref{sec:sm-maxwell} for \SI{50}{\pico\second} at fixed energy. Its
+kinetic temperature, over 765 freedoms, averages \SI{134.64}{\kelvin} over
+every step (the frames saved every \SI{50}{\femto\second} give the
+\SI{134.63}{\kelvin} of \cref{sec:sm-maxwell}), with
+a standard deviation of \SI{4.13}{\kelvin}, 3.07\% of the mean, and stays
+between 120.4 and \SI{147.8}{\kelvin}: a band with no trend, narrower than
+the canonical 5.11\% of \cref{eq:sm-relative}, as \cref{eq:sm-lpv}
+requires of a run at fixed energy. The total energy fluctuates by 0.0037
+of the kinetic energy's spread, the check of \cref{sec:cs-trajectory}.
+The temperatures of the three directions, each counting one component of
+every velocity, have the running averages of \cref{fig:sm-healthy}(b),
+which end at 132.80, 135.32 and \SI{134.20}{\kelvin}: the motion has no
+preferred direction, as equipartition requires, to within 2\% after
+\SI{50}{\pico\second}. Their mean, \SI{134.11}{\kelvin}, is $765/768$ of
+the kinetic temperature, since each counts 256 components while the
+removed drift takes one freedom from each direction
+(\cref{sec:sm-equipartition}). The excess kurtosis of the velocities, computed on
+each of 1001 frames of 768 components, has the mean $-0.010$ and the
+standard deviation 0.190, and 4.2\% of the frames lie more than twice that
+from zero, close to the 4.55\% beyond two standard deviations of a
+Gaussian (\cref{sec:sm-probability}).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/healthy}
+\caption{A healthy run: 256 atoms of liquid argon at fixed energy for
+\SI{50}{\pico\second}, steps of \SI{10}{\femto\second}. (a) The kinetic
+temperature, with its mean (dotted). (b) The running averages of the
+temperatures of the $x$, $y$ and $z$ components of the velocities. (c)
+The excess kurtosis of the velocities every \SI{50}{\femto\second}, with
+twice its standard deviation over the run either side of zero (dotted).}
+\label{fig:sm-healthy}
+\end{figure}
+
+\subsection*{Six faults}
+
+\Cref{fig:sm-faults} shows six faults and \cref{tab:sm-faults} the check
+that catches each.
+
+\begin{figure}[p]
+\centering
+\includegraphics{ch12_ensembles/faults}
+\caption{Faults that show in the temperature (teal), against the healthy
+run (grey dashed). (a) The rigid water of Chapter~11 at
+\SI{300}{\kelvin}, its kinetic energy divided among 381 freedoms (grey)
+and among $3N = 576$ (teal). (b) 256 argon atoms started on their lattice
+with velocities drawn at \SI{40}{\kelvin} (dotted). (c) The liquid
+started with a drift of \SI{0.0005}{\angstrom\per\femto\second} in each
+component of every velocity. (d) A liquid of atoms of two masses, 39.948
+and \SI{83.798}{\amu}, started with one spread of velocity for all: the
+temperatures of the light (teal) and heavy (ochre) atoms, against the
+light atoms of the same liquid started with the masses (dashed). (e) The liquid started with
+velocity components spread evenly over an interval: the excess kurtosis.
+(f) The chain of \cref{fig:sm-ergodic}(a): the energy of each mode
+averaged over 20\,000 units of time, divided by an equal share (dotted),
+on a logarithmic axis.}
+\label{fig:sm-faults}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\caption{The faults of \cref{fig:sm-faults}, the check that catches each,
+and its value in the healthy run (for (f), under equal sharing) and in the
+broken one.}
+\label{tab:sm-faults}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+fault & check & healthy & broken\\
+\midrule
+(a) freedoms miscounted & $T$ against the value asked &
+   \SI{303.9}{\kelvin} & \SI{201.0}{\kelvin}\\
+(b) lattice start & mean $T$ over the last \SI{10}{\pico\second} / $T(0)$
+   & 1.042 & 0.506\\
+(c) drift counted & total momentum, amu\,\AA/fs &
+   \num{1.5e-14} & 8.857\\
+(d) masses ignored & $T$ of each species at the start &
+   128, \SI{119}{\kelvin} & 88, \SI{171}{\kelvin}\\
+(e) not Gaussian & \texttt{excess\_kurtosis} at the start & $-0.23$ &
+   $-1.09$\\
+(f) no sharing & share of modes 1 to 4 & 0.125 & 0.917\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{(a) Freedoms miscounted.} The rigid water of \cref{sec:cs-water}
+was prepared with \SI{12.93}{\milli\electronvolt} for each of its 381
+freedoms, $\frac12\kB T$ at \SI{300}{\kelvin}, and over its
+\SI{10}{\pico\second} run the kinetic temperature with that count averages
+\SI{303.9}{\kelvin}. Divided among $3N = 576$, as if no distances were
+held and no drift removed, the same kinetic energy reads
+\SI{201.0}{\kelvin}, 0.661 of it, which is $381/576$. The run is sound
+and only the reading is wrong. A thermostat that used the wrong count would
+heat the water until the wrong reading came up to its target, here by a
+factor of 1.51. The check is the kinetic energy per freedom against
+$\frac12\kB T$, with the freedoms counted by
+\texttt{degrees\_of\_freedom}.
+
+\emph{(b) A crystal started on its lattice.} With velocities drawn at
+\SI{40}{\kelvin}, the kinetic temperature at the start is
+\SI{41.5}{\kelvin}; it falls below \SI{20}{\kelvin} within
+\SI{0.1}{\pico\second}, reaches \SI{8.4}{\kelvin} at
+\SI{160}{\femto\second}, and settles at \SI{21.0}{\kelvin}, 0.506 of
+the start, as equipartition predicts for a nearly harmonic crystal
+(\cref{sec:sm-equipartition}). The healthy liquid, prepared by several
+rounds of redrawn velocities, rises by 4\% from its start. A run whose
+temperature moves far from its start has not reached the state asked for,
+and its early part is not yet the ensemble wanted; Chapter~15 finds where
+such a run's averages can begin.
+
+\emph{(c) The drift counted.} Starting velocities with a drift of
+$v_{\mathrm d} = \SI{0.0005}{\angstrom\per\femto\second}$ in each component
+move the whole box, of mass $M = 256\times39.948 = \SI{10227}{\amu}$, at
+$\sqrt3\,v_{\mathrm d}$, with the kinetic energy $\frac12M\times
+3v_{\mathrm d}^2\times103.6427 = \SI{0.397}{\electronvolt}$ and the
+momentum $M\sqrt3\,v_{\mathrm d} = 8.857$\,amu\,\AA/fs, which momentum
+conservation keeps for ever. Counted as heat over 765 freedoms it reads as
+$2\times0.397/(765\kB) = \SI{12.1}{\kelvin}$: the run shows \SI{147.1}{\kelvin}, of which the motion
+of the atoms relative to their centre of mass gives \SI{135.0}{\kelvin}.
+The temperature looks healthy, a steady band; the check is the total
+momentum, 8.857 against $\num{1.5e-14}$\,amu\,\AA/fs in the healthy run, or
+\texttt{centre\_of\_mass\_path} of \cref{sec:cs-trajectory}. A thermostat
+acting on the total kinetic energy would cool the relative motion to make
+room for the drift; Chapter~13 meets the reverse, a thermostat that feeds
+the drift, as the flying ice cube.
+
+\emph{(d) Velocities drawn without the masses.} Drawing every atom's
+components with one spread gives the light atoms of a mixture too little
+kinetic energy and the heavy ones too much: \SI{88}{\kelvin} and
+\SI{171}{\kelvin} at the start, against 128 and \SI{119}{\kelvin} when
+the masses are used, values that scatter by $\sqrt{2/384} = 7\%$,
+\cref{eq:sm-relative} for the 384 components of 128 atoms. Collisions share the energy out, and the gap between the
+species first averages below \SI{15}{\kelvin} about \SI{260}{\femto\second}
+in; over the last \SI{10}{\pico\second} the two species are at 130 and
+\SI{128}{\kelvin}. In a liquid the fault costs only the first
+picosecond. The check, \texttt{part\_temperature} for each species,
+matters most where energy is shared slowly, as in (f).
+
+\emph{(e) Velocities not Gaussian.} Components drawn evenly from an
+interval, with the right mean square, have an excess kurtosis of $-1.09$ at
+the start, near the $-1.2$ of an even spread, and the run reaches $-0.43$
+after \SI{100}{\femto\second} and $-0.06$ after \SI{200}{\femto\second},
+within the scatter of the healthy run. The temperature is right
+throughout; only the shape of the distribution shows the fault, and in a
+liquid it heals within a fraction of a picosecond. The fault is easy to
+make: the forecasting code of TrajCast\cite{Thiemann2026}, asked to draw
+starting velocities without naming a distribution, draws every component
+evenly from one interval, the same for every mass, and rescales to the
+temperature, faults (d) and (e) together. A kurtosis that stays away from
+zero shows velocities that have not yet reached the Maxwell-Boltzmann
+distribution.
+
+\emph{(f) No sharing.} The chain of Fermi, Pasta, Ulam and Tsingou of
+\cref{sec:sm-ergodic}, averaged over \num{20000} units of time, keeps 0.917
+of its energy in its first four modes, against $4/32 = 0.125$ for equal
+sharing; the first mode holds 10.7 times an equal share and no mode from
+the eighth on holds more than 0.097 of one. Equipartition fails because
+the trajectory does not explore its energy shell. The check, the energy of
+each mode, or more generally the temperature of each part of a system,
+detects a system that is not ergodic on the time scale of the run, which
+no single average over the whole system reveals.
+
+\begin{practice}
+A run's temperature is read with the freedoms counted for that run, $3N -
+n_{\mathrm c} - 3$ for a periodic run whose drift is removed, and compared
+with the value asked for only after the early part has settled. The total
+momentum should be zero, the temperatures of the three directions and of
+each species should agree to the scatter of the run, and the excess
+kurtosis of the velocities should be near zero. A run at
+fixed energy has a kinetic temperature whose spread is below
+$\sqrt{2/N_{\mathrm f}}$ of its mean; a run that claims to be canonical
+must reach it, which is the first test of a thermostat in Chapter~13.
+\end{practice}
+
+\begin{keyidea}
+A healthy run's kinetic temperature, counted over the right freedoms,
+holds a steady band, with equal temperatures in each direction and for
+each species and Gaussian velocities. Miscounted freedoms shift the
+reading; a lattice start halves the temperature; a kept drift adds a
+spurious steady part; velocities drawn without the masses or not Gaussian
+heal in a liquid within a picosecond; a system that does not share its
+energy keeps it in a few motions.
+\end{keyidea}
+
+\notebook{12}{break the liquid in each of the six ways and read the checks}
+
+\begin{selfcheck}
+A run of 500 argon atoms, drift removed, reports \SI{300}{\kelvin} from a
+code that divides by $3N$. What temperature does the right count give?
+\end{selfcheck}

@@ -1,0 +1,108 @@
+%=============================================================================!
+% 3.2  KINETIC ENERGY                                                         !
+%=============================================================================!
+\section{Kinetic energy}
+\label{sec:en-kinetic}
+
+The work done on a body must go somewhere. This section shows, from the
+second law, that the work done by the net force changes one particular
+property of the motion, a combination of mass and speed called the
+kinetic energy.
+
+\subsection*{Along a line}
+
+Let a constant net force $F$ act along a line on a body of mass $m$. By
+the second law its acceleration $a = F/m$ is constant, and
+\cref{eq:mo-v2} relates its velocity $v$ at position $x$ to its velocity
+$v_0$ at position $x_0$, $v^2 = v_0^2 + 2a(x - x_0)$. Multiplying both
+sides by $m/2$,
+\begin{align*}
+   \tfrac12 m v^2 &= \tfrac12 m v_0^2 + m a\,(x - x_0)\\
+   &= \tfrac12 m v_0^2 + F\,(x - x_0)
+      && \text{by the second law, $ma = F$.}
+\end{align*}
+The last term is the work done by the net force over the displacement $x
+- x_0$, so the work has been added to the quantity $\frac12 m v^2$. This
+quantity is the kinetic energy of the body,
+\begin{equation}
+   K = \tfrac12 m v^2 ,
+   \label{eq:en-kinetic}
+\end{equation}
+and the result reads
+\begin{equation*}
+   W = K - K_0 ,
+\end{equation*}
+where $K_0 = \frac12 m v_0^2$: the work done by the net force equals the
+change in the kinetic energy. Its unit is the joule, as it must be, since
+a kilogram times a speed squared is
+\si{\kilogram\metre\squared\per\second\squared}.
+
+The trolley of \cref{sec:ne-second}, of mass \SI{20}{\kilogram}, pushed
+from rest by a net force of \SI{10}{\newton} through \SI{1}{\metre}, gains
+$W = 10\times1 = \SI{10}{\joule}$ of kinetic energy. Setting $\frac12 m
+v^2 = K$ and solving for the speed,
+\begin{equation*}
+   v = \sqrt{\frac{2K}{m}} = \sqrt{\frac{2\times10}{20}}
+   = \SI{1}{\metre\per\second} .
+\end{equation*}
+The second law gives the same result the long way: the acceleration is
+$10/20 = \SI{0.5}{\metre\per\second\squared}$, the trolley covers
+\SI{1}{\metre} in \SI{2}{\second}, since $\frac12\times0.5\times2^2 = 1$,
+and by then it moves at $0.5\times2 = \SI{1}{\metre\per\second}$. The
+energy argument never needed the time.
+
+\subsection*{In space}
+
+The same steps work for a constant force in three dimensions. The
+acceleration $\vb{a} = \vb{F}/m$ is constant, so each component obeys
+\cref{eq:mo-v2} on its own, $v_x^2 = v_{0x}^2 + 2a_x\,\Delta x$, and
+likewise for $y$ and $z$ (a component with no acceleration keeps a
+constant velocity, so the equation holds for it too, although
+\cref{eq:mo-v2} was derived for $a \neq 0$), where $\Delta\vb{r} = (\Delta x, \Delta y,
+\Delta z)$ is the displacement. Adding the three equations, and writing
+$v^2 = \vb{v}\cdot\vb{v} = v_x^2 + v_y^2 + v_z^2$ for the speed squared,
+\begin{equation*}
+   v^2 = v_0^2 + 2\,(a_x\,\Delta x + a_y\,\Delta y + a_z\,\Delta z)
+   = v_0^2 + 2\,\vb{a}\cdot\Delta\vb{r} ,
+\end{equation*}
+and multiplying by $m/2$ and using $m\vb{a} = \vb{F}$,
+\begin{equation*}
+   \tfrac12 m v^2 - \tfrac12 m v_0^2 = \vb{F}\cdot\Delta\vb{r} = W .
+\end{equation*}
+The kinetic energy $\frac12 m v^2$ depends on the speed alone, not on the
+direction of motion, and the work is that of \cref{eq:en-work-constant},
+with $\Delta\vb{r}$ the displacement from start to finish even when the
+path between them curves. The component of the force perpendicular to
+$\Delta\vb{r}$ has indeed changed nothing that $K$ measures.
+
+A projectile shows the result at work. A ball thrown at
+\SI{12}{\metre\per\second} at \ang{60} above the horizontal feels only its
+weight, $\vb{F} = (0, -mg)$, with $y$ upwards, so over a rise $y$ the
+weight does the work $\vb{F}\cdot\Delta\vb{r} = -mgy$. At the top of the
+path the velocity is horizontal (\cref{sec:mo-plane}) and equal to the
+unchanging horizontal part, $12\cos\ang{60} = \SI{6}{\metre\per\second}$.
+Equating the change of kinetic energy to the work and dividing by $m$,
+\begin{equation*}
+   \tfrac12\bigl(6^2 - 12^2\bigr) = -g\,y_{\mathrm{top}}
+   \quad\Longrightarrow\quad
+   y_{\mathrm{top}} = \frac{144 - 36}{2\times9.80665}
+   = \SI{5.507}{\metre} ,
+\end{equation*}
+the height that the vertical motion alone gives, $(12\sin\ang{60})^2/2g$,
+by \cref{eq:mo-v2}, since $(12\sin\ang{60})^2 = 12^2(1 - \cos^2\ang{60})
+= 144 - 36$. The mass has cancelled, as it did for free fall in
+\cref{sec:ne-gravity}.
+
+Since $K$ grows as the square of the speed, doubling the speed makes it
+four times larger. A car braked by a force of given size $F$, treated as a single body that
+slides to rest (its spinning wheels carry a little energy of their own,
+Chapter~5), stops when
+that force has done work $-K$ on it. The force points against the motion,
+so over a distance $d$ it does the work $-Fd$, and $-Fd = -K$ gives $d =
+K/F$: at twice the speed the car needs four times the distance to stop.
+
+\begin{selfcheck}
+A body's kinetic energy is \SI{50}{\joule}. What is it when the speed is
+halved? What is the kinetic energy of a \SI{2}{\kilogram} body moving at
+\SI{3}{\metre\per\second}?
+\end{selfcheck}

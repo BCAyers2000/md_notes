@@ -1,0 +1,139 @@
+%=============================================================================!
+% 10.4  NEIGHBOUR LISTS                                                       !
+%=============================================================================!
+\section{Neighbour lists}
+\label{sec:md-neighbours}
+
+A pair potential cut off at $r_{\mathrm c}$ needs only the pairs closer than
+$r_{\mathrm c}$, and in a dense system each atom has a few dozen of them
+whatever the size of the system. Testing every pair to find them costs
+work that grows as $N^2$, which \cref{sec:pe-cutoffs} promised to reduce
+to $N$. This section does so with two lists.
+
+\subsection*{How many pairs matter}
+
+In a liquid of number density $\rho$ (atoms per unit volume), the
+neighbours of an atom within $r_{\mathrm c}$ fill a sphere of volume
+$\frac43\pi r_{\mathrm c}^3$, so there are about $\frac43\pi r_{\mathrm
+c}^3\rho$ of them, and half as many pairs per atom, since each pair has
+two atoms. For a dense Lennard-Jones liquid, $\rho = 0.8\sigma^{-3}$, and
+$r_{\mathrm c} = 2.5\sigma$, that is 52.4 neighbours and 26 pairs per
+atom, against $N(N - 1)/2$ pairs to test. Measured on atoms placed at
+random at this density, every $N$ from 500 to 32\,000 gives 26.0 to 26.4
+pairs per atom.
+
+\subsection*{The cell list}
+
+The cell is divided into small cells at least $r_{\mathrm c}$ wide: along
+the direction of each perpendicular width $w_k$ of \cref{sec:md-image},
+there are $n_k = \lfloor w_k/r_{\mathrm c}\rfloor$ of them, each a slice
+$1/n_k$ thick in the fractional coordinate $s_k$. Each atom is sorted, in
+one pass over the atoms, into the small cell numbered $\lfloor
+n_ks_k\rfloor$ along each direction, with $\vb{s}$ wrapped into the cell.
+A partner within $r_{\mathrm c}$ changes $s_k$ by less than $r_{\mathrm
+c}/w_k \le 1/n_k$ (\cref{eq:md-width}), less than one slice, so it lies
+in the atom's own small cell or in one of the $3^3 - 1 = 26$ that touch
+it, and only those are searched. A small cell holds on average the same number of
+atoms whatever $N$, so the work per atom does not grow with $N$ and the
+total grows as $N$. With fewer than three small cells along some
+direction, the 26 neighbours would include one cell twice, and
+\texttt{mdlab} tests all pairs instead. The method goes back to Quentrec
+and Brot\cite{QuentrecBrot1973}.
+
+\Cref{fig:md-neighbours} measures both: testing all pairs grows with a
+slope of 2.02 on logarithmic axes, the cell list, from $N = 2000$ on,
+with a slope of 0.98. The two cost the same near $N = 1000$, and at $N =
+4000$ the cell list is four times faster. At $N = 32\,000$ the cell list
+takes \SI{0.78}{\second}; testing all pairs, which takes
+\SI{0.42}{\second} at $N = 4000$, would by its slope of 2 take $8^2 = 64$
+times as long there, about \SI{27}{\second}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch10_code/neighbours}
+\caption{The time to find every pair within $r_{\mathrm c} = 2.5\sigma$ of
+$N$ atoms placed at random at $\rho = 0.8\sigma^{-3}$, by testing all
+pairs and through a cell list, against $N$, with lines of slope 2 and 1
+(dashed).}
+\label{fig:md-neighbours}
+\end{figure}
+
+\subsection*{The Verlet list}
+
+Atoms move little in a step, so the pairs within $r_{\mathrm c}$ change
+little from one step to the next. Verlet's list\cite{Verlet1967} keeps the
+pairs within $r_{\mathrm c} + r_{\mathrm{skin}}$, where the skin
+$r_{\mathrm{skin}}$ is a margin added to the cutoff, and reuses them for
+many steps, computing at each step only the distances of the listed pairs.
+It must be rebuilt before a pair missing from it can come within
+$r_{\mathrm c}$. Suppose that since the list was built every atom has
+moved less than $\frac12r_{\mathrm{skin}}$, atom $i$ by
+$\Delta\vb{r}_i$. A pair not on the list was then at least $r_{\mathrm c}
++ r_{\mathrm{skin}}$ apart. The straight line from $i$'s old position to
+$j$'s old position is no longer than the detour through $i$'s new position
+and $j$'s new position, since two sides of a triangle are together at
+least as long as the third, used once for each triangle of the detour:
+\begin{align*}
+   r_{ij}^{\text{then}} &\le \lvert\Delta\vb{r}_i\rvert + r_{ij}^{\text{now}}
+   + \lvert\Delta\vb{r}_j\rvert ,\\
+   r_{ij}^{\text{now}} &\ge r_{ij}^{\text{then}} - \lvert\Delta\vb{r}_i\rvert
+   - \lvert\Delta\vb{r}_j\rvert > (r_{\mathrm c} + r_{\mathrm{skin}})
+   - \tfrac12r_{\mathrm{skin}} - \tfrac12r_{\mathrm{skin}} = r_{\mathrm c}
+   && \text{rearranging.}
+\end{align*}
+The list is therefore complete until some atom has moved half the skin,
+and is rebuilt then. The class \texttt{VerletList} of
+\texttt{mdlab.neighbours} keeps the positions at the last build and tests
+this at every step:
+
+\begin{code}
+    def needs_rebuild(self, positions: ArrayLike) -> bool:
+        if self.reference is None:
+            return True
+        if not np.array_equal(self.cell, self.built_cell):
+            return self._strained_needs_rebuild(positions)
+        moved = minimum_image(
+            np.asarray(positions, dtype=float) - self.reference, self.cell
+        )
+        return bool(
+            np.max(np.einsum("ix,ix->i", moved, moved))
+            > (0.5 * self.skin) ** 2
+        )
+\end{code}
+
+\noindent The second test applies only when the cell itself has changed
+since the list was built, as it does under the barostats of
+Chapter~14 (\cref{sec:pr-npt}); with the cell fixed the method goes on to
+the rule just derived. The displacements are reduced to their nearest
+copy so that the
+test stays right if the positions have been wrapped back into the cell,
+when an atom that crossed a face would otherwise seem to have moved a
+whole cell; \texttt{einsum} adds the squares of the three components of
+each displacement, and comparing squared lengths with
+$(\frac12r_{\mathrm{skin}})^2$ avoids a square root per atom. The list
+holds pairs out to $r_{\mathrm c} + r_{\mathrm{skin}}$, so
+\cref{eq:md-rule} applies to that distance, $r_{\mathrm c} +
+r_{\mathrm{skin}} \le \frac12w_{\min}$, and \texttt{mdlab} refuses a
+smaller cell. A thicker skin means fewer rebuilds and more pairs to check
+at each step. In the argon run of \cref{sec:md-loop}, with a skin of
+\SI{1}{\angstrom}, the list is built 187 times in 2000 steps, about every
+eleventh step, each time by testing all pairs: its box of
+\SI{26.3}{\angstrom} holds only $\lfloor26.3/9.5\rfloor = 2$ small cells
+of $r_{\mathrm c} + r_{\mathrm{skin}} = \SI{9.5}{\angstrom}$ along each
+side.
+
+\begin{keyidea}
+Each atom has about $\frac43\pi r_{\mathrm c}^3\rho$ neighbours within the
+cutoff. A cell list finds them by searching only neighbouring small cells,
+at a cost that grows as $N$; a Verlet list with a skin
+$r_{\mathrm{skin}}$ reuses the pairs within $r_{\mathrm c} +
+r_{\mathrm{skin}}$ until some atom has moved $\frac12r_{\mathrm{skin}}$.
+\end{keyidea}
+
+\notebook{10}{time all pairs against the cell list}
+
+\begin{selfcheck}
+With $r_{\mathrm c} = 2.5\sigma$ and a skin of $0.3\sigma$, how far may
+the atoms move before the Verlet list must be rebuilt, and about how many
+pairs per atom does the list hold at $\rho = 0.8\sigma^{-3}$?
+\end{selfcheck}

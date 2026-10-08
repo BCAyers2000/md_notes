@@ -1,0 +1,224 @@
+%=============================================================================!
+% 13.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:thermostats}: Thermostats}
+\label{sec:th-solutions}
+
+\solutionto{ex:th-collisions}The intervals are independent, so the
+probability of no collision in any of them is $(1 - \nu\dt/n)^n$, whose
+logarithm $n\ln(1 - \nu\dt/n)$ tends to $-\nu\dt$ as $n$ grows, by $\ln(1 +
+y) \approx y$ (\cref{sec:th-langevin}): the probability tends to
+$\mathrm{e}^{-\nu\dt}$. At least one collision then has the probability
+$1 - \mathrm{e}^{-0.002} = 0.001998$.
+
+\solutionto{ex:th-lambda}$\lambda^2 = 1 + (1/500)(300/290 - 1) =
+1.00006897$, so $\lambda = 1.00003448$: the velocities grow by 34 parts in
+a million.
+
+\solutionto{ex:th-mean}Each step adds the heat $(\dt/\tau_{\mathrm
+T})(K_0 - K)$ (\cref{sec:th-berendsen}). Its average over the settled run
+is zero, so $\ens{K} = K_0$, and since the kinetic temperature is
+proportional to $K$, $\ens{T} = T_0$.
+
+\solutionto{ex:th-langevin-tau}Averaging the square of \cref{eq:th-ou} with
+$\sigma^2 = 2\gamma\kB T_0/m$ (\cref{eq:th-fdr}), the noise having mean 0
+and variance 1 and being independent of $v$, $\ens{v'^2} = c^2\ens{v^2} + (1 -
+c^2)\kB T_0/m$, so each component's kinetic energy changes over the step
+by $(1 - c^2)\bigl(\frac12\kB T_0 - \frac12m\ens{v^2}\bigr)$. For a short
+step $1 - c^2 = 1 - \mathrm{e}^{-2\gamma\dt} \approx 2\gamma\dt$, so the
+rate is $2\gamma(\frac12\kB T_0 - \frac12m\ens{v^2})$, and over the $3N$
+components, all of which the noise reaches, $2\gamma(K_0 - K)$ with $K_0 =
+\frac32N\kB T_0$; the three freedoms of the centre of mass change $C_K$ by
+\SI{0.4}{\percent}, which is negligible here. As in
+\cref{sec:th-berendsen}, $C_V\,\dd T/\dd t = -2\gamma C_K(T - T_0)$, with
+the time constant $C_V/(2\gamma C_K) = 1.590/(2\times\SI{1}{\per\pico
+\second}) = \SI{0.795}{\pico\second}$; the fit in
+\cref{fig:th-berendsen}(b) gives \SI{0.68}{\pico\second}, uncertain by
+\SI{0.22}{\pico\second} in a single run, so the two agree.
+
+\solutionto{ex:th-ice}$\ens{(\delta T/T_0)^2}/\tau_{\mathrm T} =
+\SI{0.005}{\per\pico\second}$, so in \SI{1000}{\pico\second} the factor is
+$\mathrm{e}^5 = 148$.
+
+\solutionto{ex:th-gauss-sum}The density of $s$ adds up, over every $x$,
+the chance that the first number is $x$ and the second $s - x$:
+\begin{equation*}
+   \mathcal{P}(s) = \frac{1}{2\pi\sqrt{ab}}\int\mathrm{e}^{-x^2/2a
+   - (s - x)^2/2b}\,\dd x .
+\end{equation*}
+The exponent is $-[(a + b)x^2 - 2asx + as^2]/2ab$, and completing the
+square,
+\begin{equation*}
+   (a + b)x^2 - 2asx + as^2 = (a + b)\Bigl(x - \frac{as}{a + b}\Bigr)^2
+   + \frac{ab\,s^2}{a + b} ,
+\end{equation*}
+so the exponent is $-(a + b)(x - x_0)^2/2ab - s^2/2(a + b)$, with $x_0 =
+as/(a + b)$. The Gaussian integral over $x$ gives $\sqrt{2\pi ab/(a +
+b)}$, and
+\begin{equation*}
+   \mathcal{P}(s) = \frac{1}{\sqrt{2\pi(a + b)}}\,\mathrm{e}^{-s^2/2(a + b)} ,
+\end{equation*}
+the Gaussian of variance $a + b$.
+
+\solutionto{ex:th-ou-variance}The two terms of \cref{eq:th-ou} are
+independent, so their variances add, and multiplying a quantity by $c$
+multiplies its variance by $c^2$: the variance after the step is
+$c^2\sigma_v^2 + (\sigma^2/2\gamma)(1 - c^2)$, with $\sigma_v^2$ the
+variance of $v$ before. It equals $\sigma_v^2$ only if $\sigma_v^2(1 -
+c^2) = (\sigma^2/2\gamma)(1 - c^2)$, that is, since $c < 1$, if
+$\sigma_v^2 = \sigma^2/2\gamma$.
+
+\solutionto{ex:th-noise}With $c = \mathrm{e}^{-0.01} = 0.99005$,
+\begin{equation*}
+   \sqrt{1 - c^2}\,\sqrt{\kB T/m} = 0.14072\times
+   \SI{0.001676}{\angstrom\per\femto\second}
+   = \SI{2.36e-4}{\angstrom\per\femto\second} ,
+\end{equation*}
+a seventh of the thermal spread.
+
+\solutionto{ex:th-baoab-vv}With $\gamma = 0$, $c = 1$ and the noise
+vanishes, so O leaves the velocities unchanged; the two half drifts
+then make one drift, and B A A B is a half kick, a drift and a half
+kick, \cref{eq:in-kdk}.
+
+\solutionto{ex:th-flux}With $w = mv^2/2\kB T$, $\dd w = mv\,\dd v/\kB T$,
+so
+\begin{equation*}
+   \int_0^\infty v\,\mathrm{e}^{-mv^2/2\kB T}\dd v
+   = \frac{\kB T}{m}\int_0^\infty\mathrm{e}^{-w}\dd w = \frac{\kB T}{m} .
+\end{equation*}
+Dividing by $\sqrt{2\pi\kB T/m}$,
+with $\kB T/m = \sqrt{\kB T/m}\,\sqrt{\kB T/m}$, gives $\sqrt{\kB T/m}/
+\sqrt{2\pi} = \sqrt{\kB T/2\pi m}$. For lithium at \SI{1000}{\kelvin},
+with the factor 103.6427 of \cref{eq:en-mv2},
+\begin{equation*}
+   \sqrt{\frac{0.086173}{2\pi\times6.94\times103.6427}}
+   = \SI{0.00437}{\angstrom\per\femto\second} .
+\end{equation*}
+
+\solutionto{ex:th-tst-1d}In one dimension the edge is a point and the
+cell an interval, so $k_{\mathrm{TST}} = \sqrt{\kB T/2\pi m}\,
+\mathrm{e}^{-U_{\mathrm b}/\kB T}/\int\mathrm{e}^{-U/\kB T}\dd x$. When
+$U_{\mathrm b} \gg \kB T$ the integral comes almost wholly from the bottom
+of the well, where it is the Gaussian integral $\int\mathrm{e}^{-m\omega^2
+x^2/2\kB T}\dd x = \sqrt{2\pi\kB T/m\omega^2}$; dividing,
+\begin{equation*}
+   k_{\mathrm{TST}} = \sqrt{\frac{\kB T}{2\pi m}}\sqrt{\frac{m\omega^2}{2\pi
+   \kB T}}\,\mathrm{e}^{-U_{\mathrm b}/\kB T}
+   = \frac{\omega}{2\pi}\,\mathrm{e}^{-U_{\mathrm b}/\kB T} ,
+\end{equation*}
+the frequency of attempts times the Boltzmann factor of the barrier. With
+$\omega/2\pi = 1/\SI{170.3}{\femto\second}$ and $\mathrm{e}^{-0.3/0.025852}
+= \num{9.12e-6}$, $k_{\mathrm{TST}} = \SI{5.36e-8}{\per\femto\second}$, or
+\num{5.4e7} hops per second. It is eleven times below the rate of
+\cref{eq:th-tst} for the surface at \SI{300}{\kelvin}, \num{5.9e8} per
+second: a hollow has six bridges to leave by, and across the path each
+bridge has a third of the hollow's curvature, which widens the way out by
+a further $\sqrt3$, and $6\sqrt3 = 10.4$.
+
+\solutionto{ex:th-nh-swing}Without forces $\dot K = -2\xi K$, so
+$\ddot K = -2\dot\xi K - 2\xi\dot K$. For small departures $\xi$ is small
+and $K \approx K_0$, so to first order $\dd^2\,\delta K/\dd t^2 =
+-2K_0\dot\xi = -2K_0\cdot2\,\delta K/Q$, since $\dot\xi = (2K -
+2K_0)/Q$. With $K_0 = \frac12N_{\mathrm f}\kB T_0$ and $Q =
+N_{\mathrm f}\kB T_0\tau_{\mathrm T}^2$, $4K_0/Q = 2/\tau_{\mathrm T}^2$. The
+swing has the angular frequency $\sqrt2/\tau_{\mathrm T}$ and the period
+$2\pi\tau_{\mathrm T}/\sqrt2 = \SI{444}{\femto\second}$ for $\tau_{\mathrm
+T} = \SI{100}{\femto\second}$.
+
+\solutionto{ex:th-nose}Hamilton's equations in $t'$ are $\dd\vb{r}_i/\dd
+t' = \tilde{\vb{p}}_i/m_is^2$, $\dd\tilde{\vb{p}}_i/\dd t' = \vb{F}_i$,
+$\dd s/\dd t' = p_s/Q$ and $\dd p_s/\dd t' = \sum_i\tilde{\vb{p}}_i^2/m_i
+s^3 - N_{\mathrm f}\kB T_0/s$. With $\dd/\dd t = s\,\dd/\dd t'$:
+\begin{align*}
+   \frac{\dd\vb{r}_i}{\dd t} &= \frac{\tilde{\vb{p}}_i}{m_is}
+   = \frac{\vb{p}_i}{m_i} ,\\
+   \frac{\dd\vb{p}_i}{\dd t} &= s\,\frac{\dd}{\dd t'}\frac{\tilde{
+   \vb{p}}_i}{s} = \frac{\dd\tilde{\vb{p}}_i}{\dd t'} - \frac{\tilde{
+   \vb{p}}_i}{s}\frac{\dd s}{\dd t'} = \vb{F}_i - \xi\vb{p}_i ,\\
+   \frac{\dd\xi}{\dd t} &= \frac{s}{Q}\frac{\dd p_s}{\dd t'}
+   = \frac{s}{Q}\Bigl(\sum_i\frac{\tilde{\vb{p}}_i^2}{m_is^3}
+   - \frac{N_{\mathrm f}\kB T_0}{s}\Bigr)
+   = \frac{1}{Q}\Bigl(\sum_i\frac{\vb{p}_i^2}{m_i} - N_{\mathrm f}\kB
+   T_0\Bigr) = \frac{2K - N_{\mathrm f}\kB T_0}{Q} ,
+\end{align*}
+the second line by the product rule, with $\xi = p_s/Q$.
+
+\solutionto{ex:th-divergence}$\dot x = p_x/m$ does not depend on $x$, and
+likewise for $y$ and $z$: three zeros. $\dot p_x = F_x - \xi p_x$ gives
+$\partial\dot p_x/\partial p_x = -\xi$, and likewise for $p_y$ and $p_z$.
+$\dot\xi = (2K - 3\kB T_0)/Q$ does not depend on $\xi$. The divergence is
+$-3\xi$.
+
+\solutionto{ex:th-csvr-mean}$R_1$ has mean 0 and $R_1^2$ mean 1, and $R_\perp^2$
+has the mean $N_{\mathrm f} - 1$, so $\ens{\lambda^2} = c_1 + c_2
+N_{\mathrm f} = c_1 + (1 - c_1)K_0/K$. Then $\ens{K'} = \ens{\lambda^2}K =
+c_1K + (1 - c_1)K_0$, and $\ens{K'} - K = (1 - c_1)(K_0 - K)$.
+
+\solutionto{ex:th-chi}In the canonical ensemble each mass-weighted
+velocity component $u_k$ has a density proportional to
+$\mathrm{e}^{-u_k^2/2\kB T}$ (\cref{sec:sm-maxwell}), which with $\kB T =
+1$ is the normal distribution of variance 1; so $n$ independent normal
+numbers are such components, and $K = \frac12\sum u_k^2$ has the density
+\cref{eq:sm-gamma} with $N_{\mathrm f} = n$, proportional to $K^{n/2 -
+1}\mathrm{e}^{-K}$: the gamma distribution of shape $n/2$. The sum of
+squares is $2K$.
+
+\solutionto{ex:th-trajcast}A hundred strides of \SI{5}{\femto\second} is
+$\tau_{\mathrm T} = \SI{500}{\femto\second}$, and $c_1 = \mathrm{e}^{-5/500}
+= 0.9900$; for paracetamol, ten strides of \SI{7}{\femto\second} make
+\SI{70}{\femto\second}.
+
+\solutionto{ex:th-com}$x_{\mathrm{com}} = \int_0^tv_{\mathrm{com}}(t_1)
+\,\dd t_1$, and its square is the product of two copies,
+$\int_0^tv_{\mathrm{com}}(t_1)\,\dd t_1\int_0^tv_{\mathrm{com}}(t_2)\,\dd
+t_2$, a sum over every pair of times; the average of a sum is the sum of
+the averages, so
+\begin{align*}
+   \ens{x_{\mathrm{com}}^2} &= \int_0^t\!\!\int_0^t
+   \ens{v_{\mathrm{com}}(t_1)v_{\mathrm{com}}(t_2)}\,\dd t_1\dd t_2\\
+   &= \frac{2\kB T}{M}\int_0^t\dd t_1\int_0^{t_1}\mathrm{e}^{-\gamma(t_1 -
+   t_2)}\dd t_2
+   && \text{pairs with $t_2 > t_1$ repeat those with $t_2 < t_1$}\\
+   &= \frac{2\kB T}{M}\int_0^t\frac{1 - \mathrm{e}^{-\gamma t_1}}{\gamma}
+   \,\dd t_1
+   && \text{since $\textstyle\int_0^{t_1}\mathrm{e}^{\gamma t_2}\dd t_2 =
+   (\mathrm{e}^{\gamma t_1} - 1)/\gamma$}\\
+   &= \frac{2\kB T}{M\gamma}\Bigl(t - \frac{1 - \mathrm{e}^{-\gamma
+   t}}{\gamma}\Bigr) .
+\end{align*}
+For $\gamma t \gg 1$ the bracket is $t - 1/\gamma \approx t$, so $D = \kB
+T/(M\gamma)$; this is one component, and the three together give the $6Dt$
+of \cref{sec:th-tests}. For 256 argon atoms, $M = \SI{10227}{\amu}$, with
+$\kB T = \SI{0.011633}{\electronvolt}$ at \SI{135}{\kelvin}, $\gamma =
+\SI{1e-4}{\per\femto\second}$ and the factor 103.6427 of \cref{eq:en-mv2}:
+$0.011633/(10227\times103.6427\times10^{-4}) =
+\SI{1.10e-4}{\angstrom\squared\per\femto\second}$.
+
+\solutionto{ex:th-water}The true count is $3N - n_{\mathrm c} - 3 = 576 -
+192 - 3 = 381$ (\cref{sec:sm-equipartition}). The thermostat drives
+$2K/(576\kB)$ to \SI{300}{\kelvin}, while the true temperature is
+$2K/(381\kB)$, larger by $576/381 = 1.512$: \SI{453.5}{\kelvin}.
+
+\solutionto{ex:th-referee}Berendsen coupling with $\tau_{\mathrm T} =
+\SI{0.1}{\pico\second}$ narrows the fluctuations of the kinetic energy
+to 0.45 of the canonical spread, and those of the total energy with them,
+while \cref{eq:sm-fluctuation} holds only for canonical fluctuations. The
+heat capacity, which goes as the square of the energy's spread, comes out
+too small: in this chapter's runs, $0.41N\kB$ against $2.376N\kB$. CSVR, a
+Nosé-Hoover chain or Langevin dynamics give canonical fluctuations, and
+with them 2.28 to $2.40N\kB$.
+
+\solutionto{ex:th-diagnose}The noise does not keep the total momentum, so
+the centre of mass diffuses, at $\kB T/(M\gamma) =
+\SI{1.10e-4}{\angstrom\squared\per\femto\second}$ for this box over times
+long against $1/\gamma = \SI{10}{\pico\second}$ (\cref{ex:th-com}), and
+displacements measured in the cell include it. Over the fitted lags of 2
+to \SI{20}{\pico\second}, $\gamma t$ is only 0.2 to 2, and the formula of
+\cref{ex:th-com} rises there with 0.64 of its long-time slope, so the
+centre of mass should add about $0.64\times1.10 = 0.70$: $3.69 + 0.70
+\approx 4.4$, against the 4.62 measured, 1.2 times the 3.81 at fixed
+energy. The centre of mass is one particle, so its share scatters widely,
+0.55, 1.30 and 0.95 in the three runs. Measuring displacements from the
+centre of mass gives 3.69, 0.97 of the value at fixed energy, as friction
+requires.

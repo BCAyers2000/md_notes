@@ -1,0 +1,95 @@
+%=============================================================================!
+% 18.2  BASIS FUNCTIONS AND OVERFITTING                                       !
+%=============================================================================!
+\section{Basis functions and overfitting}
+\label{sec:lo-basis}
+
+A curve drawn freehand through a dozen noisy points can be made to pass
+through every one of them, if it is allowed to wiggle; between the
+points it then swings far from any sensible value, and a new point
+measured in a gap lands nowhere near it. The curve has learned the
+noise. A smoother curve that passes near the points, rather than
+through them, predicts the gaps better. Choosing how freely a model may
+bend is the first decision of any fit.
+
+\subsection*{A curve through noisy readings}
+
+The readings here are argon's pair energy $\varphi(r)$ between
+\SI{3.3}{\angstrom} and $2\sigma = \SI{6.8}{\angstrom}$, where the switched
+potential of Chapter~12 is the plain Lennard-Jones energy, read at 15
+distances drawn at random with an error of \SI{0.2}{\milli\electronvolt}
+added, as a first-principles calculation adds its own small errors
+(\cref{fig:lo-basis}a). The model is a polynomial,
+\begin{equation*}
+   \hat\varphi(r) = \sum_{j=0}^{p-1}w_js^j , \qquad
+   s = \frac{r - \SI{5.05}{\angstrom}}{\SI{1.75}{\angstrom}} ,
+\end{equation*}
+in the scaled distance $s$, which runs from $-1$ to 1 over the range; the
+functions $s^j$ are its \emph{basis functions}, and the columns of the
+design matrix are their values at the readings. The scaling matters for
+the arithmetic, not for the fit: the powers of $r$ itself range from 1
+to $6.8^{14} \approx \num{5e11}$, and \cref{sec:lo-descent} measures what
+that does. The weights come from the normal equations
+(\cref{eq:lo-normal}), and the fit is judged on 200 distances spread
+evenly over the range, without noise, which the fit never saw: the
+\emph{test}.
+
+\Cref{fig:lo-basis}(b) tells the story. As the degree of the polynomial
+rises from 0, the rms miss on the 15 training readings falls, from
+\num{3.38} to \SI{0.20}{\milli\electronvolt} at degree 8, near the
+noise, and then further, to zero at degree 14, where 15 weights pass a
+curve through 15 readings exactly. The miss on the test falls with it at
+first, to \SI{0.28}{\milli\electronvolt} at degree 8, and then rises
+steeply: \SI{3.9}{\milli\electronvolt} at degree 9, 140 at 12 and
+\SI{41}{\electronvolt} at 14, where the curve swings between the readings
+(\cref{fig:lo-basis}a). A model with too few weights misses the curve,
+\emph{underfitting}; one with too many learns the noise of its readings
+as if it were part of the curve, \emph{overfitting}, and the training
+miss falling below the noise of the readings is its sign. Only data the
+model has not seen can tell the two apart, since the training miss
+improves with every weight added.
+
+The functions themselves can carry knowledge. The Lennard-Jones energy is
+a sum of $(\sigma/r)^{12}$ and $(\sigma/r)^6$, and a model built on those
+two functions has two weights to find. Fitted to the same 15 readings,
+they come out as \num{0.04051} and \SI{-0.04073}{\electronvolt}, against
+$4\varepsilon = \SI{0.04136}{\electronvolt}$ and $-4\varepsilon$, and
+the test miss is \SI{0.090}{\milli\electronvolt}, a third of the best
+polynomial's with two weights against nine. A learned potential faces
+the same choice on a larger scale: a model that knows the forces between
+atoms depend only on their distances and on the elements needs far fewer
+readings than one that must discover it, which is what planned Chapter~20 builds
+into the description of an atom's surroundings.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/basis}
+\caption{Basis functions and overfitting. (a) Argon's pair energy (grey
+dashed) read at 15 distances with an error of
+\SI{0.2}{\milli\electronvolt} (dots), and the polynomials of degree 3, 8
+and 14 in the scaled distance fitted to the readings by least squares.
+(b) The rms miss on the training readings and on a test of 200
+noise-free distances against the degree, with the noise (dotted) and the
+test miss of the two functions $(\sigma/r)^{12}$ and $(\sigma/r)^6$
+(cross). At degree 14 the curve passes through every reading, and its
+training miss, zero, is drawn on the axis.}
+\label{fig:lo-basis}
+\end{figure}
+
+\begin{keyidea}
+A model linear in its weights is a sum of basis functions, and the
+number of them sets how freely it bends. Too few underfit; too many
+learn the noise, which shows as a training miss below the noise of the
+readings and a test miss that grows. Only readings the model has not
+seen judge it. Functions that carry the physics need fewer weights and
+fewer readings.
+\end{keyidea}
+
+\notebook{18}{change the degree of the polynomial and watch the training
+and test misses part}
+
+\begin{selfcheck}
+A polynomial of degree 14 is fitted to 15 readings. Why is its training
+miss zero whatever the readings, and what does that say about the
+training miss as a measure of a model?
+\end{selfcheck}

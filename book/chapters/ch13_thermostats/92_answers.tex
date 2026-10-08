@@ -1,0 +1,42 @@
+%=============================================================================!
+% 13.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:th-answers}
+
+\answerto{sec:th-tests}The heat is \SI{-0.5}{\electronvolt}, so
+$E_{\mathrm{eff}}$ changes by $-0.48 - (-0.5) = \SI{+0.02}{\electronvolt}$:
+the integration has added \SI{0.02}{\electronvolt}.
+
+\answerto{sec:th-berendsen}$\lambda^2 = 1 + 0.002\,(300/310 - 1) =
+0.9999355$, so $\lambda = 0.9999677$.
+
+\answerto{sec:th-andersen}$1 - \mathrm{e}^{-0.002} = 0.001998$, so about 2
+atoms of 1000 at each step.
+
+\answerto{sec:th-langevin}$c = \mathrm{e}^{-0.1} = 0.90484$; the old
+velocity keeps the fraction $c^2$ of its variance, so $1 - c^2 = 0.181$ is
+replaced by noise.
+
+\answerto{sec:th-nose}$N_{\mathrm f} = 2997$ and $\kB T_0 =
+\SI{0.025852}{\electronvolt}$, so $Q_1 = 2997\times0.025852\times100^2 =
+\SI{7.75e5}{\electronvolt\femto\second\squared}$.
+
+\answerto{sec:th-csvr}$\mathrm{e}^{-30/\tau_{\mathrm T}} = 0.5$ gives
+$\tau_{\mathrm T} = 30/\ln2 = \SI{43.3}{\femto\second}$.
+
+\answerto{sec:th-compare}CSVR, or a Nosé-Hoover chain, with $\tau_{\mathrm
+T}$ of a picosecond or more, or a run at fixed energy after equilibrating:
+in liquid argon the first two changed diffusion by at most 7\%, the last
+not at all. Langevin at \SI{5}{\per\pico\second} would slow it by well
+over a quarter, leaving between the 0.71 and 0.17 of it measured at 1 and
+\SI{10}{\per\pico\second}.
+
+\answerto{sec:th-trajectory}$\kB T/(M\gamma)$, with $\kB T =
+\SI{0.011633}{\electronvolt}$ at \SI{135}{\kelvin}, $M = 500\times39.948 =
+\SI{19974}{\amu}$, $\gamma = \SI{0.001}{\per\femto\second}$ and the
+factor 103.6427 of \cref{eq:en-mv2}:
+\begin{equation*}
+   \frac{0.011633}{19\,974\times103.6427\times0.001}
+   = \SI{5.6e-6}{\angstrom\squared\per\femto\second} .
+\end{equation*}

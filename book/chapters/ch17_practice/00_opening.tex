@@ -1,0 +1,26 @@
+%=============================================================================!
+% 17.0 CHAPTER OPENING !
+%=============================================================================!
+The methods of Chapters~9 to~16 are now implemented in \texttt{mdlab}.
+Research codes use the same physical ideas, but their units, defaults
+and data formats differ. Moving a calculation between codes therefore
+starts with a comparison whose answer we already know. Here we run the
+same argon model in \texttt{mdlab}, the Atomic Simulation Environment
+(ASE)\cite{Larsen2017} and LAMMPS\cite{Thompson2022}, tracing the
+conversions needed for their results to agree.
+
+We then use MACE-MP-0\cite{Batatia2025}, a \emph{foundation model}
+trained on first-principles calculations across much of the periodic
+table. Its broad training makes it useful on many materials, but does
+not establish its accuracy on a particular system. We examine its cost
+and time step, and use FHI-aims\cite{Blum2009} to measure the cost and
+convergence of a first-principles reference. Here \emph{first-principles}
+means that the forces are calculated from the electrons
+(\cref{sec:pe-origin}) rather than supplied by a fitted interatomic model.
+
+Lithium in graphite brings these choices together in a material that the
+earlier chapters represented with model surfaces and layered solids.
+Its spacing and hops require different convergence checks. A production
+protocol collects those checks with the measurements that justify each
+setting; the final gallery links the faults of a trajectory to the
+checks that reveal them.

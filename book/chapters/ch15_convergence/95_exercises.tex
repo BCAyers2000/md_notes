@@ -1,0 +1,152 @@
+%=============================================================================!
+% 15.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:cv-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:cv-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~15 checks every numerical answer.
+
+\begin{exercise}[enough rolls]
+\label{ex:cv-rolls}
+How many rolls of a fair die make the interval $\bar x \pm 1.96\,\sigma_{\bar
+x}$ no wider than $\pm0.01$?
+\end{exercise}
+
+\begin{exercise}[five samples]
+\label{ex:cv-student}
+With five samples, Student's 95\% factor is 2.776. By what fraction is the
+95\% interval wider than one built with 1.96, and why must it be?
+\end{exercise}
+
+\begin{exercise}[the variance of a difference]
+\label{ex:cv-cov}
+Show that $\operatorname{var}(x - y) = \operatorname{var}(x) +
+\operatorname{var}(y) - 2\operatorname{cov}(x, y)$, and explain why
+\cref{sec:cv-observables} took the difference of the two species'
+temperatures at each frame as one series, rather than combining the errors
+of the two temperatures.
+\end{exercise}
+
+\begin{exercise}[a series that settles]
+\label{ex:cv-ou-var}
+Show that the step of \cref{eq:cv-ou}, started from $x_0 = 0$, gives
+$\operatorname{var}(x_k) = 1 - c^{2k}$, and find how many steps of $c =
+0.95$ bring the variance within 1\% of 1.
+\end{exercise}
+
+\begin{exercise}[a slower memory]
+\label{ex:cv-g-ou}
+For the step of \cref{eq:cv-ou} with $c = 0.99$ and samples
+\SI{10}{\femto\second} apart, find $g$, $\tau_{\mathrm{int}}$ and
+$\tau_{\mathrm c}$, and the number of independent samples in a run of
+\SI{1}{\nano\second}.
+\end{exercise}
+
+\begin{exercise}[a weighted geometric sum]
+\label{ex:cv-ksum}
+Show that $\sum_{k=1}^\infty kc^k = c/(1 - c)^2$ for $0 \le c < 1$, by
+multiplying the sum by $1 - c$.
+\end{exercise}
+
+\begin{exercise}[the error of an error]
+\label{ex:cv-error-error}
+For $n$ independent Gaussian samples $u_i$ of mean zero and variance
+$\sigma_u^2$, show that $\ens{u^4} = 3\sigma_u^4$, and hence that $s'^2 =
+\frac1n\sum_iu_i^2$ has the variance $2\sigma_u^4/n$, so that $s'$ has the
+relative error $1/\sqrt{2n}$.
+\end{exercise}
+
+\begin{exercise}[blocks long enough]
+\label{ex:cv-block-length}
+A run of $2^{16}$ samples has $g = 60$ and an exponential memory. How long
+must its blocks be to miss about 5\% of the error, how many such blocks does it hold, and how
+precisely does their spread give the error?
+\end{exercise}
+
+\begin{exercise}[what a transient leaves]
+\label{ex:cv-offset}
+A run of length $t_{\mathrm f}$ carries the offset $\delta A_0\,\mathrm{e}^{-t/\tau_{\mathrm
+r}}$. Show that after discarding the first $t_0$, the offset adds
+$\delta A_0\,\tau_{\mathrm r}(\mathrm{e}^{-t_0/\tau_{\mathrm r}} -
+\mathrm{e}^{-t_{\mathrm f}/\tau_{\mathrm r}})/(t_{\mathrm f} - t_0)$ to the mean, and evaluate it for
+$\delta A_0 = 3$, $\tau_{\mathrm r} = \SI{2}{\pico\second}$, $t_{\mathrm f} =
+\SI{50}{\pico\second}$ and $t_0 = \SI{5.34}{\pico\second}$.
+\end{exercise}
+
+\begin{exercise}[evenly spaced times]
+\label{ex:cv-stt}
+Show that for $n$ times $t_i = i\dt$, $i = 1, \dots, n$,
+$\sum_i(t_i - \bar t)^2 = n(n^2 - 1)\dt^2/12$, using $\sum_ii^2 = n(n +
+1)(2n + 1)/6$.
+\end{exercise}
+
+\begin{exercise}[a longer run, a smaller drift]
+\label{ex:cv-drift-limit}
+The largest harmless drift for a run of \SI{1}{\nano\second} at fixed
+energy is \SI{20.8}{\micro\electronvolt} per atom per nanosecond. Show
+that the limit falls as $t_{\mathrm f}^{-3/2}$ with the run's length $t_{\mathrm f}$, and evaluate it
+for \SI{10}{\nano\second}.
+\end{exercise}
+
+\begin{exercise}[too long a step]
+\label{ex:cv-steepest}
+For $U = \frac12kx^2$ in one dimension, show that a step of steepest
+descent, $x \to x + hF$, lowers $U$ only if $0 < h < 2/k$, and that $h =
+1/k$ reaches the minimum in one step.
+\end{exercise}
+
+\begin{exercise}[the pressure to a precision]
+\label{ex:cv-pressure}
+How long a run under CSVR, with the spread and $\tau_{\mathrm{int}}$ of
+\cref{tab:cv-observables}, fixes the pressure of the liquid to
+$\pm\SI{0.0005}{\giga\pascal}$? And at fixed energy, where a sample of the
+pressure spreads by \SI{0.0096}{\giga\pascal}?
+\end{exercise}
+
+\begin{exercise}[a run too short]
+\label{ex:cv-short}
+A quantity with $\tau_{\mathrm{int}} = \SI{2}{\pico\second}$ is recorded in
+a run of \SI{150}{\pico\second}, whose start is found at
+\SI{10}{\pico\second}. Does it pass the second check of the criterion, and
+if not, how much longer must the run be?
+\end{exercise}
+
+\begin{exercise}[the ratio for a gamma density]
+\label{ex:cv-gamma-ratio}
+Show that for $\mathcal{P}(E \mid \beta) \propto E^{a-1}\mathrm{e}^{-\beta E}$
+the logarithm of the ratio of the densities at $\beta_2$ and $\beta_1$ is
+a straight line in $E$ with the slope $\beta_1 - \beta_2$, and find the
+slope for 300 and \SI{310}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[the units of the correction]
+\label{ex:cv-units}
+Show that $\kB T/(\eta_{\mathrm s}L)$ has the units of a diffusion
+coefficient, and that no other product of powers of $\kB T$,
+$\eta_{\mathrm s}$ and $L$ does.
+\end{exercise}
+
+\begin{exercise}[the size of the correction]
+\label{ex:cv-yh}
+With $\eta_{\mathrm s} = \SI{2.18e-4}{\pascal\second}$, find the
+Yeh-Hummer correction $2.837\kB T/(6\pi\eta_{\mathrm s}L)$ for the liquid of
+256 atoms, $L = \SI{23.26}{\angstrom}$, at \SI{135}{\kelvin}, in
+\si{\angstrom\squared\per\femto\second}.
+\end{exercise}
+
+\begin{exercise}[why blocks]
+\label{ex:cv-why-blocks}
+Why does a bootstrap that draws single samples from a run, rather than
+blocks, give too small an error, and how long must the blocks be?
+\end{exercise}
+
+\begin{exercise}[a referee's question]
+\label{ex:cv-referee}
+A study reports the heat capacity of a liquid from one run of
+\SI{50}{\pico\second} at fixed energy as $2.29\,N\kB$, `converged, since
+the running mean of $K$ is flat'. What has it not shown, and what would
+show it?
+\end{exercise}

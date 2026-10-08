@@ -1,0 +1,151 @@
+%=============================================================================!
+% 7.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:ha-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:ha-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~07 checks every numerical answer.
+
+\begin{exercise}[a transform with a logarithm]
+\label{ex:ha-exp}
+Show that the Legendre transform of $f(v) = \mathrm{e}^v$ is $f^*(p) =
+p\ln p - p$, for $p > 0$, and that its slope is $v$.
+\end{exercise}
+
+\begin{exercise}[two rates in one term]
+\label{ex:ha-cross}
+A kinetic energy $K = \frac12(a\dot{q}_1^2 + 2b\,\dot{q}_1\dot{q}_2 +
+c\,\dot{q}_2^2)$, with constants $a$, $b$ and $c$, contains a product of
+two rates. Show that $p_1\dot{q}_1 + p_2\dot{q}_2 = 2K$, so that again
+$H = K + U$.
+\end{exercise}
+
+\begin{exercise}[a hanging spring]
+\label{ex:ha-vertical}
+A block of mass $m$ hangs from a spring of stiffness $k$, with $q$ its
+distance below the point where the spring has its natural length, so that
+$U = \frac12 kq^2 - mgq$. Write $H$ and Hamilton's equations, and find the
+state that does not change.
+\end{exercise}
+
+\begin{exercise}[a ball in a vertical plane]
+\label{ex:ha-plane}
+For $\Lag = \frac12 m(\dot{x}^2 + \dot{y}^2) - mgy$, find $p_x$, $p_y$
+and $H$, write Hamilton's equations, and say which momentum is conserved
+and why.
+\end{exercise}
+
+\begin{exercise}[the puck]
+\label{ex:ha-puck}
+Show that the puck of \cref{sec:la-polar}, with $\Lag = \frac12 m(\dot{r}^2
++ r^2\dot\theta^2) - U(r)$, has $H = p_r^2/(2m) + p_\theta^2/(2mr^2) +
+U(r)$, and that Hamilton's equations give the conservation of $p_\theta$
+and the motion of $r$ in the effective potential \cref{eq:la-effective}.
+\end{exercise}
+
+\begin{exercise}[the bead from its Hamiltonian]
+\label{ex:ha-bead}
+Show that Hamilton's equations for $H = p^2/\bigl(2m(1 + h'^2)\bigr) +
+mgh(x)$ give the bead's equation \cref{eq:la-bead}.
+\end{exercise}
+
+\begin{exercise}[over the top]
+\label{ex:ha-separatrix}
+For the pendulum of \cref{fig:ha-portrait}, find the momentum and the
+speed of the bob at the bottom of the separatrix.
+\end{exercise}
+
+\begin{exercise}[the last ten degrees]
+\label{ex:ha-creep}
+Using $\dot\varphi \approx -\omega_0\varphi$, how long does the bob of
+\cref{fig:ha-portrait}, on its separatrix, take to go from \ang{10} short
+of the top to \ang{1} short?
+\end{exercise}
+
+\begin{exercise}[a product rule for brackets]
+\label{ex:ha-product}
+Show that $\pb{A}{BC} = \pb{A}{B}\,C + B\,\pb{A}{C}$.
+\end{exercise}
+
+\begin{exercise}[angular momentum in Cartesian coordinates]
+\label{ex:ha-lz}
+A body moves in a plane with $H = (p_x^2 + p_y^2)/(2m) + U(r)$, where $r
+= \sqrt{x^2 + y^2}$. Show that $L_z = xp_y - yp_x$ has $\pb{L_z}{H} = 0$.
+\end{exercise}
+
+\begin{exercise}[the momentum of the spring]
+\label{ex:ha-spring-p}
+Use the series \cref{eq:ha-series} to find $p(t)$ for the block on a
+spring.
+\end{exercise}
+
+\begin{exercise}[a shear]
+\label{ex:ha-shear}
+A body of \SI{1}{\kilogram} flies freely. Where does the flow over
+\SI{2}{\second} carry the four corners of the square of starting states
+$0 \le q_0 \le \SI{0.1}{\metre}$, $0 \le p_0 \le
+\SI{0.1}{\kilogram\metre\per\second}$, and what is the area of the
+figure they make?
+\end{exercise}
+
+\begin{exercise}[half the area]
+\label{ex:ha-halving}
+With drag at $\gamma = \SI{0.5}{\per\second}$, how long does a blob of
+states take to lose half its area?
+\end{exercise}
+
+\begin{exercise}[two carts]
+\label{ex:ha-carts}
+For the two carts of \cref{ex:la-carts}, $\Lag = \frac12 m_1\dot{x}_1^2 +
+\frac12 m_2\dot{x}_2^2 - \frac12 k(x_2 - x_1 - \ell)^2$, use Noether's
+theorem to show that $m_1\dot{x}_1 + m_2\dot{x}_2$ is conserved.
+\end{exercise}
+
+\begin{exercise}[under gravity]
+\label{ex:ha-gravity}
+A group of atoms with an energy $U_{\mathrm{int}}$ that is unchanged by
+moving or turning the whole group falls in a uniform field of gravity
+along $-z$, so $U = U_{\mathrm{int}} + \sum_im_igz_i$. Which components
+of the total momentum, and of the angular momentum about the origin, are
+conserved?
+\end{exercise}
+
+\begin{exercise}[the torque about any point]
+\label{ex:ha-torque-point}
+Show that when the forces on a group add to zero, their torque is the
+same about every point, and find the torque of the two atoms of
+\cref{fig:ha-noether}(b) about the centre of the box, $(5,
+5)$~\si{\angstrom}.
+\end{exercise}
+
+\begin{exercise}[which can be reversed?]
+\label{ex:ha-even}
+For which of $H_1 = p^2/(2m) + U(q)$, $H_2 = (p - c)^2/(2m)$ with a
+constant $c \ne 0$, and $H_3 = p^2/(2m) + \frac12 kq^2 + bqp$ with a
+constant $b \ne 0$ does the argument of \cref{sec:ha-reversal} show that
+reversing the momentum retraces the path?
+\end{exercise}
+
+\begin{exercise}[doubling the energy]
+\label{ex:ha-doubling}
+The forward Euler method follows the block of \cref{fig:ha-maps} with
+$\dt = \SI{0.005}{\second}$. After how many steps, and how long, has the
+energy doubled?
+\end{exercise}
+
+\begin{exercise}[the other order]
+\label{ex:ha-other}
+The other symplectic Euler method moves the position first, $q' = q +
+\dt\,p/m$, then the momentum with the force at the new position, $p' =
+p - \dt\,kq'$. Show that for the spring its Jacobian determinant is 1.
+\end{exercise}
+
+\begin{exercise}[the energy the method keeps]
+\label{ex:ha-shadow}
+Show that a step of the symplectic Euler method of
+\cref{sec:ha-symplectic} leaves $\tilde{H} = p^2/(2m) + \frac12 kq^2 -
+\bigl(k\dt/(2m)\bigr)\,qp$ unchanged for the spring.
+\end{exercise}

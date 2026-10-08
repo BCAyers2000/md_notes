@@ -1,0 +1,151 @@
+%=============================================================================!
+% 8.3  PAIR POTENTIALS                                                        !
+%=============================================================================!
+\section{Pair potentials}
+\label{sec:pe-pairs}
+
+The simplest model of $U$ adds up an energy for each pair of atoms that
+depends only on the distance between them,
+\begin{equation}
+   U(\vb{r}^N) = \sum_{i<j}\varphi(r_{ij}) ,
+   \label{eq:pe-pair-sum}
+\end{equation}
+where the sum runs over every pair once: $i$ takes each value from 1 to
+$N$ and, for each $i$, $j$ each value from $i + 1$ to $N$, so
+$\varphi(r_{12})$ enters but not $\varphi(r_{21})$; $\varphi$ is called a
+pair potential. It ignores any effect that a third atom has on the
+energy of a pair, which makes it a reasonable first model for atoms that
+keep their electrons to themselves, such as those of the noble gases, and a poor one
+for metals and for atoms joined by chemical bonds (\cref{sec:pe-manybody,%
+sec:pe-bonded}). \Cref{sec:os-anharmonic} met the two most common shapes;
+this section adds a third and compares them.
+
+\subsection*{Three shapes}
+
+The Lennard-Jones potential,
+\begin{equation*}
+   \varphi_{\mathrm{LJ}}(r) = 4\varepsilon\Bigl[\Bigl(\frac{\sigma}{r}
+   \Bigr)^{12} - \Bigl(\frac{\sigma}{r}\Bigr)^6\Bigr] ,
+\end{equation*}
+has its minimum, of depth $\varepsilon$, at $r_{\mathrm m} =
+2^{1/6}\sigma = 1.1225\,\sigma$ (written $r_{\min}$ in
+\cref{sec:os-anharmonic}). Its attraction
+falls as $r^{-6}$, the form of the weak attraction between neutral atoms
+far apart, and its repulsion, $r^{-12}$, is steep and cheap to compute as
+the square of $r^{-6}$; inverse powers of this kind go back to
+Jones\cite{Jones1924}. For argon, $\varepsilon/\kB = \SI{120}{\kelvin}$,
+so $\varepsilon = \SI{0.01034}{\electronvolt}$, and $\sigma =
+\SI{3.4}{\angstrom}$: the values with which Rahman made the first
+simulation of a real liquid by molecular dynamics\cite{Rahman1964}.
+
+The Morse potential of \cref{sec:os-anharmonic} describes a chemical bond
+between two atoms\cite{Morse1929}. Written there with its least value 0,
+it is lowered here by $D$, so that, like every pair potential in a sum
+\cref{eq:pe-pair-sum}, it is zero for atoms far apart:
+\begin{equation*}
+   \varphi_{\mathrm M}(r) = D\bigl(1 - \mathrm{e}^{-a(r - r_0)}\bigr)^2 - D
+   = D\bigl(\mathrm{e}^{-2a(r - r_0)} - 2\,\mathrm{e}^{-a(r - r_0)}\bigr) ,
+\end{equation*}
+expanding the square, $1 - 2\mathrm{e}^{-a(r-r_0)} +
+\mathrm{e}^{-2a(r-r_0)}$, multiplying by $D$ and cancelling the resulting
+$D$ against $-D$. Its minimum
+is $-D$ at $r_0$, and its stiffness there is $2Da^2$, as before.
+
+The Buckingham potential replaces the $r^{-12}$ wall by an exponential,
+\begin{equation*}
+   \varphi_{\mathrm B}(r) = A\,\mathrm{e}^{-r/\rho} - \frac{C}{r^6} ,
+\end{equation*}
+with a strength $A$ and a range $\rho$ for the repulsion (a local
+constant, unrelated to the $\rho_i$ of \cref{sec:pe-manybody}) and a
+strength $C$ for the attraction\cite{Buckingham1938}. Written with
+the position $r_{\mathrm m}$ and depth $\varepsilon$ of its minimum and a
+steepness $\alpha$, as $A = 6\varepsilon\,\mathrm{e}^{\alpha}/(\alpha -
+6)$, $\rho = r_{\mathrm m}/\alpha$ and $C = \alpha\varepsilon r_{\mathrm
+m}^6/(\alpha - 6)$ (\cref{ex:pe-exp6}), it is called the exp-6 potential.
+
+\Cref{fig:pe-pairs} compares the three with the same minimum,
+$-\varepsilon$ at $r_{\mathrm m}$. The Lennard-Jones stiffness there is
+$57.15\,\varepsilon/\sigma^2$ (\cref{sec:os-anharmonic}), which with
+$\sigma^2 = r_{\mathrm m}^2/2^{1/3}$ is $57.15\times2^{1/3}\,\varepsilon/
+r_{\mathrm m}^2 = 72\,\varepsilon/r_{\mathrm m}^2$; the Morse width
+$a r_{\mathrm m} = 6$ matches it, since $2Da^2 = 2\varepsilon\times36/
+r_{\mathrm m}^2$, and the exp-6 steepness $\alpha = 14$ gives $73.5\,
+\varepsilon/r_{\mathrm m}^2$, within 2\% of it. Near the minimum they
+agree; at $r = 2r_{\mathrm m}$ the Lennard-Jones and exp-6 energies are
+$-0.031\varepsilon$ and $-0.027\varepsilon$, falling as $r^{-6}$, while
+the Morse energy, $-0.005\varepsilon$, falls exponentially; and close in
+they differ completely: the Lennard-Jones wall rises without limit; the Morse energy
+stays finite, $\num{1.6e5}\,\varepsilon$ at $r = 0$; and the exp-6 energy
+rises to a maximum of $\num{2.8e4}\,\varepsilon$ at $0.203\,r_{\mathrm m}$
+and then falls to $-\infty$, because as $r \to 0$ the term $-C/r^6$ grows
+without limit while $A\,\mathrm{e}^{-r/\rho}$ approaches $A$. With
+$\alpha = 14$ that maximum is far out of thermal reach, but it falls
+steeply as $\alpha$ is lowered, and for some fitted parameter sets a very
+hot simulation can push two atoms past it, after which they fall into
+each other.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch08_potentials/pairs}
+\caption{The Lennard-Jones, Morse ($a r_{\mathrm m} = 6$) and exp-6
+($\alpha = 14$) pair potentials with the same minimum $-\varepsilon$ at
+$r_{\mathrm m}$. (a) Near the well. (b) The wall, on a scale that is
+logarithmic beyond $\pm1$: the Lennard-Jones energy rises without limit,
+the Morse energy rises only exponentially, a straight line here, to a
+finite value at $r = 0$, and the exp-6 energy turns over and falls.}
+\label{fig:pe-pairs}
+\end{figure}
+
+\subsection*{Reduced units}
+
+For atoms that interact only by a Lennard-Jones potential, the constants
+$\varepsilon$, $\sigma$ and the mass $m$ can be removed from the equations
+of motion altogether. We measure lengths in units of $\sigma$, energies in
+units of $\varepsilon$ and times in units of a time $\tau$ still to be
+chosen, so we write $\vb{r}_i = \sigma\vb{r}_i^*$, $U = \varepsilon U^*$ and
+$t = \tau t^*$, where the starred quantities are pure numbers. By the
+chain rule, with $t^* = t/\tau$, $\dd\vb{r}_i/\dd t = \sigma\,(\dd
+\vb{r}_i^*/\dd t^*)(\dd t^*/\dd t) = (\sigma/\tau)\,\dd\vb{r}_i^*/\dd t^*$,
+and once more $\ddot{\vb{r}}_i = (\sigma/\tau^2)\,\dd^2\vb{r}_i^*/\dd
+t^{*2}$; likewise $\partial U/\partial x_i = \varepsilon\,(\partial U^*/
+\partial x_i^*)(\dd x_i^*/\dd x_i) = (\varepsilon/\sigma)\,\partial U^*/
+\partial x_i^*$, so $\grad_iU = (\varepsilon/\sigma)\grad_i^*U^*$, and the
+second law $m\ddot{\vb{r}}_i = -\grad_iU$ becomes
+\begin{align*}
+   \frac{m\sigma}{\tau^2}\,\frac{\dd^2\vb{r}_i^*}{\dd t^{*2}}
+   &= -\frac{\varepsilon}{\sigma}\,\grad_i^*U^*\\
+   \frac{\dd^2\vb{r}_i^*}{\dd t^{*2}}
+   &= -\frac{\varepsilon\tau^2}{m\sigma^2}\,\grad_i^*U^*
+   && \text{multiplying by $\tau^2/(m\sigma)$,}
+\end{align*}
+and, since $\sigma/r_{ij} = 1/r_{ij}^*$, $U^* = \sum
+4[(r_{ij}^*)^{-12} - (r_{ij}^*)^{-6}]$ contains no constants. Choosing
+\begin{equation}
+   \tau = \sigma\sqrt{\frac{m}{\varepsilon}}
+   \label{eq:pe-tau}
+\end{equation}
+makes the factor 1, and the equation is the same for every substance of
+this kind: one simulation in reduced units describes argon, krypton or
+any other, each with its own $\varepsilon$, $\sigma$ and $m$, converting
+back by $\sigma$, $\varepsilon$ and $\tau$, as far as the real atoms
+interact by a Lennard-Jones potential and move classically. For argon,
+of mass \SI{39.948}{amu}, $\varepsilon = 0.01034\times\num{9.648533e-3}
+= \num{9.977e-5}$ in amu\,\AA$^2$/fs$^2$ (\cref{sec:ne-atoms}), so $\tau
+= 3.4\times\sqrt{39.948/\num{9.977e-5}} = \SI{2151}{\femto\second}$,
+about \SI{2.15}{\pico\second}.
+
+\begin{keyidea}
+A pair potential adds up an energy $\varphi(r_{ij})$ for every pair. The
+Lennard-Jones, Morse and exp-6 shapes agree near their minimum and differ
+in the tail and the wall; the exp-6 wall turns over. In units of
+$\sigma$, $\varepsilon$ and $\tau = \sigma\sqrt{m/\varepsilon}$, all
+Lennard-Jones substances obey the same equations.
+\end{keyidea}
+
+\notebook{08}{compare the three pair potentials and their forces}
+
+\begin{selfcheck}
+Krypton has $\varepsilon/\kB \approx \SI{160}{\kelvin}$, $\sigma \approx
+\SI{3.6}{\angstrom}$ and a mass of \SI{83.8}{amu}. Is its $\tau$ longer or
+shorter than argon's, and why?
+\end{selfcheck}

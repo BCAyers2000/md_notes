@@ -1,0 +1,114 @@
+%=============================================================================!
+% 5.3  THE ANGULAR MOMENTUM OF MANY BODIES                                    !
+%=============================================================================!
+\section{The angular momentum of many bodies}
+\label{sec:ro-system}
+
+\Cref{sec:ne-bodies} added the momenta of a group of bodies and found that
+the forces between them cancel in pairs, so that only outside forces change
+the total. This section does the same for angular momentum, and finds one
+extra condition: the forces between two bodies must act along the line
+joining them.
+
+\subsection*{Internal torques cancel}
+
+For $N$ bodies, at $\vb{r}_i$ with momenta $\vb{p}_i$, the total angular
+momentum about the origin is
+\begin{equation*}
+   \vb{L} = \sum_{i=1}^{N}\vb{r}_i\times\vb{p}_i ,
+\end{equation*}
+and by \cref{eq:ro-torque} for each body, $\dd\vb{L}/\dd t = \sum_i\vb{r}_i
+\times\vb{F}_i$, with $\vb{F}_i$ the total force on body $i$. As in
+\cref{sec:ne-bodies}, split each force into the external force
+$\vb{F}_i^{\mathrm{ext}}$, from outside the group, and the forces
+$\vb{F}_{ij}$ on body $i$ from the other bodies $j$. The torques of the forces between bodies $i$ and $j$ appear as a
+pair,
+\begin{align*}
+   \vb{r}_i\times\vb{F}_{ij} + \vb{r}_j\times\vb{F}_{ji}
+   &= \vb{r}_i\times\vb{F}_{ij} - \vb{r}_j\times\vb{F}_{ij}
+   && \text{by the third law, $\vb{F}_{ji} = -\vb{F}_{ij}$,}\\
+   &= (\vb{r}_i - \vb{r}_j)\times\vb{F}_{ij}
+   && \text{a sum splits, in the first vector as in the second.}
+\end{align*}
+The third law alone does not make this zero: two equal and opposite
+forces side by side, like the pushes on the book, form a couple. But if
+the force between two bodies acts along the line joining them,
+$\vb{F}_{ij} = c\,(\vb{r}_i - \vb{r}_j)$ for some number $c$, the pair
+gives $c\,(\vb{r}_i - \vb{r}_j)\times(\vb{r}_i - \vb{r}_j) = \vb{0}$. Then
+every pair drops out, and
+\begin{equation}
+   \frac{\dd\vb{L}}{\dd t} = \sum_{i=1}^{N}\vb{r}_i\times
+   \vb{F}_i^{\mathrm{ext}} = \vb{G}^{\mathrm{ext}} :
+   \label{eq:ro-system}
+\end{equation}
+only the external torque changes the total angular momentum, and when it is
+zero, the angular momentum of the group is conserved.
+
+\subsection*{Forces between atoms}
+
+Atoms whose potential energy is a sum of terms $\varphi(r_{ij})$, each
+depending only on the distance $r_{ij}$ between two atoms, push and pull
+along the lines joining them. Differentiating $r_{ij}^2 = (x_j - x_i)^2 +
+(y_j - y_i)^2 + (z_j - z_i)^2$ with respect to $x_i$ by the chain rule
+gives $2r_{ij}\,\partial r_{ij}/\partial x_i = -2(x_j - x_i)$, so
+$\partial r_{ij}/\partial x_i = -(x_j - x_i)/r_{ij}$, and likewise for $y_i$
+and $z_i$. The force on atom $i$ from this term is then
+\begin{equation*}
+   -\grad_i\varphi(r_{ij}) = -\varphi'(r_{ij})\,\grad_i r_{ij}
+   = \varphi'(r_{ij})\,\frac{\vb{r}_j - \vb{r}_i}{r_{ij}} ,
+\end{equation*}
+along the line from atom $i$ to atom $j$, as \cref{ex:en-pair} found. An
+isolated group of such atoms therefore conserves its angular momentum as
+well as its momentum. Many of the forces of Chapter~8 depend on three or more atoms
+at once and cannot be split into pairs, but Chapter~7 shows that, whenever
+the potential energy is unchanged when the whole group is turned, the
+internal torques still add to zero.
+
+\subsection*{Turning about the centre of mass}
+
+Unlike momentum, angular momentum depends on the point it is measured
+about: about the point $\vb{a}$, each position is measured from $\vb{a}$,
+so that $\sum_i(\vb{r}_i - \vb{a})\times\vb{p}_i$ takes the place of
+$\vb{L}$. Measure each position and velocity from the centre of mass
+$\vb{R}$ and its velocity $\vb{V} = \vb{P}/M$ (\cref{sec:ne-bodies}),
+$\vb{r}_i = \vb{R} + \vb{r}_i'$ and $\vb{v}_i = \vb{V} + \vb{v}_i'$. The
+primed quantities satisfy $\sum_i m_i\vb{r}_i' = \sum_i m_i\vb{r}_i -
+M\vb{R} = \vb{0}$ and, differentiating, $\sum_i m_i\vb{v}_i' = \vb{0}$.
+Then
+\begin{align*}
+   \vb{L} &= \sum_i m_i\,(\vb{R} + \vb{r}_i')\times(\vb{V} + \vb{v}_i')\\
+   &= \Bigl(\sum_i m_i\Bigr)\vb{R}\times\vb{V}
+      + \vb{R}\times\sum_i m_i\vb{v}_i'
+      && \text{multiplying out}\\
+   &\quad + \Bigl(\sum_i m_i\vb{r}_i'\Bigr)\times\vb{V}
+      + \sum_i m_i\,\vb{r}_i'\times\vb{v}_i'\\
+   &= \vb{R}\times\vb{P} + \vb{L}' ,
+   \qquad \vb{L}' = \sum_i m_i\,\vb{r}_i'\times\vb{v}_i'
+   && \text{$M\vb{V} = \vb{P}$; the middle two vanish.}
+\end{align*}
+The angular momentum of a group is that of its total momentum carried at
+the centre of mass, plus $\vb{L}'$, its angular momentum about its own
+centre of mass, which does not depend on where the origin is, since moving the origin
+shifts each $\vb{r}_i$ and $\vb{R}$ alike and leaves $\vb{r}_i' = \vb{r}_i
+- \vb{R}$ unchanged. For a
+thrown spinning ball, the first part belongs to the flight and the second
+to the spin; for a molecule, $\vb{L}'$ is the turning of the molecule
+itself. For an isolated group both parts are conserved separately: $\vb{P}$
+is constant, so $\dd(\vb{R}\times\vb{P})/\dd t = \vb{V}\times\vb{P} =
+\vb{0}$, since $\vb{P} = M\vb{V}$ is parallel to $\vb{V}$; and $\vb{L}$ is
+constant by \cref{eq:ro-system}, so $\vb{L}' = \vb{L} - \vb{R}\times\vb{P}$
+is constant too.
+
+\begin{keyidea}
+Forces between pairs of bodies along the lines joining them cancel in the
+total torque, so only external torques change the angular momentum of a
+group, and an isolated group of atoms keeps it. The total splits into the
+part carried by the centre of mass and the part $\vb{L}'$ about it.
+\end{keyidea}
+
+\begin{selfcheck}
+Two bodies of \SI{1}{\kilogram} at $(\pm0.5, 0, 0)$\,\si{\metre} move with
+velocities $(0, \mp1, 0)$\,\si{\metre\per\second}. Find their total
+momentum and their angular momentum about the origin and about the point
+$(0, 1, 0)$\,\si{\metre}.
+\end{selfcheck}

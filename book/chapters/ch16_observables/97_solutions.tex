@@ -1,0 +1,222 @@
+%=============================================================================!
+% 16.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:observables}: Observables}
+\label{sec:ob-solutions}
+
+\solutionto{ex:ob-shell}The exact volume is $\frac43\pi[(r + \delta r)^3 -
+r^3] = 4\pi r^2\delta r(1 + \delta r/r + \delta r^2/3r^2)$, so the first
+term falls short by the fraction $1 - 1/(1 + x) = x/(1 + x)$, with $x =
+\delta r/r + \delta r^2/3r^2$, which is close to $x$, and so to $\delta
+r/r$, when $\delta r \ll r$. Numerically, at
+\SI{1}{\angstrom} it is 0.0484 and at \SI{5}{\angstrom} 0.0099, against
+$\delta r/r = 0.05$ and 0.01.
+
+\solutionto{ex:ob-far}$1 - 1/256 = 0.99609$ and $1 - 1/2048 = 0.99951$.
+Dividing by $N(N - 1)/V$ instead of $N^2/V$ makes it approach 1. The
+coordination number counts partners, $\rho g(r)$ times the volume of each
+shell; the new divisor scales $g(r)$ up by $N/(N - 1)$ and goes with the
+partners' density $(N - 1)/V$, smaller by the same factor, so the count
+is unchanged. Used with $\rho = N/V$ it would add $12/(N - 1) = 0.05$ to
+the 12 of the first shell for 256 atoms. In a liquid in a large enough
+cell the far value under ASE's normalisation is $1 - S(0)/N$ instead,
+within \num{3e-5} of 1 for 2048 atoms of argon.
+
+\solutionto{ex:ob-fcc}With an atom at a corner as the origin, every atom
+of the lattice sits at $(a/2)(n_1, n_2, n_3)$ with whole numbers whose sum
+is even: all three even at the corners, two odd and one even at the face
+centres. Its squared distance is $(a^2/4)(n_1^2 + n_2^2 + n_3^2)$, and the
+sum of squares is then even. The smallest value, 2, needs two of the $n$
+equal to $\pm1$ and the third 0: three places for the 0 times four
+choices of signs, 12 atoms at $\sqrt2\,a/2 = a/\sqrt2$. The next, 4,
+cannot come from $(\pm1, \pm1, \pm1)$, whose sum is odd, so it needs one
+of them $\pm2$ and the others 0: 6 atoms at the distance $a$.
+
+\solutionto{ex:ob-meanfield}With $g = 1$ beyond $\sigma$,
+\begin{equation*}
+   \frac{U}{N} = \frac{\rho}{2}\int_\sigma^\infty4\varepsilon\Bigl[
+   \Bigl(\frac\sigma r\Bigr)^{12} - \Bigl(\frac\sigma r\Bigr)^6\Bigr]
+   4\pi r^2\,\dd r
+   = 8\pi\rho\varepsilon\sigma^3\Bigl(\frac19 - \frac13\Bigr)
+   = -\frac{16}{9}\pi\rho\sigma^3\varepsilon ,
+\end{equation*}
+since $\int_\sigma^\infty\sigma^{12}r^{-10}\,\dd r = \sigma^3/9$ and
+$\int_\sigma^\infty\sigma^6r^{-4}\,\dd r = \sigma^3/3$. With $\rho\sigma^3
+= 0.8$ it is \SI{-46.20}{\milli\electronvolt}, \SI{9.97}{\milli
+\electronvolt} above the value from the real $g(r)$. The difference
+measures the liquid's structure: the real $g(r)$ crowds partners into the
+first shell, where the potential is most negative. The run's own
+\SI{-50.09}{\milli\electronvolt} lies higher than \SI{-56.16}{\milli
+\electronvolt} because its switched potential leaves out the attraction
+beyond $2\sigma$; with that potential the mean field itself gives
+\SI{-40.07}{\milli\electronvolt}, and the structure again about
+\SI{10}{\milli\electronvolt}.
+
+\solutionto{ex:ob-sq-limits}$S(\vb{G}) = 1 + (1/N)\sum_i\sum_{j\neq
+i}\cos(\vb{G}\cdot\vb{r}_{ij})$. For independent positions spread evenly
+over the cell, each cosine averages over the cell to zero for $\vb{G}
+\neq \vb{0}$ (\cref{sec:md-ewald}), leaving $S(\vb{G}) = 1$. In a perfect
+crystal at a reciprocal lattice vector every $\vb{G}\cdot\vb{r}_{ij}$ is a
+multiple of $2\pi$, every cosine is 1, and $S(\vb{G}) = 1 + N(N - 1)/N =
+N$.
+
+\solutionto{ex:ob-s0}$S(0) = \rho\kB T\kappa_T$ with $\kappa_T = 0.5
+\times160.2 = \SI{80.1}{\angstrom\cubed\per\electronvolt}$, so $S(0) = 0.03
+\times0.02585\times80.1 = 0.0621$. Twice as compressible, twice $S(0)$: a
+softer liquid lets its density fluctuate more, and scatters long waves
+more strongly.
+
+\solutionto{ex:ob-flicker}Each period carries the pair out across the
+cutoff and back, two events, so $2\times1000/60 = 33.3$ events per
+picosecond. With $r_{\mathrm{on}}$ at the old cutoff the bond, once
+formed, breaks only if the pair passes $r_{\mathrm{off}}$, so the band
+records none if it is wider than the part of the swing beyond the
+cutoff. Wherever the cutoff falls within the vibration, a band wider
+than the whole swing, from its near end to its far end, records none,
+since no swing can then carry the pair across both distances.
+
+\solutionto{ex:ob-keys}With $N = 6$ the first frame's keys are $0\cdot6 + 1
+= 1$, $1\cdot6 + 2 = 8$ and $3\cdot6 + 4 = 22$; the second's are 1, 15,
+22 and 29. Merging the sorted lists $(1, 8, 22)$ and $(1, 15, 22, 29)$:
+1 is in both; 8 is smaller than 15 and only in the first, broken; 15 is
+smaller than 22 and only in the second, formed; 22 is in both; 29 is left
+in the second, formed. So 2-3 and 4-5 form and 1-2 breaks. The search
+starting at atom 0 finds $\{0, 1, 2\}$, then $\{3, 4\}$, then $\{5\}$ in
+the first frame, and $\{0, 1\}$ and $\{2, 3, 4, 5\}$ in the second.
+
+\solutionto{ex:ob-hash}In the prism each atom is joined to the two others
+of its triangle and to one atom of the other; in the hexagon each is
+joined to its two neighbours round the ring and to the opposite atom.
+Every atom has three neighbours, all of the same element. In the first
+round every atom starts with the same number, and its neighbours' sum is
+three times the same scrambled number, so every atom of both gets the
+same new number; the same holds in every later round, and the sums over
+the molecules are equal. The molecules differ: the prism has triangles of
+bonds, and the hexagon with its cross-links has none. Its atoms alternate
+round the ring between two sets of three, and each bond, round the ring
+or across it, joins one set to the other, so any closed path of bonds
+returns to its start after an even number of steps.
+
+\solutionto{ex:ob-poisson}The relative error is $1/\sqrt n$, so 2\% needs
+$1/0.02^2 = 2500$ events. Forty events over $100\times\SI{1000}{\pico
+\second} = \num{1e5}$ molecule-picoseconds give $(4.0 \pm
+0.6)\times10^{-4}$ per picosecond, the error $\sqrt{40}/10^5$.
+
+\solutionto{ex:ob-walk}After $n = k_{\mathrm h}t$ hops $x = \sum_ks_k$
+with $s_k = \pm a$ independent, so $\ens{x^2} = \sum_k\ens{s_k^2} = na^2 =
+k_{\mathrm h}a^2t$. Comparing with $2Dt$ for $d = 1$, $D = k_{\mathrm
+h}a^2/2$.
+
+\solutionto{ex:ob-correlated}The probability $\frac12(1 + c)$ of repeating
+and $\frac12(1 - c)$ of reversing give $\ens{s_ks_{k+1}} = a^2[\frac12(1 +
+c) - \frac12(1 - c)] = ca^2$, and each step depends on the previous alone,
+so $\ens{s_ks_{k+m}} = c^ma^2$. Then, as for \cref{eq:cv-var},
+\begin{equation*}
+   \ens{x^2} = \sum_k\sum_l\ens{s_ks_l} = a^2\Bigl[n + 2\sum_{m\ge1}(n -
+   m)c^m\Bigr] \to na^2\Bigl[1 + \frac{2c}{1 - c}\Bigr] = na^2\,\frac{1 +
+   c}{1 - c}
+\end{equation*}
+for many steps, so $f = (1 + c)/(1 - c)$. Solving $(1 + c)/(1 - c) =
+3.46$ gives $c = (3.46 - 1)/(3.46 + 1) = 0.552$.
+
+\solutionto{ex:ob-water}The motion stops being ballistic near $t =
+2Dm/\kB T$. With $\SI{1}{\amu} = \SI{103.64}{\electronvolt\femto\second
+\squared\per\angstrom\squared}$, $m = 18.015\times103.64$ in those units,
+and $\kB T = \SI{0.02620}{\electronvolt}$, this is about
+\SI{75}{\femto\second}.
+
+\solutionto{ex:ob-exp}Writing $\tau$ for $\tau_{\mathrm c}$ in this
+solution, with $C_{vv}(s) = C_0\mathrm{e}^{-s/\tau}$,
+\begin{align*}
+   2\int_0^t(t - s)C_0\mathrm{e}^{-s/\tau}\,\dd s
+   &= 2C_0\bigl[t\tau(1 - \mathrm{e}^{-t/\tau}) - \tau^2 + (\tau^2 +
+   t\tau)\mathrm{e}^{-t/\tau}\bigr]\\
+   &= 2C_0\tau\bigl[t - \tau(1 - \mathrm{e}^{-t/\tau})\bigr] ,
+\end{align*}
+using $\int_0^ts\mathrm{e}^{-s/\tau}\,\dd s = \tau^2 - (\tau^2 +
+t\tau)\mathrm{e}^{-t/\tau}$, by parts. For $t \ll \tau$, $1 -
+\mathrm{e}^{-t/\tau} = t/\tau - t^2/2\tau^2 + \cdots$, and the bracket is
+$t^2/2\tau$, so the MSD is $C_0t^2$, the ballistic form with $C_0 =
+3\kB T/m$. For $t \gg \tau$ the bracket is $t - \tau$, the MSD grows as
+$2C_0\tau t$, and $6D = 2C_0\tau$ gives $D = C_0\tau/3$, which is also
+$\frac13\int_0^\infty C_{vv}$.
+
+\solutionto{ex:ob-eta}The integral of $\ens{\mathsf{P}_{xy}(0)\mathsf{P}_{xy}
+(t)}$ is the variance $\sigma_{xy}^2$ times the integral of the normalised
+autocorrelation function, which is $\tau_{\mathrm{int}}$ by its definition
+(\cref{sec:cv-correlation}). With $V = 256/0.02035 =
+\SI{12580}{\angstrom\cubed}$, $\kB T = \SI{0.01163}{\electronvolt}$,
+$\sigma_{xy} = 0.0121/160.2 =
+\SI{7.55e-5}{\electronvolt\per\angstrom\cubed}$
+and $\tau_{\mathrm{int}} = \SI{180}{\femto\second}$, the product is
+$\SI{1.11}{\electronvolt\femto\second\per\angstrom\cubed}$, and with
+$\SI{1}{\electronvolt\per\angstrom\cubed} = \SI{1.602e11}{\pascal}$ and
+$\SI{1}{\femto\second} = \SI{e-15}{\second}$ it is \SI{1.78e-4}{\pascal
+\second}, near the \num{1.853e-4} of \cref{sec:ob-vacf}.
+
+\solutionto{ex:ob-ne}$\sigma_{\mathrm{NE}} = e^2\sum_iD_i/V\kB T$ with the
+sum $32\times(5.19 + 5.03)\times10^{-4}$\,\si{\angstrom\squared\per\femto
+\second} $= \SI{3.27e-2}{\angstrom\squared\per\femto\second} =
+\SI{3.27e-7}{\metre\squared\per\second}$, $V = \SI{2.406e-27}{\metre\cubed}$
+and $\kB T = \SI{2.053e-20}{\joule}$, and $e^2 = \SI{2.567e-38}{\coulomb
+\squared}$: \SI{170}{\siemens\per\metre}, close to the mean of the runs'
+own values, 168, since each run's temperature differs.
+
+\solutionto{ex:ob-trace}A sixth of the slope of the full MSD is a third of
+the trace, $(1.16 + 1.02 + 0.00)/3 = \SI{0.73e-4}{\angstrom\squared\per
+\femto\second}$. It is neither the fast motion in the plane, $1.1\times
+10^{-4}$, nor the motion across it, for which no crossing was observed. A single
+number hides this distinction; the one-crossing scale is about $10^{-7}$.
+
+\solutionto{ex:ob-euler}$\lvert\mathrm{e}^{\mathrm{i}\theta}\rvert^2 =
+\cos^2\theta + \sin^2\theta = 1$. Multiplying $(\cos A + \mathrm{i}\sin
+A)(\cos B + \mathrm{i}\sin B) = \cos A\cos B - \sin A\sin B +
+\mathrm{i}(\sin A\cos B + \cos A\sin B)$ and equating its real and
+imaginary parts with those of $\cos(A + B) + \mathrm{i}\sin(A + B)$ gives
+both formulae.
+
+\solutionto{ex:ob-dft-cos}Writing $N$ for $N_{\mathrm s}$ in this solution,
+$\cos(2\pi mn/N) = \frac12[\mathrm{e}^{2\pi\mathrm{i}mn/N} +
+\mathrm{e}^{-2\pi\mathrm{i}mn/N}]$, so
+\begin{equation*}
+   X_k = \frac12\sum_n\mathrm{e}^{2\pi\mathrm{i}(m - k)n/N}
+   + \frac12\sum_n\mathrm{e}^{-2\pi\mathrm{i}(m + k)n/N} .
+\end{equation*}
+By the geometric sum of \cref{sec:ob-fourier} the first is $N/2$ when $k =
+m$ and zero otherwise, and the second is $N/2$ when $m + k$ is a multiple
+of $N$, that is $k = N - m$, and zero otherwise.
+
+\solutionto{ex:ob-fft-cost}Writing $N$ for $N_{\mathrm s}$, if $W(N/2) =
+(N/2)\log_2(N/2)$ then $W(N) = N[\log_2N - 1] + N = N\log_2N$, and $W(1)
+= 1\times0 = 0$ starts the chain. For $N = 2^{20}$ the ratio
+$N^2/N\log_2N = N/20 = 52\,429$.
+
+\solutionto{ex:ob-fold}The Nyquist frequency of \SI{35}{\femto\second} is
+\SI{14.29}{\tera\hertz}, and \SI{18.25}{\tera\hertz} folds to $1/\Dt - \nu =
+28.57 - 18.25 = \SI{10.32}{\tera\hertz}$. It appears where it is for strides
+below $1/(2\times\SI{18.25}{\tera\hertz}) = \SI{27.4}{\femto\second}$.
+
+\solutionto{ex:ob-width}The friction widens each peak to $\gamma/2\pi =
+\SI{0.159}{\tera\hertz}$; the window of \SI{10}{\pico\second} blurs it over
+about $1/t_{\mathrm c} = \SI{0.10}{\tera\hertz}$. The friction does more,
+though the two are comparable.
+
+\solutionto{ex:ob-vdos-zero}$12mD/\kB T = 12\times15.999\times
+\num{103.64}\times\num{5.24e-4}/0.02620 = \SI{398}{\femto\second}$, which
+is 0.398 per terahertz.
+
+\solutionto{ex:ob-fd}$F = \frac12kr_{\mathrm h}^2 - \kB T\ln r_{\mathrm h}$ up to a constant, so
+$\dd F/\dd r_{\mathrm h} = kr_{\mathrm h} - \kB T/r_{\mathrm h}$, zero at $r_{\mathrm h}^2 = \kB T/k$, and $\dd^2F/\dd r_{\mathrm h}^2 =
+k + \kB T/r_{\mathrm h}^2 > 0$, a minimum. At \SI{300}{\kelvin}, $r_{\mathrm h} = \sqrt{0.02585/
+0.9785} = \SI{0.163}{\angstrom}$.
+
+\solutionto{ex:ob-crossings}The free energy difference is $-\kB T\ln$ of
+the ratio of the times spent in the two wells. In the two-state approximation, each crossing starts a
+new, independent stay, so with $n$ crossings each well is visited about
+$n/2$ times. The stays have a spread about as large as their mean, as
+the waits between Poisson events do (\cref{sec:ob-reactions}), so each
+well's total time is known to about $1/\sqrt{n/2} = \sqrt{2/n}$ of
+itself, and their ratio, the two errors combined, to $\sqrt2\sqrt{2/n} =
+2/\sqrt n$. A relative change $\delta$ in the ratio changes its logarithm
+by $\delta$, so the difference is known to about $2\kB T/\sqrt n$, and
+$0.1\,\kB T$ needs 400 crossings.

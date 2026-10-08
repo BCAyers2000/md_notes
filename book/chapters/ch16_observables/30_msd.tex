@@ -1,0 +1,159 @@
+%=============================================================================!
+% 16.5  HOW FAR ATOMS WANDER                                                  !
+%=============================================================================!
+\section{How far atoms wander}
+\label{sec:ob-msd}
+
+A drop of ink in a glass of still water spreads without any current to
+carry it: each grain of dye is knocked about by the molecules around it,
+and the cloud of grains widens. No grain goes anywhere in particular, yet
+the width of the cloud grows steadily with time. Atoms in a liquid wander
+in the same way, and the rate at which the width grows is the diffusion
+coefficient, which Chapter~13 measured as a sixth of a slope and promised
+to treat properly here.
+
+\subsection*{A random walk}
+
+A walker who takes steps $\vb{s}_1, \vb{s}_2, \dots$, each of random
+direction and independent of the others, is at $\vb{r}_n = \vb{s}_1 +
+\dots + \vb{s}_n$ after $n$ of them. The square of that sum is the sum of
+all products of two steps, so
+\begin{equation*}
+   \ens{\lvert\vb{r}_n\rvert^2}
+   = \sum_{k=1}^n\ens{\lvert\vb{s}_k\rvert^2}
+   + \sum_{k\neq l}\ens{\vb{s}_k\cdot\vb{s}_l}
+   = n\ens{s^2} ,
+\end{equation*}
+the cross terms vanishing because independent steps of mean zero have
+zero covariance (\cref{sec:cv-correlation}). The mean squared distance
+from the start grows in proportion to the number of steps, and so to the
+time, while the mean position stays where it began. The diffusion
+coefficient $D$ is defined by that growth: for an atom in $d$ directions,
+\begin{equation}
+   \ens{\lvert\vb{r}(t_0 + t) - \vb{r}(t_0)\rvert^2} \to 2dDt
+   \qquad \text{as $t$ grows},
+   \label{eq:ob-einstein}
+\end{equation}
+which is $6Dt$ in three dimensions, the six of Chapter~13. The left side is
+the mean squared displacement, the MSD, averaged over atoms and over
+starting times $t_0$.
+
+The factor $2d$ makes $D$ the coefficient of Fick's law, by which a
+difference of density drives a flow of atoms. In one dimension let
+$\rho(x, t)$ be the number density of some marked atoms and let them
+flow at the rate $j = -D\,\partial\rho/\partial x$ per unit area and
+time, down the gradient. Atoms are neither made nor lost, so the number
+between $x$ and $x + \dd x$, $\rho\,\dd x$ per unit area, changes by
+what flows in at $x$ less what flows out at $x + \dd x$, $j(x) - j(x +
+\dd x) = -(\partial j/\partial x)\,\dd x$, which gives $\partial\rho/\partial
+t = -\partial j/\partial x = D\,\partial^2\rho/\partial x^2$. If the marked
+atoms all start at $x = 0$, their mean square distance $\sigma_x^2 = \int
+x^2\rho\,\dd x\big/\int\rho\,\dd x$ changes as
+\begin{equation*}
+   \frac{\dd\sigma_x^2}{\dd t}
+   = \frac{D\int x^2\,\partial^2\rho/\partial x^2\,\dd x}{\int\rho\,\dd x}
+   = \frac{D\int 2\rho\,\dd x}{\int\rho\,\dd x} = 2D ,
+\end{equation*}
+the denominator being constant because atoms are kept. The middle step
+integrates by parts twice (\cref{sec:la-euler}), with $\rho$ and its slope
+vanishing far away: $\int x^2\rho''\,\dd x = -\int 2x\rho'\,\dd x = \int
+2\rho\,\dd x$, primes marking slopes in $x$. So $\sigma_x^2 = 2Dt$ in each
+direction, and the $d$ directions add.
+
+\subsection*{The mean squared displacement of a run}
+
+Three things make \cref{eq:ob-einstein} work on a trajectory. The
+positions must be unwrapped: an atom that leaves the cell and is put back
+at the far side has not jumped a cell's width, and the integrator of
+\texttt{md.run} keeps each path continuous for this reason
+(\cref{sec:md-periodic}). The centre of mass must be taken out of every
+frame, so that a drift of the whole system does not count as wandering.
+A run started with velocities whose total momentum was not removed drifts
+for ever, and a thermostat that does not conserve momentum lets the
+centre wander: Langevin's friction and random kicks act on each atom
+separately, so their sums over the atoms do not cancel, and the total
+momentum performs a random walk of its own. And the average should run over every starting time, not
+the first frame alone, since every stretch of a settled run is as good a
+start as any other. The function \texttt{msd} of
+\texttt{mdlab.analysis.transport} does all three, returning the MSD along
+each axis; \texttt{diffusion\_coefficient} fits a straight line to a
+window of it by least squares (\cref{sec:cv-drift}) and divides the slope
+by $2d$.
+
+At short times the MSD is not linear. Over a time short against that
+between collisions an atom keeps its velocity, so its displacement is
+$\vb{v}t$ and $\ens{\lvert\vb{v}t\rvert^2} = (3\kB T/m)\,t^2$ by
+equipartition (\cref{sec:sm-equipartition}): the motion is ballistic, the
+MSD growing as $t^2$. The two forms meet where $(3\kB T/m)t^2 = 6Dt$, at
+$t = 2Dm/\kB T$, which for liquid argon is \SI{274}{\femto\second}.
+\Cref{fig:ob-msd}(a) shows both regimes for the argon of Chapter~15 at
+fixed energy, from a run of \SI{100}{\pico\second} whose paths are summed
+from velocities saved every step. After a picosecond the MSD is a
+straight line of slope $6D$, and the fit over 2 to \SI{20}{\pico\second}
+gives $D = \SI{3.763e-4}{\angstrom\squared\per\femto\second}$ at
+\SI{132.1}{\kelvin}. A fit must start beyond the ballistic part: one over
+0.02 to \SI{0.2}{\pico\second} gives a third less, while windows from
+$t_1$ to $10t_1$ with $t_1$ from \SI{0.05}{\pico\second} on agree within
+6\% (\cref{sec:ob-trajectory}).
+The ratio MSD$/6t$ approaches $D$ more slowly, reaching 0.9 of it only at
+\SI{0.5}{\pico\second}, because the straight line does not pass through
+the origin.
+
+The error comes from blocks of the run, as in Chapter~15. The
+\SI{2}{\nano\second} run at fixed energy of \cref{sec:cv-observables} cut
+into 20 blocks of \SI{100}{\pico\second} gives $D = (3.834 \pm
+0.034)\times10^{-4}$\,\si{\angstrom\squared\per\femto\second} at
+\SI{133.70}{\kelvin}, its value there. Fits that use only the first frame
+of each block as the start spread 2.6 times as widely as those that use
+every frame, which is the reason to average over starting times. The
+value depends on the size of the cell as $1/L$ (\cref{sec:cv-size}).
+
+\paragraph{Checked against ASE.} ASE's \texttt{DiffusionCoefficient}
+fits each axis's MSD, from the first frame of each segment alone and
+with no centre removed, over every lag. On four segments of
+\SI{50}{\pico\second} of the same run, \texttt{msd} with one start per
+segment and no centre removed gives the same slopes to a relative
+\num{1e-15}. The ASE estimate is the noisier of the two for the reason
+above; the comparison checks the arithmetic, and ASE's time unit, which
+is $1/\sqrt{\texttt{FORCE\_TO\_ACCEL}}$ femtoseconds.
+
+\subsection*{Water}
+
+Chapter~11 left the oxygen atoms of its rigid water wandering by
+\num{1.41}, 4.14 and \SI{5.76}{\angstrom}, root mean square from the first
+frame, after 1, 5 and \SI{10}{\pico\second} and promised a diffusion coefficient. Its
+\SI{10}{\pico\second} run of 64 molecules at \SI{304}{\kelvin}, fitted over
+1 to \SI{5}{\pico\second}, gives $D = (5.24 \pm 0.47)\times10^{-4}$\,\si{
+\angstrom\squared\per\femto\second}, the error from the scatter of the 64
+molecules' own fits. A run so short gives $D$ to a tenth; the 64-molecule
+box would also need the correction for its size of \cref{sec:cv-size}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/msd}
+\caption{Liquid argon at fixed energy and \SI{132.1}{\kelvin}
+(\SI{100}{\pico\second}, paths summed from velocities saved every
+\SI{10}{\femto\second}). (a) The mean squared displacement against time,
+with the ballistic $3\kB Tt^2/m$ (dashed) and $6Dt$ (dotted). (b) Three
+estimates of $D$ against the time they reach: MSD$/6t$, the slope of the
+MSD divided by 6 (thick, pale), and the Green-Kubo integral
+$\frac13\int_0^tC_{vv}$ of \cref{sec:ob-vacf} (thin), which coincide; the
+dotted line is $D$ from the fit over 2 to \SI{20}{\pico\second}.}
+\label{fig:ob-msd}
+\end{figure}
+
+\begin{keyidea}
+The mean squared displacement grows as $2dDt$ once the motion forgets
+its velocity, and as $(3\kB T/m)t^2$ before. $D$ is fitted to its linear
+part, from unwrapped paths with the centre of mass removed and averaged
+over every starting frame, with its error from blocks and a correction
+for the size of the cell.
+\end{keyidea}
+
+\notebook{16}{move the fitting window across the MSD of liquid argon}
+
+\begin{selfcheck}
+An atom of mass \SI{40}{\amu} in a liquid at \SI{300}{\kelvin} has $D =
+\SI{3e-4}{\angstrom\squared\per\femto\second}$. Roughly when does its
+motion stop being ballistic?
+\end{selfcheck}

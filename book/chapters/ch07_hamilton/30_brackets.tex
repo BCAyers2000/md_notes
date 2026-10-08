@@ -1,0 +1,157 @@
+%=============================================================================!
+% 7.3  POISSON BRACKETS AND THE LIOUVILLE OPERATOR                            !
+%=============================================================================!
+\section{Poisson brackets and the Liouville operator}
+\label{sec:ha-brackets}
+
+Besides the coordinates, a simulation is asked for quantities computed
+from the state: the energy, a momentum, the distance between two atoms,
+the angle of a bond. This section finds how any such quantity changes
+along the motion, and turns the answer into a series that gives the
+motion from the starting state, at every time in simple cases and over a
+short time in general, the form in which
+Chapter~9 will build methods of computing motion.
+
+\subsection*{The rate of change of any quantity}
+
+Let $A(q, p)$ be any quantity computed from the state. Along a motion, by
+the chain rule along a path and Hamilton's equations,
+\begin{equation*}
+   \frac{\dd A}{\dd t} = \frac{\partial A}{\partial q}\,\dot{q}
+   + \frac{\partial A}{\partial p}\,\dot{p}
+   = \frac{\partial A}{\partial q}\,\frac{\partial H}{\partial p}
+   - \frac{\partial A}{\partial p}\,\frac{\partial H}{\partial q} .
+\end{equation*}
+The combination on the right is called the Poisson bracket of $A$ and
+$H$. For any two quantities $A$ and $B$ of the state it is defined as
+\begin{equation}
+   \pb{A}{B} = \frac{\partial A}{\partial q}\,\frac{\partial B}{\partial p}
+   - \frac{\partial A}{\partial p}\,\frac{\partial B}{\partial q} ,
+   \label{eq:ha-bracket}
+\end{equation}
+with a sum of such terms, one for each pair $q_k$, $p_k$, when there are
+several coordinates. So
+\begin{equation*}
+   \frac{\dd A}{\dd t} = \pb{A}{H} .
+\end{equation*}
+Exchanging $A$ and $B$ in \cref{eq:ha-bracket} exchanges the two
+products, so $\pb{B}{A} = -\pb{A}{B}$; with $B = A$ this reads $\pb{A}{A}
+= -\pb{A}{A}$, so the bracket of any quantity with itself is zero. Four cases follow at once. With $A = q$ and $B = p$,
+$\partial q/\partial q = 1$, $\partial p/\partial p = 1$ and the cross
+derivatives are zero, so $\pb{q}{p} = 1$. With $A = q$, $\pb{q}{H} =
+\partial H/\partial p$, and with $A = p$, $\pb{p}{H} = -\partial H/
+\partial q$: Hamilton's equations themselves. With $A = H$, $\pb{H}{H} =
+0$: the energy is conserved. More generally, a quantity that does not
+contain the time is conserved when its bracket with $H$ is zero, and only
+then.
+For the puck, $H = p_r^2/(2m) + p_\theta^2/(2mr^2) + U(r)$ does not contain
+$\theta$. In the sum over the pairs $(r, p_r)$ and $(\theta, p_\theta)$
+the only derivative of $p_\theta$ that is not zero is $\partial p_\theta/
+\partial p_\theta = 1$, so $\pb{p_\theta}{H} = -\partial H/\partial\theta =
+0$, and the
+angular momentum $p_\theta$ is conserved; \cref{ex:ha-lz} finds the same in
+Cartesian coordinates.
+
+\begin{bridge}
+Dirac found that the equations of quantum mechanics follow from the
+classical ones when the Poisson bracket $\pb{A}{B}$ is replaced by the
+commutator $(AB - BA)/(\mathrm{i}\hbar)$ of the corresponding
+operators\cite{Dirac1925}. Then $\pb{q}{p} = 1$ becomes $qp - pq =
+\mathrm{i}\hbar$, and $\dd A/\dd t = \pb{A}{H}$ becomes Heisenberg's
+equation of motion. A quantity that commutes with the Hamiltonian is
+conserved in both.
+\end{bridge}
+
+\subsection*{The Liouville operator}
+
+The bracket with $H$ is an instruction that turns any quantity into its
+rate of change. Writing it as $\Liou$,
+\begin{equation*}
+   \Liou A = \pb{A}{H}
+   = \dot{q}\,\frac{\partial A}{\partial q}
+   + \dot{p}\,\frac{\partial A}{\partial p} ,
+\end{equation*}
+where $\dot{q} = \partial H/\partial p$ and $\dot{p} = -\partial H/
+\partial q$ are written in terms of $q$ and $p$. An instruction of this
+kind, which acts on a function to give another, is called an operator,
+as $\dd/\dd x$ is the operator that gives a derivative; $\Liou$ is the
+Liouville operator. The result $\Liou A$ is again a quantity of the
+state, so its own rate of change is $\Liou(\Liou A)$, written $\Liou^2A$,
+and this is the second derivative of $A$ along the motion. Repeating,
+the $n$th derivative of $A$ along the motion is $\Liou^nA$. The Taylor
+series of \cref{sec:mo-taylor}, taken about the start of the motion,
+then gives
+\begin{equation}
+      A\bigl(q(t), p(t)\bigr) = A + t\,\Liou A + \frac{t^2}{2!}\,\Liou^2A
+   + \frac{t^3}{3!}\,\Liou^3A + \dotsb
+   = \sum_{n=0}^{\infty}\frac{t^n}{n!}\,\Liou^nA ,
+   \label{eq:ha-series}
+\end{equation}
+with every term on the right computed at the starting state $(q_0, p_0)$
+and $\Liou^0A = A$. For the functions of \cref{sec:mo-taylor} the infinite
+series converges at every $t$; in general only the series stopped after a
+few terms can be relied on, and only over a short time.
+
+For a ball thrown straight up, $H = p^2/(2m) + mgq$, so $\dot{q} = p/m$,
+$\dot{p} = -mg$ and $\Liou = (p/m)\,\partial/\partial q - mg\,\partial/
+\partial p$. Applying it to $q$ repeatedly,
+\begin{equation*}
+   \Liou q = \frac{p}{m} , \qquad
+   \Liou^2q = \Liou\frac{p}{m} = -mg\times\frac{1}{m} = -g , \qquad
+   \Liou^3q = \Liou(-g) = 0 ,
+\end{equation*}
+since $-g$ contains neither $q$ nor $p$. Every later term is zero too, and
+\cref{eq:ha-series} gives $q(t) = q_0 + p_0t/m - \frac12 gt^2$, the ball
+of \cref{sec:mo-velocity}.
+
+For the block on a spring, $\dot{q} = p/m$, $\dot{p} = -kq$ and $\Liou =
+(p/m)\,\partial/\partial q - kq\,\partial/\partial p$. With $\omega^2 =
+k/m$,
+\begin{align*}
+   \Liou q &= \frac{p}{m} ,
+   & \Liou^2q &= \Liou\frac{p}{m} = -\frac{kq}{m} = -\omega^2q ,\\
+   \Liou^3q &= -\omega^2\,\Liou q = -\omega^2\,\frac{p}{m} ,
+   & \Liou^4q &= -\omega^2\,\Liou^2q = \omega^4q ,
+\end{align*}
+since $\Liou$ of a constant times a quantity is the constant times $\Liou$
+of the quantity. The pattern repeats every two steps, each pair bringing
+a factor $-\omega^2$. Term by term, \cref{eq:ha-series} gives
+\begin{equation*}
+   q(t) = q_0 + t\,\frac{p_0}{m} - \frac{t^2}{2!}\,\omega^2q_0
+   - \frac{t^3}{3!}\,\omega^2\,\frac{p_0}{m} + \frac{t^4}{4!}\,\omega^4q_0
+   + \dotsb .
+\end{equation*}
+Gathering the terms in $q_0$ and in $p_0$ separately, and writing each
+power of $t$ with the matching power of $\omega$, which for the terms in
+$p_0$ means writing $p_0/m = \bigl(p_0/(m\omega)\bigr)\,\omega$,
+\begin{align*}
+   q(t) &= q_0\Bigl(1 - \frac{(\omega t)^2}{2!} + \frac{(\omega t)^4}{4!}
+   - \dotsb\Bigr)
+   + \frac{p_0}{m\omega}\Bigl(\omega t - \frac{(\omega t)^3}{3!}
+   + \dotsb\Bigr)\\
+   &= q_0\cos\omega t + \frac{p_0}{m\omega}\sin\omega t ,
+\end{align*}
+by the series of \cref{eq:mo-sin-series}. With $p_0 = mv_0$ this is
+\cref{eq:ne-spring-solution}. For the pendulum the terms $\Liou^n\theta$
+grow more complicated, and Notebook~07 shows that a few of them follow
+the motion well over a short time but not over a long one. Chapter~9 writes
+the series \cref{eq:ha-series} as an exponential of $t\Liou$ and splits
+$\Liou$ into a part that moves only the positions and a part that moves
+only the momenta, each of which can be followed exactly; that splitting is
+how the standard method of molecular dynamics is derived.
+
+\begin{keyidea}
+Any quantity of the state changes at the rate $\dd A/\dd t = \pb{A}{H} =
+\Liou A$, and is conserved when its Poisson bracket with $H$ is zero.
+Repeating the Liouville operator $\Liou$ gives every derivative of $A$, and
+the Taylor series $\sum_n(t^n/n!)\,\Liou^nA$ gives its value at later
+times from the starting state: at every time for the ball and the spring,
+over a short time in general.
+\end{keyidea}
+
+\notebook{07}{the series of the Liouville operator, term by term}
+
+\begin{selfcheck}
+For the block on a spring, find $\Liou(qp)$. At which states is the
+product $qp$ momentarily not changing?
+\end{selfcheck}

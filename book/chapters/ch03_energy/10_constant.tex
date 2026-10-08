@@ -1,0 +1,134 @@
+%=============================================================================!
+% 3.1  WORK DONE BY A CONSTANT FORCE                                          !
+%=============================================================================!
+\section{Work done by a constant force}
+\label{sec:en-constant}
+
+Pulling a sledge across snow is harder work the harder we pull and the
+further we go. Physics keeps the word work for a quantity built from
+exactly these two ingredients, a force and the distance moved, and this
+section defines it for a force that does not change.
+
+\subsection*{A force along the motion}
+
+When a constant force of size $F$ pushes a body through a distance $d$
+in the direction of the force, the force does the work
+\begin{equation*}
+   W = F d .
+\end{equation*}
+Its unit is the newton metre, called the joule (\si{\joule}): $\SI{1}{
+\joule} = \SI{1}{\newton\metre}$, and since $\SI{1}{\newton} =
+\SI{1}{\kilogram\metre\per\second\squared}$ (\cref{sec:ne-second}),
+$\SI{1}{\joule} = \SI{1}{\kilogram\metre\squared\per\second\squared}$.
+Lifting a box of \SI{2}{\kilogram} through \SI{1.5}{\metre} at a steady
+speed, for instance, takes an upward push equal to its weight, $mg = 2
+\times 9.80665 = \SI{19.6133}{\newton}$, because a body moving at constant
+velocity has no acceleration, and so, by the second law, no net force
+on it (\cref{sec:ne-second}). The push does
+$19.6133\times1.5 = \SI{29.42}{\joule}$ of work. A force that points
+against the motion does negative work: while the box rises, its weight
+points down and does $\SI{-29.42}{\joule}$.
+
+\subsection*{A force at an angle}
+
+The rope of a sledge usually pulls upwards as well as forwards
+(\cref{fig:en-sledge}). We split the pull into two perpendicular parts,
+its components along the motion and across it, as in \cref{sec:ne-force}.
+For a rope pulling with a force of size $F$ at an angle $\theta$ above the
+level snow, these are $F\cos\theta$ along the snow and $F\sin\theta$
+upwards. Only the first is counted as doing work: the work done by a
+constant force $\vb{F}$ while its body moves through a straight
+displacement $\Delta\vb{r}$ is defined as
+\begin{equation}
+   W = \vb{F}\cdot\Delta\vb{r}
+   = \lvert\vb{F}\rvert\,\lvert\Delta\vb{r}\rvert\cos\theta
+   = F_x\,\Delta x + F_y\,\Delta y + F_z\,\Delta z ,
+   \label{eq:en-work-constant}
+\end{equation}
+the scalar product of \cref{sec:mo-plane}, where $\theta$ is now the angle
+between the force and the displacement and $\Delta x$, $\Delta y$ and
+$\Delta z$ are the components of the displacement. The product $\lvert
+\vb{F}\rvert\cos\theta$ is the component of the force along the
+displacement, so \cref{eq:en-work-constant} is that component times the
+distance moved. This is the combination of force and distance worth
+naming, because \cref{sec:en-kinetic,sec:en-varying} show that it is exactly what the
+second law turns into a change of speed: the
+component across the motion bends the path but does not speed the body
+up or slow it down.
+
+For the sledge, take $x$ along the snow and $y$ upwards, a pull of
+\SI{40}{\newton} at $\theta = \ang{30}$, and a displacement of
+\SI{10}{\metre} along the snow. Then $\vb{F} = (40\cos\ang{30},
+40\sin\ang{30}) = (34.64, 20.0)$\,\si{\newton} and $\Delta\vb{r} = (10,
+0)$\,\si{\metre}, so
+\begin{equation*}
+   W = 34.64\times10 + 20.0\times0 = \SI{346.4}{\joule} .
+\end{equation*}
+The upward part of the pull, \SI{20.0}{\newton}, does no work, because
+the sledge does not move upwards.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt},
+   part/.style={-{Stealth[length=4pt]}, line width=0.7pt, dashed}]
+   % the snow and the sledge
+   \fill[black!12] (-0.6,-0.12) rectangle (7.6,0);
+   \draw[line width=0.6pt] (-0.6,0) -- (7.6,0);
+   \draw[line width=0.6pt, fill=black!8] (0,0.12) rectangle (1.6,0.62);
+   \draw[line width=0.8pt] (-0.1,0.06) -- (1.7,0.06) to[out=0, in=-90]
+      (1.95,0.35);
+   % the pull along the rope and its two parts
+   \coordinate (O) at (1.6,0.58);
+   \draw[force, accent] (O) -- ++(30:3.0) coordinate (T)
+      node[above] {\small $\vb{F}$, \SI{40}{\newton}};
+   \draw[part] (O) -- ++(2.598,0) node[pos=0.72, below, inner sep=1.5pt]
+      {\small $F\cos\theta$} coordinate (X);
+   \draw[part] (X) -- (T) node[midway, right] {\small $F\sin\theta$};
+   \draw[black!50, line width=0.4pt] ($(O)+(0.9,0)$) arc[start angle=0,
+      end angle=30, radius=0.9];
+   \node at ($(O)+(1.22,0.24)$) {\small $\theta$};
+   % the displacement
+   \draw[force] (0.0,-0.5) -- (5.0,-0.5)
+      node[midway, below] {\small displacement $\Delta\vb{r}$, \SI{10}{\metre}};
+\end{tikzpicture}
+\caption{A sledge pulled along level snow by a rope at an angle $\theta$.
+The pull $\vb{F}$ (teal) has a component $F\cos\theta$ along the snow,
+which does work, and a component $F\sin\theta$ across the motion, which
+does none.}
+\label{fig:en-sledge}
+\end{figure}
+
+\Cref{eq:en-work-constant} gives every case at once. A force with a
+component along the displacement, $0 \le \theta < \pi/2$, does positive
+work; a force with a component against it, $\pi/2 < \theta \le \pi$,
+does negative work; and a force perpendicular to the displacement,
+$\theta = \pi/2$, does none, since $\cos(\pi/2) = 0$. The normal force of
+a level floor on a block sliding across it, and the weight of that block,
+both point vertically, across the horizontal motion, and so do no work on
+the block.
+
+\subsection*{Several forces}
+
+When several constant forces act on one body, their works add up to the
+work of the net force. The scalar product is a sum of products of
+components, and each component of the net force is the sum of the
+components of the separate forces, so, for two forces,
+\begin{align*}
+   (\vb{F}_1 + \vb{F}_2)\cdot\Delta\vb{r}
+   &= (F_{1x} + F_{2x})\,\Delta x + (F_{1y} + F_{2y})\,\Delta y
+      + (F_{1z} + F_{2z})\,\Delta z\\
+   &= (F_{1x}\,\Delta x + F_{1y}\,\Delta y + F_{1z}\,\Delta z)
+      + (F_{2x}\,\Delta x + F_{2y}\,\Delta y + F_{2z}\,\Delta z)
+      && \text{regrouping}\\
+   &= \vb{F}_1\cdot\Delta\vb{r} + \vb{F}_2\cdot\Delta\vb{r} ,
+\end{align*}
+and the same regrouping works for any number of forces. For the box lifted
+at a steady speed, the push does \SI{29.42}{\joule}, the weight
+\SI{-29.42}{\joule}, and the net force, which is zero, does none.
+
+\begin{selfcheck}
+A waiter carries a tray at a constant height and a steady speed across a
+room. How much work does the upward push of the waiter's hand do on the
+tray?
+\end{selfcheck}

@@ -1,0 +1,32 @@
+%=============================================================================!
+% E.2  PRECISION AND DEVICES                                                  !
+%=============================================================================!
+\section{Precision and devices}
+\label{sec:env-precision}
+
+A computer stores a real number in floating point: a fixed number of
+significant binary digits and an exponent. Double precision
+(\texttt{float64}) keeps 53 binary digits and single precision
+(\texttt{float32}) keeps 24, so the gap between a number $x$ and the next
+representable one is about $2^{-52}\lvert x\rvert$ in the first case and
+$2^{-23}\lvert x\rvert$ in the second. The size of that gap decides which
+changes in a quantity can be seen at all. The potential energy of a
+simulation cell is a sum over every atom and grows with their number;
+for a total energy of \EnvTotalEnergy, the gap is \EnvGapDouble{} in
+double precision and \EnvGapSingle{} in single precision. Conservation of
+energy, the test of an integrator in Chapter~4, is judged by changes in
+the total energy far smaller than the energy itself, and a change smaller
+than the gap is lost in rounding. Integrators and every test of energy
+conservation in this book therefore run in double precision.
+
+Training a neural network is usually done in single precision, which
+halves the memory of every stored number and is the arithmetic for which
+graphics processors (GPUs) are built; Chapter~14 checks for our own models
+that the choice does not change the result. PyTorch reaches the GPU of a recent
+Mac through its Metal backend, \texttt{mps}, which supports single but not
+double precision: asking it for a \texttt{float64} tensor raises
+\EnvMpsError. The division of labour in this book follows from that.
+Integration and conservation studies run on the CPU in double precision;
+network training may run on the \texttt{mps} device or a CUDA GPU in
+single precision, and where the book uses a GPU it measures the speed-up
+against the CPU rather than assuming one.

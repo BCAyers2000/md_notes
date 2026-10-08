@@ -1,0 +1,188 @@
+%=============================================================================!
+% 12.6  EQUAL SHARES AND THE KINETIC TEMPERATURE                              !
+%=============================================================================!
+\section{Equal shares and the kinetic temperature}
+\label{sec:sm-equipartition}
+
+\Cref{sec:en-friction} said that the warmth of rubbing surfaces is the
+hidden energy of their jiggling atoms. This section finds how that energy
+is shared among the ways the atoms can move, and from the share of the
+kinetic energy defines the temperature that a simulation measures.
+
+\subsection*{The equipartition theorem}
+
+We take $x$ to be any one coordinate or momentum of a system in the
+canonical ensemble, whose range runs from $x_1$ to $x_2$, and require
+$x\,\mathrm{e}^{-\beta H}$ to vanish at both ends, as it does for a
+momentum, whose range is unbounded and where the exponential falls faster
+than $x$ grows, or for a coordinate held in by a potential that rises
+without limit, walls included. The average of $x$ times the slope of $H$
+along it is
+\begin{equation*}
+   \Bigl\langle x\,\frac{\partial H}{\partial x}\Bigr\rangle
+   = \frac1Z\int x\,\frac{\partial H}{\partial x}\,\mathrm{e}^{-\beta H}
+   \,\dd\Gamma ,
+\end{equation*}
+and the integral over $x$, with every other coordinate and momentum held
+fixed, can be done by parts, since by the chain rule
+$\partial(\mathrm{e}^{-\beta H})/\partial x = -\beta\,(\partial H/\partial
+x)\,\mathrm{e}^{-\beta H}$:
+\begin{align*}
+   \int_{x_1}^{x_2}x\,\frac{\partial H}{\partial x}\,\mathrm{e}^{-\beta H}
+   \,\dd x
+   &= -\frac1\beta\int_{x_1}^{x_2}x\,\frac{\partial(\mathrm{e}^{-\beta H})}
+   {\partial x}\,\dd x\\
+   &= -\frac1\beta\Bigl[x\,\mathrm{e}^{-\beta H}\Bigr]_{x_1}^{x_2}
+   + \frac1\beta\int_{x_1}^{x_2}\mathrm{e}^{-\beta H}\,\dd x
+   && \text{parts, with $f = x$,}\\
+   &= \kB T\int_{x_1}^{x_2}\mathrm{e}^{-\beta H}\,\dd x
+   && \text{the bracket vanishes.}
+\end{align*}
+Integrating over the other coordinates and momenta too, and dividing by
+$Z = \int\mathrm{e}^{-\beta H}\,\dd\Gamma$,
+\begin{equation}
+   \Bigl\langle x\,\frac{\partial H}{\partial x}\Bigr\rangle = \kB T ,
+   \label{eq:sm-equipartition}
+\end{equation}
+whatever $x$ is and whatever the rest of $H$. When $H$ contains $x$ only
+through a term $\frac12ax^2$, then $x\,\partial H/\partial x = ax^2$, twice
+that term, and the term has the average $\frac12\kB T$. Every term of the
+energy that is the square of a coordinate or momentum appearing in no
+other term holds, on average, $\frac12\kB T$, whatever its coefficient:
+this is the equipartition of energy. A square whose variable appears
+elsewhere too, as $x$ does in $\frac12x^2 + \frac12y^2 + cxy$, need not. Chapter~14 uses \cref{eq:sm-equipartition} for the positions to
+find the pressure.
+
+Three cases recur in this book.
+\begin{itemize}
+\item Each component of momentum enters $H$ as $p_{ix}^2/2m_i$, so, when
+   the total momentum is free, $\ens{\frac12m_iv_{ix}^2} = \frac12\kB T$
+   for every atom and direction,
+   whatever its mass and whatever the forces on it. At \SI{300}{\kelvin}
+   that is \SI{12.93}{\milli\electronvolt}, the share given to each
+   freedom of the water of \cref{sec:cs-water}.
+\item A vibration of small amplitude has $H = p^2/2m + \frac12kx^2$, two
+   squares, and holds $\frac12\kB T$ as kinetic and $\frac12\kB T$ as
+   potential energy, $\kB T$ in all, as \cref{sec:sm-canonical} found from
+   its partition function. \Cref{sec:os-energy} found the same equal
+   division as an average over one period of one oscillator; here it is an
+   average over the ensemble.
+\item A molecule of two atoms turning freely has, in the angle $\theta$
+   of its axis from the $z$ axis and the angle $\phi$ about it, $H = p_\theta^2/2I + p_\phi^2/(2I\sin^2\theta)$
+   (\cref{ex:sm-rotor}). Each term is the square of a momentum, so each
+   holds $\frac12\kB T$, and the turning holds $\kB T$ in all, as
+   \cref{sec:ro-molecules} assumed.
+\end{itemize}
+A term that is not a square does not hold $\frac12\kB T$: the potential
+energy of a liquid, made of Lennard-Jones terms, has no simple share. The
+kinetic energy is always a sum of squares, which is why it serves as the
+thermometer.
+
+\subsection*{The kinetic temperature}
+
+With $N_{\mathrm f}$ freedoms, each holding $\frac12\kB T$ of kinetic
+energy on average, $\ens{K} = \frac12N_{\mathrm f}\kB T$, and the
+instantaneous kinetic temperature
+\begin{equation}
+   T_{\mathrm{kin}} = \frac{2K}{N_{\mathrm f}\kB}
+   \label{eq:sm-kinetic-temperature}
+\end{equation}
+has the temperature $T$ as its average. It is what a simulation reports
+as `the temperature' at each step; it fluctuates, by an amount
+\cref{sec:sm-kinetic} finds. In an isolated system the kinetic
+temperature's average differs from the $T$ of \cref{eq:sm-temperature} by
+terms of order $1/N$: for the ideal gas of \cref{sec:sm-micro}, $\kB T =
+E/(\frac32N - 1)$, while $2K/(3N\kB)$ with $K = E$ gives $\kB
+T_{\mathrm{kin}} = E/\frac32N$, smaller by the factor $1 - 2/(3N)$.
+
+Counting $N_{\mathrm f}$ is where errors enter. $N$ atoms have $3N$
+components of velocity, and each independent restriction on them removes one.
+\begin{itemize}
+\item A periodic run whose drift has been removed keeps its total
+   momentum at zero (\cref{sec:md-start}), so its velocities satisfy three
+   conditions, $\sum_im_i\vb{v}_i = \vb{0}$, and the kinetic energy is
+   shared among $3N - 3$ freedoms.
+\item Each distance held by RATTLE removes the component of relative
+   velocity along it (\cref{sec:cs-rattle}): $n_{\mathrm c}$ independent held distances
+   remove $n_{\mathrm c}$ freedoms.
+\item An isolated molecule whose turning has also been removed has three
+   more conditions, or two if it is linear (\cref{sec:ro-freedom}),
+   leaving $3N - 6$, or $3N - 5$.
+\end{itemize}
+In the mass-weighted components $u_k = \sqrt{m_k}\,v_k$, the kinetic
+energy is $K = \frac12\sum_ku_k^2$, half the squared length of $\vb{u}$,
+and each restriction is a condition that $\vb{u}$ be at right angles to a
+direction fixed by the positions at that instant: for the drift along $x$, $\sum_i\sqrt{m_i}\,u_{ix} = 0$.
+Writing $\vb{u} = \sum_kc_k\vb{e}_k$ along $3N$ directions of length 1 at
+right angles to one another, the first $n$ chosen to span the directions
+that $n$ restrictions fix, gives $K = \frac12\sum_kc_k^2$ as in
+\cref{sec:os-modes}, with $c_1$ to $c_n$ held at zero: a sum of $3N - n$
+squares, each holding $\frac12\kB T$. So a periodic run with its drift
+removed has $N_{\mathrm f} = 3N - n_{\mathrm c} - 3$, which
+\texttt{mdlab.statmech.degrees\_of\_freedom} returns: 765 for 256 argon
+atoms, and 381 for the 64 rigid water molecules of Chapter~11.
+\texttt{kinetic\_temperature} then applies \cref{eq:sm-kinetic-temperature}.
+
+The count shows in the measurements of \cref{sec:sm-maxwell}. The
+kinetic energy of 765 freedoms is spread over 768 components of
+velocity, so the components' mean square is $765/768$ of $\kB T/m$, and
+their standard deviation $\sqrt{765/768} = 0.99804$ of $\sigma_v$:
+$0.99804\times0.001674 = \SI{0.001671}{\angstrom\per\femto\second}$, the
+value measured. ASE's \texttt{get\_temperature} divides by $3N$ less the
+freedoms its constraints remove, and does not take off three for the
+drift. On the last frame of the liquid, \texttt{mdlab} gives
+\SI{137.7961}{\kelvin} and ASE \SI{137.2579}{\kelvin}, in the ratio
+0.996094, which is $765/768$; the two agree once they count alike.
+
+\subsection*{Shares between species, and with the potential}
+
+Equipartition gives every atom the same mean kinetic energy whatever its
+mass, so the heavier atoms of a mixture move more slowly and are no
+colder. A liquid of 256 atoms with argon's forces, half of mass
+\SI{39.948}{\amu} and half of \SI{83.798}{\amu}, the mass of krypton,
+started with velocities drawn at \SI{130}{\kelvin}, has its light atoms at
+\SI{126}{\kelvin} and its heavy atoms at \SI{124}{\kelvin} over the last
+\SI{10}{\pico\second} of \SI{20}{\pico\second}, each temperature counting
+the three components of each atom of the species. Whether a gap of
+\SI{2}{\kelvin} is a real difference or the noise of a short run is the
+question of Chapter~15.
+
+Equipartition also explains what \cref{sec:md-start} saw. A crystal
+started on its lattice has no potential energy above its minimum, and its
+vibrations, nearly harmonic, take half of the kinetic energy they are
+given: each ends with $\frac12\kB T$ of each kind. The 500 argon atoms of
+that section lost half of their kinetic energy within
+\SI{0.1}{\pico\second}, and 256 atoms on their lattice at the spacing of
+ASE's reference value\cite{Larsen2017}, $a = \SI{5.26}{\angstrom}$, a
+little below the model's \SI{5.267}{\angstrom}, which squeezes the cell
+slightly but leaves the lattice, by its symmetry, where every force
+vanishes, given velocities at \SI{40}{\kelvin}
+(a kinetic temperature of \SI{41.5}{\kelvin}, by the scatter of
+\cref{sec:sm-kinetic}), settle at \SI{21.0}{\kelvin}, 0.506 of the start.
+A liquid has no such simple ratio, since its potential energy is not a sum
+of squares.
+
+\begin{practice}
+Velocities drawn at a temperature set only the kinetic energy. A crystal
+started on its lattice ends near half the temperature asked for, and a
+system started anywhere else ends somewhere that has to be found by
+running. A run is at the temperature asked for only after that
+temperature has been measured over the run; a thermostat (Chapter~13)
+holds it there.
+\end{practice}
+
+\begin{keyidea}
+Every term of the energy that is the square of a coordinate or momentum
+appearing in no other term holds $\frac12\kB T$ on average. The kinetic energy is such a sum, which
+makes $T_{\mathrm{kin}} = 2K/(N_{\mathrm f}\kB)$ a thermometer, with
+$N_{\mathrm f} = 3N - n_{\mathrm c} - 3$ in a periodic run whose drift is
+removed. Atoms of every mass share alike; a harmonic crystal shares
+equally between kinetic and potential energy.
+\end{keyidea}
+
+\notebook{12}{count the freedoms of a run and compare the temperature with ASE's}
+
+\begin{selfcheck}
+A box of 100 rigid water molecules, drift removed, has a kinetic energy
+of \SI{7.4}{\electronvolt}. What is its kinetic temperature?
+\end{selfcheck}

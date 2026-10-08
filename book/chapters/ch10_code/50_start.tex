@@ -1,0 +1,109 @@
+%=============================================================================!
+% 10.5  STARTING A SIMULATION                                                 !
+%=============================================================================!
+\section{Starting a simulation}
+\label{sec:md-start}
+
+A run needs a starting state: positions inside the cell and a velocity
+for every atom. This section builds crystals from their cells, places
+them at the spacing their model prefers, and gives the atoms velocities
+with no drift, as \cref{sec:ne-atoms} promised.
+
+\subsection*{Positions from a crystal}
+
+A crystal is a cell and the fractional coordinates of the atoms in it.
+The face-centred cubic lattice of argon has a cubic cell of side $a$ with
+an atom at each corner and at the centre of each face. A corner is shared
+by the eight cells that meet there and a face by two, so each cell holds
+$8\times\frac18 + 6\times\frac12 = 4$ atoms, at
+\begin{equation*}
+   (0, 0, 0) , \quad (0, \tfrac12, \tfrac12) , \quad (\tfrac12, 0, \tfrac12) ,
+   \quad (\tfrac12, \tfrac12, 0) ,
+\end{equation*}
+and graphite's hexagonal cell of \cref{sec:md-image} has four, at $(0, 0,
+\frac14)$, $(0, 0, \frac34)$, $(\frac13, \frac23, \frac14)$ and $(\frac23,
+\frac13, \frac34)$, two in each layer, with the layers shifted against each
+other\cite{TrucanoChen1975}. A supercell of $n_1\times n_2\times n_3$ cells
+has the lattice vectors multiplied by $n_1$, $n_2$ and $n_3$, and an atom
+at $\vb{s}$ in the cell numbered $(k_1, k_2, k_3)$ has the fractional
+coordinates $((s_1 + k_1)/n_1, (s_2 + k_2)/n_2, (s_3 + k_3)/n_3)$ in the
+supercell. Libraries such as ASE\cite{Larsen2017} build such structures
+too, and Notebook~10 checks the positions built here against ASE's.
+
+The spacing matters. A crystal started away from the spacing at which its
+model's energy is least is squeezed or stretched, and pushes on its cell;
+Chapter~14 measures that push, the pressure. For the Lennard-Jones model
+with the energy switched off between $2\sigma$ and $2.5\sigma$
+(\cref{sec:pe-cutoffs}), the energy per atom of the face-centred cubic
+lattice is least at $a_0 = 1.54916\sigma$, with neighbours $a_0/\sqrt2 =
+1.0954\sigma$ apart (from $(0, 0, 0)$ to $(0, \frac12, \frac12)a_0$, a
+distance $a_0\sqrt{\frac14 + \frac14}$), and an energy of
+$-7.819\varepsilon$ per atom, found by
+minimising the sum over pairs with respect to $a$. With $\sigma =
+\SI{3.4}{\angstrom}$ that is $a_0 = \SI{5.267}{\angstrom}$, the spacing
+used for argon below.
+
+\subsection*{Velocities}
+
+Temperature, which will set how much kinetic energy to give, is defined in
+Chapter~12. Until then we choose the kinetic energy directly. The function
+\texttt{starting\_velocities} of \texttt{mdlab.md} draws each component at
+random, removes the drift of the centre of mass, and scales the velocities
+to the chosen kinetic energy:
+
+\begin{code}
+    m = np.asarray(masses, dtype=float)
+    v = rng.normal(size=(len(m), 3)) / np.sqrt(m)[:, None]
+    v -= (m @ v) / m.sum()
+    kinetic = 0.5 * mv2_to_energy * float(m @ (v * v).sum(1))
+    return v * np.sqrt(kinetic_energy / kinetic)
+\end{code}
+
+\noindent Line 2 draws numbers from the normal distribution of width 1,
+the bell-shaped spread of \texttt{rng.normal} that Chapter~12 derives, and
+divides each atom's by $\sqrt{m_i}$: a component $x/\sqrt{m_i}$ carries
+the kinetic energy $\frac12m_i(x/\sqrt{m_i})^2 = \frac12x^2$, whatever the
+mass, so light and heavy atoms carry the same kinetic energy on average.
+Line 3 subtracts the velocity of the centre of mass, $\vb{P}/M$
+(\cref{sec:ne-atoms}). Line 4 is the kinetic energy, with
+\texttt{mv2\_to\_energy} the factor \texttt{MV2\_TO\_EV} of
+\cref{eq:en-mv2}, or 1 in reduced units, and line 5 scales every velocity by the same factor, which keeps the total
+momentum zero. In a periodic cell the angular momentum is not conserved
+(\cref{sec:md-periodic}) and is left alone.
+
+\subsection*{Where the energy goes}
+
+Started on its lattice with only kinetic energy, a crystal does not keep
+it. \Cref{fig:md-run}(a) of the next section follows 500 argon atoms
+started at $a_0$ with \SI{0.02}{\electronvolt} of kinetic energy per atom:
+within \SI{0.1}{\pico\second} the kinetic energy falls to half, it
+overshoots to \SI{0.0057}{\electronvolt} at \SI{0.14}{\pico\second}, and
+between 0.5 and \SI{1}{\pico\second} it averages
+\SI{0.0104}{\electronvolt}, as it does over the last \SI{10}{\pico\second}
+of a \SI{20}{\pico\second} run. Near its minimum the crystal vibrates in
+normal modes (\cref{sec:os-modes}), and a vibration shares its energy
+equally, on average, between kinetic and potential (\cref{sec:os-energy}).
+Three of the modes move every atom together and have no restoring force,
+but the velocities carry no drift, so they hold no energy. All the energy started as kinetic, so on average
+half moves into the potential energy. The share left as kinetic energy is
+0.518 of the start at \SI{0.02}{\electronvolt} per atom, 0.506 at
+\SI{0.005}{\electronvolt} and 0.502 at \SI{0.002}{\electronvolt}: the
+excess over a half shrinks with the energy, as the wells look more nearly
+parabolic to smaller vibrations. A run started this way therefore needs a
+first stretch, discarded before measuring, in which the energy settles
+between its two forms.
+
+\begin{keyidea}
+Positions come from a crystal's cell and fractional coordinates,
+replicated into a supercell at the spacing the model prefers. Velocities
+are drawn at random, stripped of the drift of the centre of mass, and
+scaled to the chosen kinetic energy; started on its lattice, a crystal
+then passes about half of that energy to its potential energy.
+\end{keyidea}
+
+\notebook{10}{build a supercell and give it velocities}
+
+\begin{selfcheck}
+How many atoms has a supercell of $5\times5\times5$ face-centred cubic
+cells, and how long is its side for $a_0 = \SI{5.267}{\angstrom}$?
+\end{selfcheck}

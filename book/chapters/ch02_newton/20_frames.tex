@@ -1,0 +1,192 @@
+%=============================================================================!
+% 2.2  FRAMES OF REFERENCE                                                    !
+%=============================================================================!
+\section{Frames of reference}
+\label{sec:ne-frames}
+
+Every position in Chapter~1 was measured from some origin, along some
+axes, with times read from some clock. That choice is called a frame of
+reference. \Cref{sec:mo-atoms} used the word frame for a saved snapshot
+of positions, so here we always say frame of reference in full. Two
+observers moving relative to each other use different frames of
+reference and describe the same motion differently. This section works
+out how their descriptions are related, which tells us from which frames
+of reference the first law can hold.
+
+\subsection*{One throw seen from two frames of reference}
+
+A train runs along a straight, level track at a constant velocity
+$\vb{u}$. We take the $x$ axis along the track in the direction of travel
+and the $y$ axis vertically upwards, so that $\vb{u} = (5,
+0)$\,\si{\metre\per\second}. A passenger throws a ball straight up, as
+the passenger sees it, at \SI{6}{\metre\per\second}. To the passenger the
+ball rises and falls along a vertical line and lands back in the hand
+(\cref{fig:ne-frames}a). Someone standing on the platform sees the same
+ball travel forwards with the train while it rises and falls, and so
+trace out a parabola (\cref{fig:ne-frames}b). Both descriptions are
+correct; they differ because they are made from different frames of
+reference.
+
+\begin{figure}[tb]
+\centering
+\includegraphics{ch02_newton/frames}
+\caption{A ball thrown straight up at \SI{6}{\metre\per\second} by a
+passenger in a train moving at $\vb{u} = (5, 0)$\,\si{\metre\per\second},
+at five equally spaced times from the throw to the catch
+\SI{1.224}{\second} later. (a) In the frame of reference of the train
+the ball moves on a vertical line; it passes the same heights on the way
+up and down, so the five positions show as three. Arrows give its
+acceleration. (b) In the frame of reference of the platform it follows a
+parabola, with velocity (teal) and acceleration (dark red); squares mark
+the passenger's hand. (c) The velocities at the second instant, $t = 1.224/4 =
+\SI{0.306}{\second}$, when the passenger sees the ball rising at $6 -
+9.80665\times0.306 = \SI{3}{\metre\per\second}$: the platform sees $\vb{v}$, which is the velocity
+$\vb{v}' = (0, 3)$\,\si{\metre\per\second} seen in the train plus the
+velocity $\vb{u}$ of the train.}
+\label{fig:ne-frames}
+\end{figure}
+
+To relate the two descriptions, the platform observer measures positions
+from a fixed mark on the platform, the passenger measures them from the
+hand, and both sets of axes point the same way. The hand moves at the
+constant velocity $\vb{u}$, so by \cref{eq:mo-constant} with zero
+acceleration it is at $\vb{r}_0 + \vb{u}t$ at time $t$, where $\vb{r}_0$
+is its position at $t = 0$. To go from the mark to the ball we can go
+first from the mark to the hand and then from the hand to the ball
+(\cref{fig:ne-positions}), and adding these two vectors gives the
+position $\vb{r}$ of the ball seen from the platform in terms of its
+position $\vb{r}'$ seen from the hand,
+\begin{equation*}
+   \vb{r} = \vb{r}_0 + \vb{u}t + \vb{r}' .
+\end{equation*}
+Subtracting $\vb{r}_0 + \vb{u}t$ from both sides gives the position seen
+in the train,
+\begin{equation}
+   \vb{r}' = \vb{r} - \vb{r}_0 - \vb{u}t .
+   \label{eq:ne-galilean}
+\end{equation}
+Here we have assumed that both observers read the same time $t$ from
+their clocks, which is true to an excellent approximation for every speed
+far below that of light, about \SI{3e8}{\metre\per\second}, and so for
+everything in this book.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.15, line cap=round,
+   vec/.style={-{Stealth[length=5pt]}, line width=0.9pt}]
+   \coordinate (O) at (0,0);
+   \coordinate (H) at (3.2,0.35);
+   \coordinate (B) at (3.9,2.0);
+   \draw[vec] (O) -- (H) node[midway, below] {\small $\vb{r}_0 + \vb{u}t$};
+   \draw[vec] (H) -- (B) node[midway, right] {\small $\vb{r}'$};
+   \draw[vec, accent] (O) -- (B) node[midway, above left] {\small $\vb{r}$};
+   \fill (O) circle (1.6pt) node[below left] {\small mark on the platform};
+   \fill (H) circle (1.6pt) node[below right] {\small hand};
+   \fill[accent] (B) circle (2pt) node[above right] {\small ball};
+\end{tikzpicture}
+\caption{The position $\vb{r}$ of the ball seen from the platform is the
+position $\vb{r}_0 + \vb{u}t$ of the hand plus the position $\vb{r}'$ of
+the ball seen from the hand.}
+\label{fig:ne-positions}
+\end{figure}
+
+\subsection*{Velocities and accelerations}
+
+Differentiating \cref{eq:ne-galilean} with respect to time relates the
+velocities. The starting point $\vb{r}_0$ is fixed, so its derivative is
+zero, and the derivative of $\vb{u}t$ is $\vb{u}$ because $\vb{u}$ is
+constant:
+\begin{align*}
+   \frac{\dd\vb{r}'}{\dd t}
+   &= \frac{\dd\vb{r}}{\dd t} - \frac{\dd\vb{r}_0}{\dd t}
+      - \frac{\dd(\vb{u}t)}{\dd t}
+      && \text{differentiating each term}\\
+   &= \vb{v} - \vb{0} - \vb{u}
+      && \text{$\vb{r}_0$ fixed, $\vb{u}$ constant,}
+\end{align*}
+so that
+\begin{equation}
+   \vb{v}' = \vb{v} - \vb{u} .
+   \label{eq:ne-velocity-frames}
+\end{equation}
+The velocity seen in the train is the velocity seen from the platform,
+less the velocity of the train. Differentiating once more, $\vb{u}$ is
+constant and drops out entirely, and the two observers find the same
+acceleration,
+\begin{equation*}
+   \vb{a}' = \vb{a} .
+\end{equation*}
+
+For the throw, the passenger sees the ball leave the hand with velocity
+$\vb{v}' = (0, 6)$\,\si{\metre\per\second}, so the platform sees it leave
+with $\vb{v} = \vb{v}' + \vb{u} = (5, 6)$\,\si{\metre\per\second}, a
+speed of $(5^2 + 6^2)^{1/2} = \SI{7.810}{\metre\per\second}$.
+\Cref{fig:ne-frames}(c) draws this sum at a later instant. Both observers
+see the same acceleration, $(0, -g)$, and, because $\vb{u}$ has no
+vertical component, the same vertical starting velocity,
+\SI{6}{\metre\per\second}, so they see the same vertical motion. By
+\cref{eq:mo-constant,eq:mo-v2}, the ball rises for $6/g =
+\SI{0.612}{\second}$ to a greatest height of $6^2/2g = \SI{1.835}{\metre}$
+and falls back in the same time, landing after \SI{1.224}{\second}. In
+that time the platform observer sees it travel $5\times1.224 =
+\SI{6.12}{\metre}$ along the track, which is exactly how far the hand has
+moved, so the passenger catches it.
+
+\subsection*{Inertial frames of reference}
+
+Positions and velocities depend on the frame of reference, but
+accelerations do not, for any two frames of reference moving at constant
+velocity relative to each other. The agreement fails when one of them
+accelerates. If the train brakes, the hand no longer moves at constant
+velocity. We write its position as some function $\vb{s}(t)$, which for
+the steady train was $\vb{r}_0 + \vb{u}t$. The same subtraction then
+gives $\vb{r}' = \vb{r} - \vb{s}(t)$, and differentiating twice,
+\begin{equation*}
+   \vb{a}' = \vb{a} - \frac{\dd^2\vb{s}}{\dd t^2} .
+\end{equation*}
+The two observers now disagree about accelerations, by exactly the
+acceleration of the train. Picture a cup on a smooth table in the train.
+If the train slows at \SI{2}{\metre\per\second\squared}, its acceleration
+is $\dd^2\vb{s}/\dd t^2 = (-2, 0)$\,\si{\metre\per\second\squared},
+pointing backwards. Nothing pushes the cup along the track, so from the
+platform $\vb{a} = \vb{0}$, and the passenger sees $\vb{a}' = \vb{0} -
+(-2, 0) = (2, 0)$\,\si{\metre\per\second\squared}: the cup slides
+forwards with nothing pushing it, which breaks the first law, while from the platform it simply
+keeps moving at its old velocity as the train slows beneath it, as the
+first law says.
+
+The first law therefore cannot hold in every frame of reference, and we
+turn this round into a definition. A frame of reference in which a body
+with no net force on it moves at constant velocity is called inertial,
+from inertia, the tendency of a body to keep the velocity it has. What
+experiment adds is that such frames of reference exist. A frame of
+reference fixed to the ground is very nearly inertial. The Earth turns
+once in \SI{86164}{\second} measured against the distant stars. This is
+a little less than the \SI{86400}{\second} of a 24-hour day, which is
+measured against the Sun: the Earth's yearly journey round the Sun adds
+one turn against the stars each year, so $86400\times365.24/366.24 =
+\SI{86164}{\second}$. Its angular speed is therefore $\omega = 2\pi/86164
+= \SI{7.29e-5}{\radian\per\second}$. In a frame of reference with its
+origin at the Earth's centre and its axes pointing at fixed distant
+stars, a point on the equator, carried round a circle of radius $R =
+\SI{6.38e6}{\metre}$, has by \cref{eq:mo-circle} an acceleration of only
+$\omega^2 R = (7.29\times10^{-5})^2\times6.38\times10^6 =
+\SI{0.034}{\metre\per\second\squared}$, about \SI{0.35}{\percent} of
+$g$. By $\vb{a}' = \vb{a} - \dd^2\vb{s}/\dd t^2$, a body with no net
+force on it therefore seems, from the ground, to accelerate by at most
+about this much; the turning of the ground's axes adds effects that are
+smaller still at everyday speeds.
+Since accelerations agree between frames of reference moving at constant
+velocity relative to each other, every frame of reference moving at
+constant velocity relative to the ground is very nearly inertial as well. All three
+of Newton's laws are stated for inertial frames of reference, and from
+here on every motion is described in one.
+
+\notebook{02}{change the train's speed and watch both views of the throw}
+
+\begin{selfcheck}
+A passenger walks towards the back of the train at \SI{1}{\metre\per\second}
+while the train moves forwards at \SI{5}{\metre\per\second}. What is the
+passenger's velocity seen from the platform? Is a spinning roundabout an
+inertial frame of reference?
+\end{selfcheck}

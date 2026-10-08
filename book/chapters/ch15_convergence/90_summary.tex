@@ -1,0 +1,37 @@
+%=============================================================================!
+% 15.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+The mean of $n$ independent samples spreads by $\sigma_x/\sqrt n$, and its
+error is estimated as $s/\sqrt n$; the samples of a run remember their
+predecessors, and $n$ of them are worth $n/g$ independent ones, with the
+statistical inefficiency $g = 1 + 2\sum_k\operatorname{corr}(k)$ estimated
+by summing the autocorrelation function until it first reaches zero, or a
+run of length $t_{\mathrm f}$ worth $t_{\mathrm f}/(2\tau_{\mathrm{int}})$.
+
+Block averages give the same error without the autocorrelation function
+and show by their plateau
+whether the run was long enough to know it. The start of a run is found as
+the one that leaves the most independent samples, a drift as the slope of
+a straight line with its correlated error, and the run a precision needs
+from $t_{\mathrm f} \ge 2\tau_{\mathrm{int}}\sigma_A^2/\sigma^{\ast2}$.
+For liquid argon
+under CSVR the energy-like quantities have $\tau_{\mathrm{int}}$ of about
+\SI{1}{\pico\second}, ten times longer than at fixed energy, because the
+thermostat moves the energy slowly. With these error bars the diffusion
+coefficient is the same under CSVR with $\tau_{\mathrm T} =
+\SI{1}{\pico\second}$, Berendsen coupling with $\tau_{\mathrm T} =
+\SI{0.1}{\pico\second}$ and fixed energy to about 2\%, but depends on the
+size of the box as $1/L$, by 13\% for 256 atoms.
+The ratio of the energy densities at two temperatures tests whether
+a thermostat samples the canonical ensemble: CSVR passes, Berendsen
+coupling fails by a factor of 5.5. A protocol takes atoms from random
+positions by steepest descent, a thermostat and a barostat to a run whose
+quantities pass a five-point criterion, under which one error bar holds
+the true mean of test series in about 68\% of runs.
+
+Chapter~16 defines the observables that describe a liquid's structure and
+motion, among them the radial distribution function, the mean squared
+displacement and the viscosity that \cref{sec:cv-size} inferred, and
+reports each with the error bar and the criterion of this chapter.

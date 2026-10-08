@@ -1,0 +1,157 @@
+%=============================================================================!
+% 3.9  WORK ALONG A PATH IN SPACE                                             !
+%=============================================================================!
+\section{Work along a path in space}
+\label{sec:en-paths}
+
+On a line, every force that depends only on position has a potential
+energy, because the integral of \cref{eq:en-potential} can always be
+done. In a plane or in space a body can travel from one point to another
+by many routes, and the work may differ from route to route. This section
+defines the work along a curved path, the tool we need, and shows that
+the route can matter.
+
+\subsection*{The line integral}
+
+\Cref{sec:en-track} found the work of the weight along a curved wire by
+cutting the wire into short straight chords. The same construction works
+for any force, constant or not, and the box below turns it into a
+definition.
+
+\begin{toolbox}[Line integrals]
+Let a path $C$ run from a point $A$ to a point $B$, and let a force
+$\vb{F}(\vb{r})$ depend on position. Mark points $\vb{r}_0 = A$,
+$\vb{r}_1, \dots, \vb{r}_n = B$ in order along the path, and join each to
+the next by a straight chord, $\Delta\vb{r}_k = \vb{r}_k -
+\vb{r}_{k-1}$. On a chord short enough that the force hardly changes
+along it, the force does about $\vb{F}(\bar{\vb{r}}_k)\cdot\Delta
+\vb{r}_k$ of work by \cref{eq:en-work-constant}, where $\bar{\vb{r}}_k =
+\frac12(\vb{r}_{k-1} + \vb{r}_k)$ is the midpoint of the chord. The work
+along the path is the limit of the sum as the chords shrink,
+\begin{equation*}
+   W[C] = \lim\sum_{k=1}^{n}\vb{F}(\bar{\vb{r}}_k)\cdot\Delta\vb{r}_k
+   = \int_C \vb{F}\cdot\dd\vb{r} ,
+\end{equation*}
+called the line integral of $\vb{F}$ along $C$; the square brackets in
+$W[C]$ record that the work belongs to the whole path $C$.
+Three properties follow from the sum. Reversing the direction of travel
+reverses every chord, $\Delta\vb{r}_k \to -\Delta\vb{r}_k$, and so changes
+the sign of the work. The sum uses only the points of the path and their
+order, so it does not matter how fast the path is traversed. And along a
+path made of one path followed by another, the work is the sum of the
+works along the two, since the sum over chords splits into two such sums.
+For a closed path, one that returns to its start, the integral is written
+$\oint_C$.
+
+To compute a line integral, describe the path by a parameter $s$ that
+runs from $s_A$ to $s_B$, so that $\vb{r}(s)$ traces the path, and cut
+the range of $s$ into short steps $\Delta s$, with $s_k$ the middle of the
+$k$th. Each step moves the point by $\Delta\vb{r}_k \approx (\dd\vb{r}/\dd
+s)\,\Delta s$, where $\dd\vb{r}/\dd s$, the derivative of each component
+of $\vb{r}$, is taken at $s_k$. Then
+\begin{align*}
+   \int_C \vb{F}\cdot\dd\vb{r}
+   &= \lim\sum_k\vb{F}\bigl(\vb{r}(s_k)\bigr)\cdot
+      \frac{\dd\vb{r}}{\dd s}\,\Delta s
+      && \text{putting in the chords}\\
+   &= \int_{s_A}^{s_B}\vb{F}\bigl(\vb{r}(s)\bigr)\cdot
+      \frac{\dd\vb{r}}{\dd s}\,\dd s
+      && \text{a sum of values times $\Delta s$, \cref{sec:mo-integrating},}
+\end{align*}
+an ordinary integral in one variable.
+For example, take the force $\vb{F} = c\,(-y, x)$ in the plane, with $c$
+a constant, and the circle of radius $R$ about the origin, traversed once
+anticlockwise: $\vb{r}(s) = R\,(\cos s, \sin s)$ for $s$ from 0 to $2\pi$.
+Then
+\begin{align*}
+   \frac{\dd\vb{r}}{\dd s} &= R\,(-\sin s, \cos s)
+      && \text{differentiating each component}\\
+   \vb{F}\bigl(\vb{r}(s)\bigr) &= c\,(-R\sin s, R\cos s)
+      && \text{setting $x = R\cos s$, $y = R\sin s$}\\
+   \vb{F}\cdot\frac{\dd\vb{r}}{\dd s}
+   &= cR^2\sin^2 s + cR^2\cos^2 s
+      && \text{multiplying components and adding}\\
+   &= cR^2
+      && \text{since $\sin^2 s + \cos^2 s = 1$,}
+\end{align*}
+and the line integral is $\int_0^{2\pi} cR^2\,\dd s = 2\pi cR^2$.
+\end{toolbox}
+
+Along the motion itself the time $t$ is a natural parameter, and
+$\dd\vb{r}/\dd t$ is the velocity. The work-energy theorem
+\cref{eq:en-work-energy} therefore reads, in space,
+\begin{equation*}
+   K_B - K_A = \int_{t_A}^{t_B}\vb{F}\cdot\vb{v}\,\dd t
+   = \int_{\text{path}}\vb{F}\cdot\dd\vb{r} ,
+\end{equation*}
+the line integral of the net force along the path the body actually
+follows.
+
+\subsection*{When the route matters}
+
+The weight is the simplest case. With $z$ vertical, $\vb{F} = (0, 0,
+-mg)$, each chord contributes $-mg\,\Delta z_k$, and the sum is $-mg\,(z_B
+- z_A)$ for every path from $A$ to $B$, as on the wire of
+\cref{sec:en-track}.
+
+Friction behaves differently. A box of \SI{5}{\kilogram} is pushed slowly
+across a floor with $\mu_{\mathrm{k}} = 0.3$ from $A$ to a point $B$
+\SI{5}{\metre} away. Friction always points against the motion with size
+$\mu_{\mathrm{k}}mg = \SI{14.71}{\newton}$, so on every chord it does
+$-14.71$ newtons times the chord's length, and its work is $-14.71$
+newtons times the length of the path. Straight from $A$ to $B$ that is
+$-14.71\times5 = \SI{-73.55}{\joule}$; along the other two sides of a
+right-angled triangle, of \SI{3}{\metre} and \SI{4}{\metre}, it is
+$-14.71\times7 = \SI{-102.97}{\joule}$. Friction depends on the direction of motion, so
+this is no great surprise.
+
+More surprising is that a force depending only on position can also do
+different work on different routes. The force of the toolbox,
+\begin{equation}
+   \vb{F}_{\mathrm{sw}}(\vb{r}) = c\,(-y, x) ,
+   \label{eq:en-swirl}
+\end{equation}
+which we call a swirl, has size $c\lvert\vb{r}\rvert$ and points around
+the origin, perpendicular to $\vb{r}$, since $(-y, x)\cdot(x, y) = 0$.
+Once round a circle it does the work $2\pi cR^2$. A closed path starts and
+ends at the same point, so if the work did not depend on the route, the
+circle would give the same work as staying put, which is zero. The work of
+the swirl therefore depends on the route, even though the force depends
+only on where the body is. No force between atoms has this form; we use the
+swirl as the plainest example of such a force, and in \cref{sec:en-drift}
+to stand for the errors of a faulty force calculation.
+
+\subsection*{The work in code}
+
+On a computer a path is a list of points, and the line integral is the
+sum of the toolbox with the force taken at the midpoint of each chord.
+
+\begin{code}
+def work(force: Callable[[NDArray], NDArray], path: ArrayLike) -> float:
+    path = np.asarray(path, dtype=float)
+    chords = np.diff(path, axis=0)  # the step from each point to the next
+    midpoints = 0.5 * (path[1:] + path[:-1])
+    # F · Δr on every chord, added over the components and the chords
+    return float(np.sum(force(midpoints) * chords))
+\end{code}
+
+The first argument, \texttt{force}, is itself a function
+(\texttt{Callable}): given an array of positions, one row per point, it
+returns the forces there, one row each. The path is an array with one row
+per point and one column per component. \texttt{np.diff} subtracts each row from the next, giving the
+chords $\Delta\vb{r}_k$, one row each, and \texttt{path[1:]} and
+\texttt{path[:-1]}, the points without the first and without the last,
+average to the midpoints. The force is evaluated at all the midpoints at
+once; multiplying by the chords, component by component, and adding
+everything gives $\sum_k\vb{F}(\bar{\vb{r}}_k)\cdot\Delta\vb{r}_k$, since
+adding the products of the components of one row is its scalar product.
+The tests of \texttt{mdlab} confirm that halving the length of every
+chord divides the error of this sum by four.
+
+\notebook{03}{bend a path and compare the work of the weight, of friction
+and of the swirl}
+
+\begin{selfcheck}
+How much work does the swirl of \cref{eq:en-swirl} do on a body that moves
+from the origin straight out to the point $(3, 4)$?
+\end{selfcheck}

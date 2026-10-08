@@ -1,0 +1,153 @@
+%=============================================================================!
+% 1.6  MOTION IN A PLANE AND IN SPACE                                         !
+%=============================================================================!
+\section{Motion in a plane and in space}
+\label{sec:mo-plane}
+
+Most motion does not take place along a single line, and positions must
+then be described by vectors. A position in space is a vector $\vb{r} =
+(x, y, z)$ measured from a chosen origin, and a moving object traces out a
+curve $\vb{r}(t)$, its path. The box below collects the properties of
+vectors that the book uses.
+
+\begin{toolbox}[Vectors]
+A vector $\vb{a} = (a_x, a_y, a_z)$ is added to another, or multiplied by
+a number, component by component. Drawn as an arrow from the origin to
+the point $(a_x, a_y, a_z)$, a vector has a length and a direction.
+Multiplying it by a positive number scales its length and keeps its
+direction, and a negative number also reverses the direction. The
+difference $\vb{b} - \vb{a}$ is the arrow from the tip of $\vb{a}$ to the
+tip of $\vb{b}$, since adding it to $\vb{a}$ gives $\vb{b}$. Its length, or magnitude, follows from
+Pythagoras' theorem applied twice, first in the $xy$ plane and then with
+the $z$ component, $\lvert\vb{a}\rvert = (a_x^2 + a_y^2 + a_z^2)^{1/2}$.
+The scalar product, or dot product, of two vectors is the number
+\begin{equation*}
+   \vb{a}\cdot\vb{b} = a_x b_x + a_y b_y + a_z b_z ,
+\end{equation*}
+so that $\vb{a}\cdot\vb{a} = \lvert\vb{a}\rvert^2$. Expanding
+$\lvert\vb{a} - \vb{b}\rvert^2 = (a_x - b_x)^2 + (a_y - b_y)^2 + (a_z -
+b_z)^2$ gives $\lvert\vb{a}\rvert^2 + \lvert\vb{b}\rvert^2 - 2\,\vb{a}
+\cdot\vb{b}$, so
+\begin{equation*}
+   \vb{a}\cdot\vb{b} = \tfrac12\bigl(\lvert\vb{a}\rvert^2
+   + \lvert\vb{b}\rvert^2 - \lvert\vb{a} - \vb{b}\rvert^2\bigr)
+\end{equation*}
+depends only on lengths, and is therefore unchanged when the axes are
+turned. We may then turn the axes until both vectors lie in the $xy$
+plane, and its geometric meaning follows from the addition formulae of
+\cref{sec:mo-trig}. Write the two vectors in terms of their lengths and
+the angles $\alpha$ and $\beta$ that they make with the $x$ axis, $\vb{a}
+= \lvert\vb{a}\rvert(\cos\alpha, \sin\alpha)$ and $\vb{b} =
+\lvert\vb{b}\rvert(\cos\beta, \sin\beta)$. Then
+\begin{equation*}
+   \vb{a}\cdot\vb{b}
+   = \lvert\vb{a}\rvert\lvert\vb{b}\rvert\,(\cos\alpha\cos\beta
+     + \sin\alpha\sin\beta)
+   = \lvert\vb{a}\rvert\lvert\vb{b}\rvert\cos(\alpha - \beta),
+\end{equation*}
+and $\alpha - \beta$ is the angle between the vectors (or its negative,
+or that plus a full turn; since the cosine is even and has period $2\pi$,
+the value is the same). The scalar product
+is therefore the product of the two lengths and the cosine of the angle
+between them. In particular, two non-zero vectors are perpendicular
+exactly when their scalar product is zero, since $\cos(\pi/2) = 0$.
+\end{toolbox}
+
+Velocity and acceleration are defined as before, now as vectors,
+\begin{equation*}
+   \vb{v} = \frac{\dd\vb{r}}{\dd t}
+   = \biggl(\frac{\dd x}{\dd t}, \frac{\dd y}{\dd t},
+   \frac{\dd z}{\dd t}\biggr), \qquad
+   \vb{a} = \frac{\dd\vb{v}}{\dd t} = \frac{\dd^2\vb{r}}{\dd t^2},
+\end{equation*}
+so that each component is differentiated separately and obeys the
+one-dimensional results of the preceding sections. The speed is the length
+of the velocity vector, $v = \lvert\vb{v}\rvert$.
+
+\subsection*{The velocity follows the path}
+
+Over a short interval $\tau$ the object moves from $\vb{r}(t)$ to
+$\vb{r}(t+\tau)$, and the vector $\vb{r}(t+\tau) - \vb{r}(t)$ joining the
+two positions is a chord of the path. Dividing it by the positive number
+$\tau$ changes its length but not its direction, and by the definition of
+the derivative the quotient approaches $\vb{v}(t)$ as $\tau \to 0$. At the
+same time the chord shrinks towards the point $\vb{r}(t)$ and turns into
+the tangent to the path there; indeed, the direction the chord approaches
+is what we mean by the tangent to a curve in space. The velocity is
+therefore directed along
+the tangent, in the direction of motion, whenever it is non-zero. No such
+argument applies to the acceleration, which may point in any direction
+relative to the path.
+
+\subsection*{The projectile}
+
+A ball thrown with speed $v_0$ at an angle $\alpha$ above the horizontal,
+with $0 < \alpha < \pi/2$ so that it sets off both forwards and upwards,
+illustrates this distinction. We take $x$ horizontal and $y$ vertical,
+with the ball launched from the origin. With air resistance negligible,
+its acceleration is observed to be $\vb{a} = (0, -g)$, the same $-g$ as
+for the ball thrown straight up and nothing horizontally (Chapter~2
+explains why), constant and directed downwards
+(the motion stays in the vertical $xy$ plane, so the $z$ components are
+zero and are dropped).
+Its initial velocity has length $v_0$ and makes the angle $\alpha$ with
+the $x$ axis, so by the definition of sine and cosine its components are
+$v_0\cos\alpha$ horizontally and $v_0\sin\alpha$ vertically.
+\Cref{eq:mo-constant} therefore applies to each component separately,
+with $a = 0$ horizontally and $a = -g$ vertically,
+\begin{equation*}
+   x(t) = v_0\cos\alpha\; t, \qquad
+   y(t) = v_0\sin\alpha\; t - \tfrac12 g t^2 .
+\end{equation*}
+The horizontal motion is uniform, while the vertical motion is that of the
+ball of \cref{sec:mo-velocity} thrown upwards at $v_0\sin\alpha$, and
+neither component affects the other.
+
+The shape of the path follows from eliminating $t$. The first equation
+gives $t = x/(v_0\cos\alpha)$, a division that needs $\cos\alpha \neq
+0$; a ball thrown straight up, $\alpha = \pi/2$, never leaves the line
+$x = 0$ and is the ball of \cref{sec:mo-velocity}. Substituting for $t$
+in the second equation,
+\begin{align*}
+   y &= v_0\sin\alpha\,\frac{x}{v_0\cos\alpha}
+      - \frac{g}{2}\,\frac{x^2}{v_0^2\cos^2\alpha}
+      && \text{substituting for $t$}\\
+   &= x\tan\alpha - \frac{g\,x^2}{2v_0^2\cos^2\alpha}
+      && \text{using $\sin\alpha/\cos\alpha = \tan\alpha$,}
+\end{align*}
+a parabola opening downwards. The ball returns to its launch height when
+$y = 0$; taking out the factor $t$ from $y(t)$ gives $t\,(v_0\sin\alpha -
+\tfrac12 g t) = 0$, so the flight lasts $t = 2v_0\sin\alpha/g$. In that
+time the ball travels the horizontal distance
+\begin{equation*}
+   d = v_0\cos\alpha\times\frac{2v_0\sin\alpha}{g}
+   = \frac{v_0^2\,(2\sin\alpha\cos\alpha)}{g}
+   = \frac{v_0^2\sin 2\alpha}{g},
+\end{equation*}
+its range, where the last step uses the double-angle formula of
+\cref{sec:mo-trig}. Since $\sin2\alpha$ is at most 1, with that value
+reached when $2\alpha = \pi/2$, the range is greatest at $\alpha = \pi/4$,
+or \ang{45}. For $v_0 = \SI{12}{\metre\per\second}$ the range is
+$144\sin\ang{120}/9.80665 = \SI{12.717}{\metre}$ at a launch angle of
+\ang{60}, and $144/9.80665 = \SI{14.684}{\metre}$ at \ang{45}.
+
+\Cref{fig:mo-plane}(a) shows the velocity turning to follow the path while
+the acceleration continues to point downwards. The vertical component of
+the velocity, $v_0\sin\alpha - gt$, vanishes at $t = v_0\sin\alpha/g$,
+halfway through the flight, so at the top of the path the velocity is
+horizontal, and its scalar product with the downward acceleration is
+zero.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch01_motion/plane}
+\caption{Velocity (teal) and acceleration (red) along two paths. (a) A
+projectile launched at \SI{12}{\metre\per\second}, \ang{60} above the
+horizontal, at seven equally spaced times. (b) Uniform motion on a circle
+of radius $R$ (\cref{sec:mo-circle}). Arrow lengths are proportional to
+the quantities they represent, on different scales for velocity and
+acceleration.}
+\label{fig:mo-plane}
+\end{figure}
+
+\notebook{01}{launch a projectile with chosen speed and angle}

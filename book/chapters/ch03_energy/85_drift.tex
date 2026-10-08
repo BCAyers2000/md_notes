@@ -1,0 +1,120 @@
+%=============================================================================!
+% 3.14  WHEN THE ENERGY CHANGES                                               !
+%=============================================================================!
+\section{When the energy changes}
+\label{sec:en-drift}
+
+\Cref{prop:en-energy-atoms} needs two conditions: every force is minus the
+gradient of a potential energy, and that potential energy does not change
+with time on its own. This section works out what happens to the total
+energy of a group of atoms when either fails, and why that makes the
+energy the first thing to check in a simulation of atoms isolated from
+their surroundings.
+
+\subsection*{A force that is not a gradient}
+
+Write the force on each atom as a conservative part plus the rest,
+$\vb{F}_i = -\grad_i U + \vb{F}_i^{\mathrm{nc}}$. The rest adds to the
+power that changes the kinetic energy, $\dd K/\dd t = \sum_i\vb{F}_i
+\cdot\vb{v}_i$, but not to the rate of change of $U$, which the chain rule
+along a path still gives as $\sum_i\grad_i U\cdot\vb{v}_i$. Adding the two
+rates,
+\begin{align}
+   \frac{\dd E}{\dd t}
+   &= \sum_{i=1}^{N}\bigl(-\grad_i U + \vb{F}_i^{\mathrm{nc}}\bigr)\cdot
+      \vb{v}_i + \sum_{i=1}^{N}\grad_i U\cdot\vb{v}_i \nonumber\\
+   &= \sum_{i=1}^{N}\vb{F}_i^{\mathrm{nc}}\cdot\vb{v}_i ,
+      \qquad\text{the gradient terms cancelling,}
+   \label{eq:en-dEdt}
+\end{align}
+the rate at which the non-conservative forces do work, as for the box on
+the floor in \cref{eq:en-dEdt-1d}. A drag on every atom, $\vb{F}_i^{
+\mathrm{nc}} = -\gamma m_i\vb{v}_i$ with the drag rate $\gamma$ of
+\cref{sec:ne-drag}, gives, since $\vb{v}_i\cdot\vb{v}_i = v_i^2$ and
+$\sum_i m_i v_i^2 = 2K$,
+\begin{equation*}
+   \frac{\dd E}{\dd t} = -\gamma\sum_{i=1}^{N} m_i v_i^2 = -2\gamma K ,
+\end{equation*}
+so the energy can only fall. Chapter~13 adds such a drag on purpose, with
+random kicks that make up for it, to hold atoms at a chosen temperature.
+
+The swirl shows what a force does that sometimes adds energy and
+sometimes removes it.
+\Cref{fig:en-drift} repeats the motion of \cref{fig:en-li} with the swirl
+of \cref{fig:en-surface}(b) added to the force. The total energy now
+wanders, from \SI{0.0185}{\electronvolt} below its starting value to
+\SI{0.0117}{\electronvolt} above it within \SI{1.5}{\pico\second}. The
+power of the swirl is $\vb{F}_{\mathrm{sw}}\cdot\vb{v} = c\,(x v_y - y
+v_x)$, so the atom gains energy while it moves anticlockwise about the
+origin and loses it while it moves clockwise: on the positive $x$ axis, for
+instance, $y = 0$ and the power is $c\,x v_y$, positive when the atom
+moves up, which is anticlockwise there. Its change agrees with the work done by the swirl, the integral
+of \cref{eq:en-dEdt} over time, to within \SI{1e-8}{\electronvolt}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/drift}
+\caption{The lithium atom of \cref{fig:en-li}, launched in the same way on
+the surface alone (teal) and with the swirl of \cref{fig:en-surface}(b)
+added to the force (dark red). The change of the total energy $E = K + U$
+from its starting value is shown against time, with the work done by the
+swirl, $\int_0^t\vb{F}_{\mathrm{sw}}\cdot\vb{v}\,\dd t'$ (dashed), which it follows to within \SI{1e-8}{\electronvolt}.}
+\label{fig:en-drift}
+\end{figure}
+
+\subsection*{A potential energy that changes with time}
+
+If the potential energy also depends on time, $U(\vb{r}^N, t)$, because
+something outside the atoms is being changed while they move, then $U$
+changes even when the atoms stand still. A step in time, $\Delta t$, is
+then one more leg of the gradient toolbox's step, and the chain rule along
+a path gains one term, the partial derivative with respect to time,
+\begin{equation*}
+   \frac{\dd U}{\dd t} = \sum_{i=1}^{N}\grad_i U\cdot\vb{v}_i
+   + \frac{\partial U}{\partial t} ,
+\end{equation*}
+so that, with conservative forces, $\dd E/\dd t = \partial U/\partial t$.
+A hand that moves the far end of a spring does work on the body at the
+near end in this way: with the hand at $X(t)$, measured so that the spring
+is slack when the body is at $x = X$, the body has the potential energy $U
+= \frac12 k\,(x - X(t))^2$, which changes even while the body stands
+still. So does a wall pushed in to squeeze a group of atoms, the picture
+behind the pistons with which Chapter~14 controls their pressure.
+
+\Needspace{12\baselineskip}
+\begin{practice}
+The exact motion of an isolated group of atoms, one that exchanges no
+energy with its surroundings, keeps $E$ constant. A simulation of such a
+group whose total energy drifts is therefore not following the exact
+motion, and there are two common causes. The first is the finite time
+step with which the equations of motion are advanced, the subject of
+Chapter~9. The second is a force that is not exactly $-\grad_i U$ of the
+potential energy reported with it, for which \cref{eq:en-dEdt} gives the
+drift directly: an error in the code that computes the forces, a
+potential energy cut off abruptly at some distance (Chapter~8), or a machine-learned
+model, a program fitted to examples of computed forces (Part~V), that
+predicts the forces directly instead of differentiating an
+energy, so that nothing constrains their curl. Bigi, Langer and Ceriotti
+found that models of the last kind can make several types of molecular
+dynamics unstable and the convergence of geometry optimisation, the
+search for a minimum of $U$, ill-defined, and that their departure from
+energy conservation is difficult to monitor\cite{Bigi2025}. Even so,
+recording $E$ in a short run of the isolated system is the first check of any new
+model or code.
+\end{practice}
+
+\begin{keyidea}
+For atoms whose forces are $\vb{F}_i = -\grad_i U$, with $U$ fixed in
+time, Newton's laws keep $E = K + U$ constant. Any other part of the
+force changes $E$ at the rate at which it does work, $\dd E/\dd t =
+\sum_i\vb{F}_i^{\mathrm{nc}}\cdot\vb{v}_i$, and a change of $U$ with time
+changes $E$ at the rate $\partial U/\partial t$.
+\end{keyidea}
+
+\notebook{03}{vary the strength of the swirl and watch the energy wander}
+
+\begin{selfcheck}
+In a simulation of an isolated group of atoms, the total energy rises
+steadily. Name two possible causes, and say which equation of this
+section describes the second.
+\end{selfcheck}

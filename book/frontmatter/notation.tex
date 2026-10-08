@@ -1,0 +1,197 @@
+% Principal symbols shared across the book. Local parameters are defined
+% beside the equations that use them. Extend in the session that introduces
+% a symbol; one symbol, one meaning.
+
+\addtotoc{Symbols and Conventions}
+\thispagestyle{plain}
+\markboth{Symbols and Conventions}{Symbols and Conventions}
+\frontheading{Symbols and Conventions}
+\begin{spacing}{1.1}
+The tables below provide a reference for the principal symbols and their
+units. Symbols are also defined in the text, where they are first needed.
+
+Bold upright letters denote vectors or matrices. Angle brackets denote an
+ensemble average and an overbar a time average. The step of a numerical
+integrator is written $\dt$, and the much longer stride of a learned
+propagator $\Dt$.
+
+Quantities are expressed in the units of \texttt{mdlab}: energy in
+electronvolts, length in \aa ngstr\"oms, time in femtoseconds, mass in
+atomic mass units and temperature in kelvin. Other programs differ in the
+unit of time: the LAMMPS \texttt{metal} set uses picoseconds, and ASE
+measures time internally in \aa ngstr\"oms times $\sqrt{\mathrm{amu}/\mathrm{eV}}$,
+about \SI{10.18}{\femto\second}. Times and velocities are converted
+explicitly wherever data pass between them.
+\end{spacing}
+\vspace{6pt}
+\begin{symbolgroup}{Particles and phase space}
+$N$ & Number of atoms & dimensionless\\
+$\vb{r}_i,\vb{v}_i,\vb{p}_i$ & Position, velocity and momentum of atom $i$ & \si{\angstrom},\allowbreak\ \si{\angstrom\per\femto\second},\allowbreak\ amu\,\si{\angstrom\per\femto\second}\\
+$\vb{a}_i$ & Acceleration of atom $i$ & \si{\angstrom\per\femto\second\squared}\\
+$m_i$ & Mass of atom $i$ & amu\\
+$\vb{r}^N,\vb{p}^N$ & All positions, all momenta & as above\\
+$\Gamma$ & A point in phase space, $(\vb{r}^N,\vb{p}^N)$ & mixed\\
+$\pb{A}{B}$ & Poisson bracket of two quantities of the state & that of $AB$ per energy\,$\times$\,time\\
+$\Liou$ & Liouville operator, $\Liou A = \pb{A}{H} = \dd A/\dd t$ & \si{\per\femto\second}\\
+$\mathcal{A}$ & Area of a region of a phase plane & energy\,$\times$\,time\\
+$\Liou_{\mathrm r},$\allowbreak\ $\Liou_{\mathrm p}$ & Parts of $\Liou$ that move the positions and the momenta & \si{\per\femto\second}\\
+$\Liou_{\mathrm p}^{\mathrm f},$\allowbreak\ $\Liou_{\mathrm p}^{\mathrm s}$ & Parts of $\Liou_{\mathrm p}$ that kick with the fast and the slow forces (Ch.~11) & \si{\per\femto\second}\\
+$\tilde{H}$ & Shadow energy kept by a step map & \si{\electronvolt}\\
+$\boldsymbol{\Omega}$ & Matrix of the symplectic condition $\vb{J}^{\mathsf T}\boldsymbol{\Omega}\vb{J} = \boldsymbol{\Omega}$ & dimensionless\\
+$\vb{J}$ & Jacobian matrix of a map of phase space & mixed\\
+$\vb{r}_{ij},$\allowbreak\ $r_{ij}$ & Separation vector $\vb{r}_j-\vb{r}_i$ and its length & \si{\angstrom}\\
+\end{symbolgroup}
+\begin{symbolgroup}{Energies and forces}
+$U$ & Potential energy & \si{\electronvolt}\\
+$K$ & Kinetic energy & \si{\electronvolt}\\
+$E$ & Total energy, $K + U$ & \si{\electronvolt}\\
+$H$ & Hamiltonian, whose value on a trajectory is $E$ & \si{\electronvolt}\\
+$\vb{F}_i=-\grad_i U$ & Force on atom $i$ & \si{\electronvolt\per\angstrom}\\
+$\grad,$\allowbreak\ $\grad_i$ & Gradient; gradient with respect to the position of atom $i$ & \si{\per\angstrom}\\
+$\vb{F}_i^{\mathrm{nc}}$ & Non-conservative part of the force on atom $i$ & \si{\electronvolt\per\angstrom}\\
+$\vb{F}_i^{\mathrm c}$ & Constraint force on atom $i$ (Ch.~11) & \si{\electronvolt\per\angstrom}\\
+$\vb{F}_i^{\mathrm f},$\allowbreak\ $\vb{F}_i^{\mathrm s}$ & Fast and slow parts of the force, split for multiple time steps & \si{\electronvolt\per\angstrom}\\
+$W$ & Work done by a force along a path & \si{\electronvolt}\\
+$\vb{P},$\allowbreak\ $M,$\allowbreak\ $\vb{R}$ & Total momentum, total mass and centre of mass of a group & amu\,\si{\angstrom\per\femto\second},\allowbreak\ amu,\allowbreak\ \si{\angstrom}\\
+$\vb{V} = \vb{P}/M$ & Velocity of the centre of mass (its length $V$ only locally) & \si{\angstrom\per\femto\second}\\
+$\gamma$ & Friction (drag) rate, drag force divided by mass and velocity & \si{\per\femto\second}\\
+$k$ & Stiffness of a spring or bond & \si{\electronvolt\per\angstrom\squared}\\
+$m_{\mathrm r}$ & Reduced mass of a pair & amu\\
+$\boldsymbol{\Phi},$\allowbreak\ $\vb{M}$ & Force-constant matrix (Hessian of $U$) and mass matrix & \si{\electronvolt\per\angstrom\squared},\allowbreak\ amu\\
+$\vb{L},$\allowbreak\ $\vb{G}$ & Angular momentum and torque, about a stated point & amu\,\si{\angstrom\squared\per\femto\second},\allowbreak\ \si{\electronvolt}\\
+$\boldsymbol{\omega}$ & Angular velocity of a rigid turning & \si{\radian\per\femto\second}\\
+$I,$\allowbreak\ $\mathsf{I}$ & Moment of inertia about an axis; inertia tensor & amu\,\si{\angstrom\squared}\\
+$\vb{e}_x,$\allowbreak\ $\vb{e}_r$ & Unit vectors along an axis; away from a centre & dimensionless\\
+$\delta_{ab}$ & Kronecker delta, 1 if $a = b$ and 0 otherwise & dimensionless\\
+$\Lag,$\allowbreak\ $\Act$ & Lagrangian $K - U$; action $\int\Lag\,\dd t$ & \si{\electronvolt},\allowbreak\ \si{\electronvolt\femto\second}\\
+$q_k,$\allowbreak\ $p_k$ & Generalised coordinate and its momentum $\partial\Lag/\partial\dot q_k$ & that of $q_k$; energy\,$\times$\,time per unit of $q_k$\\
+$\lambda$ & Lagrange multiplier (an eigenvalue in the toolboxes of Ch.~4; in Ch.~13 the factor by which a thermostat scales the velocities) & force per unit of $\grad\chi$ (\si{\electronvolt\per\angstrom\squared} for a bond)\\
+$\chi$ & Function whose zero is a constraint & that of the constraint (\si{\angstrom\squared} for a bond)\\
+$d$ & Length at which a bond is held (Ch.~6, 11; in Ch.~16 the number of dimensions, as in $2dDt$) & \si{\angstrom}\\
+$n_{\mathrm c}$ & Number of held distances (constraints) (Ch.~11; with its argument, $n_{\mathrm c}(r)$ is the running coordination number of Ch.~16) & dimensionless\\
+$\tilde{\vb{r}}_i$ & Provisional position of atom $i$, before the constraints are applied & \si{\angstrom}\\
+$\eta,$\allowbreak\ $\zeta$ & Corrections of a held bond: $\dt^2\lambda/m_{\mathrm r}$ for the positions; for the velocities & dimensionless,\allowbreak\ \si{\per\femto\second}\\
+$\varphi(r)$ & Pair potential, the energy of two atoms at the distance $r$ & \si{\electronvolt}\\
+$\varepsilon,$\allowbreak\ $\sigma$ & Depth and zero-crossing distance of a Lennard-Jones potential & \si{\electronvolt},\allowbreak\ \si{\angstrom}\\
+$\rho_i$ & Neighbour density of atom $i$ in a many-body potential & \si{\electronvolt\squared}\\
+$\mathcal{W}$ & Virial $\sum_i\vb{r}_i\cdot\vb{F}_i$ & \si{\electronvolt}\\
+$\psi$ & Dihedral angle of a chain of four atoms & \si{\radian}\\
+$k_{\mathrm e},$\allowbreak\ $q_i$ & Coulomb constant $e^2/(4\pi\epsilon_0)$; charge of atom $i$ & \si{\electronvolt\angstrom},\allowbreak\ $e$\\
+$\mathcal{M}$ & Madelung constant & dimensionless\\
+$\alpha,$\allowbreak\ $\epsilon_{\mathrm E}$ & Ewald splitting parameter; size of the terms left out (in Ch.~12, $\alpha$ is the cubic coefficient of the chain of Fermi, Pasta, Ulam and Tsingou) & \si{\per\angstrom},\allowbreak\ dimensionless\\
+$\mathcal{C}(\vb{G}),$\allowbreak\ $\mathcal{S}(\vb{G})$ & Sums of $q_i\cos(\vb{G}\cdot\vb{r}_i)$ and $q_i\sin(\vb{G}\cdot\vb{r}_i)$ & $e$\\
+$\Phi_{\mathrm s}(\vb{d})$ & Smooth part of $1/r$ summed over the copies of a separation (Ewald) & \si{\per\angstrom}\\
+$\epsilon_{\mathrm m}$ & Machine epsilon,\newline $2.2\times10^{-16}$ & dimensionless\\
+\end{symbolgroup}
+\begin{symbolgroup}{Time}
+$\dt$ & Integrator time step & \si{\femto\second}\\
+$\Dt$ & Stride of a learned propagator (in Ch.~16 also the interval between saved frames) & \si{\femto\second}\\
+$\omega$ & Angular speed or angular frequency & \si{\radian\per\femto\second}\\
+$\omega_0$ & Angular frequency of small undamped swings & \si{\radian\per\femto\second}\\
+$\tilde\omega$ & Angular frequency of an oscillation computed with a step $\dt$ & \si{\radian\per\femto\second}\\
+$t_{\mathrm f}$ & Length of a run & \si{\femto\second}\\
+$\tau$ & Unit of time of reduced units, $\sigma\sqrt{m/\varepsilon}$ & \si{\femto\second}\\
+$\nu,$\allowbreak\ $\tilde\nu$ & Frequency (in Ch.~13 the collision rate of Andersen's thermostat; in Ch.~16 also the rate of events per molecule); wavenumber & \si{\per\femto\second},\allowbreak\ \si{\per\centi\metre}\\
+$\phi$ & Phase of a sinusoid (in the rotor of Ch.~12, the azimuth of the axis, with $\theta$ its angle from $z$) & \si{\radian}\\
+$\mathcal{T}$ & Period of an oscillation & \si{\femto\second}\\
+$\omega_{\mathrm f},$\allowbreak\ $\omega_{\mathrm s},$\allowbreak\ $\mathcal{T}_{\mathrm f}$ & Angular frequencies of a fast and a slow spring; period of the fast one (Ch.~11) & \si{\radian\per\femto\second},\allowbreak\ \si{\femto\second}\\
+\end{symbolgroup}
+\begin{symbolgroup}{Geometry}
+$\theta$ & An angle & \si{\radian}\\
+$\vb{a},$\allowbreak\ $\vb{b},$\allowbreak\ $\vb{c}$ & Lattice vectors of a cell, the columns of $\vb{h}$ (an acceleration carries a subscript, $\vb{a}_i$) & \si{\angstrom}\\
+$\vb{s}$ & Fractional coordinates, $\vb{h}^{-1}\vb{r}$ & dimensionless\\
+$\vb{d}$ & A separation $\vb{r}_{ij}$ and its copies $\vb{d} + \vb{h}\vb{n}$ (Ch.~10) & \si{\angstrom}\\
+$w_k,$\allowbreak\ $w_{\min}$ & Perpendicular widths of a cell; the smallest & \si{\angstrom}\\
+$\vb{a}^*,$\allowbreak\ $\vb{b}^*,$\allowbreak\ $\vb{c}^*,$\allowbreak\ $\vb{G}$ & Reciprocal vectors; a wave vector of the cell (Ch.~10; $\vb{G}$ is the torque in Ch.~5) & \si{\per\angstrom}\\
+\end{symbolgroup}
+\begin{symbolgroup}{Thermodynamics}
+$T,$\allowbreak\ $\beta$ & Temperature and inverse thermal energy, $\beta=1/(\kB T)$ & \si{\kelvin},\allowbreak\ \si{\per\electronvolt}\\
+$\kB$ & Boltzmann's constant, \num{8.617333262e-5} & \si{\electronvolt\per\kelvin}\\
+$N_{\mathrm f}$ & Number of kinetic degrees of freedom & dimensionless\\
+$T_{\mathrm{kin}}$ & Kinetic temperature, $2K/(N_{\mathrm f}\kB)$ (Ch.~12) & \si{\kelvin}\\
+$\mathcal{P}$ & Probability, or probability density & dimensionless,\allowbreak\ or per unit of its variable\\
+$\sigma_x$ & Standard deviation of $x$ ($\sigma$ alone is the Lennard-Jones distance; in Chs~13 and 14 the strength of a noise) & that of $x$\\
+$\Omega(E)$ & Number of microstates of energy $E$, a phase-space volume (not the bold $\boldsymbol\Omega$) & dimensionless\\
+$S,$\allowbreak\ $F$ & Entropy; free energy $-\kB T\ln Z$ (a force is always bold, $\vb{F}_i$) & \si{\electronvolt\per\kelvin},\allowbreak\ \si{\electronvolt}\\
+$Z,$\allowbreak\ $Z_{NPT},$\allowbreak\ $\Xi$ & Canonical, isothermal-isobaric and grand canonical partition functions & dimensionless,\allowbreak\ \si{\angstrom\cubed},\allowbreak\ dimensionless\\
+$C_V$ & Heat capacity at fixed volume & \si{\electronvolt\per\kelvin}\\
+$\mu$ & Chemical potential & \si{\electronvolt}\\
+$T_0,$\allowbreak\ $\tau_{\mathrm T}$ & Target temperature of a thermostat; its coupling time (Ch.~13) & \si{\kelvin},\allowbreak\ \si{\femto\second}\\
+$\xi,$\allowbreak\ $Q$ & Friction variable of a Nosé-Hoover thermostat and its mass (Ch.~13) & \si{\per\femto\second},\allowbreak\ \si{\electronvolt\femto\second\squared}\\
+$E_{\mathrm{eff}}$ & Effective energy, $K + U$ less the heat a thermostat has added (Ch.~13) & \si{\electronvolt}\\
+$\varepsilon_{\mathrm o}$ & Energy of an electronic orbital (Ch.~12) & \si{\electronvolt}\\
+$\Gamma(a)$ & Gamma function, $\int_0^\infty s^{a-1}\mathrm{e}^{-s}\dd s$; distinct from the phase point $\Gamma$ & dimensionless\\
+$\rho$ & Number density, atoms per unit volume ($\rho_i$ is a neighbour density) & \si{\per\angstrom\cubed}\\
+$V,$\allowbreak\ $P,$\allowbreak\ $\mathsf{P}$ & Volume, pressure and pressure tensor & \si{\angstrom\cubed},\allowbreak\ \si{\giga\pascal}\\
+$\mathcal{W}_{\alpha\beta}$ & Virial tensor, $\sum_ir_{i\alpha}F_{i\beta}$, whose trace is $\mathcal{W}$ (Ch.~14) & \si{\electronvolt}\\
+$\epsilon_{\alpha\beta},$\allowbreak\ $\epsilon$ & Strain; in the MTK piston, the strain of every length, $V = V_0\mathrm{e}^{3\epsilon}$ (Ch.~14) & dimensionless\\
+$B,$\allowbreak\ $\kappa_T,$\allowbreak\ $\kappa$ & Bulk modulus; isothermal compressibility $1/B$; a barostat's estimate of it (Ch.~14) & \si{\giga\pascal},\allowbreak\ \si{\per\giga\pascal}\\
+$C_{11},$\allowbreak\ $C_{12},$\allowbreak\ $C_{33}$ & Elastic stiffnesses of a crystal (Ch.~14) & \si{\giga\pascal}\\
+$P_0,$\allowbreak\ $\tau_{\mathrm P}$ & Target pressure of a barostat; its time constant (Ch.~14) & \si{\giga\pascal},\allowbreak\ \si{\femto\second}\\
+$M_\epsilon,$\allowbreak\ $p_\epsilon$ & Mass and momentum of the MTK piston (Ch.~14) & \si{\electronvolt\femto\second\squared},\allowbreak\ \si{\electronvolt\femto\second}\\
+$A,$\allowbreak\ $M_{\mathrm p}$ & Area of a face or wall; mass of a piston (Ch.~14) & \si{\angstrom\squared},\allowbreak\ \si{\kilo\gram}\\
+$U_{\mathrm w},$\allowbreak\ $\vb{F}^{\mathrm w}_i$ & Energy of the walls; force of the walls on atom $i$ (Ch.~14) & \si{\electronvolt},\allowbreak\ \si{\electronvolt\per\angstrom}\\
+$F_\perp$ & Total force of the atoms on a wall, at right angles to it (Ch.~14) & \si{\electronvolt\per\angstrom}\\
+$D$ & Diffusion coefficient (Ch.~13) & \si{\angstrom\squared\per\femto\second}\\
+$n,$\allowbreak\ $n_{\mathrm{eff}}$ & Number of samples of a run; the number of independent samples they are worth, $n/g$ (Ch.~15) & dimensionless\\
+$s,$\allowbreak\ $s'$ & Spread of samples about their mean: $s^2$ the sum of squared deviations over $n - 1$, $s'^2$ over $n$ (Ch.~15) & that of the samples\\
+$\operatorname{cov},$\allowbreak\ $\operatorname{corr}(k)$ & Covariance; autocorrelation function at a lag of $k$ samples ($k$ an index here) (Ch.~15) & square of the samples',\allowbreak\ dimensionless\\
+$g,$\allowbreak\ $\tau_{\mathrm{int}}$ & Statistical inefficiency; integrated correlation time $g\dt/2$ (Ch.~15) & dimensionless,\allowbreak\ \si{\femto\second}\\
+$g_b,$\allowbreak\ $g(t_0)$ & Statistical inefficiency of $b$ samples; of the samples from $t_0$ on (Ch.~15) & dimensionless\\
+$\tau_{\mathrm c}$ & Correlation time of an exponential memory, $-\dt/\ln c$ (Ch.~15) & \si{\femto\second}\\
+$\bar A_j,$\allowbreak\ $s_{\mathrm b}$ & Mean of block $j$; spread of the block means, $s_{\mathrm b}^2$ over $n_{\mathrm b} - 1$ (Ch.~15) & that of the samples\\
+$n'$ & Number of samples after the start kept (Ch.~15) & dimensionless\\
+$S_{\mathrm m},$\allowbreak\ $\sigma_{\mathrm m}$ & Sum of squared misses about a fitted line; spread of the misses (Ch.~15) & square of the samples',\allowbreak\ that of the samples\\
+$\mathcal{P}(E \mid \beta)$ & Density of the energy at the inverse temperature $\beta$ (Ch.~15) & \si{\per\electronvolt}\\
+$b,$\allowbreak\ $n_{\mathrm b}$ & Length of a block in samples; number of blocks (Ch.~15) & dimensionless\\
+$t_0,$\allowbreak\ $\delta A_0,$\allowbreak\ $\tau_{\mathrm r}$ & Start of the part of a run kept; offset of a transient at the start; its decay time (Ch.~15) & \si{\femto\second},\allowbreak\ that of $A$,\allowbreak\ \si{\femto\second}\\
+$\dot A,$\allowbreak\ $S_{tt}$ & Slope of a drift; $\sum_i(t_i - \bar t)^2$ (Ch.~15) & that of $A$ per \si{\femto\second},\allowbreak\ \si{\femto\second\squared}\\
+$\sigma^\ast$ & Error asked of a mean (Ch.~15) & that of the mean\\
+$\eta_{\mathrm s},$\allowbreak\ $L$ & Shear viscosity; side of a cubic box (Ch.~15) & \si{\pascal\second},\allowbreak\ \si{\angstrom}\\
+$g(r),$\allowbreak\ $g_{\mathrm{AB}}(r)$ & Radial distribution function; partial, of kind B around kind A (Ch.~16; always with its argument, $g$ alone being the statistical inefficiency) & dimensionless\\
+$n_{\mathrm c}(r)$ & Running coordination number, the partners within $r$ (Ch.~16) & dimensionless\\
+$S(G),$\allowbreak\ $G$ & Structure factor, always with its argument ($S$ alone is the entropy); length of the wave vector $\vb{G}$ (Ch.~16) & dimensionless,\allowbreak\ \si{\per\angstrom}\\
+$\vb{k},$\allowbreak\ $\vb{k}'$ & Wave vectors of an incoming and a scattered wave, $\vb{G} = \vb{k}' - \vb{k}$ (Ch.~16) & \si{\per\angstrom}\\
+$N_{\mathrm r},$\allowbreak\ $V_{\mathrm r}$ & Number of atoms in a region; its volume (Ch.~16) & dimensionless,\allowbreak\ \si{\angstrom\cubed}\\
+$r_{\mathrm{on}},$\allowbreak\ $r_{\mathrm{off}}$ & Distances at which a bond forms and breaks (Ch.~16) & \si{\angstrom}\\
+$R_i$ & Covalent radius of atom $i$'s element (Ch.~16) & \si{\angstrom}\\
+$D_{\mathrm M},$\allowbreak\ $a_{\mathrm M}$ & Depth and width of a Morse well, the $D$ and $a$ of Ch.~4 and 8 (Ch.~16) & \si{\electronvolt},\allowbreak\ \si{\per\angstrom}\\
+$X$ & Exposure, the sum over molecules of the time each could react (Ch.~16) & \si{\pico\second},\allowbreak\ or \si{\angstrom\cubed\pico\second} for pairs\\
+$k_{\mathrm b},$\allowbreak\ $k_{\mathrm f},$\allowbreak\ $k_{\mathrm h}$ & Rate of breaking per bond; rate constant of forming; rate of hops per atom (Ch.~16) & \si{\per\pico\second},\allowbreak\ \si{\angstrom\cubed\per\pico\second},\allowbreak\ \si{\per\pico\second}\\
+$K_{\mathrm{eq}},$\allowbreak\ $E_{\mathrm a}$ & Equilibrium constant $n_{\mathrm{AB}}V/n_{\mathrm A}n_{\mathrm B}$; activation energy of a rate (Ch.~16) & \si{\angstrom\cubed},\allowbreak\ \si{\electronvolt}\\
+$C_{vv}(t),$\allowbreak\ $C_m(t)$ & Velocity autocorrelation function; the same weighted by the mass (Ch.~16) & \si{\angstrom\squared\per\femto\second\squared},\allowbreak\ \si{\electronvolt}\\
+$\vb{M}_q,$\allowbreak\ $\sigma_{\mathrm e},$\allowbreak\ $\sigma_{\mathrm{NE}},$\allowbreak\ $H_{\mathrm R}$ & Charge displacement $\sum_iq_i\vb{r}_i$; conductivity; its Nernst-Einstein value; Haven ratio $\sigma_{\mathrm{NE}}/\sigma_{\mathrm e}$ (Ch.~16) & $e$\,\si{\angstrom},\allowbreak\ \si{\siemens\per\metre},\allowbreak\ \si{\siemens\per\metre},\allowbreak\ dimensionless\\
+$D_{\alpha\beta},$\allowbreak\ $f$ & Diffusion tensor; correlation factor of hops, $4D/k_{\mathrm h}a^2$ on a surface (Ch.~16) & \si{\angstrom\squared\per\femto\second},\allowbreak\ dimensionless\\
+$\ell$ & Length of a counted hop (Ch.~16); distance between neighbouring sites of lithium in a gallery of graphite, $a/\sqrt3$ (Ch.~17) & \si{\angstrom}\\
+$a$ & Side of the hexagonal cell of a sheet of graphite, \SI{2.46}{\angstrom}, the distance between neighbouring hollows (Ch.~13, 16, 17) & \si{\angstrom}\\
+$t_{\mathrm A}$ & ASE's unit of time, $\si{\angstrom}\sqrt{\si{\amu}/\si{\electronvolt}} = \SI{10.18}{\femto\second}$ (Ch.~17) & \si{\femto\second}\\
+$i_x,$\allowbreak\ $i_y,$\allowbreak\ $i_z$ & Image counts of an atom: the cell vectors by which unwrapping moves it (Ch.~17) & dimensionless\\
+$\tilde y,$\allowbreak\ $\Delta(x)$ & Straight line between two values of $y$; its miss $y - \tilde y$ (Ch.~17) & that of $y$\\
+$j,$\allowbreak\ $\sigma_x$ & Flow of atoms per unit area and time; spread of a cloud of atoms along $x$ (Ch.~16) & \si{\per\angstrom\squared\per\femto\second},\allowbreak\ \si{\angstrom}\\
+$\mathcal{E},$\allowbreak\ $F_x$ & Electric field; force along $x$ (Ch.~16) & \si{\volt\per\angstrom},\allowbreak\ \si{\electronvolt\per\angstrom}\\
+$r_{\mathrm{rep}}$ & Range of the repulsion $A\mathrm{e}^{-r/r_{\mathrm{rep}}}$ of the model salt (Ch.~16) & \si{\angstrom}\\
+$\sigma_{xy}$ & Spread of the shear stress (Ch.~16) & \si{\giga\pascal}\\
+$\mathrm{i},$\allowbreak\ $\bar z$ & The imaginary unit, $\mathrm{i}^2 = -1$; the conjugate of a complex number $z$ (Ch.~16) & dimensionless\\
+$\hat x(\nu),$\allowbreak\ $X_k,$\allowbreak\ $\nu_{\mathrm N}$ & Fourier transform of $x(t)$; discrete transform of samples $x_n$; Nyquist frequency $1/2\Dt$ (Ch.~16) & that of $x$ times \si{\femto\second},\allowbreak\ that of $x$,\allowbreak\ \si{\per\femto\second}\\
+$N_{\mathrm s},$\allowbreak\ $W(N_{\mathrm s})$ & Number of samples of a signal; number of operations of a discrete transform of that length (Ch.~16) & dimensionless\\
+$X^{\mathrm e}_k,$\allowbreak\ $X^{\mathrm o}_k$ & Discrete transforms of the even and the odd samples (Ch.~16) & that of $x$\\
+$\mathcal{D}(\nu),$\allowbreak\ $\hat C_m(\nu)$ & Vibrational density of states, area 3 per atom; transform of $C_m$ (Ch.~16) & \si{\femto\second},\allowbreak\ \si{\electronvolt\femto\second}\\
+$\omega_{\mathrm d},$\allowbreak\ $\nu_{\mathrm b}$ & Angular frequency of a damped swing (Ch.~4); frequency of a bond's highest peak (Ch.~16) & \si{\radian\per\femto\second},\allowbreak\ \si{\per\femto\second}\\
+$t_{\mathrm c},$\allowbreak\ $t_{\mathrm p}$ & Longest lag of a correlation function used; period of a repeating signal (Ch.~16) & \si{\femto\second}\\
+$F(x),$\allowbreak\ $r_{\mathrm h}$ & Free energy along a coordinate $x$; distance of an atom from the nearest hollow (Ch.~16) & \si{\electronvolt},\allowbreak\ \si{\angstrom}\\
+$\vb{h}$ & Cell matrix, lattice vectors as columns & \si{\angstrom}\\
+$\ens{A},$\allowbreak\ $\overline{A}$ & Ensemble average and time average of $A$ & that of $A$\\
+\end{symbolgroup}
+\begin{symbolgroup}{Learning}
+$\vb{w},$\allowbreak\ $\boldsymbol{\theta}$ & Fitted or trainable parameters (bold, a list) & model dependent\\
+$L,$\allowbreak\ $\mathcal{L}$ & Loss (Ch.~18; $L$ is a length in earlier chapters) & target units squared for squared-error loss\\
+$X_{ij}=\phi_j(x_i)$ & Design matrix: basis function $j$ at reading $i$ & units of the basis function\\
+$\lambda$ & Ridge penalty (Ch.~18) & dimensionless for the scaled bases used here\\
+$A,$\allowbreak\ $\lambda_k$ & Hessian of the loss and its eigenvalues (Ch.~18) & loss per squared weight,\allowbreak\ for weights with common units\\
+$\eta$ & Learning rate (Ch.~18) & squared weight per loss\\
+$B$ & Number of readings in a batch (Ch.~18) & dimensionless\\
+$\vb{h}_i^{(t)}$ & Features of atom $i$ after layer $t$ & dimensionless\\
+$\vb{m}_{ij}$ & Message from atom $j$ to atom $i$ & dimensionless\\
+$r_{\mathrm c},$\allowbreak\ $r_{\mathrm s},$\allowbreak\ $r_{\mathrm{skin}}$ & Cutoff radius; start of switching (Ch.~8); skin of a Verlet neighbour list & \si{\angstrom}\\
+$Y_\ell^m,$\allowbreak\ $D^{(\ell)}(R)$ & Real spherical harmonic and Wigner matrix of rotation $R$ & dimensionless\\
+\end{symbolgroup}

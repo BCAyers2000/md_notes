@@ -1,0 +1,178 @@
+%=============================================================================!
+% 18.3  RIDGE REGULARISATION AND ITS BAYESIAN READING                         !
+%=============================================================================!
+\section{Ridge regularisation and its Bayesian reading}
+\label{sec:lo-ridge}
+
+A tailor cutting a suit from a few measurements prefers a pattern close
+to a standard one, and departs from it only as far as the measurements
+demand; a stray reading of the sleeve does not make the jacket
+lopsided. A fit can be given the same preference. The polynomial of
+degree 14 in \cref{fig:lo-basis} passed through every reading with
+weights as large as \num{1e4}\,\si{\electronvolt}, which cancel one
+another to near zero at the readings and nowhere else. A penalty on large
+weights keeps the curve from paying that price for each stray reading.
+
+\subsection*{The penalised loss}
+
+\emph{Ridge regularisation} adds to the sum of squared misses the
+squared length of the weight vector, times a number $\lambda \ge 0$:
+\begin{equation}
+   L(\vb{w}) = \lvert X\vb{w} - \vb{y}\rvert^2 + \lambda\lvert\vb{w}\rvert^2 .
+   \label{eq:lo-ridge}
+\end{equation}
+Its gradient is that of the toolbox of \cref{sec:lo-loss} plus the
+gradient of $\lambda\sum_jw_j^2$, which is $2\lambda\vb{w}$, so the least
+loss solves
+\begin{align*}
+   2X^{\mathsf T}(X\vb{w} - \vb{y}) + 2\lambda\vb{w} &= \vb{0}
+      && \text{setting the gradient to zero}\\
+   \bigl(X^{\mathsf T}X + \lambda I\bigr)\vb{w} &= X^{\mathsf T}\vb{y}
+      && \text{dividing by 2 and gathering the terms in $\vb{w}$,}
+\end{align*}
+with $I$ the identity matrix. The penalty is a sum of squares too: it is
+the squared miss of the extra equations $\sqrt\lambda\,w_j = 0$, one for
+each weight, so the ridge loss is the ordinary loss of the design matrix
+$X$ with $\sqrt\lambda\,I$ stacked below it, against $\vb{y}$ with $p$
+zeros below it, which is how \texttt{mdlab.learn.least\_squares} solves it:
+
+\begin{code}
+def least_squares(X: ArrayLike, y: ArrayLike, ridge: float = 0.0) -> NDArray:
+    X = np.asarray(X, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if ridge:
+        p = X.shape[1]
+        X = np.vstack([X, np.sqrt(ridge) * np.eye(p)])
+        y = np.concatenate([y, np.zeros((p, *y.shape[1:]))])
+    return np.linalg.lstsq(X, y, rcond=None)[0]
+\end{code}
+
+\noindent NumPy's \texttt{lstsq} finds the least squared miss without
+forming $X^{\mathsf T}X$, whose entries are squares and so lose half the
+digits that a badly scaled $X$ still holds.
+
+Why the penalty helps shows in the eigenvectors of $X^{\mathsf T}X$, a
+symmetric matrix with eigenvalues $d_k \ge 0$ and orthonormal eigenvectors
+$\vb{v}_k$ (\cref{sec:os-modes}). Writing the weights as $\vb{w} =
+\sum_kc_k\vb{v}_k$ and taking the dot product of the normal equations with
+$\vb{v}_k$,
+\begin{equation*}
+   (d_k + \lambda)\,c_k = \vb{v}_k\cdot X^{\mathsf T}\vb{y} , \qquad
+   c_k = \frac{\vb{v}_k\cdot X^{\mathsf T}\vb{y}}{d_k + \lambda} ,
+\end{equation*}
+since $X^{\mathsf T}X\vb{v}_k = d_k\vb{v}_k$ and the other eigenvectors
+are perpendicular to $\vb{v}_k$. Without the penalty each component is
+divided by $d_k$. A direction with a small $d_k$ is one the readings
+barely constrain, a combination of basis functions that is nearly zero at
+every reading, and dividing by a small $d_k$ turns the noise of the
+readings into a large weight along it. The penalty leaves directions with
+$d_k \gg \lambda$ almost as they were and shrinks those with $d_k \ll
+\lambda$ towards zero by the factor $d_k/(d_k + \lambda)$.
+
+\subsection*{Choosing the penalty}
+
+$\lambda$ is not learned from the training readings, which always prefer
+$\lambda = 0$. Fifteen more readings, drawn as the first were, are held
+back for \emph{validation}, and $\lambda$ is chosen to make the miss on
+them least. For the polynomial of degree 14 (\cref{fig:lo-ridge}a), the
+validation miss is least at $\lambda = 10^{-3}$, where the test miss is
+\SI{0.15}{\milli\electronvolt}, half that of the best polynomial without
+the penalty and close to the two-function fit's 0.09; the weights shrink
+from a length of \SI{1.1e4}{\electronvolt} to \SI{0.014}{\electronvolt}
+(\cref{fig:lo-ridge}b). Below $\lambda \approx 10^{-6}$ the noise is
+learned again; above $10^{-2}$ the curve is held too stiff to follow the
+well. The test, a third set, is kept for the end: having chosen
+$\lambda$ by the validation readings, their miss is no longer an honest
+estimate of the miss on new ones.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/ridge}
+\caption{Ridge regularisation of the polynomial of degree 14. (a) The
+rms miss on the 15 training readings, on 15 validation readings and on
+the noise-free test against $\lambda$, with the $\lambda$ of least
+validation miss (dashed). (b) The fit without the penalty and with
+$\lambda = 10^{-3}$, against the pair energy (grey dashed) and the
+training readings.}
+\label{fig:lo-ridge}
+\end{figure}
+
+\begin{toolbox}[Conditional probability and Bayes's rule]
+Of $N$ equally likely outcomes, $N_A$ have a property $A$, $N_B$ a
+property $B$ and $N_{AB}$ both. The probability of $B$ among the
+outcomes with $A$, the \emph{conditional probability} of $B$ given $A$,
+is $\mathcal{P}(B\mid A) = N_{AB}/N_A$, and multiplying and dividing by
+$N$,
+\begin{equation*}
+   \mathcal{P}(B\mid A) = \frac{N_{AB}/N}{N_A/N}
+   = \frac{\mathcal{P}(A\text{ and }B)}{\mathcal{P}(A)} .
+\end{equation*}
+The same holds with $A$ and $B$ exchanged, so $\mathcal{P}(A\text{ and
+}B) = \mathcal{P}(B\mid A)\,\mathcal{P}(A) = \mathcal{P}(A\mid
+B)\,\mathcal{P}(B)$, and dividing by $\mathcal{P}(B)$ gives
+\emph{Bayes's rule},
+\begin{equation*}
+   \mathcal{P}(A\mid B) = \frac{\mathcal{P}(B\mid A)\,\mathcal{P}(A)}
+   {\mathcal{P}(B)} .
+\end{equation*}
+For quantities with densities (\cref{sec:sm-probability}) the same rule
+holds with densities in place of probabilities. Read with $A$ a cause and
+$B$ an observation, it turns the chance of the observation given each
+cause into the chance of each cause given the observation.
+\end{toolbox}
+
+\subsection*{The Bayesian reading}
+
+The penalty has a second meaning. Suppose the readings are the model's
+predictions plus independent Gaussian noise of spread $\sigma$, so that
+the density of the readings given the weights is
+\begin{equation*}
+   p(\vb{y}\mid\vb{w}) \propto \prod_i\exp\Bigl[-\frac{(y_i -
+   [X\vb{w}]_i)^2}{2\sigma^2}\Bigr]
+   = \exp\Bigl[-\frac{\lvert X\vb{w} - \vb{y}\rvert^2}{2\sigma^2}\Bigr] ,
+\end{equation*}
+a product of Gaussians (\cref{sec:sm-maxwell}), and suppose that before
+any reading each weight was believed to lie near zero, within a spread
+$\sigma_w$: a \emph{prior} density $p(\vb{w}) \propto
+\exp(-\lvert\vb{w}\rvert^2/2\sigma_w^2)$. Bayes's rule gives the density
+of the weights given the readings, the \emph{posterior},
+\begin{equation*}
+   p(\vb{w}\mid\vb{y}) = \frac{p(\vb{y}\mid\vb{w})\,p(\vb{w})}{p(\vb{y})}
+   \propto \exp\Bigl[-\frac{\lvert X\vb{w} - \vb{y}\rvert^2}{2\sigma^2}
+   - \frac{\lvert\vb{w}\rvert^2}{2\sigma_w^2}\Bigr] ,
+\end{equation*}
+where $p(\vb{y})$ does not depend on $\vb{w}$. The most probable weights
+make the bracket least; multiplying it by $-2\sigma^2$, they make
+$\lvert X\vb{w} - \vb{y}\rvert^2 + (\sigma^2/\sigma_w^2)\lvert
+\vb{w}\rvert^2$ least, the ridge loss with
+\begin{equation*}
+   \lambda = \frac{\sigma^2}{\sigma_w^2} .
+\end{equation*}
+Ridge regression is the most probable fit under Gaussian noise and a
+Gaussian belief that the weights are small. The chosen $\lambda = 10^{-3}$
+with the noise of \SI{0.2}{\milli\electronvolt} corresponds to $\sigma_w
+= \sigma/\sqrt\lambda = \SI{6.3}{\milli\electronvolt}$, a belief that
+each weight is of the size of the well's depth, which is sensible for a
+curve whose values are of that size and whose basis functions lie
+between $-1$ and 1. The posterior is more than its most probable point:
+it gives every weight a spread, and through them the curve an error bar,
+which the next section obtains in another way.
+
+\begin{keyidea}
+Ridge regularisation adds $\lambda\lvert\vb{w}\rvert^2$ to the loss, so
+the least loss solves $(X^{\mathsf T}X + \lambda I)\vb{w} = X^{\mathsf
+T}\vb{y}$; it shrinks the directions the readings barely constrain.
+$\lambda$ is chosen on validation readings and the result judged on test
+readings never used for any choice. It is the most probable fit under
+Gaussian noise of spread $\sigma$ and a Gaussian prior of spread
+$\sigma_w$ on the weights, with $\lambda = \sigma^2/\sigma_w^2$.
+\end{keyidea}
+
+\notebook{18}{vary the penalty and see which directions of the weights
+shrink}
+
+\begin{selfcheck}
+The readings' noise doubles while the prior belief about the weights is
+unchanged. What happens to $\lambda$, and to how closely the fit follows
+the readings?
+\end{selfcheck}

@@ -1,0 +1,207 @@
+%=============================================================================!
+% 5.5  THE INERTIA TENSOR                                                     !
+%=============================================================================!
+\section{The inertia tensor}
+\label{sec:ro-tensor}
+
+\Cref{sec:ro-rigid} found the angular momentum along the axis of turning,
+$L_z = I\omega$. A body can also have angular momentum across that axis:
+two weights fixed to the ends of a rod, the rod clamped at a slant to an
+axle, keep pulling sideways on the axle as they go round. This section
+finds the whole vector $\vb{L}$ for a rigid body turning in any direction,
+and with it the matrix that takes the place of the mass.
+
+\subsection*{Angular momentum of a turning body}
+
+Let a rigid body turn with angular velocity $\boldsymbol{\omega}$ about an
+axis through its centre of mass, and measure each position $\vb{r}_i$ from
+the centre of mass. Each part moves with $\vb{v}_i = \boldsymbol{\omega}
+\times\vb{r}_i$, so
+\begin{equation*}
+   \vb{L} = \sum_i m_i\,\vb{r}_i\times(\boldsymbol{\omega}\times\vb{r}_i) .
+\end{equation*}
+Two rules for products of three vectors turn this into something
+computable.
+
+\begin{toolbox}[Triple products]
+\emph{The vector triple product.} For any three vectors,
+\begin{equation*}
+   \vb{a}\times(\vb{b}\times\vb{c})
+   = \vb{b}\,(\vb{a}\cdot\vb{c}) - \vb{c}\,(\vb{a}\cdot\vb{b}) .
+\end{equation*}
+To check the $x$ component, use $(\vb{b}\times\vb{c})_z = b_xc_y -
+b_yc_x$ and $(\vb{b}\times\vb{c})_y = b_zc_x - b_xc_z$:
+\begin{align*}
+   \bigl[\vb{a}\times(\vb{b}\times\vb{c})\bigr]_x
+   &= a_y(b_xc_y - b_yc_x) - a_z(b_zc_x - b_xc_z)\\
+   &= b_x(a_yc_y + a_zc_z) - c_x(a_yb_y + a_zb_z)
+   && \text{multiplying out}\\
+   &= b_x(\vb{a}\cdot\vb{c}) - c_x(\vb{a}\cdot\vb{b})
+   && \text{adding and subtracting $a_xb_xc_x$.}
+\end{align*}
+The $y$ and $z$ components follow by renaming $x \to y \to z \to x$.
+
+\emph{The scalar triple product.} Writing out
+\begin{equation*}
+   \vb{a}\cdot(\vb{b}\times\vb{c})
+   = a_x(b_yc_z - b_zc_y) + a_y(b_zc_x - b_xc_z) + a_z(b_xc_y - b_yc_x)
+\end{equation*}
+gives six products, each of one component of every vector. Writing out
+\begin{equation*}
+   \vb{b}\cdot(\vb{c}\times\vb{a})
+   = b_x(c_ya_z - c_za_y) + b_y(c_za_x - c_xa_z) + b_z(c_xa_y - c_ya_x)
+\end{equation*}
+in the same way gives the same six with
+the same signs, in a different order. So the three vectors may be moved
+round in a cycle, $\vb{a}\cdot(\vb{b}\times\vb{c}) = \vb{b}\cdot(\vb{c}
+\times\vb{a}) = \vb{c}\cdot(\vb{a}\times\vb{b})$.
+\end{toolbox}
+
+By the vector triple product with $\vb{a} = \vb{c} = \vb{r}_i$ and $\vb{b}
+= \boldsymbol{\omega}$, $\vb{r}_i\times(\boldsymbol{\omega}\times\vb{r}_i)
+= \boldsymbol{\omega}\,\lvert\vb{r}_i\rvert^2 - \vb{r}_i\,(\vb{r}_i\cdot
+\boldsymbol{\omega})$. Its component $a$, for $a = x$, $y$ or $z$, is
+$\omega_a\lvert\vb{r}_i\rvert^2 - (\vb{r}_i)_a\sum_b(\vb{r}_i)_b\omega_b$,
+with $(\vb{r}_i)_a$ the component $a$ of $\vb{r}_i$. Writing $\omega_a = \sum_b\delta_{ab}
+\omega_b$, where the Kronecker delta $\delta_{ab}$ is 1 when $a = b$ and 0
+otherwise, so that only the term with $b = a$ survives, both terms become
+sums over $b$; multiplying by $m_i$, adding over the atoms and taking the
+sum over $b$ outside,
+\begin{equation}
+   L_a = \sum_b I_{ab}\,\omega_b , \qquad
+   I_{ab} = \sum_i m_i\,\bigl(\lvert\vb{r}_i\rvert^2\delta_{ab}
+   - (\vb{r}_i)_a(\vb{r}_i)_b\bigr) ,
+   \label{eq:ro-tensor}
+\end{equation}
+or $\vb{L} = \mathsf{I}\boldsymbol{\omega}$ with the matrix product of
+\cref{sec:os-modes}. The $3\times3$ matrix $\mathsf{I}$, set in sans-serif
+as this book sets tensors, apart from the identity $\vb{I}$, is the
+inertia tensor of the body about its centre of mass. It is symmetric,
+$I_{ab} = I_{ba}$, since swapping $a$ and $b$ changes neither
+$\delta_{ab}$ nor $(\vb{r}_i)_a(\vb{r}_i)_b$. Its diagonal entries are the moments of inertia about the three
+axes, for instance $I_{zz} = \sum_i m_i(x_i^2 + y_i^2 + z_i^2 - z_i^2) =
+\sum_i m_i(x_i^2 + y_i^2)$, as in \cref{eq:ro-moment}; its other entries,
+such as $I_{xy} = -\sum_i m_ix_iy_i$, are the source of the sideways
+angular momentum. For $\boldsymbol{\omega} = (0, 0, \omega)$, $\vb{L} =
+\omega\,(I_{xz}, I_{yz}, I_{zz})$, along the axis only when $I_{xz}$ and
+$I_{yz}$ vanish.
+
+The kinetic energy follows with the scalar triple product. Since $\vb{v}_i
+= \boldsymbol{\omega}\times\vb{r}_i$,
+\begin{equation*}
+   \lvert\vb{v}_i\rvert^2 = \vb{v}_i\cdot(\boldsymbol{\omega}\times\vb{r}_i)
+   = \boldsymbol{\omega}\cdot(\vb{r}_i\times\vb{v}_i) ,
+\end{equation*}
+moving the vectors round in a cycle, so that multiplying by $\frac12 m_i$
+and adding, with $\sum_i m_i\,\vb{r}_i\times\vb{v}_i = \vb{L}$,
+\begin{equation}
+   K = \tfrac12\,\boldsymbol{\omega}\cdot\vb{L}
+   = \tfrac12\,\boldsymbol{\omega}\cdot\mathsf{I}\boldsymbol{\omega} .
+   \label{eq:ro-kinetic}
+\end{equation}
+
+\subsection*{Principal axes}
+
+Because $\mathsf{I}$ is symmetric, it has three real eigenvalues $I_1 \le
+I_2 \le I_3$ with eigenvectors at right angles to one another
+(\cref{sec:os-modes}). The eigenvectors are the principal axes of the
+body and the eigenvalues its principal moments of inertia. Turning about
+a principal axis, $\mathsf{I}\boldsymbol{\omega} = I_k\boldsymbol{\omega}$,
+and the angular momentum lies along the axis; turning about any other axis,
+it does not. Write $\boldsymbol{\omega} = \omega_1\vb{e}_1 + \omega_2\vb{e}_2 +
+\omega_3\vb{e}_3$, with $\vb{e}_k$ the principal axes as vectors of length
+1 and $\omega_k$ the parts of $\boldsymbol{\omega}$ along them. The product
+is linear, so $\mathsf{I}\boldsymbol{\omega} = I_1\omega_1\vb{e}_1 +
+I_2\omega_2\vb{e}_2 + I_3\omega_3\vb{e}_3$, and since $\vb{e}_j\cdot
+\vb{e}_k$ is 1 for $j = k$ and 0 otherwise, \cref{eq:ro-kinetic} becomes
+$K = \frac12(I_1\omega_1^2 + I_2\omega_2^2 + I_3\omega_3^2)$, as for the
+quadratic term in \cref{sec:os-modes}. With the principal axes as the
+coordinate axes, $\vb{e}_1 = (1, 0, 0)$ and so on, and column $k$ of the
+tensor, $\mathsf{I}\vb{e}_k = I_k\vb{e}_k$, holds $I_k$ on the diagonal
+and zeros elsewhere: the tensor is diagonal.
+
+A wheel turning steadily about an axle that is not a principal axis has
+an angular momentum that goes round with the wheel: worked out in axes
+fixed in the wheel, with the axle as their $z$ axis, $\vb{L} =
+\omega\,(I_{xz}, I_{yz}, I_{zz})$ does not change, so its sideways part
+turns with the wheel. Its direction changes, so by \cref{eq:ro-system}
+the bearings must supply an external torque all the time, and the axle
+shakes. Car wheels are balanced by clipping small weights to
+their rims until the axle passes through the centre of mass and is a
+principal axis.
+
+\subsection*{A water molecule}
+
+The measured equilibrium geometry of water\cite{CCCBDB} has O--H bonds of
+\SI{0.958}{\angstrom} at an angle of \ang{104.4776}. Place the oxygen atom
+at the origin, one hydrogen atom on the $x$ axis, at $(0.958, 0, 0)$, and
+the other in the $xy$ plane, at
+\begin{equation*}
+   (0.958\cos\ang{104.4776},\ 0.958\sin\ang{104.4776},\ 0)
+   = (-0.2395, 0.9276, 0)\ \si{\angstrom}
+\end{equation*}
+(\cref{fig:ro-water}), with the masses 15.999 and \SI{1.008}{\amu}. The
+centre of mass is at $1.008\times(0.7185, 0.9276, 0)/18.015 = (0.0402,
+0.0519, 0)$\,\si{\angstrom}, and about it
+\cref{eq:ro-tensor} gives, in \si{\amu\angstrom\squared},
+\begin{equation*}
+   \mathsf{I} = \begin{pmatrix}
+      0.8188 & 0.2615 & 0\\
+      0.2615 & 0.9538 & 0\\
+      0 & 0 & 1.7726
+   \end{pmatrix} .
+\end{equation*}
+The atoms lie in the plane $z = 0$, so $I_{xz} = I_{yz} = 0$ and the $z$
+axis, at right angles to the molecule, is a principal axis, with $I_3 =
+1.7726$. The other two come from the $2\times2$ block in the top left, by
+the characteristic equation of \cref{sec:os-modes}, multiplied out with
+$0.8188 + 0.9538 = 1.7726$ and $0.8188\times0.9538 - 0.2615^2 = 0.7126$:
+\begin{equation*}
+   (0.8188 - \lambda)(0.9538 - \lambda) - 0.2615^2
+   = \lambda^2 - 1.7726\,\lambda + 0.7126 = 0 ,
+\end{equation*}
+so $\lambda = \frac12\bigl(1.7726 \pm\sqrt{1.7726^2 - 4\times0.7126}\bigr)
+= \frac12(1.7726 \pm 0.5401)$, giving $I_1 = 0.616$ and $I_2 =
+\SI{1.156}{\amu\angstrom\squared}$. The axis of $I_2$ is the line that
+halves the angle between the bonds, an axis of symmetry of the molecule:
+putting $\lambda = 1.1564$ into the first equation of the pair in
+\cref{sec:os-modes}, $(0.8188 - 1.1564)\,u_1 + 0.2615\,u_2 = 0$, gives
+$u_2/u_1 = 0.3376/0.2615 = 1.291$, a line at $\arctan1.291 = \ang{52.24}$
+to the $x$ axis, half of \ang{104.4776}. The axis of $I_1$ is at right
+angles to it in the plane. The two roots, $\frac12(1.7726 \pm 0.5401)$,
+add to $1.7726 = 0.8188 + 0.9538 = I_{xx} + I_{yy}$, and for a flat body
+$I_{xx} + I_{yy} = I_{zz}$ (\cref{ex:ro-flat}), so the largest moment, neither of the other two being negative, each a
+sum of masses times squared distances, is
+the sum of the other two; computed without rounding, $I_1 = 0.6162$ and
+$I_2 = 1.1564$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch05_rotation/water}
+\caption{A water molecule at its measured geometry, one bond along $x$,
+with its centre of mass (cross) and the two principal axes in its plane,
+labelled with their principal moments in \si{\amu\angstrom\squared}. The
+third principal axis points out of the page, with $I_3 =
+\SI{1.773}{\amu\angstrom\squared}$.}
+\label{fig:ro-water}
+\end{figure}
+
+A linear molecule, with every atom on one line, has a zero principal
+moment about that line, since every $\rho_i$ is zero, and two equal ones
+about the axes at right angles to it.
+
+\begin{keyidea}
+For a rigid body turning about its centre of mass, $\vb{L} = \mathsf{I}
+\boldsymbol{\omega}$ and $K = \frac12\boldsymbol{\omega}\cdot\mathsf{I}
+\boldsymbol{\omega}$, with the symmetric inertia tensor $I_{ab} = \sum_i
+m_i(\lvert\vb{r}_i\rvert^2\delta_{ab} - (\vb{r}_i)_a(\vb{r}_i)_b)$. Its eigenvectors,
+the principal axes, are the directions in which $\vb{L}$ is parallel to
+$\boldsymbol{\omega}$.
+\end{keyidea}
+
+\notebook{05}{the inertia tensor of water and its principal axes}
+
+\begin{selfcheck}
+Two atoms of mass $m$ sit on the $z$ axis at $z = \pm d/2$. Write down
+their inertia tensor about their midpoint, and its principal moments.
+\end{selfcheck}

@@ -1,0 +1,33 @@
+# One style for every Python file in the course: mdlab, its tests, the
+# figure scripts and the notebook builders. Run from theory/:
+#     ruff format .      (layout)
+#     ruff check .       (errors, imports, names, docstrings)
+line-length = 79
+target-version = "py312"
+extend-exclude = ["notebooks", "book", "renders", "animations", "notes"]
+
+[lint]
+select = ["E", "W", "F", "I", "B", "UP", "N", "D", "SIM", "C4"]
+ignore = [
+    "D401",   # summaries may be noun phrases: 'Centre of mass, R = ...'
+    "SIM108", # an explicit if/else with comments teaches better
+    "N812",   # physics constants keep their names: g as G
+    "C408",   # dict(key=value) reads clearly for matplotlib options
+    "D105",   # magic methods need no docstring
+    "D107",   # nor does __init__
+    "N803",   # physics names such as R, M, U are kept as in the book
+    "N806",
+]
+
+[lint.isort]
+known-first-party = ["mdlab"]   # one import block for the course's own code
+
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.per-file-ignores]
+"mdlab/tests/*" = ["D"]          # tests say what they check in their names
+"scripts/*" = ["D103"]           # small helpers inside figure scripts
+
+[format]
+quote-style = "double"

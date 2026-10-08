@@ -1,0 +1,103 @@
+%=============================================================================!
+% 18.8  TRAINING, VALIDATION AND TEST                                         !
+%=============================================================================!
+\section{Training, validation and test}
+\label{sec:lo-splits}
+
+A student who revises from past papers and then sits an exam made of the
+same questions scores well without having learned the subject; the
+score measures memory alone. A fitted model is judged the
+same way, on readings it has not seen, and the judgement is only as
+honest as the separation of those readings from the ones it learned
+from. With the frames of a molecular dynamics run that separation is
+subtler than it looks.
+
+\subsection*{Three sets}
+
+The readings are divided before any fitting. The \emph{training} set
+fixes the weights; the \emph{validation} set chooses everything that the
+training set cannot, such as the degree of a polynomial, the penalty
+$\lambda$, the learning rate or the moment to stop
+(\cref{sec:lo-ridge}); the \emph{test} set is opened once, at the end, to
+report how well the chosen model predicts. Every choice made by looking
+at a set spends some of that set's honesty, which is why the test is
+touched last.
+
+The division assumes that the sets are independent samples of the
+readings the model will meet. Frames of a run are not: a frame
+\SI{10}{\femto\second} after another holds nearly the same positions and
+nearly the same energy, and \cref{sec:cv-correlation} measured how long
+such a memory lasts, as the statistical inefficiency $g$, the number of
+consecutive samples worth one independent one.
+
+\subsection*{Frames that leak}
+
+Two runs of Chapter~12's liquid argon were made with every
+\SI{10}{\femto\second} step kept, as first-principles runs often are, and
+a model was asked to learn each frame's potential energy $U$ from the
+histogram of its \num{32640} pair distances in 110 bins of
+\SI{0.05}{\angstrom}. The task is well posed: $U$ is the sum of the pair
+energy over the pairs, so it is linear in the histogram, through the pair
+energy at each bin, with a miss from the binning alone of
+\SI{22.5}{\milli\electronvolt} against a spread of $U$ of
+\SI{175}{\milli\electronvolt}. Ridge regression ($\lambda = 10^{-2}$, the
+110 counts scaled by the training frames' mean and spread) learned $U$
+from the first frames of one run, with a fifth held out for validation,
+and was tested on frames of the other run, every \SI{50}{\femto\second},
+a run it never saw (\cref{fig:lo-leak}).
+
+At \SI{10}{\femto\second} the energy has $g = 109$ frames, so a training
+run of \SI{2}{\pico\second}, 200 frames, holds about two independent
+ones. Held out at random, its validation frames each have training
+frames \SI{10}{\femto\second} either side of them, nearly identical, and
+the validation miss is $(30.5 \pm 4.4)$\,\si{\milli\electronvolt} over ten
+random splits, while the independent run gives $(128 \pm
+16)$\,\si{\milli\electronvolt}, four times more: the random split measures
+how well the model recalls its neighbours. Held out in whole blocks of
+\SI{0.5}{\pico\second}, the validation miss is $(92 \pm
+22)$\,\si{\milli\electronvolt}, close to the truth. With \SI{4}{\pico
+\second} the random split still reports 21.7 against 37.8, the blocked
+one 34.8; only at 10 and \SI{20}{\pico\second}, about 9 and 18 independent
+frames, do all three agree near the binning's own floor, since a model
+with enough independent frames no longer needs the neighbours.
+
+The cure is to split by time, into whole blocks longer than the memory
+$g$, or better whole runs, for validation and test. The same care
+applies to every quantity computed from the training set alone, such as
+the mean and spread that scale the features, which must not be computed
+with the validation frames in. A learned potential's reported error
+means little without the split that produced it.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/leak}
+\caption{Consecutive frames leak between splits. Liquid argon, a frame
+every \SI{10}{\femto\second}; ridge regression learns each frame's
+potential energy from the histogram of its pair distances. (a) The
+energy over \SI{4}{\pico\second}, with the frames that a random split
+holds out (dots) and those that a split into blocks of
+\SI{0.5}{\pico\second} holds out (shaded). (b) The rms miss of $U$ on
+validation frames held out at random and in blocks, and on an
+independent run, against the length of the training run, with the
+spread over ten splits.}
+\label{fig:lo-leak}
+\end{figure}
+
+\begin{keyidea}
+Training readings fix the weights, validation readings choose the
+settings, and test readings, touched once, report the result. All three
+must be independent samples; consecutive frames of a run are not, and
+split at random they let a model look up its neighbours, reporting a miss
+four times too small here. Split by blocks longer than the statistical
+inefficiency, or by whole runs.
+\end{keyidea}
+
+\notebook{18}{split a run's frames at random and in blocks and compare the
+misses}
+
+\begin{selfcheck}
+A first-principles run of \SI{10}{\pico\second} keeps every
+\SI{1}{\femto\second} step, and its energy has $g = 400$ steps. About how
+many independent frames does it hold, and how long should each validation
+block be?
+\end{selfcheck}

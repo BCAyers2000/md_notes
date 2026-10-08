@@ -1,0 +1,181 @@
+%=============================================================================!
+% 13.6  RESCALING THAT SAMPLES                                                !
+%=============================================================================!
+\section{Rescaling that samples}
+\label{sec:th-csvr}
+
+Berendsen coupling disturbs the motion little but narrows the spread of
+$K$; Langevin's friction gives the right spread but disturbs every atom.
+Bussi, Donadio and Parrinello found a rescaling of all the velocities
+together, like Berendsen's, that samples the canonical distribution
+exactly\cite{Bussi2007}: canonical sampling through velocity rescaling,
+CSVR. This section derives it from the exact step of
+\cref{sec:th-langevin}, measures it, and reads TrajCast's implementation,
+which holds its learned runs at a temperature.
+
+\subsection*{The derivation}
+
+In the $N_{\mathrm f}$ free components of \cref{sec:sm-equipartition},
+mass-weighted so that $K = \frac12\lvert\vb{u}\rvert^2$, the velocities
+form a vector $\vb{u}$. With the noise of \cref{eq:th-fdr}, the exact step
+\cref{eq:th-ou} takes a velocity component $v$ to $cv + \sqrt{(1 -
+c^2)\kB T_0/m}\,g$, and so $u = \sqrt m\,v$ to $cu + \sqrt{(1 - c^2)\kB
+T_0}\,g$, whatever the mass. Applied to every component with the friction
+$\gamma = 1/(2\tau_{\mathrm T})$, chosen so that the mean of $K$ relaxes
+with the time constant $\tau_{\mathrm T}$, as shown below, and for which
+$c^2 = \mathrm{e}^{-\dt/\tau_{\mathrm T}} = c_1$, it gives
+\begin{equation*}
+   \vb{u}' = \sqrt{c_1}\,\vb{u} + \sqrt{(1 - c_1)\kB T_0}\;\vb{g} ,
+\end{equation*}
+with $\vb{g}$ a vector of $N_{\mathrm f}$ independent normal numbers. Its
+squared length is
+\begin{equation*}
+   \lvert\vb{u}'\rvert^2 = c_1\lvert\vb{u}\rvert^2 + (1 - c_1)\kB T_0\,
+   \lvert\vb{g}\rvert^2 + 2\sqrt{c_1(1 - c_1)\kB T_0}\;\vb{u}\cdot\vb{g} .
+\end{equation*}
+The vector $\vb{g}$ can be resolved along $\vb{u}$ and at right angles to
+it. Its density, the product of the factors $\mathrm{e}^{-g_k^2/2}$, is a
+constant times $\mathrm{e}^{-\lvert\vb{g}\rvert^2/2}$, which depends only on
+the length of $\vb{g}$; turning the axes, so that the first lies along
+$\vb{u}$ and the others at right angles to it and to one another, leaves
+that length, and so the density, unchanged, and the components of
+$\vb{g}$ along the new axes are again independent normal numbers. So
+$\vb{u}\cdot\vb{g} = \lvert\vb{u}\rvert R_1$, with $R_1$ the component of
+$\vb{g}$ along $\vb{u}$, and $\lvert\vb{g}\rvert^2 = R_1^2 + R_\perp^2$,
+with $R_\perp^2$ the sum of the squares of the other $N_{\mathrm f} - 1$ components,
+independent of $R_1$. Dividing by $\lvert\vb{u}\rvert^2 = 2K$, which turns
+the last term into $2R_1\sqrt{c_1(1 - c_1)\kB T_0/2K}$, and writing $c_2
+= (1 - c_1)\kB T_0/2K = (1 - c_1)K_0/(N_{\mathrm f}K)$ (the names of Bussi
+and colleagues, not the components $c_k$ of \cref{sec:sm-equipartition}),
+\begin{equation}
+   \frac{K'}{K} = \lambda^2 = c_1 + c_2\bigl(R_1^2 + R_\perp^2\bigr)
+   + 2R_1\sqrt{c_1c_2} .
+   \label{eq:th-csvr}
+\end{equation}
+CSVR keeps the change of $K$ that this step makes and throws away the
+change of direction: it multiplies every velocity by $\lambda$. Since
+$\lambda^2$ depends on the velocities only through $K$, the new $K$ has,
+for a given $K$, the same distribution as after the whole
+Ornstein-Uhlenbeck step. That step keeps the canonical distribution, every
+component Gaussian with variance $\kB T_0$, and with it the gamma
+distribution of $K$; so CSVR keeps that distribution too, for any $\dt$
+and any $\tau_{\mathrm T}$. In the canonical density the direction of
+$\vb{u}$ is spread evenly, independent of its length and of the
+positions, and the scaling changes only the length; so, as with
+Andersen's redraws, the whole canonical density is kept, and a run whose
+motion is ergodic samples it to the accuracy of the step that moves the
+atoms. Averaged over the noise
+(\cref{ex:th-csvr-mean}), $\ens{K'} - K = (1 - c_1)(K_0 - K)$, the change
+that $\dd K/\dd t = (K_0 - K)/\tau_{\mathrm T}$ makes over $\dt$; for a
+short step $1 - c_1 \approx \dt/\tau_{\mathrm T}$, and this is the
+relaxation of Berendsen coupling with the same time constant. The noise
+supplies the canonical spread that Berendsen lacks. The sum $R_\perp^2$ of
+$N_{\mathrm f} - 1$ squares need not be drawn square by square: by
+\cref{eq:sm-gamma} with $\kB T = 1$ (\cref{ex:th-chi}), half of it has a
+density proportional to $y^{(N_{\mathrm f} - 1)/2 - 1}\mathrm{e}^{-y}$,
+the gamma distribution of shape $(N_{\mathrm f} - 1)/2$, from which NumPy
+draws directly. \texttt{CSVR.before} is \cref{eq:th-csvr}:
+
+\begin{code}
+        k = kinetic(m, v, self.mv2_to_energy)
+        target = 0.5 * self.n_free * self._kt(self.temperature)
+        c1 = math.exp(-dt / self.tau)
+        c2 = (1 - c1) * target / (k * self.n_free)
+        r1 = rng.standard_normal(k.shape)
+        rest = (2 * rng.standard_gamma(0.5 * (self.n_free - 1), k.shape)
+                if self.n_free > 1 else np.zeros(k.shape))
+        alpha2 = c1 + c2 * (rest + r1 * r1) + 2 * r1 * np.sqrt(c1 * c2)
+        return v * np.sqrt(alpha2)[..., None, None]
+\end{code}
+
+\noindent Bussi and colleagues wrote the factor as $\alpha$, which is
+$\lambda$ in this chapter; \texttt{alpha2} holds its square. At \SI{150}{\kelvin},
+with a target of \SI{135}{\kelvin}, $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$ and steps of \SI{10}{\femto\second}, $c_1 =
+0.90484$ and $c_2 = \num{1.120e-4}$, and with $R_1 = 0$ and $R_\perp^2$ at its
+mean of 764, $\lambda^2 = 0.99037$, close to Berendsen's 0.9900.
+
+\subsection*{Measured}
+
+Over three runs of liquid argon the spread of $K$ is 0.0499 with
+$\tau_{\mathrm T} = \SI{100}{\femto\second}$ and 0.0508 with
+\SI{1}{\pico\second}, against the canonical 0.0511
+(\cref{fig:th-berendsen}(a)); the diffusion coefficient is 1.07 and 1.05
+times its value at fixed energy, a gap that \cref{sec:th-compare} weighs
+against the scatter of the runs.
+Acting once every three steps, over their whole length, with
+$\tau_{\mathrm T} = \SI{300}{\femto\second}$, it still gives 0.0513.
+For a single lithium atom, the density of the potential energy is within
+0.012 of the exact one, and the atoms hop 1.08 times per picosecond. An
+isolated molecule would show another side of the common factor: it keeps
+its angular momentum under the forces, and CSVR's scaling multiplies it
+at random, so TrajCast's authors set it to zero every hundred strides for
+paracetamol\cite{Thiemann2026}.
+CSVR scales every velocity by one factor, as Berendsen coupling does, but
+its factor is not tilted towards growth\cite{Braun2018}, and a motion of
+the centre of mass left in the velocities does not grow
+(\cref{sec:th-trajectory}).
+
+\subsection*{TrajCast's thermostat}
+
+TrajCast predicts the state a stride $\Dt$ ahead, from
+\SI{5}{\femto\second} for water to \SI{30}{\femto\second} for quartz in
+the runs reported, and after each stride applies CSVR once, in the
+file \texttt{\_thermostat.py} of its forecasting tools\cite{Thiemann2026},
+whose lines 96-109 are \cref{eq:th-csvr}:
+
+\begin{code}
+        c2 = (
+            (torch.tensor(1.0) - self.c1) * e_kin_target
+            / e_kin_current / self.n_dofs
+        ).to(self.device)
+        r1 = torch.randn(1, device=self.device)
+        r2 = self._draw_sum_noises_from_gamma_dist(n_dofs_1=self.n_dofs - 1)
+        alpha_2 = (
+            self.c1
+            + c2 * (r1 * r1 + r2)
+            + torch.tensor(2.0) * r1 * (self.c1 * c2).sqrt()
+        )
+\end{code}
+
+\noindent with comments removed and one line wrapped. \texttt{c1} is $\mathrm{e}^{-\Dt/\tau_{
+\mathrm T}}$, computed once with the stride as the step (lines 32-37);
+\texttt{r2} is $R_\perp^2$, drawn as twice a gamma number of shape $(N_{\mathrm f} -
+1)/2$, or, when $N_{\mathrm f} - 1$ is odd, as twice one of shape
+$(N_{\mathrm f} - 2)/2$ plus one more square (lines 113-123), which is the
+same distribution; and \texttt{n\_dofs} is $3N$ less three for each kind
+of momentum, linear or angular, that the run removes or holds fixed, or
+less a number the run's settings give (\texttt{forecast.py}, lines
+344-378).
+With no time constant given, $\tau_{\mathrm T}$ is a hundred strides, so
+$c_1 = \mathrm{e}^{-0.01} = 0.9900$ and the temperature is held loosely;
+the runs reported used ten strides for water and paracetamol, 50 and
+\SI{70}{\femto\second}, $c_1 = 0.9048$, and two and a half for quartz,
+\SI{75}{\femto\second}, $c_1 = 0.6703$. Since \cref{eq:th-csvr} keeps the
+distribution of $K$ for any step, the thermostat itself works at any
+stride, as the run acting once every three steps confirmed. The stride
+changes what the thermostat corrects: a learned step may not keep the
+energy, and CSVR would then remove the error as heat, so in a learned run
+the heat may measure the model's error as well as the bath's work, a
+theme of the planned Part~VI. TrajCast's authors found that the longer strides needed
+much shorter $\tau_{\mathrm T}$ than usual to hold the temperature and its
+spread, and put it down to each stride standing for several steps taken
+before one rescaling\cite{Thiemann2026}.
+
+\begin{keyidea}
+CSVR applies the exact Ornstein-Uhlenbeck step to all $N_{\mathrm f}$
+mass-weighted velocity components at once, keeps only its change of
+length, and scales every velocity by the factor $\lambda$ of
+\cref{eq:th-csvr}. Its step then keeps the canonical gamma distribution of
+$K$ for any step and coupling, the mean relaxes as under Berendsen
+coupling, and the motion is disturbed as little as by Berendsen
+coupling. TrajCast applies it once per
+learned stride, with $c_1 = \mathrm{e}^{-\Dt/\tau_{\mathrm T}}$.
+\end{keyidea}
+
+\notebook{13}{set the coupling and the stride, and compare CSVR with Berendsen}
+
+\begin{selfcheck}
+For TrajCast's stride of \SI{30}{\femto\second} for quartz, what
+$\tau_{\mathrm T}$ gives $c_1 = 0.5$?
+\end{selfcheck}

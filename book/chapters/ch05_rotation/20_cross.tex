@@ -1,0 +1,182 @@
+%=============================================================================!
+% 5.2  THE CROSS PRODUCT                                                      !
+%=============================================================================!
+\section{Angular momentum in space}
+\label{sec:ro-cross}
+
+The puck turned in the $xy$ plane, about the $z$ axis, and the combination
+$xv_y - yv_x$ measured that turning. A body moving in space can turn about
+any axis. Seen from far out along the $x$ axis, with the axes drawn as in
+the toolbox below, the $y$ and $z$ axes sit as the $x$ and $y$ axes do
+seen from above the table, so the same combination with the letters
+renamed, $x \to y \to z \to x$, measures the turning about the $x$ axis,
+$yv_z - zv_y$, and renaming once more gives $zv_x - xv_z$ about the $y$
+axis. The three together form a vector, made from the two vectors $\vb{r}$
+and $\vb{v}$ by a new product.
+
+\begin{toolbox}[The cross product]
+The cross product of $\vb{a} = (a_x, a_y, a_z)$ and $\vb{b} = (b_x, b_y,
+b_z)$ is the vector
+\begin{equation*}
+   \vb{a}\times\vb{b} = \bigl(a_yb_z - a_zb_y,\ a_zb_x - a_xb_z,\
+   a_xb_y - a_yb_x\bigr) ,
+\end{equation*}
+each component built from the other two letters in the order $x \to y \to
+z \to x$. Its properties follow from the components:
+\begin{itemize}
+\item Swapping the vectors swaps the two products in every component, so
+   $\vb{b}\times\vb{a} = -\vb{a}\times\vb{b}$, and $\vb{a}\times\vb{a} = \vb{0}$,
+   since each of its components is a product minus the same product, such
+   as $a_ya_z - a_za_y = 0$. A number factor comes outside, $(c\vb{a})\times
+   \vb{b} = c\,(\vb{a}\times\vb{b})$, and a sum splits, $\vb{a}\times(\vb{b}
+   + \vb{c}) = \vb{a}\times\vb{b} + \vb{a}\times\vb{c}$, since each component
+   is a sum of products.
+\item It is at right angles to both vectors: multiplying out,
+   \begin{align*}
+      \vb{a}\cdot(\vb{a}\times\vb{b})
+      &= a_x(a_yb_z - a_zb_y) + a_y(a_zb_x - a_xb_z) + a_z(a_xb_y - a_yb_x)\\
+      &= a_xa_yb_z - a_xa_zb_y + a_ya_zb_x - a_xa_yb_z + a_xa_zb_y - a_ya_zb_x ,
+   \end{align*}
+   where the first and fourth products cancel, the second and fifth, and
+   the third and sixth, so the scalar product is zero; the same holds for
+   $\vb{b}$, and a zero scalar product means a right angle
+   (\cref{sec:mo-plane}).
+\item With the unit vectors along the axes, $\vb{e}_x = (1, 0, 0)$,
+   $\vb{e}_y = (0, 1, 0)$ and $\vb{e}_z = (0, 0, 1)$, the definition gives
+   $\vb{e}_x\times\vb{e}_y = \vb{e}_z$, and likewise $\vb{e}_y\times\vb{e}_z
+   = \vb{e}_x$ and $\vb{e}_z\times\vb{e}_x = \vb{e}_y$. We always draw the
+   axes so that, curling the fingers of the right hand from $\vb{e}_x$
+   towards $\vb{e}_y$, the thumb points along $\vb{e}_z$. For $\vb{a}$ and
+   $\vb{b}$ in the $xy$ plane, at the angles $\theta_a$ and $\theta_b$ from the
+   $x$ axis, $\vb{a}\times\vb{b} = (0, 0, a_xb_y - a_yb_x)$, and by
+   \cref{eq:mo-addition} $a_xb_y - a_yb_x = \lvert\vb{a}\rvert\lvert\vb{b}
+   \rvert(\cos\theta_a\sin\theta_b - \sin\theta_a\cos\theta_b) = \lvert\vb{a}\rvert
+   \lvert\vb{b}\rvert\sin(\theta_b - \theta_a)$, positive when $\vb{b}$ lies
+   less than half a turn anticlockwise from $\vb{a}$. So the same
+   right-hand rule, fingers curling from $\vb{a}$ towards $\vb{b}$, gives
+   the direction of $\vb{a}\times\vb{b}$ (\cref{fig:ro-cross}); for vectors
+   in any other plane we take it on trust, since turning the axes to bring
+   them into the $xy$ plane needs more than we have shown.
+\item Differentiating each component by the product rule, the $x$
+   component for instance as $\dd(a_yb_z - a_zb_y)/\dd t = (\dot a_yb_z -
+   \dot a_zb_y) + (a_y\dot b_z - a_z\dot b_y)$, gives $\dd(\vb{a}\times
+   \vb{b})/\dd t = \dot{\vb{a}}\times\vb{b} + \vb{a}\times\dot{\vb{b}}$,
+   with the order of each product kept.
+\end{itemize}
+For example, $(1, 2, 0)\times(3, -1, 2) = (2\times2 - 0\times(-1),\
+0\times3 - 1\times2,\ 1\times(-1) - 2\times3) = (4, -2, -7)$, and its
+scalar products with $(1, 2, 0)$ and $(3, -1, 2)$ are $4 - 4 + 0 = 0$ and
+$12 + 2 - 14 = 0$.
+\end{toolbox}
+
+\begin{toolbox}[The length of a cross product]
+Squaring the three components, each by $(p - q)^2 = p^2 - 2pq + q^2$, and
+adding,
+\begin{align*}
+   \lvert\vb{a}\times\vb{b}\rvert^2 &= a_y^2b_z^2 + a_z^2b_y^2 + a_z^2b_x^2
+   + a_x^2b_z^2 + a_x^2b_y^2 + a_y^2b_x^2\\
+   &\quad - 2\,(a_ya_zb_yb_z + a_za_xb_zb_x + a_xa_yb_xb_y) .
+\end{align*}
+The product $\lvert\vb{a}\rvert^2\lvert\vb{b}\rvert^2 = (a_x^2 + a_y^2 +
+a_z^2)(b_x^2 + b_y^2 + b_z^2)$ has the same six squares plus $a_x^2b_x^2
++ a_y^2b_y^2 + a_z^2b_z^2$, and $(\vb{a}\cdot\vb{b})^2 = (a_xb_x + a_yb_y
++ a_zb_z)^2$ is those three squares plus twice the bracket above.
+Subtracting,
+\begin{align*}
+   \lvert\vb{a}\times\vb{b}\rvert^2
+   &= \lvert\vb{a}\rvert^2\lvert\vb{b}\rvert^2 - (\vb{a}\cdot\vb{b})^2\\
+   &= \lvert\vb{a}\rvert^2\lvert\vb{b}\rvert^2\,(1 - \cos^2\theta)
+      && \text{as $\vb{a}\cdot\vb{b} = \lvert\vb{a}\rvert\lvert\vb{b}\rvert
+         \cos\theta$}\\
+   &= \lvert\vb{a}\rvert^2\lvert\vb{b}\rvert^2\sin^2\theta
+      && \text{as $\cos^2\theta + \sin^2\theta = 1$,}
+\end{align*}
+with $\theta$ the angle between the vectors, between 0 and $\pi$, by the
+scalar product of \cref{sec:mo-plane}. Since $\sin\theta \ge 0$ there,
+$\lvert\vb{a}\times\vb{b}\rvert = \lvert\vb{a}\rvert\lvert\vb{b}\rvert
+\sin\theta$, the area of the parallelogram with sides $\vb{a}$ and
+$\vb{b}$, whose base is $\lvert\vb{a}\rvert$ and height $\lvert\vb{b}\rvert
+\sin\theta$. For the example above, $\lvert\vb{a}\times\vb{b}\rvert = \sqrt{4^2 + 2^2 +
+7^2} = \sqrt{69} = 8.3066$, and with $\lvert\vb{a}\rvert^2 = 1 + 4 = 5$,
+$\lvert\vb{b}\rvert^2 = 9 + 1 + 4 = 14$ and $\vb{a}\cdot\vb{b} = 3 - 2 + 0
+= 1$, $\sqrt{5\times14 - 1^2}$ is the same.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   vec/.style={-{Stealth[length=5pt]}, line width=1.0pt}]
+   \fill[black!8] (0,0) -- (2.6,-0.5) -- (3.6,0.6) -- (1.0,1.1) -- cycle;
+   \draw[vec] (0,0) -- (2.6,-0.5) node[below right] {\small $\vb{a}$};
+   \draw[vec] (0,0) -- (1.0,1.1) node[above left] {\small $\vb{b}$};
+   \draw[vec, accent] (0,0) -- (0,2.6) node[above]
+      {\small $\vb{a}\times\vb{b}$};
+   \draw[black!50, ->, line width=0.5pt] (0.9,-0.17) arc[start angle=-11,
+      end angle=47, radius=0.9];
+   \node at (1.1,0.32) {\small $\theta$};
+   \node[black!60] at (2.45,0.52) {\small area};
+   \node[black!60] at (2.45,0.2) {\small $\lvert\vb{a}\rvert
+      \lvert\vb{b}\rvert\sin\theta$};
+\end{tikzpicture}
+\caption{The cross product, drawn in perspective: $\vb{a}$ and $\vb{b}$ lie
+in a flat horizontal sheet seen from above at a slant, and $\vb{a}\times
+\vb{b}$ stands straight up from it, at right angles to both, along the
+thumb of a right hand whose fingers curl from $\vb{a}$ towards $\vb{b}$.
+Its length is the area of the parallelogram they span (shaded).}
+\label{fig:ro-cross}
+\end{figure}
+
+\subsection*{Angular momentum and torque in space}
+
+The angular momentum about the origin of a body at $\vb{r}$ with momentum
+$\vb{p} = m\vb{v}$, and the torque about the origin of a force $\vb{F}$
+acting at $\vb{r}$, are
+\begin{equation}
+   \vb{L} = \vb{r}\times\vb{p} , \qquad \vb{G} = \vb{r}\times\vb{F} .
+   \label{eq:ro-angular}
+\end{equation}
+By the product rule of the toolbox,
+\begin{equation}
+   \frac{\dd\vb{L}}{\dd t} = \vb{v}\times m\vb{v} + \vb{r}\times m\vb{a}
+   = \vb{r}\times\vb{F} = \vb{G} ,
+   \label{eq:ro-torque}
+\end{equation}
+since $\vb{v}\times\vb{v} = \vb{0}$ and $m\vb{a} = \vb{F}$: the rate of
+change of the angular momentum is the torque, now as vectors. For the puck,
+$\vb{r} = (x, y, 0)$ and $\vb{v} = (v_x, v_y, 0)$, so the first two
+components of $\vb{L}$ vanish and $\vb{L} = (0, 0, m(xv_y - yv_x))$: the
+$L$ of \cref{sec:ro-plane} is the $z$ component $L_z$ of the vector, and
+$\vb{L}$ points straight up out of the table when the puck goes round
+anticlockwise. In general $\lvert\vb{L}\rvert = m\lvert\vb{r}\rvert
+\lvert\vb{v}\rvert\sin\theta$, with $\theta$ here the angle between
+$\vb{r}$ and $\vb{v}$, as in the toolbox, not the polar angle of
+\cref{sec:ro-plane}; this is the distance times the part of the
+momentum at right angles to $\vb{r}$, as in the plane.
+
+A central force, $\vb{F} = c\,\vb{r}$ for some number $c$ that may change
+as the body moves (for the puck, minus the pull of the string divided by
+$r$), has $\vb{G} =
+c\,\vb{r}\times\vb{r} = \vb{0}$ and conserves the whole vector $\vb{L}$,
+direction as well as size. Then $\vb{r}\cdot\vb{L} = m\,\vb{r}\cdot(\vb{r}
+\times\vb{v}) = 0$ at every instant, by the second property in the
+toolbox, so $\vb{r}$ is always at right angles to the fixed $\vb{L}$, as
+the spokes of a wheel are to its axle, and a body with $\vb{L} \neq
+\vb{0}$ stays in the plane through the centre at right angles to $\vb{L}$
+(\cref{ex:ro-plane}). This is why a planet's orbit stays in one plane.
+The puck is held in its plane by the table, but its $\vb{L}$ is fixed
+too: the weight and the push of the table cancel, leaving only the
+central pull of the string.
+
+\begin{keyidea}
+The cross product $\vb{a}\times\vb{b}$ is at right angles to both
+vectors, by the right-hand rule, with length $\lvert\vb{a}\rvert
+\lvert\vb{b}\rvert\sin\theta$. Angular momentum $\vb{L} = \vb{r}\times
+\vb{p}$ changes at the rate of the torque $\vb{G} = \vb{r}\times\vb{F}$;
+a central force conserves it.
+\end{keyidea}
+
+\begin{selfcheck}
+Find $\vb{e}_z\times\vb{e}_x$ from the components. A record turntable
+turns clockwise when seen from above. Which way does its angular momentum
+point?
+\end{selfcheck}

@@ -1,0 +1,186 @@
+%=============================================================================!
+% 13.2  RESCALING AND WEAK COUPLING                                           !
+%=============================================================================!
+\section{Rescaling and weak coupling}
+\label{sec:th-berendsen}
+
+The simplest way to hold a temperature is to multiply every velocity by
+the factor that brings the kinetic energy to its target. This section
+builds that, and the gentler version of Berendsen and his colleagues,
+measures what both do to the distribution of $K$, and derives two faults
+they share.
+
+\subsection*{Rescaling}
+
+Before each step, \texttt{Rescale} multiplies every velocity by
+$\lambda = \sqrt{K_0/K}$, with $K_0 = \frac12N_{\mathrm f}\kB T_0$ the
+kinetic energy of the target temperature $T_0$; multiplying every
+velocity by $\lambda$ multiplies $K$ by $\lambda^2$. The kinetic energy is
+then exactly $K_0$ at the start of every step, and the only fluctuation
+left is what the motion produces within one step: over \SI{95}{\pico
+\second} of liquid argon, recorded at the ends of the steps, the relative
+spread of $K$ is 0.0056, against the canonical 0.0511. The canonical
+ensemble has a spread; rescaling all but removes it, and with it any use
+of the fluctuation formulae of \cref{sec:sm-kinetic}. The scaling factor $\lambda$ is a
+symbol of this chapter only (\cref{sec:la-multipliers,sec:cs-shake} used
+it for a multiplier).
+
+\subsection*{Weak coupling}
+
+Berendsen and colleagues asked the temperature instead to relax towards
+$T_0$ with a time constant $\tau_{\mathrm T}$\cite{Berendsen1984},
+\begin{equation*}
+   \frac{\dd T}{\dd t} = \frac{T_0 - T}{\tau_{\mathrm T}} .
+\end{equation*}
+Here $T$ is the kinetic temperature $T_{\mathrm{kin}}$ of Chapter~12.
+Over one step $\dt$ the kinetic temperature should change by $(\dt/
+\tau_{\mathrm T})(T_0 - T)$. Scaling the velocities by $\lambda$ turns $T$
+into $\lambda^2T$, so
+\begin{equation}
+   \lambda^2T = T + \frac{\dt}{\tau_{\mathrm T}}(T_0 - T) , \qquad
+   \lambda^2 = 1 + \frac{\dt}{\tau_{\mathrm T}}\Bigl(\frac{T_0}{T} - 1
+   \Bigr) .
+   \label{eq:th-berendsen}
+\end{equation}
+At \SI{150}{\kelvin}, with a target of \SI{135}{\kelvin}, steps of
+\SI{10}{\femto\second} and $\tau_{\mathrm T} = \SI{100}{\femto\second}$,
+$\lambda^2 = 0.9900$ and $\lambda = 0.99499$: the velocities shrink by half
+a percent. With $\tau_{\mathrm T} = \dt$ this is rescaling; as
+$\tau_{\mathrm T}$ grows, the run approaches one at fixed energy.
+
+One thing follows from \cref{eq:th-berendsen}. The scaling turns $K$ into
+$\lambda^2K$, so each step adds the heat $(\lambda^2 - 1)K =
+(\dt/\tau_{\mathrm T})(K_0 - K)$, since $T_0K/T = K_0$. Over a long run in
+which nothing drifts this heat averages to zero, because by
+\cref{eq:th-effective} the total heat is the change of $K + U$, which stays
+within its fluctuations however long the run; so $\ens{K} = K_0$ and the
+mean temperature is exactly the target. Over three runs it is \SI{135.00}{\kelvin} with
+$\tau_{\mathrm T} = \SI{100}{\femto\second}$ and \SI{135.02}{\kelvin}
+with \SI{1}{\pico\second}. But the spread of $K$ is not the canonical
+one (\cref{fig:th-berendsen}(a)): with $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$ it is 0.0228, 0.45 of the canonical spread and
+smaller even than the 0.0311 of a run at fixed energy; with
+\SI{1}{\pico\second}, 0.0300, close to the run at fixed energy. Berendsen
+coupling does not sample the canonical ensemble at any $\tau_{\mathrm T}$:
+strong coupling squeezes the fluctuations, and weak coupling leaves them
+those of fixed energy.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch13_thermostats/berendsen}
+\caption{(a) The kinetic energy of liquid argon, divided by its mean,
+over three runs of \SI{95}{\pico\second} under Berendsen and under CSVR
+(\cref{sec:th-csvr}), both with $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$, against the canonical gamma density of 765
+freedoms (dashed). (b) The liquid with its velocities scaled to
+\SI{200}{\kelvin}, brought towards \SI{135}{\kelvin} by Berendsen
+and CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$, a Nosé-Hoover
+chain with $\tau_{\mathrm T} = \SI{1}{\pico\second}$
+(\cref{sec:th-nose}) and Langevin with $\gamma = \SI{1}{\per\pico\second}$
+(\cref{sec:th-langevin}), against the approach predicted for Berendsen
+(thin). The target is the dotted line.}
+\label{fig:th-berendsen}
+\end{figure}
+
+\subsection*{What the time constant means}
+
+The temperature takes longer than $\tau_{\mathrm T}$ to settle.
+\Cref{fig:th-berendsen}(b) starts the liquid at \SI{200}{\kelvin} by
+scaling its velocities. Within \SI{0.2}{\pico\second} the kinetic
+temperature falls to between 165 and \SI{170}{\kelvin} under every
+thermostat, as kinetic energy passes into potential energy, the sharing
+of \cref{sec:sm-equipartition}. After that the thermostat removes heat at
+the rate $(K - K_0)/\tau_{\mathrm T} = C_K(T - T_0)/\tau_{\mathrm T}$,
+with $C_K = \frac12N_{\mathrm f}\kB$ the kinetic part of the heat
+capacity (\cref{sec:sm-kinetic}). But the liquid's energy exceeds its
+value at $T_0$ by $C_V(T - T_0)$, more than the $C_K(T - T_0)$ held as
+kinetic energy, so it
+changes at the rate $C_V\,\dd T/\dd t$, and equating the two,
+\begin{equation*}
+   C_V\frac{\dd T}{\dd t} = -\frac{C_K}{\tau_{\mathrm T}}(T - T_0) ,
+\end{equation*}
+and $T - T_0$ decays as $\mathrm{e}^{-t/\tau_{\mathrm{eff}}}$, as the gap
+$w$ of \cref{sec:ne-drag} did, with $\tau_{\mathrm{eff}} = \tau_{\mathrm
+T}C_V/C_K$. With $C_V = 2.376\,N\kB$ and $C_K = 1.4941\,N\kB$ from
+\cref{sec:sm-kinetic}, $C_V/C_K = 1.590$, so $\tau_{\mathrm{eff}} =
+\SI{1.59}{\pico\second}$ for $\tau_{\mathrm T} = \SI{1}{\pico\second}$; a
+fit to the run from \SI{0.5}{\pico\second} on gives
+\SI{1.67}{\pico\second}, uncertain by \SI{0.19}{\pico\second} in a single
+run.
+
+\subsection*{The flying ice cube}
+
+Rescaling and Berendsen coupling multiply every velocity by the same
+factor, including the part of each velocity that belongs to the motion of
+the whole box. No force changes that motion (\cref{sec:ne-atoms}), so its
+kinetic energy $K_{\mathrm{com}}$ changes only by the thermostat, by the
+factor $\lambda^2$ at each step. Over $n$ steps, $\ln K_{\mathrm{com}}$
+gains $\sum\ln\lambda^2$. Writing $T = T_0 + \delta T$, whose departure
+$\delta T$ from the target has mean zero since $\ens{T} = T_0$,
+\begin{align*}
+   \lambda^2 - 1 &= \frac{\dt}{\tau_{\mathrm T}}\Bigl(\frac{1}{1 + \delta
+   T/T_0} - 1\Bigr) = \frac{\dt}{\tau_{\mathrm T}}\Bigl(-\frac{\delta T}{T_0}
+   + \Bigl(\frac{\delta T}{T_0}\Bigr)^2 - \dotsb\Bigr) ,\\
+   \ens{\ln\lambda^2} &\approx \ens{\lambda^2 - 1}
+   \approx \frac{\dt}{\tau_{\mathrm T}}\Bigl\langle\Bigl(\frac{\delta
+   T}{T_0}\Bigr)^2\Bigr\rangle ,
+\end{align*}
+to first order in $\dt/\tau_{\mathrm T}$ and second in $\delta T/T_0$,
+using $1/(1 + y) = 1 - y + y^2 - \dotsb$, which holds because $(1 + y)(1 -
+y + y^2) = 1 + y^3$, and $\ln(1 + y) \approx y$ for small $y$, the Taylor
+series of \cref{sec:mo-taylor} with the slope $1/(1 + y)$ of the
+logarithm, 1 at $y = 0$. The mean is positive whatever the sign of the
+fluctuations, and over $n$ steps, a time $t = n\dt$, $\ln K_{\mathrm{com}}$
+gains $n\ens{\ln\lambda^2} \approx \ens{(\delta T/T_0)^2}t/\tau_{\mathrm
+T}$: $K_{\mathrm{com}}$ grows as $\mathrm{e}^{\ens{(\delta
+T/T_0)^2}t/\tau_{\mathrm T}}$, at
+the expense of the motion of the atoms against one another, which the
+thermostat cools to keep the total at $K_0$. In time the box flies
+through space while its atoms freeze, the flying ice cube of Harvey, Tan
+and Cheatham, who found velocity rescaling to break the equipartition of
+energy\cite{Harvey1998}, revisited by Braun, Moosavi and
+Smit\cite{Braun2018}.
+For liquid argon with $\tau_{\mathrm T} = \SI{100}{\femto\second}$,
+$\ens{(\delta T/T_0)^2} = \num{4.99e-4}$ in the first of the three runs, and the
+predicted rate is \SI{0.0050}{\per\pico\second}; keeping the next term of
+$\ln(1 + y)$, $-\frac12y^2$, lowers it by the factor $1 - \dt/2\tau_{\mathrm
+T} = 0.95$, to \SI{0.0047}{\per\pico\second}, which
+\cref{sec:th-trajectory} measures. A weaker form of the same flow feeds
+any motion that the forces barely touch, such as the slow vibrations of
+large molecules, held back only by its slow exchange of energy with the
+other motions, which is why the effect appears even when the motion of
+the centre of mass has been removed\cite{Harvey1998,Braun2018}. For one lithium atom on the surface, whose two freedoms are
+its whole motion, Berendsen coupling with $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$ drives the atom within a picosecond or two onto
+a circular orbit of radius \SI{0.48}{\angstrom} round its hollow, on which
+$K$ stays at $\kB T_0$ and $K + U$ at \SI{0.19}{\electronvolt}, short of
+the \SI{0.3}{\electronvolt} barrier, and the thermostat has nothing left to
+correct: the 1000 atoms make 0.001 hops per atom per picosecond, against
+0.93 to 1.09 under the thermostats that sample correctly.
+
+\begin{practice}
+Rescaling and Berendsen coupling are for bringing a system near a
+temperature quickly. Their averages of $T$ are right, but their
+fluctuations are not, and a long run under them feeds slow motions and
+the motion of the centre of mass. A production run, whose fluctuations or slow motions matter,
+uses one of the thermostats of the next sections.
+\end{practice}
+
+\begin{keyidea}
+Berendsen coupling scales the velocities by the factor $\lambda$ of
+\cref{eq:th-berendsen}, so that $T$ relaxes towards $T_0$.
+It holds the mean temperature exactly but narrows the spread of $K$
+below the canonical one, and it feeds motions that the forces do not
+touch, at the rate $\ens{(\delta T/T_0)^2}/\tau_{\mathrm T}$: the flying
+ice cube. The
+temperature of a liquid relaxes with the time constant $\tau_{\mathrm T}
+C_V/C_K$, longer than $\tau_{\mathrm T}$.
+\end{keyidea}
+
+\notebook{13}{set the coupling time and watch the spread of K and the drift}
+
+\begin{selfcheck}
+What is $\lambda$ for a step of \SI{2}{\femto\second} with $\tau_{\mathrm
+T} = \SI{1}{\pico\second}$, at \SI{310}{\kelvin} with a target of
+\SI{300}{\kelvin}?
+\end{selfcheck}

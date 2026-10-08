@@ -1,0 +1,203 @@
+%=============================================================================!
+% 12.8  OTHER ENSEMBLES                                                       !
+%=============================================================================!
+\section{Other ensembles}
+\label{sec:sm-other}
+
+A sample on a bench exchanges more than energy with its surroundings: it
+can swell against the air, and an electrode in a cell exchanges atoms and
+electrons with the electrolyte and the circuit. This section extends the
+argument of \cref{sec:sm-canonical} to a bath that also takes volume or
+particles, finds the free energy each such ensemble makes least, and ends
+with the electrons of an electronic-structure calculation.
+
+\subsection*{Volume and particles}
+
+The entropy of the bath depends on its volume and number of atoms as well
+as its energy, and its slopes along them, each taken with the other two
+held fixed (\cref{sec:ha-equations}), define the pressure $P$ and the
+chemical potential $\mu$:
+\begin{equation*}
+   \frac{\partial S}{\partial E} = \frac1T , \qquad
+   \frac{\partial S}{\partial V} = \frac PT , \qquad
+   \frac{\partial S}{\partial N} = -\frac\mu T .
+\end{equation*}
+For the ideal gas of \cref{sec:sm-micro}, $\Omega \propto V^N$ gives
+$\partial S/\partial V = N\kB/V$, so $PV = N\kB T$, the ideal gas law;
+Chapter~14 shows that this $P$ is the force per unit area on the walls.
+The minus sign makes $\mu$ the energy that one more atom brings, as $\dd
+E$ below shows. As \cref{sec:sm-micro} showed for energy, two systems that
+exchange volume settle where their values of $P/T$ agree, and two that
+exchange atoms where their values of $\mu/T$ agree, once the atoms are
+counted correctly. Swapping two atoms of one kind gives back the same
+arrangement, so the $N!$ orderings of $N$ identical atoms are one
+microstate, and $\Omega$ and $Z$ for $N$ such atoms are divided by $N!$, a
+factor that changed nothing while $N$ was fixed. Without it the ideal gas,
+with $\Omega \propto V^N$, gains $\ln V$ in $\ln\Omega$ for each atom
+added whatever $N$ is, and two boxes sharing atoms would not settle at
+equal densities, the larger box taking all the atoms;
+with it, one more atom changes $\ln(V^N/N!)$ by $\ln V - \ln(N + 1)
+\approx \ln(V/N)$, and two boxes at one temperature settle at equal
+densities $N/V$.
+
+A system that takes the volume $V_s$ from the bath as well as the energy
+$E_s$ leaves the bath $\Omega_{\mathrm B}(E - E_s, V - V_s)$ microstates,
+and the Taylor series of \cref{sec:sm-canonical}, now in two variables
+with one term for each as in \cref{sec:en-gradient}, gives
+\begin{equation*}
+   \ln\Omega_{\mathrm B}(E - E_s, V - V_s) \approx \ln\Omega_{\mathrm B}(E, V)
+   - \frac{E_s}{\kB T} - \frac{PV_s}{\kB T} ,
+\end{equation*}
+so a state of the system with energy $E_s$ and volume $V_s$ has the
+probability proportional to $\mathrm{e}^{-\beta(E_s + PV_s)}$: the
+isothermal-isobaric, or $NPT$, ensemble. A system that takes $N_s$ atoms
+from the bath has, by the same steps with $\partial\ln\Omega_{\mathrm
+B}/\partial N = -\mu/\kB T$,
+\begin{equation*}
+   \ln\Omega_{\mathrm B}(E - E_s, N - N_s) \approx \ln\Omega_{\mathrm B}(E, N)
+   - \frac{E_s}{\kB T} + \frac{\mu N_s}{\kB T} ,
+\end{equation*}
+and so the weight $\mathrm{e}^{-\beta(E_s - \mu N_s)}$: the grand
+canonical, or $\mu VT$, ensemble. Grouping the states by their volume or
+their number of atoms, the sum over each group being a canonical partition
+function, gives
+\begin{equation*}
+   Z_{NPT} = \int\mathrm{e}^{-\beta PV}Z(N, V, T)\,\dd V , \qquad
+   \Xi = \sum_N\mathrm{e}^{\beta\mu N}Z(N, V, T) ,
+\end{equation*}
+and the derivatives of their logarithms give averages and fluctuations as
+before: the volume of an $NPT$ run fluctuates with the variance $-\kB
+T\,\dd\ens{V}/\dd P$ (\cref{ex:sm-volume}), large for a soft material and
+small for a stiff one, which Chapter~14 uses to test a barostat's
+coupling.
+
+\subsection*{The free energies}
+
+For a system in contact with a bath at $T$, the total energy is divided as
+in \cref{sec:sm-micro}: when the system holds $E_s$ it has $\Omega(E_s)$
+microstates and the entropy $S = \kB\ln\Omega(E_s)$, the bath has
+$\Omega_{\mathrm B}(E - E_s)$, and the most probable division has the most
+microstates of the two together, $\Omega(E_s)\,\Omega_{\mathrm B}(E -
+E_s)$. Their logarithm times $\kB$ is the total entropy, which by the
+expansion of \cref{sec:sm-canonical} is
+\begin{equation*}
+   S + S_{\mathrm B}(E - E_s) \approx S + S_{\mathrm B}(E)
+   - \frac{E_s}{T} = S_{\mathrm B}(E) - \frac{E_s - TS}{T} .
+\end{equation*}
+$S_{\mathrm B}(E)$ is the same for every division, so the system settles
+at the energy that makes $E_s - TS$ least, and for a large system that
+least value is the free energy $F$ of \cref{sec:sm-canonical}. With a bath
+that also takes volume, it is $F + PV$ that is least, the Gibbs free
+energy, $-\kB T\ln Z_{NPT}$; with one that takes atoms, $F - \mu N$, the
+grand potential, $-\kB T\ln\Xi$. From here on $E$, $V$ and $N$ are the
+system's own.
+
+For small changes $\dd E$, $\dd V$ and $\dd N$, the entropy changes by one
+term for each, its slope times the change (\cref{sec:en-gradient}):
+\begin{align*}
+   \dd S &= \frac{\dd E}{T} + \frac{P\,\dd V}{T} - \frac{\mu\,\dd N}{T} ,\\
+   \dd E &= T\,\dd S - P\,\dd V + \mu\,\dd N
+   && \text{multiplying by $T$ and rearranging.}
+\end{align*}
+$TS$ changes by $T\,\dd S + S\,\dd T$, by the product rule, so
+\begin{equation*}
+   \dd F = \dd E - T\,\dd S - S\,\dd T = -S\,\dd T - P\,\dd V + \mu\,\dd N .
+\end{equation*}
+Since $T$ is the slope of $E$ along $S$, subtracting $TS$ exchanged $S$
+for that slope as the variable the energy depends on. By
+\cref{sec:ha-legendre}, $TS - E$ at the $S$ where the slope is $T$ is the
+largest gap between the line $TS$ and the curve $E(S)$, the Legendre
+transform of $E$; $F = E - TS$ is that transform with its sign reversed,
+and so the least value of $E - TS$ over $S$, which is why the system
+settles there. Adding $PV$ or subtracting $\mu N$ exchanges $V$ for $P$ or
+$N$ for $\mu$ in the same way (\cref{ex:sm-legendre}).
+\Cref{tab:sm-ensembles} collects the four ensembles and what samples each.
+
+\begin{table}[htb]
+\centering
+\caption{The ensembles of this book: what is fixed, the probability of a
+state, the quantity that is greatest or least, and what samples the
+ensemble in a simulation.}
+\label{tab:sm-ensembles}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+ensemble & fixed & weight & extremum & sampled by\\
+\midrule
+microcanonical & $N$, $V$, $E$ & equal on the shell & $S$ largest &
+   Verlet (Chs~9--11)\\
+canonical & $N$, $V$, $T$ & $\mathrm{e}^{-\beta E}$ & $F$ least &
+   thermostats (Ch.~13)\\
+isothermal-isobaric & $N$, $P$, $T$ & $\mathrm{e}^{-\beta(E + PV)}$ &
+   $F + PV$ least & barostats (Ch.~14)\\
+grand canonical & $\mu$, $V$, $T$ & $\mathrm{e}^{-\beta(E - \mu N)}$ &
+   $F - \mu N$ least & insertion and removal\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Molecular dynamics keeps the number of atoms, so the grand canonical
+ensemble of atoms is sampled by moves that insert or remove an atom at
+random and keep or undo each with a probability set by its weight, Monte
+Carlo moves, which are not dynamics; this book does not use them. The
+grand canonical ensemble returns for electrons.
+
+\subsection*{Electrons in an orbital}
+
+In an electronic-structure calculation the electrons of a solid fill
+orbitals, states of definite energy $\varepsilon_{\mathrm o}$ that one electron can
+occupy. No two electrons can be in the same state (the exclusion
+principle), and an electron has a further two-valued property, its spin,
+so an orbital holds either no electron of a given spin or one. In contact
+with a reservoir of electrons at the chemical potential $\mu$, the orbital
+with one spin is a system of two states: empty, with $N = 0$ and energy
+0, and filled, with $N = 1$ and energy $\varepsilon_{\mathrm o}$. Its grand partition
+function has two terms, $\Xi = 1 + \mathrm{e}^{-\beta(\varepsilon_{\mathrm o} -
+\mu)}$, and its mean occupation, $0\times\mathcal{P}(\text{empty}) +
+1\times\mathcal{P}(\text{filled})$, is the probability of the second,
+\begin{align*}
+   f &= \frac{\mathrm{e}^{-\beta(\varepsilon_{\mathrm o} - \mu)}}{1 +
+   \mathrm{e}^{-\beta(\varepsilon_{\mathrm o} - \mu)}}\\
+   &= \frac{1}{\mathrm{e}^{(\varepsilon_{\mathrm o} - \mu)/\kB T} + 1}
+   && \text{dividing above and below by
+   $\mathrm{e}^{-\beta(\varepsilon_{\mathrm o} - \mu)}$,}
+\end{align*}
+the Fermi-Dirac occupation: 0.5 at $\varepsilon_{\mathrm o} = \mu$, 0.0205 at
+\SI{0.1}{\electronvolt} above it and 0.9795 at \SI{0.1}{\electronvolt}
+below, at \SI{300}{\kelvin}. The entropy $-\kB\sum\mathcal{P}\ln\mathcal{P}$
+of its two states, with probabilities $1 - f$ and $f$, is $-\kB[f\ln f +
+(1 - f)\ln(1 - f)]$, whose slope in $f$, $\kB\ln\bigl((1 - f)/f\bigr)$,
+vanishes at $f = \frac12$: the entropy is largest, $\kB\ln 2$, when the
+orbital is half filled.
+
+\begin{bridge}
+Mermin showed that density functional theory carries over to a finite
+temperature in the grand canonical ensemble, the grand potential of the
+electrons being least at their true density\cite{Mermin1965}. A
+calculation of a metal that smears its occupations with this $f$
+minimises the free energy $E - TS$ of its electrons, with $S$ the sum of
+the orbitals' entropies, and the force on each atom is the slope of that
+free energy, so a run on such forces keeps constant the sum of the atoms'
+kinetic energy and that free energy\cite{Wentzcovitch1992}, and not the
+sum with $E$. A calculation of an electrode held at a fixed potential
+fixes $\mu$ of the electrons instead of their number, and makes the grand
+potential $E - TS - \mu N$ least: its electrons are in the grand
+canonical ensemble, while its atoms may be canonical.
+\end{bridge}
+
+\begin{keyidea}
+A bath that takes volume weights a state by $\mathrm{e}^{-\beta(E +
+PV)}$, and one that takes atoms by $\mathrm{e}^{-\beta(E - \mu N)}$, with
+identical atoms counted once, $N!$ orderings as one microstate. In
+contact with a bath, the system makes a free energy least: $F = E - TS$ at
+fixed $V$, $F + PV$ at fixed $P$, $F - \mu N$ at fixed $\mu$, each the
+Legendre transform of the energy with its sign reversed. Fermi-Dirac
+occupations are the grand canonical ensemble of one orbital.
+\end{keyidea}
+
+\notebook{12}{set a temperature and watch the occupations and their entropy}
+
+\begin{selfcheck}
+What is the occupation of an orbital $3\kB T$ below the chemical
+potential?
+\end{selfcheck}

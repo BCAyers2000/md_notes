@@ -1,0 +1,201 @@
+%=============================================================================!
+% 3.13  A LITHIUM ATOM ON A MODEL SURFACE                                     !
+%=============================================================================!
+\section{A lithium atom on a model surface}
+\label{sec:en-surface}
+
+The bead on its wire showed what an energy diagram says in one dimension.
+This section draws the same picture for an atom moving in two: a lithium
+atom on a layer of carbon atoms arranged in hexagons, as in a sheet of
+graphite. We build a simple model of its potential energy, check that
+its force does the same work along every path, and follow the atom as it
+hops from site to site with its total energy fixed.
+
+\subsection*{The model}
+
+A lithium atom resting on a carbon layer feels a potential energy that
+depends on where it sits relative to the carbon atoms. We follow only its
+motion parallel to the layer, at a fixed height, with the carbon atoms
+held still, so $U$ is a function of the two coordinates $\vb{r} = (x,
+y)$. Our model has three kinds of site (\cref{fig:en-surface}a). Above
+the centre of a hexagon, a hollow, we make the energy lowest. Above a
+carbon atom, a top, we make it highest. Midway between two neighbouring hollows, above the middle
+of the bond shared by their hexagons, lies a bridge, the lowest point of
+the ridge between the two hollows, and so a saddle point
+(\cref{sec:en-gradient}). We take the spacing of neighbouring hollows to
+be $a = \SI{2.46}{\angstrom}$, chosen to resemble the hexagons of a layer
+of graphite, and the rise from a hollow to a bridge, the barrier, to be $U_{\mathrm b} =
+\SI{0.3}{\electronvolt}$. Both are chosen to make the model easy to read;
+neither is fitted to any measurement or calculation.
+
+A simple function with this pattern is a sum of three ripples. A single
+ripple $\cos(\vb{g}\cdot\vb{r})$, for a fixed vector $\vb{g}$, is
+constant along every line perpendicular to $\vb{g}$, since moving along
+such a line leaves $\vb{g}\cdot\vb{r}$ unchanged, and it rises and falls
+like a sheet of corrugated iron as $\vb{r}$ moves along $\vb{g}$, with
+crests $2\pi/\lvert\vb{g}\rvert$ apart. Three such ripples whose vectors
+$\vb{g}_1$, $\vb{g}_2$ and $\vb{g}_3$ point at \ang{-30}, \ang{90} and
+\ang{210}, all of length $\lvert\vb{g}\rvert = 4\pi/(\sqrt3\,a) =
+\SI{2.949}{\per\angstrom}$, so that their crests lie $2\pi/\lvert\vb{g}
+\rvert = \sqrt3\,a/2 = \SI{2.130}{\angstrom}$ apart, the distance $a\sin
+\ang{60}$ between neighbouring rows of hollows, cross to make a hollow
+above the centre of every hexagon, and we set
+\begin{equation}
+   U(\vb{r}) = \frac{U_{\mathrm b}}{4}\,\Bigl[\,3 - \cos(\vb{g}_1\cdot\vb{r})
+   - \cos(\vb{g}_2\cdot\vb{r}) - \cos(\vb{g}_3\cdot\vb{r})\Bigr] .
+   \label{eq:en-surface}
+\end{equation}
+At the origin all three cosines are 1, and $U = 0$: the origin is a
+hollow. At the bridge $(a/2, 0)$, using $\vb{g}_k\cdot\vb{r} =
+\lvert\vb{g}\rvert\lvert\vb{r}\rvert\cos\theta_k$ with $\theta_k$ the
+angle between them (\cref{sec:mo-plane}), and $\lvert\vb{g}\rvert\,a/2 =
+2\pi/\sqrt3$,
+\begin{align*}
+   \vb{g}_1\cdot\vb{r} &= \tfrac{2\pi}{\sqrt3}\cos\ang{-30} = \pi , &
+   \vb{g}_2\cdot\vb{r} &= \tfrac{2\pi}{\sqrt3}\cos\ang{90} = 0 , &
+   \vb{g}_3\cdot\vb{r} &= \tfrac{2\pi}{\sqrt3}\cos\ang{210} = -\pi ,
+\end{align*}
+since $\cos\ang{-30} = \sqrt3/2$ and $\cos\ang{210} = -\sqrt3/2$. The
+cosines are $-1$, $1$ and $-1$, and $U = (U_{\mathrm b}/4)\bigl(3 - (-1) - 1 -
+(-1)\bigr) = (U_{\mathrm b}/4)\times4 = U_{\mathrm b}$. The top $(a/2, a/(2\sqrt3))$
+lies a distance $\sqrt{a^2/4 + a^2/12} = \sqrt{a^2/3} = a/\sqrt3 =
+\SI{1.420}{\angstrom}$ from the hollow, in the direction at \ang{30} to the
+$x$ axis, since $\tan\theta = \bigl(a/(2\sqrt3)\bigr)/(a/2) = 1/\sqrt3$.
+There $\lvert\vb{g}\rvert\,a/\sqrt3 = 4\pi/3$, and the angles from
+$\vb{r}$ to $\vb{g}_1$, $\vb{g}_2$ and $\vb{g}_3$ are \ang{60}, \ang{60}
+and \ang{180}, so the three products are $\frac{4\pi}{3}\cos\ang{60} =
+2\pi/3$, $2\pi/3$ and $\frac{4\pi}{3}\cos\ang{180} = -4\pi/3$. Each cosine
+is $-\frac12$ (\cref{ex:en-top} checks this in components), and $U = (U_{\mathrm b}/4)(3 + \frac32) = 9U_{\mathrm b}/8 =
+\SI{0.3375}{\electronvolt}$. Shifting $\vb{r}$ by $a$ along $x$ changes
+$\vb{g}_1\cdot\vb{r}$ by $2\pi$, $\vb{g}_2\cdot\vb{r}$ by 0 and
+$\vb{g}_3\cdot\vb{r}$ by $-2\pi$, which leaves every cosine unchanged, and
+the same holds for a shift by $a$ at \ang{60}, so the pattern repeats from
+hollow to hollow.
+
+The force follows from \cref{eq:en-gradient}. Writing $\vb{g}\cdot\vb{r} =
+g_x x + g_y y$, the chain rule gives $\partial\cos(\vb{g}\cdot\vb{r})/
+\partial x = -g_x\sin(\vb{g}\cdot\vb{r})$, and likewise with $g_y$ for
+$y$, so $\grad\cos(\vb{g}\cdot\vb{r}) = -\sin(\vb{g}\cdot\vb{r})\,\vb{g}$,
+and
+\begin{align*}
+   \grad U &= \frac{U_{\mathrm b}}{4}\sum_{k=1}^{3}\sin(\vb{g}_k\cdot\vb{r})\,
+      \vb{g}_k
+      && \text{the 3 is constant, and each $-\cos$ gives $+\sin$,}\\
+   \vb{F} = -\grad U &= -\frac{U_{\mathrm b}}{4}\sum_{k=1}^{3}
+      \sin(\vb{g}_k\cdot\vb{r})\,\vb{g}_k .
+\end{align*}
+At the hollow and the bridge every sine is zero, since $\sin 0 =
+\sin(\pm\pi) = 0$. At the top the three sines are equal, because
+$\sin(-4\pi/3) = \sin(-4\pi/3 + 2\pi) = \sin(2\pi/3)$, so the force is
+proportional to $\vb{g}_1 + \vb{g}_2 + \vb{g}_3$, which is zero: the $x$
+components of the three directions add to $\cos\ang{-30} + \cos\ang{90} +
+\cos\ang{210} = \sqrt3/2 + 0 - \sqrt3/2 = 0$, and the $y$ components to
+$-\frac12 + 1 - \frac12 = 0$. Every site is an equilibrium. The function \texttt{energy.hexagonal\_surface} of
+\texttt{mdlab} returns $U$ and $\vb{F}$ together, and its tests check the
+force against central differences of $U$ and the site energies above.
+
+\subsection*{Work on the surface}
+
+\Cref{fig:en-surface}(a) shows the contours of $U$, the force, and two
+paths from the hollow $A$ at the origin to the top $B$ at $(3.69,
+0.710)$\,\si{\angstrom}, one spacing $a$ along $x$ from the top nearest
+$A$: a straight line, and an arc that bulges to its left, lying
+$1.2\sin(\pi s)$\,\si{\angstrom} from the line at the point a fraction $s$
+of the way along it, so \SI{1.2}{\angstrom} at the middle. The function \texttt{work} gives
+\SI{-0.3375}{\electronvolt} along both, equal to $U(A) - U(B)$, as a
+conservative force requires. In \cref{fig:en-surface}(b) the swirl of
+\cref{eq:en-swirl}, centred on $A$ with $c = \SI{0.005}{\electronvolt
+\per\angstrom\squared}$, is added to the force. Along the straight path,
+which runs directly away from the centre of the swirl, the swirl is
+perpendicular to the path and does no work, so the work stays at
+\SI{-0.3375}{\electronvolt}. Along the arc it is
+\SI{-0.3662}{\electronvolt}. The arc followed by the straight path
+backwards is a clockwise loop, and the curl of the total force is $0 +
+2c$, the surface force being a gradient, so by Green's theorem the work
+round this loop, $W_{\mathrm{arc}} - W_{\mathrm{straight}}$, is $-2c$
+times the area between the paths. That area is the bulge integrated along
+the chord, of length $\lvert AB\rvert = \sqrt{3.69^2 + 0.710^2} =
+\SI{3.758}{\angstrom}$, on which a step $\dd s$ in the fraction moves
+$\lvert AB\rvert\,\dd s$,
+$\int_0^1 1.2\sin(\pi s)\,\lvert AB\rvert\,\dd s = 2\times1.2\times
+3.758/\pi = \SI{2.871}{\angstrom\squared}$, using $\int_0^1\sin(\pi s)\,
+\dd s = [-\cos(\pi s)/\pi]_0^1 = 2/\pi$; and $2c\times2.871 =
+\SI{0.0287}{\electronvolt}$ is exactly the difference between the two
+works.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/surface}
+\caption{Work on the model surface. Open circles mark hollows and dark
+dots the carbon atoms, at the tops. (a) Contours of $U$ at 0.05, 0.10,
+0.15, 0.20, 0.25 and \SI{0.32}{\electronvolt}, the force $-\grad U$
+(grey arrows), and two paths from the hollow $A$ to the top $B$; the work
+is \SI{-0.3375}{\electronvolt} along both. (b) The same paths after a
+swirl with $c = \SI{0.005}{\electronvolt\per\angstrom\squared}$, centred
+on $A$, is added to the force (grey arrows). No potential energy exists to
+contour, and the works differ by \SI{0.0287}{\electronvolt}.}
+\label{fig:en-surface}
+\end{figure}
+
+\subsection*{Hopping with a fixed energy}
+
+A lithium atom leaves the hollow at the origin with \SI{0.33}{
+\electronvolt} of kinetic energy, \SI{10}{\percent} more than the barrier
+$U_{\mathrm b}$, moving at \ang{37.5} to the $x$ axis. By \cref{eq:en-mv2} its
+speed is
+\begin{equation*}
+   v = \sqrt{\frac{2K}{m\times103.6427}}
+   = \sqrt{\frac{2\times0.33}{6.94\times103.6427}}
+   = \SI{0.03029}{\angstrom\per\femto\second} ,
+\end{equation*}
+about \SI{3000}{\metre\per\second}. Its total energy, $E =
+\SI{0.33}{\electronvolt}$, exceeds $U$ everywhere except in small islands
+around each carbon atom, where $U$ rises to \SI{0.3375}{\electronvolt}:
+the atom may go anywhere on the surface except into these islands, just
+as the bead at $h_E = \SI{1.3}{\metre}$ could go anywhere except up the ends
+of its track. \Cref{fig:en-li} shows the motion over
+\SI{1.5}{\pico\second}, or \SI{1500}{\femto\second} (a picosecond is
+\SI{1000}{\femto\second}), computed by a computer solution of the equations
+of motion, a method from SciPy, a library of scientific routines for Python, that
+advances the state in
+short steps, as in \cref{sec:ne-equations}, but combines several force
+evaluations per step and adjusts each step so that the error it
+estimates for that step stays below about one part in $10^{11}$; over
+many steps these small errors add up. Chapter~9 develops the methods that
+molecular dynamics itself uses. The atom crosses from hollow to hollow
+four times, visiting five hollows, while its kinetic energy rises and falls between
+\num{0.0005} and \SI{0.33}{\electronvolt}. Its total energy stays at
+\SI{0.33}{\electronvolt} to within \SI{2.5e-11}{\electronvolt}, which is
+the error of the computer solution.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/li_energy}
+\caption{A lithium atom of \SI{6.94}{\amu} on the model surface, leaving
+the hollow at the origin with \SI{0.33}{\electronvolt} of kinetic energy.
+(a) The potential energy, shaded from the hollows (light) to the bridges
+and tops (dark), the boundary $U = E$ of the islands around the carbon
+atoms (dots), where the atom may not go, and its path over
+\SI{1.5}{\pico\second}. (b) Kinetic, potential and total energy over the
+first \SI{600}{\femto\second}.}
+\label{fig:en-li}
+\end{figure}
+
+With less energy the picture changes as it did on the track. Below the
+barrier, $E < \SI{0.3}{\electronvolt}$, the allowed region breaks into
+separate patches, one around each hollow, and an atom stays in the hollow
+it starts in, rattling about its bottom. To hop to a neighbouring hollow
+it needs at least the barrier as kinetic energy at the bottom of the
+hollow, a speed there of at least $\sqrt{2\times0.3/(6.94\times103.6427)}
+= \SI{0.02888}{\angstrom\per\femto\second}$. Real atoms exchange energy
+with their neighbours all the time, and Chapter~12 gives the odds that one
+collects as much as the barrier; Chapters~16 and 17 measure how fast lithium spreads through graphite by
+such hops.
+
+\notebook{03}{launch the lithium atom with your own energy and direction}
+
+\begin{selfcheck}
+A lithium atom at the bottom of a hollow of the model surface has
+\SI{0.25}{\electronvolt} of kinetic energy. Can it reach a neighbouring
+hollow? How fast is it moving where $U = \SI{0.1}{\electronvolt}$?
+\end{selfcheck}

@@ -1,0 +1,153 @@
+%=============================================================================!
+% 10.6  THE LOOP                                                              !
+%=============================================================================!
+\section{The loop}
+\label{sec:md-loop}
+
+The pieces now fit together: a model that returns the energy and forces
+of atoms in a cell, the velocity Verlet step of \cref{sec:in-verlet}, and
+a record of what happens. This section writes the loop, checks it against
+an independent library, and runs it on argon and on a model salt.
+
+\subsection*{A model and a loop}
+
+A model is anything that takes the positions and returns the potential
+energy and the forces. For a pair potential in a cell, \texttt{PairModel}
+of \texttt{mdlab.md} gets the pairs within $r_{\mathrm c}$ from its Verlet
+list and adds up their forces:
+
+\begin{code}
+    def __call__(self, positions: ArrayLike) -> tuple[float, NDArray]:
+        r = np.asarray(positions, dtype=float)
+        i, j, d, dist = self.neighbours.pairs(r)
+        phi, dphi = self.pair(dist)
+        push = (dphi / dist)[:, None] * d  # the force on i from j
+        forces = np.zeros_like(r)
+        np.add.at(forces, i, push)
+        np.add.at(forces, j, -push)
+        return float(np.sum(phi)), forces
+\end{code}
+
+\noindent With $\vb{d} = \vb{r}_j - \vb{r}_i$, the force on atom $i$ from
+the pair is $\varphi'(r)\,\vb{d}/r$ (\cref{sec:pe-forces}), and the force on
+$j$ its opposite; \texttt{np.add.at} adds each pair's push into the rows
+of its two atoms, correctly when an atom appears in many pairs.
+\texttt{EwaldModel} returns, in the same form, the energy and forces of
+charges by the Ewald sum of \cref{sec:md-ewald}, and \texttt{sum\_of}
+adds the energies and forces of several models.
+
+The loop of \texttt{run} is velocity Verlet over any such model:
+
+\begin{code}
+    u, f = model(r)
+    for step in range(n_steps + 1):
+        if step > 0:
+            v += 0.5 * dt * force_to_accel * f / m
+            r += dt * v
+            u, f = model(r)
+            v += 0.5 * dt * force_to_accel * f / m
+        if step % every == 0:
+            kinetic = 0.5 * to_energy * float(np.sum(m * v * v))
+\end{code}
+
+\noindent Each step is a half kick, a drift and a half kick, with one call
+of the model, whose forces serve the next step's first half kick, as in
+\cref{fig:in-kdk}. Here \texttt{m} holds the masses as a column, one row
+per atom, and \texttt{to\_energy} is \texttt{MV2\_TO\_EV}, or 1 in
+reduced units. Every \texttt{every} steps the time, positions, velocities
+and both energies are recorded. If a file is named, the frames are written
+to it in the extended XYZ format, which ASE reads: for each frame, the
+number of atoms; a line with the lattice vectors, the names of the columns
+and the potential and kinetic energies; and a line per atom with its
+element, position and velocity. ASE takes a value named \texttt{energy}
+as the potential energy, as the tests of \texttt{mdlab} check, so the
+potential energy is written under that name.
+
+\subsection*{Checked against ASE}
+
+ASE, the Atomic Simulation Environment\cite{Larsen2017}, has its own
+Lennard-Jones forces and its own velocity Verlet. For 256 argon atoms in
+a face-centred cubic cell, with the energy shifted at the cutoff in both,
+the two give the same starting energy to every printed figure. After 200
+steps of \SI{5}{\femto\second} the positions at first differed by
+$\num{1.6e-8}$\,\AA. The cause lay in the units: ASE converts
+femtoseconds into its own unit of time with the 2014 values of the
+physical constants, and \texttt{mdlab} with the 2022 values that SciPy
+ships, and the two femtoseconds differ by 4.6 parts in $10^9$. An argon
+atom carrying \SI{0.02}{\electronvolt} moves at about
+\SI{0.0031}{\angstrom\per\femto\second}, and over \SI{1000}{\femto\second}
+a clock off by that fraction misplaces it by about $0.0031\times1000
+\times\num{4.6e-9} = \num{1.4e-8}$\,\AA, the size found
+(\cref{ex:md-femtosecond}). Given the same femtosecond, the positions after
+200 steps agree to $\num{1.8e-14}$\,\AA\ and the velocities to
+$\num{1.1e-16}$\,\AA/fs.
+
+\begin{practice}
+A comparison of two codes needs the same units, constants and starting
+state, and only a few hundred steps: the motion of many atoms is chaotic,
+two paths that start a little apart separating faster and faster, and any
+difference, even of rounding, grows over a long run until the paths share
+nothing but their statistics\cite{FrenkelSmit2023}. A difference that
+grows steadily from the first step, as this one did, from
+$\num{6e-13}$\,\AA\ after 2 steps to $\num{4.8e-9}$\,\AA\ after 50 and
+$\num{1.6e-8}$\,\AA\ after 200, points to something systematic before
+the chaos takes over.
+\end{practice}
+
+\subsection*{Two runs}
+
+\Cref{fig:md-run}(a) follows 500 argon atoms (\cref{sec:md-start}) for
+\SI{20}{\pico\second} with $\dt = \SI{10}{\femto\second}$, the
+Lennard-Jones energy switched off between $2\sigma$ and $2.5\sigma$ and a
+skin of \SI{1}{\angstrom}. The total energy stays within
+$\num{3.7e-5}$\,eV per atom, and over the last \SI{10}{\pico\second} its
+standard deviation is 0.3\% of that of the kinetic energy, the test of
+\cref{sec:in-stability}. About \SI{10}{\milli\electronvolt} per atom
+passes from kinetic to potential energy in the first half picosecond,
+after which the kinetic energy swings by \SI{1.6}{\milli\electronvolt};
+the total momentum at the end of the run is that of
+\cref{sec:md-periodic}, the rounding of the arithmetic.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch10_code/run}
+\caption{Two periodic runs. (a) 500 argon atoms started on their
+face-centred cubic lattice with \SI{0.02}{\electronvolt} of kinetic energy
+per atom, $\dt = \SI{10}{\femto\second}$: the kinetic energy, the potential
+energy and the total, each per atom and the last two less the starting
+potential energy, over the first \SI{5}{\pico\second} of
+\SI{20}{\pico\second}. (b) The model salt of 64 ions with Ewald
+electrostatics: the change of the total energy over $2\tau$ with $\dt =
+0.002\tau$ and $0.004\tau$.}
+\label{fig:md-run}
+\end{figure}
+
+\Cref{fig:md-run}(b) runs a model salt, chosen to exercise the Ewald sum
+in a loop. Its 64 ions, of charge $\pm1$ and mass 1 in reduced units, sit
+on a rock-salt lattice, repel each other at contact through the
+Lennard-Jones energy cut off at its minimum, $2^{1/6}\sigma$, and shifted
+there to zero, and attract and repel through the Coulomb energy with
+$k_{\mathrm e} = 10\,\varepsilon\sigma$, a value chosen for this model,
+summed by \texttt{EwaldModel}. Its energy is least with neighbouring ions
+$1.0908\sigma$ apart, at $-15.810\varepsilon$ per ion pair, found as for
+argon. Given $0.5\varepsilon$ of kinetic energy per ion and followed for
+$2\tau$, the total energy of the 64 ions spreads by $\num{6.08e-3}\,\varepsilon$ with $\dt =
+0.002\tau$ and by $\num{2.46e-2}\,\varepsilon$ with $0.004\tau$, a ratio of
+4.04 for a doubled step: the $\dt^2$ of \cref{sec:in-stability}, the
+test that the Ewald forces are the slopes of the Ewald energy and are
+smooth.
+
+\begin{keyidea}
+A model returns the energy and the forces; the loop is velocity Verlet
+over it with one call per step. The code agrees with ASE to the rounding
+of the arithmetic once both use the same constants, keeps the energy of a
+periodic crystal with a fluctuation 0.3\% of that of its kinetic energy
+and its momentum to rounding, and its Ewald forces pass the $\dt^2$ test.
+\end{keyidea}
+
+\notebook{10}{plot the argon and model-salt runs, check the loop against ASE, and read a trajectory file back}
+
+\begin{selfcheck}
+With $\dt = \SI{10}{\femto\second}$, how many steps are 20\,ps, and how
+many force calls did the argon run make, counting the first?
+\end{selfcheck}

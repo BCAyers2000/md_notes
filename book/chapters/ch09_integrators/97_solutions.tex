@@ -1,0 +1,185 @@
+%=============================================================================!
+% 9.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:integrators}: Integrating the equations of
+motion}
+\label{sec:in-solutions}
+
+\solutionto{ex:in-fall}Each step changes the velocity by $-g\dt$, so $v_j
+= v_0 - jg\dt$, and the position by $\dt\,v_j$, so
+\begin{equation*}
+   x_n = x_0 + \dt\sum_{j=0}^{n-1}(v_0 - jg\dt)
+   = x_0 + v_0n\dt - g\dt^2\,\frac{n(n - 1)}{2} ,
+\end{equation*}
+using $0 + 1 + \dots + (n - 1) = n(n - 1)/2$, since the sum written
+forwards plus the sum written backwards is $n$ pairs that each add to $n
+- 1$. The true position at $t_{\mathrm f} = n\dt$ is $x_0 + v_0n\dt -
+\frac12 gn^2\dt^2$, so the computed position exceeds it by $\frac12
+g\dt^2n^2 - \frac12 g\dt^2(n^2 - n) = \frac12 gn\dt^2 = \frac12
+gt_{\mathrm f}\dt$.
+
+\solutionto{ex:in-read}$16 = 2^4$, so the global error is of order
+$\dt^4$: a method of order 4, with a local error of order $\dt^5$.
+
+\solutionto{ex:in-stormer}The $\dt^4$ terms of the two series of
+\cref{sec:in-verlet} are both $\frac1{24}\ddot{a}\,\dt^4$, since an even
+power does not change sign, and add to $\frac1{12}\ddot{a}\,\dt^4$. So
+$x(t + \dt) = 2x - x(t - \dt) + \dt^2a + \frac1{12}\ddot{a}\,\dt^4 +
+\order{\dt^6}$, and \cref{eq:in-stormer}, which drops the
+$\dt^4$ term, is wrong by $\frac1{12}\ddot{a}\,\dt^4$ for a correct start.
+
+\solutionto{ex:in-central}Subtracting the two series instead, the even
+powers cancel: $x(t + \dt) - x(t - \dt) = 2v\dt + \frac13\dot{a}\,\dt^3 +
+\order{\dt^5}$. Dividing by $2\dt$ gives $v + \frac16\dot{a}\,\dt^2 +
+\order{\dt^4}$.
+
+\solutionto{ex:in-local}The true position is $x + v\dt + \frac12 a\dt^2 +
+\frac16\dot{a}\,\dt^3 + \order{\dt^4}$, and \cref{eq:in-vv} gives $x + v\dt
++ \frac12 a\dt^2$, which lacks $\frac16\dot{a}\,\dt^3$.
+
+\solutionto{ex:in-leapfrog}$x_{n+1} - x_n = \dt\,v_{n+\frac12}$ and $x_n -
+x_{n-1} = \dt\,v_{n-\frac12}$. Subtracting, $x_{n+1} - 2x_n + x_{n-1} =
+\dt\,(v_{n+\frac12} - v_{n-\frac12}) = \dt^2a_n$; adding $2x_n - x_{n-1}$
+to both sides gives \cref{eq:in-stormer}.
+
+\solutionto{ex:in-euler-reverse}The step, with $a = -kq/m = -q$, gives $q
+= 1 + \dt\times0 = 1$ and $v = 0 + \dt\times(-1) = -\dt$. Reversed, $(1, \dt)$, and a second step
+gives $q = 1 + \dt^2$ and $v = \dt - \dt\times1 = 0$: it lands at $(1 +
+\dt^2, 0)$, not at the start $(1, 0)$.
+
+\solutionto{ex:in-omega}The products are taken two at a time, by the
+toolbox of \cref{sec:in-reversal}. With $\vb{J} = \bigl(\begin{smallmatrix}
+a & b\\ c & d\end{smallmatrix}\bigr)$, $\boldsymbol{\Omega}\vb{J} = \bigl(
+\begin{smallmatrix}c & d\\ -a & -b\end{smallmatrix}\bigr)$, and
+\begin{equation*}
+   \vb{J}^{\mathsf T}\boldsymbol{\Omega}\vb{J}
+   = \begin{pmatrix} a & c\\ b & d\end{pmatrix}
+   \begin{pmatrix} c & d\\ -a & -b\end{pmatrix}
+   = \begin{pmatrix} ac - ca & ad - cb\\ bc - da & bd - db\end{pmatrix}
+   = (ad - bc)\begin{pmatrix} 0 & 1\\ -1 & 0\end{pmatrix} ,
+\end{equation*}
+so $\vb{J}^{\mathsf T}\boldsymbol{\Omega}\vb{J} = \boldsymbol{\Omega}$ when
+$ad - bc = \det\vb{J} = 1$, and only then.
+
+\solutionto{ex:in-unsymmetric}$\mathrm{e}^{\dt X}\mathrm{e}^{\dt Y} =
+(1 + \dt X + \frac12\dt^2X^2)(1 + \dt Y + \frac12\dt^2Y^2) + \order{\dt^3}
+= 1 + \dt\,(X + Y) + \dt^2(\frac12X^2 + XY + \frac12Y^2) +
+\order{\dt^3}$, while $\mathrm{e}^{\dt(X + Y)}$ has $\frac12\dt^2(X^2 +
+XY + YX + Y^2)$ at second order. The difference is $\dt^2(XY - \frac12XY -
+\frac12YX) = \frac12\dt^2(XY - YX)$.
+
+\solutionto{ex:in-order}The right-hand exponential acts on $q$ first
+(\cref{sec:in-splitting}): $\mathrm{e}^{\dt\Liou_{\mathrm r}}q = q +
+\dt\,p/m$. Applying $\mathrm{e}^{\dt\Liou_{\mathrm p}}$ to
+this function, $\Liou_{\mathrm p} = F(q)\,\partial/\partial p$ gives
+$\Liou_{\mathrm p}(q + \dt\,p/m) = \dt\,F/m$ and $\Liou_{\mathrm p}^2(q +
+\dt\,p/m) = 0$, so the result is $q + \dt\,p/m + \dt\cdot\dt\,F/m = q +
+\dt\,(p + \dt\,F)/m$.
+
+\solutionto{ex:in-drift}$\Liou_{\mathrm r}q^3 = 3q^2p/m$,
+$\Liou_{\mathrm r}^2q^3 = 6qp^2/m^2$, $\Liou_{\mathrm r}^3q^3 = 6p^3/m^3$
+and $\Liou_{\mathrm r}^4q^3 = 0$, so the series is $q^3 + 3q^2(\dt\,p/m) +
+\frac12\times6q(\dt\,p/m)^2 + \frac16\times6(\dt\,p/m)^3 = (q + \dt\,
+p/m)^3$, by the binomial expansion.
+
+\solutionto{ex:in-shadow}With $p_{\frac12} = p' + \frac12\dt\,kq'$,
+\begin{align*}
+   \frac{p_{\frac12}^2}{2m} &= \frac{p'^2}{2m} + \frac{\dt\,k}{2m}\,q'p'
+   + \frac{\dt^2k^2q'^2}{8m} ,\\
+   -\frac{\dt\,k}{2m}\,q'p_{\frac12} &= -\frac{\dt\,k}{2m}\,q'p'
+   - \frac{\dt^2k^2q'^2}{4m} .
+\end{align*}
+Adding $\frac12 kq'^2$, the terms in $q'p'$ cancel, and those in $q'^2$
+combine as $\frac18 - \frac14 = -\frac18$:
+\begin{equation*}
+   \frac{p'^2}{2m} + \frac12 kq'^2 - \frac{\dt^2k^2q'^2}{8m}
+   = \frac{p'^2}{2m} + \frac12 kq'^2\Bigl(1 - \frac{\omega^2\dt^2}{4}\Bigr)
+   = \tilde{H}(q', p') ,
+\end{equation*}
+since $\dt^2k^2/(8m) = \frac12 k\times\omega^2\dt^2/4$.
+
+\solutionto{ex:in-se-shadow}With $p' = p - \dt\,kq$ and $q' = q + \dt\,
+p'/m$, the last two terms of the quantity at $(q', p')$ are
+\begin{align*}
+   \frac12 kq'^2 - \frac{\dt\,k}{2m}\,q'p'
+   &= \frac12 kq^2 + \frac{\dt\,k}{m}\,qp' + \frac{\dt^2k\,p'^2}{2m^2}
+   - \frac{\dt\,k}{2m}\,qp' - \frac{\dt^2k\,p'^2}{2m^2}\\
+   &= \frac12 kq^2 + \frac{\dt\,k}{2m}\,qp' ,
+\end{align*}
+and adding $p'^2/(2m)$,
+\begin{equation*}
+   \frac{p'^2}{2m} + \frac{\dt\,k}{2m}\,qp' = \frac{p'(p' + \dt\,kq)}{2m}
+   = \frac{p'p}{2m} = \frac{p^2}{2m} - \frac{\dt\,k}{2m}\,qp ,
+\end{equation*}
+so the quantity at $(q', p')$ equals $p^2/(2m) + \frac12 kq^2 - \bigl(\dt
+\,k/(2m)\bigr)\,qp$ at $(q, p)$. With $q = A\cos\phi$ and $p = m\omega
+A\sin\phi$, $p^2/(2m) = \frac12 m\omega^2A^2\sin^2\phi = \frac12
+kA^2\sin^2\phi$, so $H = \frac12 kA^2$, and $\bigl(\dt\,k/(2m)\bigr)\,qp =
+\frac12 kA^2\,\omega\dt\sin\phi\cos\phi = \frac12 H\,\omega\dt\sin2\phi$, by
+\cref{eq:mo-addition}. The kept quantity is therefore $H(1 -
+\frac12\omega\dt\sin2\phi)$, and as $\sin2\phi$ runs from $-1$ to $1$, $H$
+runs between $1/(1 + \omega\dt/2)$ and $1/(1 - \omega\dt/2)$ times it.
+
+\solutionto{ex:in-trace}From \cref{sec:in-shadow}, with $k/m = \omega^2$,
+\begin{align*}
+   q' &= q + \frac{\dt}{m}\Bigl(p - \tfrac12\dt\,kq\Bigr)
+   = \Bigl(1 - \tfrac12\omega^2\dt^2\Bigr)q + \frac{\dt}{m}\,p ,\\
+   p' &= p - \tfrac12\dt\,kq - \tfrac12\dt\,k\Bigl[\Bigl(1 - \tfrac12
+   \omega^2\dt^2\Bigr)q + \frac{\dt}{m}\,p\Bigr]
+   && \text{putting in $q'$}\\
+   &= -k\dt\Bigl(1 - \tfrac14\omega^2\dt^2\Bigr)q + \Bigl(1 - \tfrac12
+   \omega^2\dt^2\Bigr)p && \text{collecting, with $k\dt^2/m =
+   \omega^2\dt^2$.}
+\end{align*}
+The step's matrix holds these coefficients,
+\begin{equation*}
+   \begin{pmatrix} 1 - \frac12\omega^2\dt^2 & \dt/m\\
+   -k\dt\,(1 - \frac14\omega^2\dt^2) & 1 - \frac12\omega^2\dt^2
+   \end{pmatrix} .
+\end{equation*}
+Its trace is $2 - \omega^2\dt^2$, and its determinant, the product of the
+diagonal entries minus the product of the other two
+(\cref{sec:ha-liouville}), is $(1 - \frac12\omega^2\dt^2)^2 + (\dt/m)\,
+k\dt\,(1 - \frac14\omega^2\dt^2) = 1 - \omega^2\dt^2 + \frac14\omega^4
+\dt^4 + \omega^2\dt^2 - \frac14\omega^4\dt^4 = 1$.
+
+\solutionto{ex:in-growth}The trace is $2 - 2.05^2 = -2.2025$, and by the
+formula for the roots of a quadratic, $\lambda = \frac12(-2.2025) \pm
+\sqrt{2.2025^2/4 - 1} = -1.10125 \pm 0.46125$, that is $-1.5625$ or $-0.64$. The motion grows by
+the factor 1.5625 per step, changing sign each time.
+
+\solutionto{ex:in-water}$\omega = 2\pi/8.88 =
+\SI{0.7076}{\radian\per\femto\second}$, and $\omega^2\dt^2/4 \le 0.03$
+gives $\omega\dt \le \sqrt{0.12} = 0.346$, so $\dt \le 0.346/0.7076 =
+\SI{0.49}{\femto\second}$.
+
+\solutionto{ex:in-lithium}$\omega = 2\pi/170.3 =
+\SI{0.0369}{\radian\per\femto\second}$. A band of 1\% needs
+$\omega^2\dt^2/4 = 0.01$, so $\omega\dt = \sqrt{0.04} = 0.2$ and $\dt =
+0.2/0.0369 = \SI{5.42}{\femto\second}$, ten times below the stability
+limit $2/\omega = \SI{54.2}{\femto\second}$.
+
+\solutionto{ex:in-per-period}$\omega\dt = 0.2$ (\cref{ex:in-lithium}), and
+a period $2\pi/\omega$ holds $2\pi/(\omega\dt) = 2\pi/0.2 = 31.4$
+steps.
+
+\solutionto{ex:in-rk4-spring}$q'^2 + u'^2 = (cq + su)^2 + (-sq + cu)^2 =
+(c^2 + s^2)(q^2 + u^2)$, the cross terms $2csqu$ and $-2csqu$ cancelling,
+and the energy is $\frac12 m\omega^2(q^2 + u^2)$. Squaring each term of
+$c$ and adding twice each product of two, $c^2 = 1 + \frac14x^4 +
+\frac1{576}x^8 - x^2 + \frac1{12}x^4 - \frac1{24}x^6$, and $s^2 = x^2 -
+\frac13x^4 + \frac1{36}x^6$; in the sum $\frac14 + \frac1{12} - \frac13 =
+0$ and $\frac1{36} - \frac1{24} = -\frac1{72}$, leaving $1 -
+\frac1{72}x^6 + \frac1{576}x^8$. At $x = 0.2$, $x^6/72 = \num{8.89e-7}$
+and $x^8/576 = \num{4.4e-9}$, so the factor is $1 - \num{8.84e-7}$, and
+$(1 - \num{8.84e-7})^{10\,000} = 0.9912$: the energy loses 0.88\%.
+
+\solutionto{ex:in-long-step}$\omega\dt = 0.7076\times5 = 3.54$, beyond
+the limit of 2: velocity Verlet would blow up, so a learned propagator
+cannot be velocity Verlet with a long step.
+
+\solutionto{ex:in-spectrum}$\omega = 2\pi/8.88 =
+\SI{0.7076}{\radian\per\femto\second}$, $\omega\dt = 0.7076\times0.7 =
+0.4953$, and $\cos\tilde\omega\dt = 1 - 0.4953^2/2 = 0.8773$ gives
+$\tilde\omega\dt = 0.5005$, so $\tilde\omega/\omega = 1.0105$ and the
+stretch appears at $3756\times1.0105 = \SI{3795}{\per\centi\metre}$.

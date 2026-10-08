@@ -1,0 +1,146 @@
+%=============================================================================!
+% 17.3  A LEARNED POTENTIAL IN BOTH                                           !
+%=============================================================================!
+\section{A learned potential in both}
+\label{sec:ip-learned}
+
+A translator who has read millions of sentences can render one never
+seen before, but only in the languages that reading covered, and the
+gaps in a translation show where the reading was thin. A foundation
+model of interatomic forces, one trained once on a wide range of
+materials to be used on any of them, is in the same position.
+MACE-MP-0\cite{Batatia2025} is a network of the kind that the planned continuation of Part~V builds,
+trained on the calculations of the Materials Project\cite{Deng2023},
+compounds of 89 elements, at every structure each calculation passed
+through on its way to its least energy. They use density-functional
+theory (\cref{sec:pe-origin}), which needs an approximation, called the
+functional, for one part of the electrons' energy; theirs is
+PBE\cite{Perdew1996}, with an added correction for the oxides and
+fluorides of some transition metals. The model gives energies and forces
+for structures it was never shown. This section runs it in ASE
+and in LAMMPS, measures what it costs, finds one of its gaps, and chooses
+the time step for lithium in graphite.
+
+\subsection*{Running it}
+
+In ASE the model is a calculator like any other: MACE's package provides
+one that loads the trained weights, \texttt{mace\_mp}. It runs on the
+computer's main processor, the CPU, here on five of its cores at once
+(five threads), or on its graphics processor, the GPU, a chip of many
+small cores that do the same arithmetic on many numbers at once; and it
+keeps its numbers in double precision (float64), the 16 significant
+digits of \cref{sec:pe-forces}, or in single precision (float32), about
+7. The GPU of the machine used here, an Apple M5 Pro, holds no
+double-precision numbers, and the
+version of the package used, 0.3.16, stores the energy of each atom in
+double precision; the chapter's scripts keep that one output in single
+precision on the GPU, which leaves the forces untouched, and check the
+result against double precision on the CPU.
+
+LAMMPS runs MACE's own pair styles only when it is built with extra
+packages for them, which its standard distribution lacks. Its Python
+module offers another way in: the command \texttt{fix ext all external
+pf/callback 1 1} makes LAMMPS call a Python function at every step with
+the positions, and the forces that function returns are added to the
+atoms', its energy to the run's. The function builds an ASE \texttt{Atoms}
+from LAMMPS's positions and cell and asks MACE for the forces. On a cell
+of 56 atoms of LiC$_6$, eight copies of the seven-atom cell of
+\cref{sec:ip-lic6}, moved at random by about \SI{0.05}{\angstrom},
+LAMMPS's energy equals ASE's to the last of nine digits, and its forces
+equal ASE's to \SI{1.4e-13}{\electronvolt\per\angstrom} once one detail is
+handled: LAMMPS holds every cell with its first lattice vector along
+$x$ and its second in the $xy$ plane, so ASE turns this cell to fit when
+it writes LAMMPS's data file, and a comparison of forces must be made
+with the cell as LAMMPS holds it.
+
+\subsection*{A gap: dispersion}
+
+The weak attraction between the sheets of graphite comes from the
+correlated motion of their electrons, dispersion, which PBE leaves out.
+A model trained on PBE inherits the gap. Graphite's cell holds two
+sheets, and its height $c$ is twice their spacing. With MACE-MP-0 alone,
+graphite's energy is least at $c = \SI{7.818}{\angstrom}$, 16.5\% above
+Trucano and Chen's \SI{6.711}{\angstrom}\cite{TrucanoChen1975}, and
+stretching the cell to $c = \SI{9}{\angstrom}$, the sheets
+\SI{4.5}{\angstrom} apart, costs only \SI{5.2}{\milli\electronvolt} per
+atom (\cref{fig:ip-learned}c). Grimme's D3 correction\cite{Grimme2010}
+adds an attraction for every pair of atoms, falling as $1/r^6$ and
+$1/r^8$, with coefficients from reference calculations for the 94
+elements from hydrogen to plutonium; Becke--Johnson
+damping\cite{Grimme2011} keeps it finite where atoms come close. With it
+the least energy lies at \SI{6.612}{\angstrom}, 1.5\% below the measured
+value, with a binding of \SI{41.2}{\milli\electronvolt} per atom against
+$c = \SI{9}{\angstrom}$. Relaxed with the correction, graphite's in-plane
+constant is \SI{2.4647}{\angstrom}, 0.03\% above Trucano and Chen's
+\SI{2.464}{\angstrom}. The correction is added in ASE by summing its
+calculator with MACE's, and it costs \SI{12}{\milli\second} for 126
+atoms on the CPU, a twentieth of the medium model's call on the GPU. Every run below includes it.
+
+\subsection*{What it costs}
+
+MACE-MP-0 comes in sizes; the medium model takes \SI{1.20}{\second} for
+one call on 126 atoms on five CPU threads in double precision,
+\SI{0.62}{\second} in single precision, and \SI{0.25}{\second} on the GPU,
+and the small model \num{0.40}, \num{0.21} and \SI{0.081}{\second}
+(\cref{fig:ip-learned}a). Every setting grows nearly in proportion to
+the number of atoms from 28 to 1008, as the neighbour list makes each
+atom's work local, though on the GPU the cost per atom rises by 40\% from
+252 to 1008 atoms; for the medium model the GPU is 1.9 to 2.7 times
+faster than the CPU in single precision, and 3.5 to 4.8 times faster than
+in double. Against the \SI{0.08}{\milli\second} that LAMMPS takes for a step
+of 256 argon atoms (\cref{sec:ip-lammps}), a learned potential is
+thousands of times dearer per atom, and cheap only beside the electronic
+structure it replaces (\cref{sec:ip-aimd}).
+
+\subsection*{The time step}
+
+The test of \cref{sec:in-stability} chooses the step. LiC$_6$, 56 atoms,
+was started from velocities drawn at \SI{600}{\kelvin} and run for
+\SI{2}{\pico\second} at fixed energy with steps of 0.5, 1, 2 and
+\SI{3}{\femto\second} in double precision (\cref{fig:ip-learned}b). The
+spread of the total energy is 0.0017, 0.0067, 0.028 and 0.082 of the
+kinetic energy's, growing between the shorter steps by 4.02 and 4.16,
+against the 4 of $\dt^2$, and from 2 to \SI{3}{\femto\second} by 2.92,
+against 2.25: at the longest step the growth outruns $\dt^2$. The mean
+total energy of the last quarter of each run differs from that of the
+first by less than \SI{0.1}{\milli\electronvolt} up to
+\SI{2}{\femto\second}, and by \SI{17.6}{\milli\electronvolt} at
+\SI{3}{\femto\second}. Single precision on the GPU gives the same spreads
+and the same small differences at 1 and \SI{2}{\femto\second}, so for this
+system its rounding is harmless. The longest step that passes is
+\SI{2}{\femto\second}; the runs below take \SI{1}{\femto\second}, a
+margin for runs of tens of picoseconds at up to \SI{600}{\kelvin}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch17_practice/learned}
+\caption{MACE-MP-0 with D3. (a) The time of one force call against the
+number of atoms, LiC$_6$ cells of 28 to 1008 atoms, for the medium model
+(solid) and the small (dashed) on five CPU threads in double and single
+precision and on the GPU in single precision, and for D3 alone (grey). (b)
+LiC$_6$, 56 atoms, at fixed energy: the spread of the total energy over
+that of the kinetic energy against the step, in double (circles) and
+single (squares) precision near \SI{245}{\kelvin}, and in double
+precision near \SI{600}{\kelvin} (triangles), with lines $\propto\dt^2$
+through \SI{1}{\femto\second} (dotted). (c) Graphite's energy against the length
+$c$ of its cell, with MACE-MP-0 alone and with D3, against the measured
+$c$ (dotted).}
+\label{fig:ip-learned}
+\end{figure}
+
+\begin{keyidea}
+A foundation model runs as an ASE calculator, and in LAMMPS through a
+Python callback, with the same forces. It inherits the gaps of its
+training functional, here dispersion, which D3 restores. It costs about
+a quarter of a second per call for a hundred atoms on a GPU, growing
+nearly in proportion to the number of atoms, and its time step is chosen by the
+same test at fixed energy as any other model's.
+\end{keyidea}
+
+\notebook{17}{switch D3 on and off and watch graphite's sheets}
+
+\begin{selfcheck}
+A learned potential trained only on bulk metals is used for a metal
+surface covered by water. Which part of the system needs checking first,
+and how?
+\end{selfcheck}

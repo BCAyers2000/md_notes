@@ -1,0 +1,79 @@
+%=============================================================================!
+% 13.3  COLLISIONS WITH A BATH                                                !
+%=============================================================================!
+\section{Collisions with a bath}
+\label{sec:th-andersen}
+
+A gas held at a temperature by the walls of its container gains its
+temperature in collisions: an atom that strikes the wall leaves it with a
+velocity typical of the wall's temperature. Andersen built a thermostat
+on that picture\cite{Andersen1980}. This section shows why it samples the
+canonical ensemble and measures what it does to the motion.
+
+\subsection*{The method}
+
+Each atom collides with an imagined bath at the rate $\nu$, and a
+collision replaces its velocity with one drawn afresh from the
+Maxwell-Boltzmann distribution at $T_0$, by \cref{eq:sm-maxwell}.
+Collisions at the rate $\nu$, each independent of the last, leave an atom
+untouched over a step with the probability $\mathrm{e}^{-\nu\dt}$
+(\cref{ex:th-collisions}), so after each step \texttt{Andersen} redraws
+the velocity of each atom with the probability $1 - \mathrm{e}^{-\nu\dt}$.
+ASE's version redraws single components instead of whole velocities,
+after the first half kick instead of after the step, and by default
+removes the motion of the centre of mass; its redraws keep the same
+distribution, and \cref{sec:th-tests} compares the two.
+
+\subsection*{Why it is canonical}
+
+The canonical density $\mathrm{e}^{-\beta H}/Z$ is kept by both parts of
+the motion. Between collisions the atoms follow Hamilton's equations,
+which keep every density that depends on the state only through $H$
+(\cref{sec:ha-liouville}). In a collision one atom's velocity is replaced;
+in the canonical density that velocity is independent of every other
+coordinate and momentum and has the Maxwell-Boltzmann distribution
+(\cref{sec:sm-maxwell}), so replacing it with a fresh, independent draw
+from the same distribution leaves the joint density as it was. A density
+that neither part changes does not change at all: the canonical ensemble
+is stationary under Andersen's thermostat, and the collisions, which move
+the run from one energy to another, carry it through the
+ensemble\cite{Andersen1980}.
+
+\subsection*{What it does to the motion}
+
+A collision forgets the atom's velocity, so a thermostat that collides
+often erases the momentum by which atoms push through a liquid. Over three
+runs each, the diffusion coefficient of liquid argon is $0.96$, $0.72$ and
+$0.17$ of its value at fixed energy, $(3.81 \pm 0.08)\times10^{-4}$\,\AA$^2$/fs,
+for $\nu = 0.1$, 1 and \SI{10}{\per\pico\second}
+(\cref{fig:th-coupling}(a) of \cref{sec:th-langevin}, with Langevin's
+friction). At the weakest coupling the motion is barely disturbed, but
+the temperature is held loosely: each atom collides once in
+\SI{10}{\pico\second}, the three runs average 133.66, 130.13 and
+\SI{131.69}{\kelvin} over their last \SI{95}{\pico\second}, counting all
+$3N = 768$ freedoms since the collisions move the centre of mass too, and
+the spread of $K$ within them is 0.85 of the canonical spread. At $\nu =
+\SI{1}{\per\pico\second}$ the spread is 0.98 of it and the mean
+$(134.5 \pm 0.6)$\,\si{\kelvin}. Collisions also change the total momentum, so
+the box as a whole wanders, which \cref{sec:th-trajectory} shows to
+matter when displacements are measured. For one lithium atom on the
+surface, with $\nu = \SI{1}{\per\pico\second}$, the density of its
+potential energy matches the exact one to within 0.011 of its peak.
+
+\begin{keyidea}
+Andersen's thermostat redraws each atom's velocity from the
+Maxwell-Boltzmann distribution at the rate $\nu$. Hamilton's equations
+and the redraws both keep the canonical density, and the redraws carry a
+run from one energy to another, so the thermostat samples it, even for a
+single atom. The redraws erase momentum: the
+diffusion coefficient of liquid argon falls to 0.72 of its value at
+$\nu = \SI{1}{\per\pico\second}$ and to 0.17 at
+\SI{10}{\per\pico\second}, while weak coupling holds the temperature
+only loosely.
+\end{keyidea}
+
+\begin{selfcheck}
+With $\nu = \SI{1}{\per\pico\second}$ and steps of
+\SI{2}{\femto\second}, what fraction of atoms is redrawn at each step, and
+how many atoms of 1000 on average?
+\end{selfcheck}

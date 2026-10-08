@@ -1,0 +1,185 @@
+%=============================================================================!
+% 17.2  LAMMPS                                                                !
+%=============================================================================!
+\section{LAMMPS}
+\label{sec:ip-lammps}
+
+A player piano plays from a punched roll: each row of holes is a command,
+read in order, and the piano does the rest at its own speed. LAMMPS, the
+molecular dynamics code of Sandia National Laboratories\cite{Thompson2022},
+is driven the same way, by an input script whose lines are commands read
+in order, and it runs them in compiled C++ spread over many processors.
+It is one of the codes most used for large classical and
+learned-potential runs. This section reads an input script line by line, sets out the
+units it works in, and runs the liquid of \cref{sec:ip-ase} in it.
+
+\subsection*{An input script}
+
+The commands that the runs of \cref{fig:ip-codes} pass to LAMMPS for the
+liquid under CSVR are, with the steps written as one \texttt{run} (the
+Python script takes them ten at a time, to read the positions between),
+\begin{code}[language={},morecomment={[l]\#}]
+units metal
+atom_style atomic
+atom_modify map array
+read_data argon.data
+pair_style table linear 20001
+pair_coeff 1 1 argon.table ARGON 8.5
+timestep 0.01
+fix 1 all nve
+fix 2 all temp/csvr 135.0 135.0 1.0 17
+thermo_style custom step pe ke
+run 20000
+\end{code}
+\noindent \texttt{units metal} fixes the units of everything that
+follows: lengths in \si{\angstrom}, energies in \si{\electronvolt}, masses
+in grams per mole, which are numerically \si{\amu}, temperatures in
+\si{\kelvin}, pressures in bars and times in picoseconds, so that
+\texttt{timestep 0.01} is \SI{10}{\femto\second} and velocities are in
+\si{\angstrom\per\pico\second}. \texttt{atom\_style atomic} declares
+atoms that carry only a type, a position and a velocity, and
+\texttt{atom\_modify map array} keeps a lookup from each atom's identity
+number to its place in memory. \texttt{read\_data} reads the cell, the
+masses, the positions and the velocities from a file that ASE writes
+(\texttt{ase.io.write} with \texttt{format="lammps-data"},
+\texttt{units="metal"}, \texttt{masses=True} and
+\texttt{velocities=True}; without the last two the file holds neither).
+\texttt{pair\_style} and \texttt{pair\_coeff} set the forces between atoms
+of type 1 from the section \texttt{ARGON} of \texttt{argon.table}, cut
+off at \SI{8.5}{\angstrom}, as the next subsection describes.
+\texttt{fix} commands act on the atoms at every step: \texttt{nve} is
+velocity Verlet, and \texttt{temp/csvr} rescales the velocities as CSVR
+does, towards a target that runs from the first temperature to the
+second over the run (here both \SI{135}{\kelvin}), with its time constant
+in picoseconds and a seed for its random numbers. \texttt{thermo\_style} chooses what is printed,
+and \texttt{run} takes the steps. \Cref{tab:ip-methods} lists the fix for
+each method of the book.
+
+\begin{table}[htb]
+\centering
+\small
+\caption{The methods of Chapters~9, 13 and~14 in the three codes, with the
+unit of each one's time parameter: $\gamma$ in \si{\per\femto\second} and
+$\tau$ in \si{\femto\second} for \texttt{mdlab}; for ASE, $\tau$ in its
+time unit and $\gamma$ in its reciprocal (written \texttt{tau * units.fs}
+and \texttt{gamma / units.fs}); for LAMMPS, $\tau$ and the damping
+$1/\gamma$ in picoseconds.}
+\label{tab:ip-methods}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.16\linewidth}
+   >{\raggedright\arraybackslash}p{0.24\linewidth}
+   >{\raggedright\arraybackslash}p{0.24\linewidth}
+   >{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule
+method & \texttt{mdlab} & ASE & LAMMPS\\
+\midrule
+velocity Verlet & \texttt{md.run} & \texttt{VelocityVerlet} &
+\texttt{fix nve}\\
+Langevin & \texttt{thermostats.\allowbreak Langevin}, $\gamma$ & \texttt{Langevin},
+friction $\gamma$ & \texttt{fix langevin}, damping $1/\gamma$, with
+\texttt{fix nve}\\
+CSVR & \texttt{thermostats.\allowbreak CSVR}, $\tau$ & \texttt{Bussi}, \texttt{taut} &
+\texttt{fix temp/csvr}, with \texttt{fix nve}\\
+Nosé-Hoover chain & \texttt{thermostats.\allowbreak NoseHoover\allowbreak Chain}, $\tau$ &
+\texttt{NoseHoover\allowbreak ChainNVT}, \texttt{tdamp} & \texttt{fix nvt}\\
+Berendsen & \texttt{thermostats.\allowbreak Berendsen}, $\tau$ & \texttt{NVTBerendsen},
+\texttt{taut} & \texttt{fix temp/berendsen}, with \texttt{fix nve}\\
+MTK piston & \texttt{barostats.\allowbreak run\_mtk} & \texttt{Isotropic\allowbreak MTKNPT},
+\texttt{pdamp} & \texttt{fix npt \dots\ iso}\\
+lengths apart & \texttt{barostats.\allowbreak Stochastic\allowbreak Cell\allowbreak Rescaling} &
+\texttt{MaskedMTKNPT}, \texttt{mask} & \texttt{fix npt \dots\ aniso}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{The model as a table}
+
+LAMMPS has its own Lennard-Jones forms, each with its own way of ending at
+the cutoff, and a comparison of codes needs the model itself. Any pair
+potential can be given as a table: \texttt{mdlab.io.lammps\_table} writes
+$\varphi(r)$ and the force $F = -\dd\varphi/\dd r$ at \num{20001} equally
+spaced distances from 0.5 to \SI{8.5}{\angstrom}, \SI{4e-4}{\angstrom}
+apart. LAMMPS does not interpolate these points as they stand: it passes a
+smooth curve, a spline, through them and reads from it its own table of
+\num{20001} entries equally spaced in $r^2$,
+\SI{0.0036}{\angstrom\squared} apart, and \texttt{pair\_style table
+linear} interpolates $F/r$ along straight lines in $r^2$ between those.
+Interpolating a function $y$ along a straight line between points a
+distance $\delta x$ apart misses it by at most $\delta x^2\max\lvert
+y''\rvert/8$ (\cref{ex:ip-table}). Measured from the midpoint, the
+parabola $y = \frac12 y''x^2$ has the height $\frac12 y''(\delta x/2)^2$
+at both ends, so the chord is the flat line at that height, and at the
+midpoint, where the parabola is at zero, the two part by $\frac12
+y''(\delta x/2)^2 = \delta x^2 y''/8$. Here $y$ is $F/r$ and $x$ is $r^2$.
+Near \SI{3}{\angstrom}, about the closest that atoms of the liquid come
+(\SI{2.98}{\angstrom} in \texttt{mdlab}'s \SI{200}{\pico\second} under
+CSVR), a step of \SI{0.0036}{\angstrom\squared} in $r^2$ is
+$0.0036/(2\times3) = \SI{6e-4}{\angstrom}$ in $r$, and the largest miss of
+the force beyond \SI{3}{\angstrom}, found by placing a pair of atoms at
+the midpoint of every interval of LAMMPS's table, is
+\SI{7.6e-7}{\electronvolt\per\angstrom}, \num{1.3e-6} of the force there,
+and the run shows it. At fixed energy LAMMPS's energy spreads by the same
+\SI{0.469}{\milli\electronvolt} as \texttt{mdlab}'s, but its positions
+part from \texttt{mdlab}'s by \SI{3.0e-6}{\angstrom} after
+\SI{1}{\pico\second}, against ASE's \num{3.9e-14}, and by
+\SI{7.8e-3}{\angstrom} after \SI{5}{\pico\second} (\cref{fig:ip-codes}a):
+the table's small error is a difference like any other, and the chaos
+amplifies it.
+
+\subsection*{Temperatures and diffusion}
+
+Under the same three thermostats, given as \texttt{fix langevin},
+\texttt{fix temp/csvr} and \texttt{fix nvt}, LAMMPS's runs reach mean
+temperatures within three errors of \SI{135}{\kelvin} and spreads of
+0.962 to 0.996 of the canonical, and its diffusion coefficients lie
+within 1.2 combined errors of the other codes' (\cref{fig:ip-codes}b). An
+option of \texttt{fix langevin} may matter as well. Over
+\SI{1}{\nano\second}, $D$ is $(2.721 \pm 0.038)\times10^{-4}$\,\si{\angstrom
+\squared\per\femto\second} in LAMMPS and $(2.681 \pm 0.023)\times10^{-4}$
+in \texttt{mdlab}, 0.9 combined errors apart; with \texttt{zero yes},
+which removes the sum of the random forces at every step so that they
+cannot push the centre of mass, LAMMPS gives $(2.806 \pm
+0.021)\times10^{-4}$, 2.0 combined errors above its own value without the
+option and 4.0 above \texttt{mdlab}'s. The option's own effect, two
+combined errors, is at the edge of what these runs can resolve, and a run that reports transport under a local thermostat should
+state such options with the friction; the transport coefficients of
+\cref{sec:ob-trajectory} belong in any case to runs at fixed energy or
+under a global thermostat.
+
+LAMMPS takes \SI{0.08}{\milli\second} a step for these 256 atoms, a
+sixteenth of \texttt{mdlab}'s \SI{1.32}{\milli\second}: compiled C++
+throughout, against \texttt{mdlab}'s NumPy and Numba
+(\cref{sec:md-speed}).
+
+\subsection*{Python and LAMMPS}
+
+LAMMPS can also be driven from Python, through its module \texttt{lammps}:
+\texttt{commands\_\allowbreak string} passes lines of a script,
+\texttt{extract\_\allowbreak atom} returns the positions, velocities,
+forces and other arrays of the atoms, and \texttt{get\_thermo} any printed
+quantity. Two details of those arrays trip up a reader. LAMMPS wraps
+positions into the cell and keeps, for each atom, an image flag: the net
+number of cells it has crossed along each axis, a crossing back counting
+minus one, so that the unwrapped position is the wrapped one plus the
+flags times the lattice vectors. And LAMMPS reorders its atoms in memory
+every thousand steps, to keep neighbours near one another, so the arrays
+must be read in the order of their identity numbers,
+\texttt{extract\_\allowbreak atom("id")}, at every frame;
+\cref{sec:ip-trajectory} measures what happens when they are not. The same
+module lets LAMMPS call Python for its forces, which the next section
+uses.
+
+\begin{keyidea}
+LAMMPS runs an input script of commands in order, in \texttt{metal} units
+with times in picoseconds. Thermostats and barostats are fixes, any pair
+potential can be a table, and its Python module reads and sets the atoms'
+arrays, in the order of their identities. With the same model it gives
+the same energies, temperatures and diffusion coefficients as
+\texttt{mdlab} and ASE, at a sixteenth of the time per step.
+\end{keyidea}
+
+\notebook{17}{write a LAMMPS input from Python and check its forces}
+
+\begin{selfcheck}
+A LAMMPS script in \texttt{metal} units sets \texttt{timestep 1.0}. What is
+the step in femtoseconds, and what would it do to liquid argon?
+\end{selfcheck}

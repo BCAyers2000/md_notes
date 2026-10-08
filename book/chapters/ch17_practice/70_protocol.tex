@@ -1,0 +1,153 @@
+%=============================================================================!
+% 17.7  A PROTOCOL FOR A PRODUCTION RUN                                       !
+%=============================================================================!
+\section{A protocol for a production run}
+\label{sec:ip-protocol}
+
+A pilot runs through a checklist before every flight because missing one
+item is costly, and the list keeps the order and the checks the same each
+time. A production run of molecular
+dynamics has such a list, and every item on it has been measured in an
+earlier chapter. This section gathers them in the order a run meets them,
+with the measurement behind each and what a healthy run reads.
+\Cref{tab:ip-healthy} collects the readings.
+
+\subsection*{Before the run}
+
+The starting structure is checked before any step is taken: the closest
+approach of two atoms, the largest force and the total momentum, which
+should be zero (\cref{sec:cs-trajectory}). A structure built by hand, or
+with a new potential, is first relaxed (\cref{sec:cv-protocol}), so that the
+first steps do not turn stored strain into heat. Lattice constants come
+from measurement where they exist, and the model's own relaxed values are
+reported beside them, as \cref{sec:ip-learned,sec:ip-lic6} do for
+graphite and LiC$_6$.
+A learned potential is checked on the system before it is trusted:
+against first-principles forces on configurations like those of the run
+(\cref{sec:ip-aimd}), and for any physics its training data lacked, such
+as the dispersion that holds graphite's sheets at their measured
+spacing (\cref{sec:ip-learned}).
+
+\subsection*{The time step}
+
+The step is measured (\cref{sec:in-stability}). Short runs at fixed
+energy with two or three steps record the fluctuation of the total
+energy against that of the kinetic energy, which should be small and fall
+in proportion to $\dt^2$ as the step is shortened, and the drift, which
+should pass the test of \cref{sec:cv-drift} at the length of the
+production run. The fastest vibration sets the limit: bonds to hydrogen
+hold flexible water to \SI{0.5}{\femto\second}, its energy spreading by
+6.7\% of the kinetic energy's at \SI{1}{\femto\second} (\cref{sec:cs-water}),
+and the stiff
+carbon-carbon bonds of graphite to the \SI{2}{\femto\second} that
+\cref{sec:ip-learned} measures. A learned potential evaluated in single
+precision adds an error of its own to the forces, and the same test, run
+in both precisions, shows whether it matters.
+
+\subsection*{Reaching the state}
+
+A run is brought to its temperature and pressure first, and only then
+sampled. Velocity rescaling and Berendsen coupling bring a system near a
+temperature quickly, but their fluctuations are wrong and a long run under
+them feeds slow motions (\cref{sec:th-berendsen}); Berendsen's barostat
+likewise serves only to approach a pressure
+(\cref{sec:pr-rescaling,sec:pr-trajectory}). The part of the run before
+the averages settle is found by the search for a start of
+\cref{sec:cv-equilibration} and discarded.
+
+\subsection*{Sampling}
+
+For averages over arrangements, any thermostat that passes the test of
+\cref{sec:cv-ensemble} will do: CSVR passed it with $\tau_{\mathrm T} =
+\SI{1}{\pico\second}$ for the liquid, Nosé-Hoover chains give the
+canonical spread of the temperature (\cref{sec:th-compare}), and Langevin
+dynamics samples the canonical ensemble even for a single atom
+(\cref{sec:th-langevin}). For anything that depends on the motion, a
+diffusion coefficient, a rate, a spectrum or a viscosity, the run is made
+at fixed energy or under a global thermostat with a long time constant:
+CSVR at \SI{1}{\pico\second} left the liquid's $D$ unchanged within its
+error of 1\% (\cref{sec:cv-observables}), while a Langevin friction of
+\SI{1}{\per\pico\second} slowed it by more than a quarter
+(\cref{sec:th-langevin}). For constant pressure, stochastic cell rescaling
+or a piston with chains samples the volume's fluctuations correctly, at
+$\tau_{\mathrm P}$ near \SI{1}{\pico\second} for the liquid
+(\cref{sec:pr-rescaling,sec:pr-piston}); a solid whose directions differ,
+such as a layered one, needs its lengths coupled separately
+(\cref{sec:pr-shape,sec:ip-lic6}).
+
+\subsection*{How long}
+
+The length of a run follows from the precision asked of each quantity:
+$t_{\mathrm f} \ge 2\tau_{\mathrm{int}}\sigma_A^2/\sigma^{\ast2}$
+(\cref{eq:cv-length}), with $\tau_{\mathrm{int}}$ and $\sigma_A$ measured
+in a pilot run. For liquid argon under CSVR this ranged from
+\SI{0.33}{\nano\second} for the pressure to \SI{10}{\nano\second} for the
+temperature at the precisions of \cref{tab:cv-observables}. Each reported
+average passes \texttt{convergence\_report}: a start in the first half of
+the run, at least 100 effective samples, block errors that agree with the
+correlation estimate, and no drift. A rate is reported only when enough
+events are counted to give it an error bar, otherwise as unresolved, with
+the run that would resolve it (\cref{sec:ip-hops}); a free-energy
+difference is known only to about $2\kB T/\sqrt n$ from $n$ crossings of
+the barrier (\cref{sec:ob-fes}).
+
+\subsection*{After the run}
+
+Transport coefficients from periodic boxes are corrected for the size of
+the box, or measured at two sizes (\cref{sec:cv-size}). Displacements
+are computed from unwrapped positions, removing centre-of-mass motion
+where appropriate. Each observable is checked against an identity where one exists, such
+as the energy from $g(r)$ or $D$ from both the MSD and the velocities
+(\cref{sec:ob-trajectory}). Finally the record is passed through
+\texttt{health\_report} (\cref{sec:ip-trajectory}), and the run is
+reported with what makes it repeatable: the code and its version, the
+model and its weights, every option of the integrator and thermostat with
+its units, the seeds, and the error bar of every number.
+
+\begin{table}[htb]
+\centering
+\small
+\caption{What a healthy run reads, and where the book measured it.}
+\label{tab:ip-healthy}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}
+   >{\raggedright\arraybackslash}p{0.47\linewidth}
+   >{\raggedright\arraybackslash}p{0.16\linewidth}@{}}
+\toprule
+quantity & healthy reading & measured in\\
+\midrule
+total energy at fixed energy & spread small against $K$'s, falling as
+$\dt^2$; no drift by the test of Ch.~15 & \cref{sec:in-stability,sec:cv-drift}\\
+kinetic temperature & mean on target; spread $\sqrt{2/N_{\mathrm f}}$ of
+it under a canonical thermostat, less at fixed energy &
+\cref{sec:sm-kinetic,sec:th-tests}\\
+velocities & excess kurtosis within $3\sqrt{24/3N}$ of zero &
+\cref{sec:sm-maxwell}\\
+centre of mass & still, or, under a thermostat that does not keep the
+momentum, displacements measured from it &
+\cref{sec:cs-trajectory,sec:th-trajectory}\\
+volume under a barostat & spread $\sqrt{\kB T\ens{V}\kappa_T}$; every
+coupled component of the pressure at $P_0$ & \cref{sec:pr-npt}\\
+an average & passes \texttt{convergence\_report} & \cref{sec:cv-protocol}\\
+positions for displacements & continuous, every move a small fraction of
+the cell & \cref{sec:ob-trajectory}\\
+a rate & at least 25 events for a fifth, or reported unresolved &
+\cref{sec:ip-hops}\\
+a learned potential & forces within the error measured against its
+reference on this system & \cref{sec:ip-aimd}, still to be made\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyidea}
+A production run is relaxed, given a measured time step, brought to its
+state with any thermostat and barostat, sampled with one that is
+canonical, and, for dynamics, a global or no thermostat, run for the
+length its target errors need, and checked against the readings of a
+healthy run. Every choice in the list has a measurement behind it in this
+book.
+\end{keyidea}
+
+\begin{selfcheck}
+A diffusion coefficient is to be measured, and the only thermostat at
+hand is Langevin. What would a careful run do?
+\end{selfcheck}

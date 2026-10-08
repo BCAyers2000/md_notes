@@ -1,0 +1,142 @@
+%=============================================================================!
+% 9.5  THE ENERGY THE METHOD KEEPS                                            !
+%=============================================================================!
+\section{The energy the method keeps}
+\label{sec:in-shadow}
+
+\Cref{sec:ha-symplectic} found that the symplectic Euler method keeps the
+spring's energy within a band, and promised the reason. This section finds
+it for velocity Verlet: for a spring the method keeps exactly an energy
+slightly different from the true one. With a stable step, this bounds the
+variation of the true energy. We then state the conditions under which a
+similar argument applies beyond the spring.
+
+\subsection*{The spring}
+
+For a body of mass $m$ on a spring of stiffness $k$, with $\omega^2 =
+k/m$, a step of \cref{eq:in-kdk} in terms of the momentum $p = mv$ is
+\begin{equation*}
+   p_{\frac12} = p - \tfrac12\dt\,kq , \qquad
+   q' = q + \dt\,p_{\frac12}/m , \qquad
+   p' = p_{\frac12} - \tfrac12\dt\,kq' .
+\end{equation*}
+We show that the step keeps
+\begin{equation}
+   \tilde{H} = \frac{p^2}{2m} + \frac12 kq^2\Bigl(1 - \frac{\omega^2\dt^2}
+   {4}\Bigr) ,
+   \label{eq:in-shadow}
+\end{equation}
+which differs from the energy $H$ by a term of order $\dt^2$. Written in
+terms of $q$ and the half-step momentum, using $p = p_{\frac12} + \frac12\dt
+\,kq$, expanding the square, and writing $\frac12 kq^2\,\omega^2\dt^2/4 =
+\dt^2k^2q^2/(8m)$,
+\begin{align*}
+   \tilde{H} &= \frac{p_{\frac12}^2}{2m} + \frac{\dt\,k}{2m}\,qp_{\frac12}
+   + \frac{\dt^2k^2q^2}{8m} + \frac12 kq^2 - \frac{\dt^2k^2q^2}{8m}\\
+   &= \frac{p_{\frac12}^2}{2m} + \frac12 kq^2 + \frac{\dt\,k}{2m}\,
+   qp_{\frac12} .
+\end{align*}
+Written instead in terms of $q'$ and the same half-step momentum, using $q
+= q' - \dt\,p_{\frac12}/m$,
+\begin{align*}
+   \frac12 kq^2 + \frac{\dt\,k}{2m}\,qp_{\frac12}
+   &= \frac12 kq'^2 - \frac{\dt\,k}{m}\,q'p_{\frac12}
+   + \frac{\dt^2k\,p_{\frac12}^2}{2m^2}
+   && \text{expanding $\tfrac12 kq^2$,}\\
+   &\qquad + \frac{\dt\,k}{2m}\,q'p_{\frac12}
+   - \frac{\dt^2k\,p_{\frac12}^2}{2m^2}
+   && \text{and the product,}\\
+   &= \frac12 kq'^2 - \frac{\dt\,k}{2m}\,q'p_{\frac12}
+   && \text{the terms in $p_{\frac12}^2$ cancel,}
+\end{align*}
+so $\tilde{H} = p_{\frac12}^2/(2m) + \frac12 kq'^2 - \bigl(\dt\,k/(2m)
+\bigr)\,q'p_{\frac12}$, the mirror image of the first form. Putting $p_{\frac12} =
+p' + \frac12\dt\,kq'$ into it and expanding as in the first step gives
+back \cref{eq:in-shadow} with $q'$ and $p'$ (\cref{ex:in-shadow}). So
+$\tilde{H}(q', p') = \tilde{H}(q, p)$: every step of velocity Verlet keeps
+$\tilde{H}$ exactly, whatever the step, and $\tilde{H}$ is called the
+shadow energy of the method.
+
+\Cref{fig:in-shadow}(a) shows the consequence for velocity Verlet. With
+$\omega\dt = 0.8$, started at rest, the states after each step lie on the
+curve $\tilde{H} = $ constant, an ellipse whose height in $p$ is $\sqrt{1
+- \omega^2\dt^2/4} = 0.917$ of that of the true one through the same
+start, and the computed motion goes round it for ever. The true energy is
+$H = \tilde{H} + \frac12 kq^2\,\omega^2\dt^2/4$. Where $q = 0$ it equals
+$\tilde{H}$; at a turning point $p = 0$, so $\tilde{H} = (1 -
+\omega^2\dt^2/4)\,H$, and $H$ is largest there. The true energy therefore
+oscillates between $\tilde{H}$ and $\tilde{H}/(1 - \omega^2\dt^2/4)$, a
+band of width $\omega^2\dt^2/4$ relative to its top, and does not drift:
+with $\omega\dt = 0.5$ it stays between 0.9375 and 1 times its starting
+value (\cref{fig:in-shadow}b), $1 - 0.5^2/4 = 0.9375$.
+
+The computed motion also runs slightly fast. Velocity Verlet gives the
+positions of \cref{eq:in-stormer}, which for the spring, with $a =
+-\omega^2q$, read $q_{n+1} + q_{n-1} = (2 - \omega^2\dt^2)\,q_n$, so $q_0$
+and $q_1$ fix every later $q_n$. Started at rest at $q_0 = 1$,
+\cref{eq:in-vv} gives $q_1 = 1 - \frac12\omega^2\dt^2$, so we try $q_n =
+\cos n\theta$ with $\cos\theta = 1 - \frac12\omega^2\dt^2$. Adding
+$\cos(n\theta + \theta) = \cos n\theta\cos\theta - \sin n\theta\sin\theta$
+and $\cos(n\theta - \theta) = \cos n\theta\cos\theta + \sin
+n\theta\sin\theta$ (\cref{eq:mo-addition}) gives $q_{n+1} + q_{n-1} =
+2\cos\theta\,q_n$, as required, and $\sin n\theta$ satisfies the same rule,
+so every start gives the same angular frequency. The computed positions
+are therefore $\cos\tilde\omega t_n$, with $\tilde\omega\dt = \theta$, and
+the computed angular frequency $\tilde\omega$ satisfies $\cos\tilde\omega
+\dt = 1 - \omega^2\dt^2/2$: 1.07\% above $\omega$ at $\omega\dt = 0.5$,
+and 0.042\% at $\omega\dt = 0.1$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch09_integrators/shadow}
+\caption{Velocity Verlet for a spring with $m = k = 1$, started at $q = 1$
+at rest. (a) Forty steps with $\omega\dt = 0.8$ (dots) lie on the ellipse
+of the shadow energy $\tilde{H}$ (solid), slightly lower than the true
+curve (dashed). (b) With $\omega\dt = 0.5$, the energy $H$ of the computed
+states oscillates in a band, and $\tilde{H}$ stays constant.}
+\label{fig:in-shadow}
+\end{figure}
+
+The same algebra settles the band that \cref{sec:ha-symplectic} found for
+the symplectic Euler method. Its step, $p' = p - \dt\,kq$ and then $q' = q
++ \dt\,p'/m$, keeps exactly
+\begin{equation*}
+   \frac{p^2}{2m} + \frac12 kq^2 - \frac{\dt\,k}{2m}\,qp
+\end{equation*}
+(\cref{ex:in-se-shadow}), whose extra term is of first order in $\dt$,
+where that of $\tilde{H}$ is of second. Along a curve on which it is
+constant, the true energy ranges between $1/(1 + \omega\dt/2)$ and $1/(1 -
+\omega\dt/2)$ times it, so for a start at rest, where the two are equal,
+between 0.9091 and 1.1111 times its starting value at $\omega\dt = 0.2$:
+the band of \cref{fig:ha-maps}. At the same step velocity Verlet keeps a
+band of $0.2^2/4 = 1\%$, the narrower band that Chapter~7 promised.
+
+\subsection*{Beyond the spring}
+
+For the spring the shadow energy is found exactly. For a Hamiltonian
+whose Taylor series converge, a motion that stays within a bounded
+region, and a sufficiently small step, a symplectic method keeps, very nearly and for times that grow
+exponentially with $1/\dt$, a shadow energy that differs from $H$ by terms
+of the order of its global error, $\dt^2$ for velocity Verlet, and so the
+true energy stays within a band of that width without
+drifting\cite{LeimkuhlerMatthews2015}. This is the reason, promised in
+Chapter~7, why a symplectic step map keeps the energy close. Over long
+times no method follows the true motion closely; a symplectic method
+follows, exactly for the spring and very nearly in general, the motion of
+a slightly different Hamiltonian.
+
+\begin{keyidea}
+Velocity Verlet keeps the shadow energy $\tilde{H} = p^2/(2m) + \frac12
+kq^2(1 - \omega^2\dt^2/4)$ of a spring exactly, so the true energy
+oscillates in a band of relative width $\omega^2\dt^2/4$ without drift,
+and the motion runs slightly fast. For smooth Hamiltonians and a
+sufficiently small stable step, a nearby shadow energy is kept very
+nearly over long times, which explains the small energy fluctuations.
+\end{keyidea}
+
+\notebook{09}{the true energy and the shadow energy}
+
+\begin{selfcheck}
+At $\omega\dt = 0.2$, what is the relative width of the energy band, and
+how fast does the computed motion run?
+\end{selfcheck}

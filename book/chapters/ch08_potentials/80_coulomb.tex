@@ -1,0 +1,104 @@
+%=============================================================================!
+% 8.8  LONG-RANGE ELECTROSTATICS                                              !
+%=============================================================================!
+\section{Charges and the slow decay of \texorpdfstring{$1/r$}{1/r}}
+\label{sec:pe-coulomb}
+
+Ions in an electrolyte, the charged atoms of a crystal such as rock salt
+and the charges placed on the atoms of a force field interact by
+Coulomb's law. Two charges
+$q_i$ and $q_j$, in units of the elementary charge $e$, the charge of a
+proton (an electron carries $-e$, and an ion is an atom that has lost or
+gained electrons), at a distance $r$ have the energy
+\begin{equation}
+   \varphi_{\mathrm C}(r) = \frac{k_{\mathrm e}\,q_iq_j}{r} ,
+   \qquad k_{\mathrm e} = \frac{e^2}{4\pi\epsilon_0} = \SI{14.3996}{\electronvolt
+   \angstrom} ,
+   \label{eq:pe-coulomb}
+\end{equation}
+where $\epsilon_0$ is the electric constant; $k_{\mathrm e}$ is computed from its
+value in \texttt{mdlab.units}. This section shows that this energy cannot be
+cut off as the earlier ones were.
+
+\subsection*{A slow decay}
+
+Two opposite unit charges at \SI{1.5639}{\angstrom}, the bond length of
+LiF (\cref{sec:ro-molecules}), have $-14.3996/1.5639 =
+\SI{-9.21}{\electronvolt}$; at \SI{10}{\angstrom} they still have
+$\SI{-1.44}{\electronvolt}$, where two argon atoms have
+$\SI{-6.4e-5}{\electronvolt}$. Take an ion inside a large region filled with ions at the number density
+$n$, that is $n$ ions in each unit of volume. The ions at distances between $r$ and $r + \Delta r$ fill a
+shell of area $4\pi r^2$ and thickness $\Delta r$, so there are about
+$4\pi r^2n\,\Delta r$ of them, a number that grows as $r^2$. Each
+contributes an energy of size $k_{\mathrm e}/r$, so the shell as a whole contributes
+an amount of size $4\pi k_{\mathrm e}n\,r\,\Delta r$, which grows with $r$. For a
+Lennard-Jones attraction the same shell contributes $4\pi r^2n\,\Delta
+r\times r^{-6}$, falling as $r^{-4}$, and the far shells hardly matter;
+for charges, every shell counts more than the last, and only the
+cancellation between positive and negative ions keeps the total finite.
+
+\subsection*{A sum that depends on its order}
+
+Rock salt, NaCl, shows what this means. Its ions sit on a cubic grid of
+spacing $d$, the sign of the charge alternating from each site to its
+neighbours, so the ion at $(a, b, c)d$, with $a$, $b$, $c$ integers, positive,
+negative or zero,
+carries the charge $(-1)^{a+b+c}$ relative to the ion at the origin. The
+energy of the ion at the origin with all the others is $-\mathcal{M}k_{\mathrm e}/d$, with the Madelung
+constant
+\begin{equation*}
+   \mathcal{M} = -\sum_{(a,b,c)\ne(0,0,0)}\frac{(-1)^{a+b+c}}{\sqrt{a^2 + b^2 + c^2}} .
+\end{equation*}
+\Cref{fig:pe-madelung} adds up this sum in two orders. Over the ions
+inside a growing sphere, the partial sums do not settle, out to $12d$: the six nearest
+ions alone give the partial sum 6, adding the twelve next give $-2.49$, and between
+radii $6d$ and $12d$ the sums swing between $-10.3$ and $+14.7$, because
+each new shell of ions has a net charge of its own. Over the ions inside a
+growing cube, with the ions on its faces, edges and corners counted with
+the fractions $\frac12$, $\frac14$ and $\frac18$ of a small cube of side
+$d$ around each that lie inside, every cube is neutral: the weighted
+charge is a product of three equal sums, one along each axis, each zero,
+as $-\frac12 + 1 - \frac12 = 0$ for the smallest cube. The sums settle
+quickly, to 1.747567 at a half-side of $12d$, within $2\times10^{-6}$ of
+the limit 1.747565\cite{Evjen1932}. The answer depends on the order in
+which the terms are added. That cannot happen when the sizes of the
+terms, all taken positive, add up to a finite total; here they do not,
+since the sizes in one shell add up to an amount that grows as $r$.
+Physically, the arrangement of charge at the surface of the
+region summed over affects the energy of every ion inside it. For a crystal of this kind with a spacing $d =
+\SI{2.82}{\angstrom}$, the electrostatic energy of one ion with all the
+others is $-1.7476\times14.3996/2.82 = \SI{-8.92}{\electronvolt}$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch08_potentials/madelung}
+\caption{The Madelung sum of rock salt over the ions inside a growing
+sphere (ochre), which never settles, and inside a growing neutral cube
+(teal dots), which settles to 1.7476 (dotted), against the radius or
+half-side in units of the nearest-neighbour distance $d$.}
+\label{fig:pe-madelung}
+\end{figure}
+
+A cutoff therefore cannot be applied to charges as it was to the
+Lennard-Jones energy: whatever its radius, the charge inside it is not
+zero in general and the energy depends on where it falls. Electrolytes,
+full of ions, and electrodes, whose surfaces carry charge, need the
+electrostatic energy of an infinite, periodic arrangement of charges
+summed correctly. Chapter~10, once periodic boxes are in place, derives
+the Ewald method, one way of doing that.
+
+\begin{keyidea}
+The Coulomb energy $k_{\mathrm e}q_iq_j/r$ falls so slowly that each shell of
+charges matters more than the last, and the sum for a crystal of ions
+depends on the order in which its terms are added, which sets the charge
+at the surface of the region summed. Charges cannot be cut off like a
+Lennard-Jones energy, and periodic systems need a sum built for them,
+such as the Ewald sum of Chapter~10.
+\end{keyidea}
+
+\notebook{08}{sum the charges of rock salt over spheres and cubes}
+
+\begin{selfcheck}
+How many ions lie at the distance $\sqrt2\,d$ from an ion in rock salt,
+and what is their charge relative to it?
+\end{selfcheck}

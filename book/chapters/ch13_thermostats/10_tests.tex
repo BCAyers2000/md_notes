@@ -1,0 +1,167 @@
+%=============================================================================!
+% 13.1  WHAT A THERMOSTAT MUST DO                                             !
+%=============================================================================!
+\section{What a thermostat must do}
+\label{sec:th-tests}
+
+A real sample keeps its temperature by exchanging energy with what
+surrounds it, which a simulation leaves out. A thermostat stands in for
+those surroundings. This section sets out what it must achieve, what it
+should leave alone, how the chapter tests both, and the single loop into
+which every thermostat of the chapter fits.
+
+\subsection*{Two demands}
+
+The first demand is the canonical ensemble of \cref{sec:sm-canonical}. A
+run's time averages should equal averages with the weight
+$\mathrm{e}^{-\beta H}$, which means three things that can be checked:
+the kinetic energy of the $N_{\mathrm f}$ freedoms has the gamma
+distribution of \cref{eq:sm-gamma}, with the relative spread
+$\sqrt{2/N_{\mathrm f}}$; the positions have the density
+$\mathrm{e}^{-\beta U}$ (\cref{sec:sm-canonical}); and the velocities are
+Maxwellian and independent of the positions (\cref{sec:sm-maxwell}).
+A thermostat that holds the mean temperature but narrows the spread of $K$
+samples the wrong ensemble, and every quantity drawn from its
+fluctuations, such as the heat capacity of \cref{eq:sm-fluctuation}, is
+wrong.
+
+The second demand is softer: the motion should stay close to the motion
+of the real system. In a sample the surroundings exchange energy only at
+its edges and only slowly, and the atoms inside move by Newton's laws. A
+thermostat acts on every atom at every step, so it changes the motion
+everywhere, and how much it changes it decides whether a diffusion
+coefficient, a rate of hopping or a vibrational frequency measured under
+it means anything. The two demands can pull apart: a thermostat that
+acts on each atom separately, as those of \cref{sec:th-andersen,sec:th-langevin}
+do, disturbs the motion more the more firmly it holds the temperature.
+
+\subsection*{The tests}
+
+Every thermostat in the chapter is tested on two systems. The first is
+the liquid argon of Chapter~12, 256 atoms at \SI{135}{\kelvin}, started
+from three frames of the run of \cref{sec:sm-ergodic} 20 picoseconds
+apart and followed for \SI{100}{\pico\second} with steps of
+\SI{10}{\femto\second}, the first \SI{5}{\pico\second} of each set aside
+for the distribution of $K$; the three runs give each measured quantity a
+mean and a spread. On it we measure the distribution of $K$; the
+diffusion coefficient $D$, which measures how fast atoms wander: the
+square of the distance an atom moves in a time $t$, averaged over the
+atoms and the starting times, grows in proportion to $t$ in a liquid, and
+$D$ is a sixth of its slope between 2 and \SI{20}{\pico\second}, with
+positions measured from the centre of mass (Chapter~16 treats this
+properly, the six included); and the cost, the computing time of a step
+against that of velocity Verlet alone.
+
+The second is lithium on the model surface of \cref{sec:en-surface},
+standing for lithium in graphite: 1000 atoms, each on its own copy of the
+surface with its own thermostat, at \SI{1000}{\kelvin}, started from the
+density $\mathrm{e}^{-\beta U}$ and the Maxwell-Boltzmann distribution.
+The temperature is high so that hops are frequent: the estimate of
+\cref{sec:th-langevin} puts one hop every \SI{1.69}{\nano\second} at
+\SI{300}{\kelvin} and \SI{1.26}{\per\pico\second} at \SI{1000}{\kelvin}.
+Each atom has only two freedoms, the hardest case for a thermostat: its
+kinetic energy should spread as widely as \cref{eq:sm-gamma} with
+$N_{\mathrm f} = 2$, a relative spread of 1, and it has no other atoms to
+share energy with. Its
+exact canonical density of positions is known, so the distribution of
+its potential energy can be compared with the exact one, computed on a
+grid over one cell of the surface; and its hops can be counted.
+
+\subsection*{The heat and the effective energy}
+
+A thermostat adds or removes kinetic energy at each step. Adding up what
+it adds over a run gives the heat it has put in, and the effective energy
+\begin{equation}
+   E_{\mathrm{eff}} = K + U - \text{heat}
+   \label{eq:th-effective}
+\end{equation}
+counts every change of $K + U$ that the thermostat did not make. Between
+the thermostat's actions the motion is Newton's, which keeps $K + U$, so
+in exact dynamics $E_{\mathrm{eff}}$ never changes, for every thermostat.
+In a run it drifts only through the error of the integrator, and that
+drift is the thermostatted counterpart of the energy check of
+\cref{sec:cs-trajectory}.
+
+\subsection*{One loop for every thermostat}
+
+Velocity Verlet (\cref{eq:in-kdk}) is a half kick, a drift and a half
+kick. Splitting the drift into two halves, as \cref{sec:in-splitting}
+split the Liouville operator, gives four pieces, B A A B, with B a half
+kick and A a half drift. A thermostat may act before the step, between the
+two half drifts, or after the step (\cref{fig:th-step}).
+\texttt{mdlab.thermostats.run} is that loop:
+
+\begin{code}
+    for step in range(n_steps + 1):
+        if step > 0:
+            v = act(th.before, v)
+            v = v + 0.5 * dt * accel * f
+            r = r + 0.5 * dt * v
+            v = act(th.middle, v)
+            r = r + 0.5 * dt * v
+            u, f = model(r)
+            v = v + 0.5 * dt * accel * f
+            v = act(th.after, v)
+\end{code}
+
+\noindent The pass with \texttt{step} 0 makes no step; it and every later
+pass end by recording the state, which the listing leaves out.
+\texttt{accel} is \texttt{FORCE\_TO\_ACCEL} divided by each mass, and \texttt{act} calls the thermostat's method and adds the change
+of kinetic energy it makes to the heat. With no thermostat the three
+calls do nothing and the loop is velocity Verlet; the thermostats of the
+next sections each fill one or two of the calls. ASE implements five of
+them independently. For four, Berendsen's, Langevin's, the Nosé-Hoover
+chain and CSVR, from the same start of 32 argon atoms, with the same
+random numbers for the two that use them, the two codes agree after 50
+steps of \SI{5}{\femto\second} to within \SI{1e-7}{\angstrom} in every
+position. ASE's version of Andersen's draws its random numbers
+differently, so the two are compared by what they sample: over four runs
+of \SI{100}{\pico\second} of the same atoms at \SI{120}{\kelvin}, the
+mean kinetic temperature is $(119.40 \pm 0.55)$\,\si{\kelvin} under ASE's
+and $(119.95 \pm 0.37)$\,\si{\kelvin} under \texttt{mdlab}'s, each with
+0.99 to 1.01 of the canonical spread.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   box/.style={draw, line width=0.6pt, minimum width=0.9cm,
+               minimum height=0.6cm, font=\small},
+   th/.style={draw, line width=0.6pt, fill=accent!12, minimum width=1.2cm,
+              minimum height=0.6cm, font=\scriptsize, align=center}]
+   \node[th] (b0) at (0,0) {before};
+   \node[box] (k1) at (1.45,0) {B};
+   \node[box] (d1) at (2.6,0) {A};
+   \node[th] (mid) at (3.9,0) {middle};
+   \node[box] (d2) at (5.2,0) {A};
+   \node[box] (k2) at (6.35,0) {B};
+   \node[th] (a0) at (7.8,0) {after};
+   \foreach \x/\y in {b0/k1, k1/d1, d1/mid, mid/d2, d2/k2, k2/a0}
+      \draw[-{Stealth[length=4pt]}, line width=0.5pt] (\x) -- (\y);
+   \node[font=\scriptsize, align=center, anchor=north] at (0,-0.5)
+      {rescaling\\Berendsen\\CSVR\\chains, $\tfrac12$};
+   \node[font=\scriptsize, align=center, anchor=north] at (3.9,-0.5)
+      {Langevin};
+   \node[font=\scriptsize, align=center, anchor=north] at (7.8,-0.5)
+      {Andersen\\chains, $\tfrac12$};
+\end{tikzpicture}
+\caption{One step of \texttt{mdlab.thermostats.run}: velocity Verlet as a
+half kick (B), two half drifts (A) and a half kick, with the places where
+each thermostat of the chapter acts; Nosé-Hoover chains act for half a
+step before and half after.}
+\label{fig:th-step}
+\end{figure}
+
+\begin{keyidea}
+A thermostat must give the canonical distributions, the gamma
+distribution of $K$ with spread $\sqrt{2/N_{\mathrm f}}$ and the density
+$\mathrm{e}^{-\beta U}$ of positions, and should disturb the motion as
+little as it can. The effective energy, $K + U$ less the heat the
+thermostat has added, is kept by the exact dynamics of every thermostat,
+and its drift measures the integration error.
+\end{keyidea}
+
+\begin{selfcheck}
+A thermostat removes \SI{0.5}{\electronvolt} over a run in which $K + U$
+falls by \SI{0.48}{\electronvolt}. By how much has the effective energy
+changed?
+\end{selfcheck}

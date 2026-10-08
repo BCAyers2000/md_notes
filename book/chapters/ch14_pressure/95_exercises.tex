@@ -1,0 +1,169 @@
+%=============================================================================!
+% 14.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:pr-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:pr-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~14 checks every numerical answer.
+
+\begin{exercise}[units of pressure]
+\label{ex:pr-units}
+Show that \SI{1}{\electronvolt\per\angstrom\cubed} is
+\SI{160.218}{\giga\pascal}, and express one bar in
+\si{\electronvolt\per\angstrom\cubed}.
+\end{exercise}
+
+\begin{exercise}[air]
+\label{ex:pr-air}
+Find the number of molecules per \si{\angstrom\cubed} in air at one bar and
+\SI{300}{\kelvin}, treated as an ideal gas, and the spacing $(V/N)^{1/3}$
+between molecules.
+\end{exercise}
+
+\begin{exercise}[atoms in every direction]
+\label{ex:pr-flux}
+Atoms of mass $m$ at the number density $\rho$ move in every direction, a
+fraction $\mathcal{P}(v_x)\,\dd v_x$ of them with velocity along $x$
+between $v_x$ and $v_x + \dd v_x$ (\cref{sec:sm-maxwell}). Show, by
+counting the atoms with $v_x > 0$ that reach a wall of area $A$ in a time
+$t$, each delivering $2mv_x$, that the pressure is $\rho m\ens{v_x^2}$, the
+average taken over all the atoms, and hence $\rho\kB T$.
+\end{exercise}
+
+\begin{exercise}[the sign of a pair's share]
+\label{ex:pr-sign}
+For the Lennard-Jones potential of argon, with $\sigma =
+\SI{3.4}{\angstrom}$, find the distance at which a pair's contribution
+$-r\varphi'(r)$ to the virial changes sign, and the sign of that
+contribution closer in.
+\end{exercise}
+
+\begin{exercise}[the origin at the centre]
+\label{ex:pr-centre}
+Show that the walls' share, $\sum_i\vb{r}_i\cdot\vb{F}^{\mathrm w}_i$, is
+still $-3PV$ when the origin is placed at the centre of the box, with the
+walls at $x = \pm L/2$.
+\end{exercise}
+
+\begin{exercise}[wrapping one atom]
+\label{ex:pr-wrap}
+Show that wrapping a single atom $i$ back into a cubic cell of side $L$
+along $x$ changes $\sum_j\vb{r}_j\cdot\vb{F}_j$ by $\pm LF_{ix}$, while
+leaving \cref{eq:pe-virial}, written with nearest-copy separations,
+unchanged.
+\end{exercise}
+
+\begin{exercise}[a determinant to first order]
+\label{ex:pr-det}
+Show, by writing out the triple product $\vb{c}_1\cdot(\vb{c}_2\times
+\vb{c}_3)$ of the columns of $\vb{I} + \boldsymbol{\epsilon}$
+(\cref{sec:ro-tensor}), that $\det(\vb{I} + \boldsymbol{\epsilon}) = 1 +
+\epsilon_{xx} + \epsilon_{yy} + \epsilon_{zz}$ plus terms of second and
+third order in the components of $\boldsymbol{\epsilon}$.
+\end{exercise}
+
+\begin{exercise}[the trace of the tensor]
+\label{ex:pr-trace}
+Show that one third of the trace of \cref{eq:pr-tensor} is the
+instantaneous pressure $(2K + \mathcal{W})/3V$ of \cref{sec:pr-virial}.
+\end{exercise}
+
+\begin{exercise}[a cubic crystal's bulk modulus]
+\label{ex:pr-cubic}
+For a cubic crystal, each diagonal component $\mathsf{P}_{\alpha\alpha}$ of
+the pressure tensor falls by $C_{11}$ for each unit of its own strain
+$\epsilon_{\alpha\alpha}$ and by $C_{12}$ for each unit of the strain along
+either other axis. Show that $B = (C_{11} + 2C_{12})/3$, and evaluate it
+for the crystal of \cref{sec:pr-tensor}.
+\end{exercise}
+
+\begin{exercise}[integrals of the gamma kind]
+\label{ex:pr-gamma}
+Show that $\int_0^\infty V^n\mathrm{e}^{-bV}\dd V = n!/b^{n+1}$ for $b > 0$
+and every whole number $n$, by integrating by parts and using the result
+for $n - 1$.
+\end{exercise}
+
+\begin{exercise}[a small ideal gas]
+\label{ex:pr-ideal}
+For 20 atoms that do not interact, at \SI{135}{\kelvin} and $P_0 =
+\SI{1e-4}{\electronvolt\per\angstrom\cubed}$, find the mean volume and its
+spread, and compare the mean with $N\kB T/P_0$.
+\end{exercise}
+
+\begin{exercise}[where Berendsen's barostat leaves an ideal gas]
+\label{ex:pr-berendsen-mean}
+Berendsen's barostat drives the instantaneous pressure, $2K/3V$ for an
+ideal gas, to $P_0$ on average. Assuming the volume's spread small and $K$
+independent of $V$, show that the mean volume settles near $N\kB T/P_0$ for
+a run whose $\ens{2K} = 3N\kB T$.
+\end{exercise}
+
+\begin{exercise}[how fast the volume settles]
+\label{ex:pr-relax}
+For the liquid, with $\kappa_T = \SI{1.46}{\per\giga\pascal}$ and
+$\tau_{\mathrm P} = \SI{1}{\pico\second}$, find the time in which the volume
+relaxes under Berendsen's barostat given $\kappa = \SI{2.5}{\per\giga
+\pascal}$, and given $\kappa = 2.5\times10^{-4}$\,\si{\per\giga\pascal}.
+\end{exercise}
+
+\begin{exercise}[the spread of the logarithm]
+\label{ex:pr-logspread}
+Find the spread of $\ln V$ that stochastic cell rescaling should give the
+liquid at \SI{135}{\kelvin}, with $\kappa_T = \SI{1.46}{\per\giga\pascal}$
+and $V = \SI{12306}{\angstrom\cubed}$.
+\end{exercise}
+
+\begin{exercise}[the kinetic energy of a growing box]
+\label{ex:pr-kinetic}
+With each momentum written as $\vb{p}_i = \boldsymbol{\pi}_i V^{-1/3}$,
+show that $\partial K/\partial V$ at fixed $\boldsymbol{\pi}_i$ is
+$-2K/3V$.
+\end{exercise}
+
+\begin{exercise}[a gas at fixed temperature]
+\label{ex:pr-gas-kappa}
+Show that an ideal gas held at a fixed temperature has $\kappa_T = 1/P$.
+\end{exercise}
+
+\begin{exercise}[Andersen's piston]
+\label{ex:pr-andersen}
+A barostat whose coordinate is the volume itself, with the mass
+$M_V$, obeys $M_V\ddot V = P - P_0$. Show that it swings with $\omega^2 =
+1/(M_VV\kappa_T)$ about its mean.
+\end{exercise}
+
+\begin{exercise}[the piston's period]
+\label{ex:pr-period}
+From $\omega^2 = 9V/(M_\epsilon\kappa_T)$ and $M_\epsilon = (3N + 3)\kB T
+\tau_{\mathrm P}^2$, show that the period is $2\pi\tau_{\mathrm P}
+\sqrt{(N + 1)\kB T\kappa_T/3V}$, and evaluate the factor for the liquid
+of 256 atoms at \SI{135}{\kelvin}, with $V = \SI{12306}{\angstrom\cubed}$
+and $\kappa_T = \SI{1.46}{\per\giga\pascal}$.
+\end{exercise}
+
+\begin{exercise}[graphite, isotropically]
+\label{ex:pr-graphite}
+If the 10.8\% growth of volume in the check of \cref{sec:pr-shape}, in
+which the in-plane size is kept, were shared equally by the three lengths,
+by how much would each grow?
+\end{exercise}
+
+\begin{exercise}[the kinetic part dropped]
+\label{ex:pr-dropped}
+A barostat that sees only $\mathcal{W}/3V$ holds the liquid at the true
+pressure $P_0 + N\kB T/V$. Estimate from $\kappa_T$ by what fraction its
+volume shrinks, and compare with the 4.9\% of \cref{sec:pr-trajectory}.
+Why is the estimate larger?
+\end{exercise}
+
+\begin{exercise}[a referee's objection]
+\label{ex:pr-referee}
+A study reports the compressibility of a liquid from the fluctuations of
+its volume, \cref{eq:pr-volume}, in a run under Berendsen's barostat. What
+is wrong, which way is the result wrong, and which barostat would fix
+it?
+\end{exercise}

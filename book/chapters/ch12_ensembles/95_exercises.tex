@@ -1,0 +1,179 @@
+%=============================================================================!
+% 12.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:sm-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:sm-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~12 checks every numerical answer.
+
+\begin{exercise}[a fair die]
+\label{ex:sm-die}
+Find the mean and the variance of the number shown by one fair die, and
+the variance of the total of two.
+\end{exercise}
+
+\begin{exercise}[the spread of a mean]
+\label{ex:sm-mean}
+Show that the mean of $n$ independent values, each with the variance
+$\sigma_x^2$, has the variance $\sigma_x^2/n$. How many throws of a die
+make the standard deviation of their mean no more than 0.01?
+\end{exercise}
+
+\begin{exercise}[a chain of three]
+\label{ex:sm-chain}
+Find the angular frequencies of the three normal modes of a chain of
+three atoms of unit mass between walls, joined by springs of unit
+stiffness, from $\omega_k = 2\sin(k\pi/(2N + 2))$, and check that their
+squares are the eigenvalues of the matrix with 2 on its diagonal, $-1$
+just above and below it, and 0 elsewhere.
+\end{exercise}
+
+\begin{exercise}[entropies add]
+\label{ex:sm-additive}
+Show that two independent systems, with $\Omega_1$ and $\Omega_2$
+microstates, have together the entropy $S_1 + S_2$.
+\end{exercise}
+
+\begin{exercise}[how large a bath]
+\label{ex:sm-bath}
+A system holding \SI{0.1}{\electronvolt} is in contact with a bath of
+$10^4$ atoms of an ideal gas at \SI{300}{\kelvin}. What is the ratio of
+the term of second order in the expansion of \cref{sec:sm-canonical} to
+the term of first order, $E_s/\kB T$, which is kept?
+\end{exercise}
+
+\begin{exercise}[two levels]
+\label{ex:sm-two-level}
+A system has two states, of energies 0 and $E_{\mathrm g}$. Find $Z$,
+$\ens{E}$ and $C_V$. For $E_{\mathrm g} = \SI{0.1}{\electronvolt}$, give
+$\ens{E}$ and $C_V/\kB$ at \SI{300}{\kelvin}, and find numerically the
+temperature at which $C_V$ is largest.
+\end{exercise}
+
+\begin{exercise}[free energy and entropy]
+\label{ex:sm-free}
+Show that $F = -\kB T\ln Z$ equals $\ens{E} - TS$ with $S =
+-\kB\sum_s\mathcal{P}_s\ln\mathcal{P}_s$, and that this $S$ is $\kB\ln
+\Omega$ when all $\Omega$ states are equally likely.
+\end{exercise}
+
+\begin{exercise}[a vibration's energy fluctuates]
+\label{ex:sm-spring}
+Show from the partition function $Z = 2\pi/(\beta\omega)$ of one
+vibration that the variance of its energy is $(\kB T)^2$, and check
+\cref{eq:sm-fluctuation} with $C_V = \kB$.
+\end{exercise}
+
+\begin{exercise}[odds and temperature]
+\label{ex:sm-odds}
+At what temperature are the odds of the \SI{0.3}{\electronvolt} barrier of
+\cref{sec:sm-canonical} $10^{-3}$? What are the odds of a
+\SI{0.5}{\electronvolt} barrier at \SI{300}{\kelvin}?
+\end{exercise}
+
+\begin{exercise}[speeds]
+\label{ex:sm-speeds}
+Show that the speed density of \cref{eq:sm-speed} is largest at
+$\sqrt2\,\sigma_v$ and has the mean $\sqrt{8/\pi}\,\sigma_v$, and give
+both for lithium at \SI{300}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[fourth moments]
+\label{ex:sm-fourth}
+Show that the Gaussian of mean zero has $\ens{x^4} = 3\sigma_x^4$, by
+parts as in \cref{sec:sm-probability}, and that values spread evenly over
+an interval $-c$ to $c$ have the excess kurtosis $-1.2$.
+\end{exercise}
+
+\begin{exercise}[light and heavy]
+\label{ex:sm-species}
+In a classical simulation of lithium-intercalated graphite at
+\SI{300}{\kelvin}, find $\sigma_v$
+for a lithium atom (\SI{6.94}{\amu}) and a carbon atom
+(\SI{12.011}{\amu}), and their ratio. Which has the larger mean kinetic
+energy?
+\end{exercise}
+
+\begin{exercise}[a turning molecule]
+\label{ex:sm-rotor}
+A molecule of two atoms with moment of inertia $I$ turns freely; its axis
+points along the angles $\theta$ from $z$ and $\phi$ about $z$, and its
+kinetic energy is $\frac12I(\dot\theta^2 + \sin^2\theta\,\dot\phi^2)$.
+Show that $H = p_\theta^2/2I + p_\phi^2/(2I\sin^2\theta)$, and that its
+mean is $\kB T$.
+\end{exercise}
+
+\begin{exercise}[counting freedoms]
+\label{ex:sm-freedoms}
+How many kinetic freedoms have (a) an isolated molecule of carbon
+dioxide, a linear molecule of three atoms, with its drift and turning
+removed; (b) 108 argon atoms in a periodic cell with the drift removed?
+For (b), by what factor does ASE's temperature differ from
+\texttt{mdlab}'s?
+\end{exercise}
+
+\begin{exercise}[how many atoms]
+\label{ex:sm-scatter}
+How many atoms, with the drift removed, does a canonical run need for its
+kinetic temperature to have a standard deviation of 1\% of its mean?
+\end{exercise}
+
+\begin{exercise}[the most probable kinetic energy]
+\label{ex:sm-mode}
+Show that the gamma distribution of \cref{eq:sm-gamma} is largest at $K
+= (\frac12N_{\mathrm f} - 1)\kB T$. Where is it largest for one atom,
+and why is that not $\frac32\kB T$?
+\end{exercise}
+
+\begin{exercise}[a harmonic crystal at fixed energy]
+\label{ex:sm-harmonic}
+Show from \cref{eq:sm-lpv} that the kinetic energy of a harmonic
+crystal at fixed energy fluctuates by $1/\sqrt2$ of the canonical amount.
+\end{exercise}
+
+\begin{exercise}[heat capacity from one run]
+\label{ex:sm-heat}
+A run of 500 atoms at fixed energy, drift removed, has a kinetic energy
+whose standard deviation is 0.025 of its mean. Find $C_V$ per atom in
+units of $\kB$.
+\end{exercise}
+
+\begin{exercise}[volume fluctuations]
+\label{ex:sm-volume}
+With the $NPT$ partition function
+\begin{equation*}
+   Z_{NPT} = \int\mathrm{e}^{-\beta PV}Z(N, V, T)\,\dd V ,
+\end{equation*}
+show that the mean volume is
+\begin{equation*}
+   \ens{V} = -\kB T\,\frac{\partial\ln Z_{NPT}}{\partial P}
+\end{equation*}
+and that its variance is $-\kB T\,\dd\ens{V}/\dd P$.
+\end{exercise}
+
+\begin{exercise}[the other potentials]
+\label{ex:sm-legendre}
+From $\dd E = T\,\dd S - P\,\dd V + \mu\,\dd N$, show that $F + PV$ changes
+by $-S\,\dd T + V\,\dd P + \mu\,\dd N$ and $F - \mu N$ by $-S\,\dd T -
+P\,\dd V - N\,\dd\mu$.
+\end{exercise}
+
+\begin{exercise}[Fermi-Dirac]
+\label{ex:sm-fermi}
+Show that the Fermi-Dirac occupation satisfies $f(\mu + x) = 1 - f(\mu -
+x)$ and has the slope $-1/(4\kB T)$ at $\varepsilon_{\mathrm o} = \mu$. Find the
+entropy, in units of $\kB$, of an orbital \SI{0.1}{\electronvolt} above
+$\mu$ at \SI{300}{\kelvin}.
+\end{exercise}
+
+\begin{exercise}[a diagnosis]
+\label{ex:sm-diagnose}
+A long run of argon at fixed energy reports steady direction
+temperatures $T_x = T_y = \SI{295}{\kelvin}$ and $T_z =
+\SI{310}{\kelvin}$, each counting one component of every velocity. What
+fault does this suggest, which check confirms it, and what velocity of
+the centre of mass along $z$ would account for the difference?
+\end{exercise}

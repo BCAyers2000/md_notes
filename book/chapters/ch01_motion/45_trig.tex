@@ -1,0 +1,367 @@
+%=============================================================================!
+% 1.5  ANGLES AND THE TRIGONOMETRIC FUNCTIONS                                 !
+%=============================================================================!
+\section{Angles and the trigonometric functions}
+\label{sec:mo-trig}
+
+The motions met so far run along straight lines or arcs of a parabola. Many
+of the motions that matter later turn or repeat: a wheel spinning, a block
+bouncing on a spring, two bonded atoms vibrating, a molecule rotating. All
+of them are described with angles and with the sine and cosine functions,
+and this section builds those functions from the geometry of a circle,
+together with every property of them that the book uses.
+
+\subsection*{Measuring angles}
+
+Consider a mark on the rim of a wheel of radius $r$. As the wheel turns
+through some angle, the mark travels a distance $s$ along the rim, the
+length of the arc. The size of the angle could be given in degrees, but
+degrees are a convention, 360 to a full turn, chosen for their many
+divisors. A more natural measure follows from the arc itself. Doubling the
+angle doubles the arc, and doubling the radius at a fixed angle doubles it
+too, so the ratio of arc to radius depends only on the angle. That ratio
+defines the angle in radians,
+\begin{equation*}
+   \theta = \frac{s}{r} .
+\end{equation*}
+Being a length divided by a length, $\theta$ is a pure number, which is
+what allows it to appear inside $\sin$ and $\cos$ (\cref{sec:mo-units}).
+One full turn carries the mark once round the circumference, $s = 2\pi r$,
+so a full turn is $2\pi$ radians. The two measures are therefore related by
+$2\pi\ \text{rad} = \ang{360}$, and
+\begin{equation*}
+   \SI{1}{\radian} = \frac{\ang{180}}{\pi} \approx \ang{57.3}, \qquad
+   \ang{90} = \frac{\pi}{2}, \qquad \ang{60} = \frac{\pi}{3}, \qquad
+   \ang{45} = \frac{\pi}{4}, \qquad \ang{30} = \frac{\pi}{6} .
+\end{equation*}
+From here on, every angle is in radians unless degrees are stated.
+
+\subsection*{Sine and cosine}
+
+Draw a circle of radius 1, the unit circle, centred on the origin, and
+mark the point $P$ reached by turning anticlockwise through an angle
+$\theta$ from the point $(1, 0)$ on the positive $x$ axis
+(\cref{fig:mo-trig}a). The coordinates of $P$ define the cosine and the
+sine of $\theta$,
+\begin{equation*}
+   P = (\cos\theta,\ \sin\theta) .
+\end{equation*}
+For an angle between 0 and $\pi/2$, the line $OP$, the perpendicular from
+$P$ to the $x$ axis and the axis itself form a right-angled triangle with hypotenuse 1,
+so $\cos\theta$ is the adjacent side divided by the hypotenuse and
+$\sin\theta$ the opposite side divided by the hypotenuse, the familiar
+definitions from triangles. The circle definition has the advantage that
+it works for every angle, including angles beyond a quarter turn, negative
+angles and angles of more than a full turn. On a wheel of radius $r$ the
+mark sits at $r(\cos\theta, \sin\theta)$, since scaling the unit circle
+by $r$ scales both coordinates.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch01_motion/trig}
+\caption{Sine and cosine from the circle. (a) The point $P$ at angle
+$\theta = \SI{1.1}{\radian}$ (\ang{63}) on the unit circle has
+coordinates $(\cos\theta, \sin\theta)$; the thick arc from $(1, 0)$ to
+$P$ has length $\theta$. (b) The two coordinates against $\theta$ over one
+full turn, with the values at $\theta = \SI{1.1}{\radian}$ marked.}
+\label{fig:mo-trig}
+\end{figure}
+
+Plotting the two coordinates against the angle, as $P$ goes once round
+the circle, unrolls the circle into the two waves of \cref{fig:mo-trig}(b).
+Several properties follow directly from the picture.
+\begin{itemize}
+\item Since $P$ lies on a circle of radius 1, Pythagoras' theorem gives
+   \begin{equation*}
+      \cos^2\theta + \sin^2\theta = 1 ,
+   \end{equation*}
+   where $\cos^2\theta$ means $(\cos\theta)^2$. Both functions therefore
+   lie between $-1$ and $1$.
+\item Turning a further $2\pi$ brings $P$ back to where it was, so both
+   functions repeat with period $2\pi$: $\sin(\theta + 2\pi) = \sin\theta$
+   and $\cos(\theta + 2\pi) = \cos\theta$.
+\item Turning clockwise instead of anticlockwise reflects $P$ in the $x$
+   axis, which keeps its $x$ coordinate and reverses its $y$ coordinate:
+   $\cos(-\theta) = \cos\theta$ and $\sin(-\theta) = -\sin\theta$.
+\item Reflecting $P$ in the line $y = x$ swaps its coordinates. The
+   reflection also turns the angle measured anticlockwise from the $x$ axis
+   into the same angle measured clockwise from the $y$ axis, which itself
+   lies at $\pi/2$, so the
+   reflected point is at angle $\pi/2 - \theta$. Hence $\cos(\pi/2 - \theta)
+   = \sin\theta$ and $\sin(\pi/2 - \theta) = \cos\theta$. Replacing $\theta$
+   by $-\theta$ in the second and using the previous property gives
+   $\sin(\theta + \pi/2) = \cos\theta$: the cosine is the sine shifted by a
+   quarter turn, which is visible in \cref{fig:mo-trig}(b).
+\item Reflecting $P$ in the $y$ axis keeps its $y$ coordinate, reverses its
+   $x$ coordinate and carries $\theta$ to $\pi - \theta$, since the
+   reflected point lies at angle $\theta$ measured clockwise from the
+   negative $x$ axis, which is at $\pi$. Hence $\sin(\pi -
+   \theta) = \sin\theta$ and $\cos(\pi - \theta) = -\cos\theta$.
+\item At the quarter turns $P$ sits on an axis, giving $\sin 0 = 0$, $\cos
+   0 = 1$, $\sin(\pi/2) = 1$, $\cos(\pi/2) = 0$, $\sin\pi = 0$ and $\cos\pi
+   = -1$. At $\theta = \pi/4$ the point lies on the line $y = x$, so its two
+   coordinates are equal, and $\cos^2 + \sin^2 = 1$ becomes $2\cos^2(\pi/4)
+   = 1$; taking the positive root, since $P$ lies in the first quarter,
+   both equal $1/\sqrt2$.
+\end{itemize}
+The tangent function, $\tan\theta = \sin\theta/\cos\theta$ (defined where
+$\cos\theta \neq 0$), is the slope of the line $OP$; despite its name it
+is not the tangent line of \cref{sec:mo-velocity}. Finally, the sine can
+be undone. For a number $s$ between $-1$ and $1$, $\arcsin s$ is the angle
+between $-\pi/2$ and $\pi/2$ whose sine is $s$. Because $\sin(\pi - \theta)
+= \sin\theta$, the angle $\pi - \arcsin s$ has the same sine. When $0 < s
+< 1$ these are the only two angles between 0 and $\pi$ with sine $s$,
+since the horizontal line $y = s$ meets the upper half of the unit
+circle at exactly two points;
+when $s = 1$ the two coincide, since $\pi - \pi/2 = \pi/2$, and the
+single angle in that range whose sine is 1 is $\pi/2$.
+
+\subsection*{The addition formulae}
+
+The sine and cosine of a sum of two angles are needed repeatedly, and they
+follow from one observation: the distance between two points on a circle
+does not change when the circle is turned. Let $P$ and $Q$ be the points
+on the unit circle at angles $p$ and $q$. By Pythagoras' theorem, the
+square of the distance between them is
+\begin{align*}
+   \lvert PQ\rvert^2 &= (\cos p - \cos q)^2 + (\sin p - \sin q)^2\\
+   &= (\cos^2 p + \sin^2 p) + (\cos^2 q + \sin^2 q)
+      - 2(\cos p\cos q + \sin p\sin q)\\
+   &= 2 - 2(\cos p\cos q + \sin p\sin q),
+\end{align*}
+where the second line multiplies out the two squares and groups the
+terms, and the third uses $\cos^2 + \sin^2 = 1$ for each angle.
+Now turn the circle clockwise through $q$ (\cref{fig:mo-turn}). Turning
+lowers the angle of every point by $q$, so $Q$ moves to angle 0, the point
+$(1, 0)$, and $P$ moves to angle $p - q$. A turn moves the whole circle
+rigidly, so the distance between $P$ and $Q$ is unchanged. Computing it
+again from the new positions,
+\begin{align*}
+   \lvert PQ\rvert^2 &= \bigl(\cos(p-q) - 1\bigr)^2 + \sin^2(p-q)\\
+   &= \cos^2(p-q) - 2\cos(p-q) + 1 + \sin^2(p-q)
+      && \text{expanding the square}\\
+   &= 2 - 2\cos(p-q)
+      && \text{using $\cos^2 + \sin^2 = 1$.}
+\end{align*}
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.6, line cap=round]
+   \def\p{118}\def\q{42}
+   \foreach \shift/\a/\b/\name in {0/\p/\q/{}, 3.6/{\p-\q}/0/{\prime}}{
+      \begin{scope}[xshift=\shift cm]
+         \draw[black!35, line width=0.4pt] (-1.15,0) -- (1.15,0);
+         \draw[black!35, line width=0.4pt] (0,-1.15) -- (0,1.15);
+         \draw[line width=0.6pt] (0,0) circle (1);
+         \draw[accent, line width=1pt] ({cos(\a)},{sin(\a)}) --
+            ({cos(\b)},{sin(\b)});
+         \draw[black!55, line width=0.4pt] (0,0) -- ({cos(\a)},{sin(\a)});
+         \draw[black!55, line width=0.4pt] (0,0) -- ({cos(\b)},{sin(\b)});
+         \fill ({cos(\a)},{sin(\a)}) circle (0.9pt);
+         \fill ({cos(\b)},{sin(\b)}) circle (0.9pt);
+         \node[above left] at ({cos(\a)},{sin(\a)}) {\small$P$};
+         \node[right] at ({cos(\b)},{sin(\b)}) {\small$Q$};
+      \end{scope}}
+   \node[below] at (0,-1.18) {\small angles $p$ and $q$};
+   \node[below] at (3.6,-1.18) {\small angles $p - q$ and $0$};
+   \draw[-{Stealth[length=4pt]}, line width=0.5pt] (1.45,-0.35)
+      to[bend right=30] node[below, yshift=-2pt, align=center]
+      {\small turn through\\\small $q$ clockwise} (2.2,-0.35);
+\end{tikzpicture}
+\caption{The chord $PQ$ (teal) before and after the circle is turned
+clockwise through $q$. Turning does not change its length, which gives
+two expressions for $\lvert PQ\rvert^2$.}
+\label{fig:mo-turn}
+\end{figure}
+
+Equating the two expressions for $\lvert PQ\rvert^2$ gives the first
+addition formula,
+\begin{equation*}
+   \cos(p - q) = \cos p\cos q + \sin p\sin q .
+\end{equation*}
+The others follow from it. For the cosine of a sum,
+\begin{align*}
+   \cos(p+q) &= \cos p\cos(-q) + \sin p\sin(-q)
+      && \text{replacing $q$ by $-q$}\\
+   &= \cos p\cos q - \sin p\sin q
+      && \text{as $\cos(-q) = \cos q$, $\sin(-q) = -\sin q$.}
+\end{align*}
+For the sine,
+\begin{align*}
+   \sin(p+q) &= \cos\bigl(\pi/2 - (p+q)\bigr)
+      && \text{as $\sin\theta = \cos(\pi/2 - \theta)$}\\
+   &= \cos\bigl((\pi/2 - p) - q\bigr)
+      && \text{regrouping the angle}\\
+   &= \cos(\pi/2 - p)\cos q + \sin(\pi/2 - p)\sin q
+      && \text{first addition formula}\\
+   &= \sin p\cos q + \cos p\sin q
+      && \text{quarter-turn relations,}
+\end{align*}
+and replacing $q$ by $-q$ as before gives $\sin(p-q) = \sin p\cos q -
+\cos p\sin q$. Together,
+\begin{equation}
+\begin{aligned}
+   \cos(p \pm q) &= \cos p\cos q \mp \sin p\sin q ,\\
+   \sin(p \pm q) &= \sin p\cos q \pm \cos p\sin q ,
+\end{aligned}
+\label{eq:mo-addition}
+\end{equation}
+with the upper signs taken together and the lower signs together. Setting
+$q = p$ gives the double-angle formulae $\sin 2p = 2\sin p\cos p$ and
+$\cos 2p = \cos^2 p - \sin^2 p$.
+
+\subsection*{The derivatives of sine and cosine}
+
+To differentiate $\sin\theta$ we need the limit of the difference quotient
+$[\sin(\theta + h) - \sin\theta]/h$ as $h \to 0$. Expanding the first term
+with \cref{eq:mo-addition},
+\begin{equation*}
+   \frac{\sin(\theta+h) - \sin\theta}{h}
+   = \frac{\sin\theta\cos h + \cos\theta\sin h - \sin\theta}{h}
+   = \cos\theta\,\frac{\sin h}{h} - \sin\theta\,\frac{1 - \cos h}{h} ,
+\end{equation*}
+where the second step takes out the factor $-\sin\theta$ from the first
+and third terms of the numerator, $\sin\theta\cos h - \sin\theta =
+-\sin\theta\,(1 - \cos h)$, and divides each part by $h$ separately. So
+the derivative depends on two limits, those of $\sin h/h$ and $(1 -
+\cos h)/h$ as $h \to 0$. Neither can be found by setting $h = 0$, which
+gives $0/0$ in both.
+
+The first limit follows from comparing three areas in
+\cref{fig:mo-squeeze}, for an angle $h$ with $0 < h < \pi/2$. The point $A$
+is $(1, 0)$, $P$ is the point at angle $h$ on the unit circle, and $T$ is
+where the line $OP$, extended, meets the vertical line through $A$; since
+$OP$ has slope $\tan h$, the length $AT$ is $\tan h$. The triangle $OAP$
+has base 1 and height $\sin h$, so its area is $\tfrac12\sin h$. The
+sector $OAP$, the slice of the disc bounded by the arc, is the fraction
+$h/2\pi$ of the whole disc of area $\pi$, so its area is $\tfrac12 h$;
+this is where measuring $h$ in radians matters. The larger triangle $OAT$
+has base 1 and height $\tan h$, so its area is $\tfrac12\tan h$. Each
+region contains the one before, so
+\begin{equation*}
+   \tfrac12\sin h \le \tfrac12 h \le \tfrac12\tan h .
+\end{equation*}
+Multiplying by $2/\sin h$, which is positive, and using $\tan h = \sin
+h/\cos h$, this becomes
+\begin{equation*}
+   1 \le \frac{h}{\sin h} \le \frac{1}{\cos h} .
+\end{equation*}
+As $h \to 0$, the point $P$ slides along the circle to $A = (1, 0)$, so
+$\cos h \to 1$ and $\sin h \to 0$, and the middle quantity is squeezed between
+two quantities that both approach 1, and must approach 1 itself; the same
+then holds for its reciprocal, $\sin h/h \to 1$. For negative $h$,
+$\sin(-h)/(-h) = \sin h/h$, since the sine reverses sign with its angle,
+so the same limit holds from both sides. For the second limit,
+multiplying numerator and denominator by $1 + \cos h$ and using $1 -
+\cos^2 h = \sin^2 h$,
+\begin{equation*}
+   \frac{1 - \cos h}{h} = \frac{1 - \cos^2 h}{h\,(1 + \cos h)}
+   = \frac{\sin h}{h}\cdot\frac{\sin h}{1 + \cos h}
+   \;\longrightarrow\; 1\times\frac{0}{2} = 0 .
+\end{equation*}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=3.4, line cap=round]
+   \def\h{35}
+   \coordinate (O) at (0,0);
+   \coordinate (A) at (1,0);
+   \coordinate (P) at ({cos(\h)},{sin(\h)});
+   \coordinate (T) at (1,{tan(\h)});
+   \fill[accent!12] (O) -- (A) -- (T) -- cycle;
+   \fill[accent!32] (O) -- (A) arc[start angle=0, end angle=\h, radius=1]
+      -- cycle;
+   \fill[accent!55] (O) -- (A) -- (P) -- cycle;
+   \draw[black!45, line width=0.4pt] (0,0) -- (1.18,0);
+   \draw[black!45, line width=0.4pt] ({cos(\h)},0) -- (P);
+   \draw[line width=0.8pt] (O) -- (T) -- (A) -- cycle;
+   \draw[line width=0.8pt] (A) arc[start angle=0, end angle=\h, radius=1];
+   \draw[line width=0.5pt] (O) -- (P) -- (A);
+   \draw[line width=0.4pt] (0.18,0) arc[start angle=0, end angle=\h,
+      radius=0.18];
+   \node at ({0.25*cos(\h/2)},{0.25*sin(\h/2)}) {\small$h$};
+   \node[below left] at (O) {\small$O$};
+   \node[below right] at (A) {\small$A$};
+   \node[above left] at (P) {\small$P$};
+   \node[right] at (T) {\small$T$};
+   \node[right, black!70] at (1,{tan(\h)/2}) {\small$\tan h$};
+   \node[left, white, xshift=-1pt] at ({cos(\h)},{sin(\h)/2})
+      {\small$\sin h$};
+   \node[below] at (0.5,0) {\small$1$};
+\end{tikzpicture}
+\caption{The three nested regions that bound $\sin h/h$. The triangle
+$OAP$ (darkest) lies inside the sector $OAP$, which adds the sliver
+between the chord $PA$ and the arc (medium); the sector lies inside the
+triangle $OAT$ (lightest), where $T$ lies on $OP$ extended. Their areas
+are $\tfrac12\sin h$, $\tfrac12 h$ and $\tfrac12\tan h$.}
+\label{fig:mo-squeeze}
+\end{figure}
+
+Returning to the difference quotient, the first limit turns $\cos\theta
+\sin h/h$ into $\cos\theta$ and the second removes the term in $\sin
+\theta$, so
+\begin{equation}
+   \frac{\dd}{\dd\theta}\sin\theta = \cos\theta, \qquad
+   \frac{\dd}{\dd\theta}\cos\theta = -\sin\theta ,
+   \label{eq:mo-trig-derivs}
+\end{equation}
+where the second follows in the same way from the formula for
+$\cos(\theta + h)$:
+\begin{equation*}
+   \frac{\cos(\theta+h) - \cos\theta}{h}
+   = -\sin\theta\,\frac{\sin h}{h} - \cos\theta\,\frac{1 - \cos h}{h}
+   \;\longrightarrow\; -\sin\theta .
+\end{equation*}
+Had the angle been measured in degrees, the sector area would have
+carried a factor $\pi/180$ and so would both derivatives, which is why
+radians are used throughout. The derivatives also agree with
+\cref{fig:mo-trig}(b): the sine rises most steeply where the cosine is
+largest, falls most steeply where the cosine is smallest, and is flat
+where the cosine is zero.
+
+\subsection*{Sinusoids}
+
+A quantity that varies in time as
+\begin{equation}
+   x(t) = A\sin(\omega t + \phi)
+   \label{eq:mo-sinusoid}
+\end{equation}
+is called a sinusoid, and three constants describe it
+(\cref{fig:mo-sinusoid}). The amplitude $A$, taken positive, is the
+largest value that $x$ reaches, since the sine never exceeds 1 and does
+reach it. The angular frequency $\omega$,
+in radians per second, sets how quickly the argument $\omega t + \phi$
+advances, and since the sine repeats when its argument grows by $2\pi$,
+the motion repeats after a time $2\pi/\omega$, the period. The number of
+repetitions per second is one divided by the period, $\omega/2\pi$, the
+frequency, measured in hertz,
+where one hertz is one repetition per second, $\SI{1}{\hertz} =
+\SI{1}{\per\second}$. The phase $\phi$ sets where in its cycle the motion starts:
+writing $\omega t + \phi = \omega(t + \phi/\omega)$ shows that $x$ does
+at time $t$ what $A\sin\omega t$ does at the later time $t + \phi/\omega$,
+so every crest arrives earlier by $\phi/\omega$. With $\phi = \pi/2$ the
+sinusoid becomes $A\cos\omega t$, by the quarter-turn relation. By the
+chain rule of \cref{sec:mo-acceleration} and \cref{eq:mo-trig-derivs}, the
+velocity and acceleration of a sinusoid are
+\begin{equation*}
+   \dot{x} = A\omega\cos(\omega t + \phi), \qquad
+   \ddot{x} = -A\omega^2\sin(\omega t + \phi) = -\omega^2 x .
+\end{equation*}
+The velocity is again a sinusoid. Since $\cos\theta = \sin(\theta +
+\pi/2)$, the velocity can be written as $A\omega\sin(\omega t + \phi +
+\pi/2)$, a
+sinusoid whose phase is larger by $\pi/2$, so its crests come earlier by
+$(\pi/2)/\omega$, a quarter of the period. The acceleration is always
+proportional to $x$ and opposite to it. This last property will reappear in \cref{sec:mo-circle} and again in Chapter~4.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch01_motion/sinusoid}
+\caption{A sinusoid $x(t) = A\sin(\omega t + \phi)$ with $A =
+\SI{1.5}{\metre}$, $\omega = \pi\ \si{\radian\per\second}$ (period
+\SI{2}{\second}) and $\phi = \pi/3$, against $A\sin\omega t$ (dashed).
+Every crest of the shifted wave arrives earlier by $\phi/\omega =
+\SI{0.333}{\second}$.}
+\label{fig:mo-sinusoid}
+\end{figure}
+
+\notebook{01}{turn the unit circle and watch $\sin\theta$ and $\cos\theta$; shape a sinusoid}

@@ -1,0 +1,147 @@
+%=============================================================================!
+% 9.3  REVERSAL AND VOLUME                                                    !
+%=============================================================================!
+\section{Reversal and volume}
+\label{sec:in-reversal}
+
+The exact motion can be run backwards (\cref{sec:ha-reversal}) and keeps
+the volume of every region of phase space (\cref{sec:ha-liouville}). This
+section shows that velocity Verlet keeps both properties exactly, for any
+step, which the forward Euler method does not.
+
+\subsection*{Running a step backwards}
+
+We take a step from $(x, v)$ to $(x', v')$ by \cref{eq:in-kdk}, with
+$v_{\frac12}$ the half-step velocity and $a$, $a'$ the accelerations at
+$x$ and $x'$, then reverse the velocity and take one more step from $(x',
+-v')$:
+\begin{align*}
+   -v' + \tfrac12\dt\,a' &= -\bigl(v' - \tfrac12\dt\,a'\bigr) = -v_{\frac12}
+   && \text{the half kick undoes the last half kick,}\\
+   x' + \dt\,(-v_{\frac12}) &= x' - (x' - x) = x
+   && \text{the drift runs back to $x$,}\\
+   -v_{\frac12} + \tfrac12\dt\,a &= -\bigl(v_{\frac12} - \tfrac12\dt\,a\bigr)
+   = -v
+   && \text{the last half kick undoes the first,}
+\end{align*}
+using $v' = v_{\frac12} + \frac12\dt\,a'$, $x' = x + \dt\,v_{\frac12}$ and
+$v_{\frac12} = v + \frac12\dt\,a$. The step lands on $(x, -v)$: the
+starting state with its velocity reversed, as for the exact motion. Since
+every step can be undone this way, a whole run of velocity Verlet,
+reversed, retraces itself; the tests of \texttt{mdlab} run 200 steps of
+three atoms in nonlinear wells forwards and back and recover the start to
+within $10^{-15}$, the rounding of the arithmetic. A forward Euler step does not
+undo itself (\cref{ex:in-euler-reverse}).
+
+\subsection*{Keeping volume}
+
+For one coordinate, the half kick $(x, v) \to (x, v + \frac12\dt\,a(x))$
+changes the velocity by an amount that depends only on the position, and
+the drift $(x, v) \to (x + \dt\,v, v)$ changes the position by an amount
+that depends only on the velocity: each is a shear, with Jacobian
+determinant 1 (\cref{sec:ha-symplectic}). Velocity Verlet is three such
+shears in turn, so it keeps area in the phase plane, as \cref{fig:in-shadow}
+will show: its states for the spring lie on a closed curve, where those of
+forward Euler spiral outwards (\cref{fig:ha-maps}), the test of
+\cref{sec:os-phase}.
+
+For $N$ atoms the same holds in the $6N$ dimensions of phase space. In a
+kick, the new momenta are the old plus amounts that depend only on the
+positions, and the positions do not change; its Jacobian matrix, with the
+positions listed before the momenta, has 1 on its diagonal and zeros
+everywhere above the diagonal. A square matrix with only zeros on one side
+of its diagonal has as determinant the product of its diagonal entries, a
+property of determinants we take on trust, here 1. The drift is the same
+with the roles exchanged, so every step of velocity Verlet keeps volume in
+phase space, as the exact flow does (\cref{sec:ha-liouville}).
+
+\subsection*{The full condition}
+
+With more than one coordinate, keeping volume is not all that the exact
+flow keeps, and saying what else it keeps needs products of matrices.
+
+\begin{toolbox}[Products of matrices]
+The product $\vb{A}\vb{B}$ of two $n\times n$ matrices is the matrix whose
+column $b$ is $\vb{A}$ times column $b$ of $\vb{B}$, so that its entry in
+row $a$ and column $b$ is $(\vb{A}\vb{B})_{ab} = \sum_c A_{ac}B_{cb}$, the
+entries of row $a$ of $\vb{A}$ times those of column $b$ of $\vb{B}$,
+added. For example,
+\begin{equation*}
+   \begin{pmatrix} 1 & 2\\ 0 & 1 \end{pmatrix}
+   \begin{pmatrix} 1 & 0\\ 3 & 1 \end{pmatrix}
+   = \begin{pmatrix} 7 & 2\\ 3 & 1 \end{pmatrix} ,
+   \qquad
+   \begin{pmatrix} 1 & 0\\ 3 & 1 \end{pmatrix}
+   \begin{pmatrix} 1 & 2\\ 0 & 1 \end{pmatrix}
+   = \begin{pmatrix} 1 & 2\\ 3 & 7 \end{pmatrix} ,
+\end{equation*}
+so the order of a product matters. Since each column of $\vb{A}\vb{B}$ is
+$\vb{A}$ applied to a column of $\vb{B}$, $(\vb{A}\vb{B})\vb{u} =
+\vb{A}(\vb{B}\vb{u})$ for every vector $\vb{u}$: the product is the map
+$\vb{B}$ followed by the map $\vb{A}$. The transpose $\vb{A}^{\mathsf T}$
+is $\vb{A}$ with rows and columns exchanged, $(\vb{A}^{\mathsf T})_{ab} =
+A_{ba}$, and exchanging the rows and columns of a product reverses its
+order, since
+\begin{equation*}
+   \bigl((\vb{A}\vb{B})^{\mathsf T}\bigr)_{ab} = (\vb{A}\vb{B})_{ba}
+   = \sum_c A_{bc}B_{ca} = \sum_c(\vb{B}^{\mathsf T})_{ac}
+   (\vb{A}^{\mathsf T})_{cb} = (\vb{B}^{\mathsf T}\vb{A}^{\mathsf T})_{ab} .
+\end{equation*}
+A large matrix may be written in blocks, smaller matrices set side by side
+and one above another. The sum $\sum_c A_{ac}B_{cb}$ then splits into sums
+over the columns of each block, and two such matrices multiply block by
+block as $2\times2$ matrices of numbers do, keeping the order of every
+product of blocks. The trace of a square matrix is the sum of its diagonal
+entries; for the $2\times2$ matrix of \cref{sec:os-modes}, with $a$, $b$
+in the first row and $c$, $d$ in the second, the characteristic equation
+$(a - \lambda)(d - \lambda) - bc = 0$ multiplies out to $\lambda^2 - (a +
+d)\lambda + (ad - bc) = 0$, whose coefficients are the trace and the
+determinant.
+\end{toolbox}
+
+We write a point of phase space as $\Gamma = (\vb{q}, \vb{p})$ and the
+Jacobian matrix of a step map as $\vb{J}$, so that, by the first-order
+rule of \cref{sec:en-gradient}, a small change $\delta\Gamma$ of the
+starting point becomes the change $\vb{J}\,\delta\Gamma$ after the step.
+The flow of Hamilton's equations over any time, and so any map that is
+the flow of some Hamiltonian, satisfies (a result we take on trust)
+\begin{equation}
+   \vb{J}^{\mathsf T}\boldsymbol{\Omega}\,\vb{J} = \boldsymbol{\Omega} ,
+   \qquad
+   \boldsymbol{\Omega} = \begin{pmatrix} \vb{0} & \vb{I}\\ -\vb{I} & \vb{0}
+   \end{pmatrix} ,
+   \label{eq:in-symplectic}
+\end{equation}
+where $\vb{I}$ and $\vb{0}$ are the identity and zero matrices of the size
+of $\vb{q}$, placed as four blocks. A map that satisfies
+\cref{eq:in-symplectic} is called symplectic\cite{LeimkuhlerMatthews2015}.
+For one coordinate the condition reduces to $\det\vb{J} = 1$
+(\cref{ex:in-omega}), which is why \cref{sec:ha-symplectic} could use
+keeping area as its definition; with more coordinates it implies keeping
+volume but is stronger. Half kicks and drifts are flows, over a time
+$\frac12\dt$ or $\dt$, of the Hamiltonians $U(\vb{q})$ and $K(\vb{p})$
+alone, so they satisfy it. So
+does any sequence of them: two maps in turn take $\delta\Gamma$ to
+$\vb{J}_1\delta\Gamma$ and then to $\vb{J}_2\vb{J}_1\delta\Gamma$, so the
+Jacobian matrix of the pair is the product $\vb{J}_2\vb{J}_1$, and
+\begin{equation*}
+   (\vb{J}_2\vb{J}_1)^{\mathsf T}\boldsymbol{\Omega}\,\vb{J}_2\vb{J}_1
+   = \vb{J}_1^{\mathsf T}\bigl(\vb{J}_2^{\mathsf T}\boldsymbol{\Omega}
+   \vb{J}_2\bigr)\vb{J}_1 = \vb{J}_1^{\mathsf T}\boldsymbol{\Omega}\vb{J}_1
+   = \boldsymbol{\Omega} .
+\end{equation*}
+Velocity Verlet, a half kick, a drift and a half kick, is therefore
+symplectic.
+
+\begin{keyidea}
+Reversing the velocities after a step of velocity Verlet and stepping
+again returns the start, with its velocities reversed, without error, and
+every step, being kicks and a drift,
+keeps volume in phase space and satisfies the full symplectic condition
+$\vb{J}^{\mathsf T}\boldsymbol{\Omega}\vb{J} = \boldsymbol{\Omega}$.
+\end{keyidea}
+
+\begin{selfcheck}
+For a single coordinate, write the Jacobian matrix of the half kick
+$(x, v) \to (x, v + \frac12\dt\,a(x))$ and find its determinant.
+\end{selfcheck}

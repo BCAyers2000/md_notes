@@ -1,0 +1,189 @@
+%=============================================================================!
+% 12.5  THE DISTRIBUTION OF VELOCITIES                                        !
+%=============================================================================!
+\section{The distribution of velocities}
+\label{sec:sm-maxwell}
+
+\Cref{sec:md-start} drew starting velocities from the normal distribution
+and promised a reason. This section derives the distribution of the
+velocities of atoms at a temperature $T$ from the Boltzmann factor, then
+the distributions of their speeds and kinetic energies, and measures all
+three in liquid argon.
+
+\subsection*{Each component is Gaussian}
+
+We first take an unconstrained canonical system, with no condition on its
+total momentum. The energy of $N$ atoms is $H = \sum_{i,x}p_{ix}^2/2m_i + U(\vb{r}^N)$,
+where the sum runs over the atoms $i$ and, with $x$ standing for each in
+turn, the three directions $x$, $y$ and $z$. The
+exponential of a sum is a product, so the Boltzmann factor of
+\cref{eq:sm-boltzmann} splits into one factor for the positions and one
+for each component of momentum:
+\begin{equation*}
+   \mathrm{e}^{-\beta H} = \mathrm{e}^{-\beta U(\vb{r}^N)}\prod_{i,x}
+   \mathrm{e}^{-\beta p_{ix}^2/2m_i} .
+\end{equation*}
+A probability density that is a product of factors, each depending on
+one quantity alone, describes quantities that are independent, so every
+component of every momentum is independent of the others and of the
+positions. With $p_{ix} = m_iv_{ix}$, the density of one component of
+velocity is proportional to $\mathrm{e}^{-m_iv_{ix}^2/2\kB T}$, which is
+the Gaussian of \cref{eq:sm-gauss} with mean zero and variance
+\begin{equation}
+   \sigma_v^2 = \frac{\kB T}{m_i} .
+   \label{eq:sm-maxwell}
+\end{equation}
+This is the Maxwell-Boltzmann distribution of velocities. Two things in it
+matter for simulation. It holds whatever the forces: the velocities of
+atoms in a gas, a liquid or a crystal at the same temperature have the
+same distribution, in classical mechanics. And the spread depends on the
+mass: a lithium atom at \SI{300}{\kelvin} has $\sigma_v = \sqrt{\kB T/m} =
+\sqrt{0.025852/(6.94\times103.6427)} =
+\SI{0.005995}{\angstrom\per\femto\second}$, the factor 103.6427 of
+\cref{eq:en-mv2} turning \si{\amu\angstrom\squared\per\femto\second\squared}
+into \si{\electronvolt}, and an argon atom
+\SI{0.002499}{\angstrom\per\femto\second}, smaller by $\sqrt{39.948/6.94}
+= 2.399$, the ratio of the square roots of their masses. Dividing the normal numbers by
+$\sqrt{m_i}$, as \texttt{starting\_velocities} of \cref{sec:md-start}
+did, gives each atom this spread up to a common factor, which the
+scaling to the chosen energy then fixed.
+
+\texttt{mdlab.statmech.thermal\_velocities} draws velocities at a
+temperature directly:
+
+\begin{code}
+    m = np.asarray(masses, dtype=float)
+    xi = rng.standard_normal((len(m), 3))
+    v = xi * np.sqrt(kb * temperature / (m * mv2_to_energy))[:, None]
+    if remove_drift:
+        v = v - (m @ v) / m.sum()
+    return v
+\end{code}
+
+\noindent Line 2 draws $3N$ numbers of mean 0 and variance 1, and line 3
+multiplies each atom's by its $\sigma_v$, with \texttt{mv2\_to\_energy}
+the factor of \cref{eq:en-mv2} that turns $mv^2$ into
+\si{\electronvolt}. Line 5 removes the drift of the centre of mass, as in
+\cref{sec:md-start}. ASE's \texttt{thermalize\_momenta} draws the numbers
+in the same order, so the same starting number of the random generator,
+its seed, gives the same velocities: for 50
+atoms of random masses at \SI{300}{\kelvin} they differ by at most
+\num{1.7e-7} of their size. That is half the relative difference of
+\num{3.4e-7} between the two libraries' values of $\kB$, ASE's being the
+value recommended for the constants in 2014, since $\sigma_v$ goes as
+$\sqrt{\kB}$ and a small relative change in a quantity changes its square
+root by half as much.
+
+\subsection*{Speeds and kinetic energies}
+
+The speed $v = \lvert\vb{v}\rvert$ of an atom combines three independent
+components. The probability that the velocity lies in a small box $\dd
+v_x\,\dd v_y\,\dd v_z$ is the product of the three Gaussians, each with the
+factor $1/(\sigma_v\sqrt{2\pi}) = (m/2\pi\kB T)^{1/2}$, times the box, and
+with $v_x^2 + v_y^2 + v_z^2 = v^2$ it is
+\begin{equation*}
+   \Bigl(\frac{m}{2\pi\kB T}\Bigr)^{3/2}\mathrm{e}^{-mv^2/2\kB T}\,
+   \dd v_x\,\dd v_y\,\dd v_z ,
+\end{equation*}
+which depends on the velocity only through its size. The velocities with
+speeds between $v$ and $v + \dd v$ fill a spherical shell of area $4\pi
+v^2$ and thickness $\dd v$, so the density of the speed is
+\begin{equation}
+   \mathcal{P}(v) = 4\pi v^2\Bigl(\frac{m}{2\pi\kB T}\Bigr)^{3/2}
+   \mathrm{e}^{-mv^2/2\kB T} .
+   \label{eq:sm-speed}
+\end{equation}
+The factor $v^2$ makes it zero at $v = 0$, since few velocities have all
+three components near zero. It peaks at $\sqrt2\,\sigma_v$ and has the
+mean $\sqrt{8/\pi}\,\sigma_v$ (\cref{ex:sm-speeds}); the mean speed of
+lithium at \SI{300}{\kelvin} is \SI{0.00957}{\angstrom\per\femto\second},
+or \SI{957}{\metre\per\second}, with \SI{1}{\angstrom\per\femto\second}
+equal to \SI{e5}{\metre\per\second}, and that of argon
+\SI{399}{\metre\per\second}.
+
+An atom's kinetic energy $K_i = \frac12mv^2$ follows by a change of
+variable. Between $K_i$ and $K_i + \dd K_i$ lie the speeds between $v$
+and $v + \dd v$ with $\dd K_i = mv\,\dd v$, and the two hold the same
+probability, $\mathcal{P}(K_i)\,\dd K_i = \mathcal{P}(v)\,\dd v$, so
+$\mathcal{P}(K_i) = \mathcal{P}(v)/(mv)$. With $mv^2/2\kB T = K_i/\kB T$
+and $v\sqrt m = \sqrt{2K_i}$,
+\begin{equation*}
+   \frac{\mathcal{P}(v)}{mv} = \frac{4\pi v\sqrt m}{(2\pi\kB T)^{3/2}}\,
+   \mathrm{e}^{-K_i/\kB T}
+   = \frac{4\pi\sqrt2}{(2\pi)^{3/2}}\,(\kB T)^{-3/2}\sqrt{K_i}\,
+   \mathrm{e}^{-K_i/\kB T} ,
+\end{equation*}
+and $4\pi\sqrt2/(2\pi)^{3/2} = 4\pi\sqrt2/(2\sqrt2\,\pi^{3/2}) =
+2/\sqrt\pi$, so
+\begin{equation}
+   \mathcal{P}(K_i) = \frac{2}{\sqrt\pi}\,(\kB T)^{-3/2}\sqrt{K_i}\,
+   \mathrm{e}^{-K_i/\kB T} ,
+   \label{eq:sm-atom-energy}
+\end{equation}
+the same for every mass. Its mean is $\frac32\kB T$ and its variance
+$\frac32(\kB T)^2$, as \cref{sec:sm-kinetic} shows for any number of
+freedoms.
+
+\subsection*{Measured in a liquid}
+
+\Cref{fig:sm-maxwell} tests the three densities on the liquid argon of
+\cref{fig:sm-ergodic}(b), 256 atoms over \SI{50}{\pico\second}, with the
+velocities saved every \SI{50}{\femto\second}: 768\,768 components from
+1001 frames. The run is at fixed energy, not in contact with a bath, but
+each atom has the other 255 around it, which act as its bath. The
+kinetic temperature of the run, defined in \cref{sec:sm-equipartition},
+is \SI{134.63}{\kelvin}, at which \cref{eq:sm-maxwell} gives $\sigma_v =
+\SI{0.001674}{\angstrom\per\femto\second}$; the components have the
+standard deviation \SI{0.001671}{\angstrom\per\femto\second}, and
+\cref{sec:sm-equipartition} accounts for the difference. The mean speed is
+\SI{0.002668}{\angstrom\per\femto\second} against 0.002671 from
+\cref{eq:sm-speed}, and the kinetic energies of single atoms have the
+mean $1.494\,\kB T$ and the variance $1.479\,(\kB T)^2$, against
+$\frac32$ for both.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch12_ensembles/maxwell}
+\caption{Velocities in liquid argon at \SI{134.6}{\kelvin}: histograms of
+256 atoms over \SI{50}{\pico\second}, with velocities in
+\si{\angstrom\per\pico\second}, a thousand times their values in
+\si{\angstrom\per\femto\second}. (a) Every component of velocity, against
+the Gaussian of variance $\kB T/m$ (dashed). (b) The speeds, against
+\cref{eq:sm-speed}. (c) The kinetic energies of single atoms, in units of
+$\kB T$, against \cref{eq:sm-atom-energy}, a density per unit of $\kB
+T$.}
+\label{fig:sm-maxwell}
+\end{figure}
+
+A Gaussian has a property that the histogram shows only roughly and a
+single number shows well. The fourth moment of the Gaussian of mean zero
+is $\ens{v^4} = 3\sigma_v^4$ (\cref{ex:sm-fourth}), so the excess
+kurtosis
+\begin{equation*}
+   \frac{\ens{u^4}}{\ens{u^2}^2} - 3 ,
+\end{equation*}
+computed over the mass-weighted components $u = \sqrt{m}\,v$, which share
+one variance $\kB T$ whatever the masses, is zero for velocities with the
+Maxwell-Boltzmann distribution; pooled components of different variances
+would give more than zero even if each were Gaussian. Components spread
+evenly over an interval give $-1.2$ (\cref{ex:sm-fourth}). Over the
+768\,768 components of the liquid it is $-0.0072$, small against the
+$-1.2$ of an even spread. \texttt{mdlab.diagnostics.excess\_kurtosis}
+computes it, and \cref{sec:sm-trajectory} uses it to catch velocities that
+are not yet Maxwellian.
+
+\begin{keyidea}
+In the unconstrained canonical ensemble each component of each velocity
+is independent and Gaussian, with mean zero and variance $\kB T/m$, whatever the forces.
+The speed has the density $4\pi v^2(m/2\pi\kB T)^{3/2}\mathrm{e}^{-mv^2/
+2\kB T}$, and an atom's kinetic energy a density with mean $\frac32\kB T$
+for every mass. The excess kurtosis of the mass-weighted components is
+zero for Maxwellian velocities. Removing the total momentum or holding
+bond lengths constrains these components, as the next section explains.
+\end{keyidea}
+
+\notebook{12}{draw velocities at any temperature and mass, and check them against ASE}
+
+\begin{selfcheck}
+What is $\sigma_v$ for a lithium atom at \SI{600}{\kelvin}?
+\end{selfcheck}

@@ -1,0 +1,53 @@
+%=============================================================================!
+% 13.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+A thermostat must give the canonical distributions, the gamma
+distribution of $K$ with spread $\sqrt{2/N_{\mathrm f}}$ and the density
+$\mathrm{e}^{-\beta U}$ of positions, and should disturb the motion as
+little as possible; the effective energy, $K + U$ less the heat it adds,
+is kept by the exact dynamics of every thermostat and checks the
+integration.
+
+Every method of the chapter fits one loop, velocity Verlet
+written as B A A B, with the thermostat acting before, between the half
+drifts or after; four of the five that ASE also implements agree with its
+versions to \SI{1e-7}{\angstrom}, and Andersen's in the temperature it
+holds.
+
+Rescaling and Berendsen coupling hold the mean temperature but narrow the
+spread of $K$ to 0.11 to 0.59 of the canonical, and feed motions that the
+forces do not touch at the rate $\ens{(\delta T/T_0)^2}/\tau_{\mathrm T}$,
+the flying
+ice cube, measured at \SI{0.0047}{\per\pico\second} against
+\SI{0.0050}{\per\pico\second} predicted.
+
+Andersen's collisions, and
+Langevin's friction and noise, tied by $\sigma^2 = 2\gamma\kB T/m$ and
+integrated exactly by the O step of BAOAB, sample the canonical ensemble
+even for one atom, and slow the diffusion of liquid argon by more than a
+quarter at \SI{1}{\per\pico\second}; for an atom whose only bath is the
+thermostat, Langevin's friction sets the hop rate, near 0.8 of the
+transition-state rate at low friction and falling more and more nearly
+in proportion to $1/\gamma$ at high.
+
+Nosé-Hoover friction keeps an extended energy and carries the
+canonical density unchanged, but samples it only for an ergodic motion,
+so one oscillator or one atom fails where a chain succeeds.
+
+CSVR applies
+the exact Ornstein-Uhlenbeck step to the length of the whole
+mass-weighted velocity, so its thermostat update preserves the canonical distribution of $K$
+for any step and coupling. TrajCast can therefore apply that update once
+per learned stride, while the intervening propagation remains a separate
+source of sampling error.
+
+For bringing
+a system to a temperature any thermostat serves; for averages, CSVR,
+chains, Langevin or Andersen; for dynamics, a run at fixed energy, or CSVR or a
+chain coupled weakly.
+
+Chapter~14 does for pressure what this chapter did for temperature:
+derives the pressure from the virial, and builds the barostats that hold
+it.

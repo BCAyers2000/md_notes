@@ -1,0 +1,123 @@
+%=============================================================================!
+% 1.4  FROM ACCELERATION BACK TO MOTION                                       !
+%=============================================================================!
+\section{From acceleration back to motion}
+\label{sec:mo-integrating}
+
+Differentiation takes us from position to velocity and from velocity to
+acceleration. To predict a motion we need to travel in the opposite
+direction, from a known acceleration back to the position, and the tool
+for this is integration.
+
+\subsection*{Displacement as an area}
+
+Divide the time from $0$ to $t$ into many short intervals of length
+$\Delta t$, and let $t_k$ be the start of the $k$th interval. Over an
+interval short enough that the velocity hardly changes, the object moves
+through approximately $v(t_k)\,\Delta t$, a velocity multiplied by a time.
+The total displacement is the sum of these small contributions,
+\begin{equation*}
+   x(t) - x(0) \approx \sum_k v(t_k)\,\Delta t ,
+\end{equation*}
+where $\sum_k$, a capital Greek sigma for `sum', means that the
+expression after it is added up for every interval $k = 1, 2, 3, \dots$
+in turn. Each term $v(t_k)\,\Delta t$ is the area of a thin rectangle of height
+$v(t_k)$ and width $\Delta t$ standing on the time axis. As $\Delta t \to
+0$ the approximation becomes exact and the sum becomes an integral, the
+area under the graph of $v$. The same argument applied to the velocity,
+whose rate of change is $a$, gives the companion result, and together
+\begin{equation}
+   v(t) = v(0) + \int_0^t a(t')\,\dd t', \qquad
+   x(t) = x(0) + \int_0^t v(t')\,\dd t' .
+   \label{eq:mo-integrals}
+\end{equation}
+These are the fundamental theorem of calculus, which states that
+integrating a derivative from $0$ to $t$ returns the change in the
+original function. The variable of integration is written $t'$ to
+distinguish it from the upper limit $t$. Where $v$ is negative the area
+counts as negative, so the integral measures the signed displacement. For
+the ball, the area under $v(t)$ from the throw to the top of the flight is
+therefore the greatest height that it reaches, shaded in
+\cref{fig:mo-ball}(b).
+
+\Cref{eq:mo-integrals} also shows what is needed to determine a motion.
+Each integration introduces a starting value, the velocity $v(0)$ in the
+first and the position $x(0)$ in the second, and these do not follow from
+the acceleration. Two balls subject to the same acceleration but thrown
+at different speeds therefore follow different paths. When the
+acceleration is known at every instant, and the initial position and
+velocity are given, the two integrals determine the motion uniquely.
+Predicting a motion thus reduces to finding its acceleration, and
+Chapter~2 shows that the acceleration is supplied by forces.
+
+\subsection*{Constant acceleration}
+
+When the acceleration is a constant $a$, both integrals in
+\cref{eq:mo-integrals} can be evaluated directly. Writing $x_0 = x(0)$ and
+$v_0 = v(0)$, the first gives the velocity,
+\begin{equation*}
+   v(t) = v_0 + \int_0^t a\,\dd t' = v_0 + at ,
+\end{equation*}
+and substituting this velocity into the second gives the position,
+\begin{equation*}
+   x(t) = x_0 + \int_0^t \bigl(v_0 + a t'\bigr)\,\dd t'
+   = x_0 + \Bigl[\, v_0 t' + \tfrac12 a t'^2 \Bigr]_0^t
+   = x_0 + v_0 t + \tfrac12 a t^2 .
+\end{equation*}
+Together,
+\begin{equation}
+   v(t) = v_0 + at, \qquad x(t) = x_0 + v_0 t + \tfrac12 a t^2 ,
+   \label{eq:mo-constant}
+\end{equation}
+and \cref{eq:mo-ball} is the particular case $x_0 = 0$ and $a = -g$.
+
+These two equations both contain the time, but many questions concern only
+where an object goes, not when it gets there: how high does the ball
+rise, for instance, or how fast is it moving at a given height? A relation
+free of $t$ answers such questions directly. Provided that $a \neq 0$, the
+first equation gives $t = (v - v_0)/a$, and substituting this into the
+second eliminates the time:
+\begin{align*}
+   x - x_0 &= v_0\,\frac{v - v_0}{a} + \frac{a}{2}\,
+      \frac{(v - v_0)^2}{a^2}
+      && \text{substituting for $t$}\\
+   &= \frac{2v_0(v - v_0) + (v - v_0)^2}{2a}
+      && \text{cancelling $a$; common denominator $2a$}\\
+   &= \frac{(v - v_0)\,(2v_0 + v - v_0)}{2a}
+      && \text{taking out $(v - v_0)$}\\
+   &= \frac{(v - v_0)(v + v_0)}{2a} = \frac{v^2 - v_0^2}{2a}
+      && \text{$2v_0 - v_0 = v_0$; difference of squares.}
+\end{align*}
+Multiplying both sides by $2a$ and rearranging,
+\begin{equation}
+   v^2 = v_0^2 + 2a(x - x_0) .
+   \label{eq:mo-v2}
+\end{equation}
+
+For the ball, $x_0 = 0$ and $a = -g$, so \cref{eq:mo-v2} reads $v^2 =
+v_0^2 - 2gx$. The ball stops rising where $v = 0$, which gives $0 = v_0^2
+- 2gx$ and hence the greatest height
+\begin{equation*}
+   x_{\max} = \frac{v_0^2}{2g} = \frac{12^2}{2\times9.80665}\,\si{\metre}
+   = \SI{7.342}{\metre}.
+\end{equation*}
+The ball returns to the hand when $x = 0$ again. Setting $x = 0$ in
+\cref{eq:mo-ball} and taking out the common factor $t$,
+\begin{equation*}
+   0 = v_0 t - \tfrac12 g t^2 = t\,\bigl(v_0 - \tfrac12 g t\bigr),
+\end{equation*}
+which is satisfied at the throw, $t = 0$, and again at $t = 2v_0/g =
+\SI{2.447}{\second}$, twice the time to the top. At that moment
+\cref{eq:mo-v2} with $x = 0$ gives $v^2 = v_0^2$, so $v = \pm v_0$; since
+the ball is then falling, $v = -v_0$, and it returns at the speed with
+which it was thrown.
+
+When the acceleration depends on the position, as it will for an atom
+pushed by its neighbours, the integrand of \cref{eq:mo-integrals} contains
+the very motion we are trying to find. Except for special force laws,
+we cannot evaluate those integrals in closed form. A computer then
+advances the motion through many short intervals instead, and
+\cref{sec:mo-taylor} develops the mathematics that makes this possible,
+once the trigonometric functions it relies on are in place.
+
+\notebook{01}{the area under $v(t)$ up to the cursor}

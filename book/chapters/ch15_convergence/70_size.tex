@@ -1,0 +1,120 @@
+%=============================================================================!
+% 15.7  RESULTS THAT DEPEND ON THE SIZE OF THE BOX                            !
+%=============================================================================!
+\section{Results that depend on the size of the box}
+\label{sec:cv-size}
+
+An error bar measures how far a run's average scatters about the average
+that its own system would give in an endless run. It cannot measure a
+bias that every run of that system shares, and a common such bias is the
+size of the periodic box. This section measures the diffusion
+coefficient of the liquid in boxes of 256 to 2048 atoms, finds it changes
+by more than any error bar, and accounts for the change.
+
+\subsection*{A ball in a narrow tube}
+
+A ball sinking through honey falls more slowly in a narrow tube than in a
+wide pot. The honey it pushes down has to flow back up past it, through
+the gap between the ball and the wall, and the narrower the gap the
+faster that return flow and the stronger its drag. A periodic box has no
+walls, but it has the same return flow. An atom moving through the liquid
+drags its surroundings with it, and in a periodic box every image of the
+atom drags the same flow in every image of the box; since the liquid as a
+whole does not move, the fluid must flow back between them, against the
+atom, and the more so the closer the images are.
+
+How strongly a fluid resists such flows is its shear viscosity
+$\eta_{\mathrm s}$: a layer of fluid of thickness $d$ between two plates,
+one moving past the other at the speed $u$, needs the force $\eta_{\mathrm
+s}u/d$ per unit area of plate to keep it moving, so $\eta_{\mathrm s}$ is in
+\si{\pascal\second}. Honey has a large $\eta_{\mathrm s}$, water a small
+one. The only combination of $\kB T$, $\eta_{\mathrm s}$ and the side $L$
+of the box that has the units of a diffusion coefficient is $\kB
+T/(\eta_{\mathrm s}L)$ (\cref{ex:cv-units}), so the return flow should
+lower $D$ by a number times $\kB T/(\eta_{\mathrm s}L)$. Summing the flows
+of all the images of a cubic box gives the number, and Yeh and Hummer
+showed that molecular dynamics follows
+\begin{equation}
+   D(L) = D_\infty - \frac{2.837297\,\kB T}{6\pi\eta_{\mathrm s}L} ,
+   \label{eq:cv-yh}
+\end{equation}
+with $D_\infty$ the coefficient of an endless liquid\cite{Yeh2004,
+Dunweg1993}. The correction falls only as $1/L$, that is as $N^{-1/3}$ at
+a fixed density: eight times the atoms halve it.
+
+\subsection*{Five boxes}
+
+The liquid at its density of $0.8\sigma^{-3}$ and \SI{135}{\kelvin} was
+prepared as in Chapter~12 with 256, 500, 864, 1372 and 2048 atoms, boxes of
+side 23.26 to \SI{46.51}{\angstrom}, and followed under CSVR for
+\SI{1}{\nano\second} from each of two seeds. $D$ comes from twenty blocks
+of \SI{100}{\pico\second} at each size, each moved to \SI{135}{\kelvin}
+along the slope $\dd D/\dd T$ of \cref{sec:cv-observables}, a correction
+of at most \SI{0.009e-4}{\angstrom\squared\per\femto\second}. In units of
+\SI{e-4}{\angstrom\squared\per\femto\second} it rises with the box: $3.914
+\pm 0.032$, $4.062 \pm 0.017$, $4.166 \pm 0.022$, $4.200 \pm 0.015$ and
+$4.214 \pm 0.011$ (\cref{fig:cv-size}(a)). The change from the smallest box
+to the largest is nine times the larger of their two errors. A straight
+line in $1/L$, fitted as in \cref{sec:cv-drift} but with each squared miss
+divided by the square of that box's error, so that the precise boxes count
+for more, has $D_\infty = 4.503 \pm 0.032$ in the same units and the slope
+$-12.88 \pm 1.19$ in \SI{e-4}{\angstrom\cubed\per\femto\second}. Their
+errors follow as in the toolbox of \cref{sec:cv-drift}: with the weights
+$1/\sigma_i^2$, $\sigma_i$ the error of box $i$, the slope is a weighted sum
+of the $D$ of the boxes whose variance, each term's weight squared times
+$\sigma_i^2$, adds up to one over $\sum_i(x_i - \bar x)^2/\sigma_i^2$, with
+$x_i = 1/L_i$ and $\bar x$ their weighted mean. The sum
+of the squared misses in units of the errors is 5.3; each such term
+averages 1 with the spread $\sqrt2$ (\cref{ex:cv-error-error}), and
+fitting two numbers to five boxes leaves three, so scatter alone gives $3
+\pm 2.4$. The box of 256 atoms used through
+Chapters~12 to 14 gives a $D$ 13.1\% below that of the endless liquid, and
+even 2048 atoms 6.4\% below. Leaving out the smallest box moves
+$D_\infty$ to 4.470, by about its error.
+
+Through \cref{eq:cv-yh}, the slope gives the viscosity
+\begin{equation*}
+   \eta_{\mathrm s} = \frac{2.837297\,\kB T}{6\pi\,\lvert\text{slope}\rvert}
+   = (2.18 \pm 0.20)\times10^{-4}\,\si{\pascal\second} ,
+\end{equation*}
+or $2.40 \pm 0.22$ in the reduced unit $\sqrt{m\varepsilon}/\sigma^2 =
+\SI{9.07e-5}{\pascal\second}$ of the Lennard-Jones model. Chapter~16 measures $\eta_{\mathrm s}$ independently,
+from the fluctuations of the shear stress, which tests whether the whole
+of the change with size is the return flow of \cref{eq:cv-yh}.
+
+The static averages change far less. The potential energy per atom and
+the pressure of each box lie within 2.1 combined errors of those for 2048
+atoms (\cref{fig:cv-size}(b)). The largest difference, the
+pressure of 256 atoms, is \SI{0.0009}{\giga\pascal}, 1\% of the
+pressure, where $D$ differs by 7\% between the same two boxes: the small
+box serves for this liquid's energy and pressure, and not for its
+diffusion.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/size}
+\caption{A result that depends on the size of the box: liquid argon at
+\SI{135}{\kelvin} and $0.8\sigma^{-3}$ with 256 to 2048 atoms, two runs of
+\SI{1}{\nano\second} at each size. (a) The diffusion coefficient, with its
+error from blocks of \SI{100}{\pico\second}, against $1/L$, with the line
+of \cref{eq:cv-yh} fitted to them (dashed) and its value at $1/L = 0$
+(ochre). (b) The potential energy per atom and the pressure for each box
+less those for 2048 atoms, in units of the error of the difference,
+against $\pm2$ (dotted).}
+\label{fig:cv-size}
+\end{figure}
+
+\begin{keyidea}
+A converged average can still depend on the size of the box. The
+diffusion coefficient of a periodic liquid falls short of the endless
+liquid's by $2.837\kB T/(6\pi\eta_{\mathrm s}L)$, as the image flows return
+through the box; runs at several sizes and a straight line in $1/L$ find
+$D_\infty$. Static averages of the same liquid change far less.
+\end{keyidea}
+
+\notebook{15}{fit the line through the five boxes and extrapolate}
+
+\begin{selfcheck}
+By how much should $D$ change from a box of 500 atoms to one of 4000 at
+the same density, if it follows the line of this section?
+\end{selfcheck}

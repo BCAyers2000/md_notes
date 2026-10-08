@@ -1,0 +1,181 @@
+%=============================================================================!
+% 13.8  WHAT THE TRAJECTORY LOOKS LIKE                                        !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:th-trajectory}
+
+A thermostat changes what a healthy run looks like: the energy is no
+longer constant, and the temperature should fluctuate by a definite
+amount. This section shows a healthy thermostatted run of liquid argon
+and six faults that thermostats leave, each with the check that catches
+it.
+
+\subsection*{A healthy run}
+
+\Cref{fig:th-healthy} follows the liquid under CSVR with $\tau_{\mathrm T}
+= \SI{100}{\femto\second}$ for \SI{100}{\pico\second}. From
+\SI{5}{\pico\second} on, its kinetic temperature averages
+\SI{135.57}{\kelvin}, with a relative spread of 0.0486 against the
+canonical 0.0511, and lies within one canonical spread of the target
+for 0.719 of the time, close to the 0.683 of a Gaussian
+(\cref{sec:sm-probability}). The total energy is no longer kept: it
+wanders over \SI{9.17}{\milli\electronvolt} per atom as the thermostat
+exchanges heat. The effective energy of \cref{eq:th-effective} stays
+within \SI{0.018}{\milli\electronvolt} per atom, five hundred times less,
+and falls by \SI{1.6e-5}{\electronvolt\per\pico\second} for the whole
+box: it plays the
+part the total energy played in \cref{sec:cs-trajectory}. The total
+momentum stays below \SI{4e-14}{amu\,\angstrom\per\femto\second}, since
+CSVR scales a zero momentum to zero, and the histogram of $K$ follows the
+gamma density.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch13_thermostats/healthy}
+\caption{A healthy thermostatted run: liquid argon under CSVR with
+$\tau_{\mathrm T} = \SI{100}{\femto\second}$ for \SI{100}{\pico\second}.
+(a) The kinetic temperature every \SI{100}{\femto\second}, with the
+target and one canonical spread either side (dotted). (b) The total
+energy and the effective energy per atom, from their starting values. (c)
+The kinetic energy over the run, divided by its mean, against the
+canonical gamma density (dashed).}
+\label{fig:th-healthy}
+\end{figure}
+
+\subsection*{Six faults}
+
+\Cref{fig:th-faults} shows six faults and \cref{tab:th-faults} the check
+that catches each.
+
+\begin{figure}[p]
+\centering
+\includegraphics{ch13_thermostats/faults}
+\caption{Thermostat faults (teal) against healthy runs (grey dashed). (a)
+Liquid argon under Berendsen coupling with $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$, against CSVR. (b) The running mean of the
+temperature in three runs under Andersen's thermostat at
+\SI{0.1}{\per\pico\second}, against three under CSVR. (c) The kinetic
+energy of the motion of the centre of mass, started moving, under
+Berendsen coupling, against CSVR, on a logarithmic axis. (d) The density
+of the potential energy of lithium atoms on the surface, each under its
+own Nosé-Hoover thermostat (teal) or Berendsen thermostat (ochre, cut
+off), against the exact canonical density. (e) Lithium atoms under CSVR
+told $N_{\mathrm f} = 3$: their kinetic temperature over the two freedoms
+they have, against CSVR told 2. (f) The mean squared displacement in
+liquid argon under Langevin dynamics with $\gamma = \SI{0.1}{\per\pico
+\second}$, measured in the cell, against measured from the centre of
+mass.}
+\label{fig:th-faults}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\caption{The faults of \cref{fig:th-faults}, the check that catches each,
+and its value in the healthy and the broken run; (a) uses the first of
+the three runs, so its spreads differ slightly from the three-run means of
+\cref{tab:th-compare}.}
+\label{tab:th-faults}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+fault & check & healthy & broken\\
+\midrule
+(a) coupling too strong & spread of $T$ / canonical & 0.95 & 0.44\\
+(b) coupling too weak & mean $T$ of three runs, K &
+   $135.38\pm0.31$ & $131.83\pm1.02$\\
+(c) flying ice cube & growth of $\ln K_{\mathrm{com}}$, /ps & $-0.0002$ &
+   0.0047\\
+(d) one atom, one variable & gap from the exact density & 0.016 & 0.231\\
+(e) wrong $N_{\mathrm f}$ & $T$ over the true freedoms, K & 1005 & 1506\\
+(f) centre as diffusion & $D$, $10^{-4}$\,\AA$^2$/fs & 3.69 & 4.62\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{(a) Coupling too strong.} Berendsen coupling with $\tau_{\mathrm T} =
+\SI{100}{\femto\second}$ holds the temperature in a band 0.44 as wide as
+the canonical one; CSVR with the same time constant gives 0.95. The
+average looks perfect, \SI{135.00}{\kelvin}, and only the spread shows
+the fault: the check is the relative spread of $T$ against
+$\sqrt{2/N_{\mathrm f}}$.
+
+\emph{(b) Coupling too weak.} Andersen's thermostat at
+\SI{0.1}{\per\pico\second} lets the temperature wander for tens of
+picoseconds: three runs average 133.66, 130.13 and
+\SI{131.69}{\kelvin}, counting all $3N$ freedoms, against 135.58, 134.77 and \SI{135.79}{\kelvin}
+under CSVR. Nothing in one run looks wrong; the check is the spread of
+the run means between independent starts, or the running mean's failure
+to settle near the target.
+
+\emph{(c) The flying ice cube.} A velocity of the centre of mass of
+\SI{0.0002}{\angstrom\per\femto\second} in each component, left in the
+velocities, gives the centre of mass the kinetic energy $K_{\mathrm{com}}$,
+whose logarithm grows under Berendsen coupling at
+\SI{0.0047}{\per\pico\second}, against the \SI{0.0050}{\per\pico\second}
+predicted in \cref{sec:th-berendsen}: $K_{\mathrm{com}}$ rises from
+\SI{0.064}{\electronvolt} to \SI{0.161}{\electronvolt} in
+\SI{200}{\pico\second}; under CSVR it does not grow. The check is the
+kinetic energy of the centre of mass, and of the slowest motions, over a
+long run.
+
+\emph{(d) One atom, one variable.} A lithium atom with its own
+Nosé-Hoover thermostat misses the exact density of its potential energy
+by 0.231 of its peak; with a chain of three, by 0.016; under Berendsen
+coupling it is pinned near one energy. The check is a distribution
+compared with an exact or independently sampled one, here the density of
+$U$; for a large system, the temperatures of its parts
+(\cref{sec:sm-trajectory}).
+
+\emph{(e) The wrong number of freedoms in the target.} A thermostat told
+three freedoms per lithium atom, which has two, drives each atom's
+kinetic energy to $\frac32\kB T_0$, so its true temperature reads
+\SI{1506}{\kelvin} for a target of \SI{1000}{\kelvin}. The same fault in
+a large system is small but systematic: a thermostat that takes $3N$
+freedoms for a run whose centre of mass is held still, as ASE's Berendsen, CSVR and
+Nosé-Hoover chain do for argon, raises the temperature of 256 atoms by the
+factor $768/765$, \SI{0.5}{\kelvin} at \SI{135}{\kelvin}, about the
+scatter between independent runs. For rigid water a thermostat that also
+ignores the held distances, as ASE's Nosé-Hoover chain does, raises it by
+$576/381 = 1.51$ (\cref{sec:sm-trajectory}); ASE's CSVR and Berendsen
+subtract the held distances and miss only the three freedoms of the centre of mass, $384/381$.
+The check is the kinetic temperature computed with the freedoms counted
+for the run.
+
+\emph{(f) The centre of mass counted as diffusion.} Langevin and Andersen
+thermostats do not keep the total momentum, so the centre of mass
+wanders; under Langevin dynamics it diffuses, over times long against
+$1/\gamma$, with the coefficient $\kB T/(M\gamma)$, which for the whole
+box at $\gamma = \SI{0.1}{\per\pico\second}$ is
+\SI{1.10e-4}{\angstrom\squared\per\femto\second}
+(\cref{ex:th-com}). Displacements measured in the cell include it: the
+diffusion coefficient reads $4.62\times10^{-4}$ instead of
+$3.69\times10^{-4}$\,\AA$^2$/fs, 1.25 times too large. The check is to measure displacements from the centre of mass.
+
+\begin{practice}
+A thermostatted run is read through its kinetic temperature, whose
+spread should be $\sqrt{2/N_{\mathrm f}}$ of the target when the freedoms
+are counted for the run; through its effective energy, which should
+neither wander nor drift; through the kinetic energy of its centre of
+mass and of its slowest motions, which should not grow; and, for a
+property that depends on the motion, through the same property with the
+thermostat weakened, which should not change. Runs from several
+independent starts show whether a weakly coupled run has reached its
+temperature, a question Chapter~15 answers with error bars.
+\end{practice}
+
+\begin{keyidea}
+In a healthy thermostatted run the total energy wanders, the effective
+energy holds still, the temperature fluctuates by the canonical
+$\sqrt{2/N_{\mathrm f}}$, and the centre of mass stays still or is
+measured from. Coupling too strong narrows the spread; too weak leaves the
+mean unsettled; rescaling and Berendsen coupling fly the ice cube; a single Nosé-Hoover
+variable fails on small systems; a miscounted $N_{\mathrm f}$ shifts the
+temperature; and a wandering centre of mass inflates diffusion.
+\end{keyidea}
+
+\notebook{13}{break the thermostatted liquid in each of the six ways and read the checks}
+
+\begin{selfcheck}
+A Langevin run of 500 argon atoms with $\gamma = \SI{1}{\per\pico\second}$
+at \SI{135}{\kelvin}: at what rate does its centre of mass diffuse?
+\end{selfcheck}

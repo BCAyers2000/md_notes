@@ -1,0 +1,230 @@
+%=============================================================================!
+% 2.8  THE SPRING                                                             !
+%=============================================================================!
+\section{The spring}
+\label{sec:ne-spring}
+
+A block fixed to a spring and pulled aside swings back and forth about
+its resting place. This motion recurs throughout the book because an atom
+displaced slightly from a stable position feels a similar restoring
+force from its neighbours. Chapter~4 develops that connection; here we derive the
+motion from the second law.
+
+\subsection*{Hooke's law}
+
+Lay a spring on a smooth table, fix one end to a wall and attach a block
+of mass $m$ to the other. We measure the position $x$ of the block from
+its resting place, where the spring has its natural length, so that $x$
+is the stretch of the spring: positive when it is stretched, negative
+when it is squashed. A stretched spring pulls the block back towards the
+wall, and a squashed one pushes it away (\cref{fig:ne-spring-states}).
+Measurements with a spring balance show that, for stretches small
+compared with the length of the spring, the force is proportional to the
+stretch,
+\begin{equation*}
+   F = -kx .
+\end{equation*}
+This is Hooke's law. The stiffness $k$, in newtons per metre, measures how
+hard the spring is to stretch, and the minus sign records that the force
+always points back towards $x = 0$, against the stretch. A spring with $k
+= \SI{50}{\newton\per\metre}$ needs a force of \SI{1}{\newton} to stretch
+it by $1/50 = \SI{0.02}{\metre}$, or \SI{2}{\centi\metre}.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt, accent},
+   stretch/.style={{Stealth[length=3pt]}-{Stealth[length=3pt]},
+      line width=0.4pt},
+   coil/.style={decorate, decoration={coil, aspect=0.45,
+      segment length=4pt, amplitude=3.5pt, pre length=3pt,
+      post length=3pt}, line width=0.6pt}]
+   % one row per state; \x is the stretch, in the units of the drawing
+   \foreach \row/\x/\name in {0/-0.6/squashed, 1/0/natural length,
+      2/0.8/stretched} {
+      \begin{scope}[yshift=-\row*1.9cm]
+         \fill[black!35] (-0.12,-0.35) rectangle (0,0.45);
+         \draw[line width=0.6pt] (0,-0.35) -- (6.0,-0.35);
+         \draw[coil] (0,0.05) -- (3.0+\x,0.05);
+         \draw[line width=0.6pt, fill=black!8] (3.0+\x,-0.35)
+            rectangle (3.8+\x,0.45);
+         \node[anchor=west] at (6.3,0.05) {\small \name};
+      \end{scope}
+   }
+   % the resting place of the block's left face
+   \draw[dashed, black!50, line width=0.5pt] (3.0,1.3) -- (3.0,-4.6);
+   \node[above] at (3.0,1.3) {\small $x = 0$};
+   % the force of the spring on the block, drawn above it
+   \draw[force] (2.6,0.8) -- (3.5,0.8) node[right] {\small $F$};
+   \draw[force] (4.7,-3.0) -- (3.8,-3.0) node[left] {\small $F$};
+   % the stretch, measured from the resting place
+   \draw[stretch] (3.0,-0.65) -- (2.4,-0.65)
+      node[left] {\scriptsize $x < 0$};
+   \draw[stretch] (3.0,-4.45) -- (3.8,-4.45)
+      node[right] {\scriptsize $x > 0$};
+\end{tikzpicture}
+\caption{A block on a spring. Squashed ($x < 0$), the spring pushes the
+block away from the wall; at its natural length ($x = 0$) it exerts no
+force; stretched ($x > 0$), it pulls the block back. In each case the
+force (teal) points towards $x = 0$, against the stretch.}
+\label{fig:ne-spring-states}
+\end{figure}
+
+\subsection*{The equation of motion}
+
+Vertically, the weight of the block is balanced by the push of the table,
+called the normal force because it acts at right angles to the surface,
+which mathematicians call normal to it. Along the table the spring is the
+only force, so the second law reads $m\,\dd^2 x/\dd t^2 = -kx$, and
+dividing by $m$,
+\begin{equation}
+   \frac{\dd^2 x}{\dd t^2} = -\frac{k}{m}\,x .
+   \label{eq:ne-spring}
+\end{equation}
+Rather than solve this equation from nothing, we recognise it. In
+\cref{sec:mo-trig} we found that every sinusoid obeys $\dd^2 x/\dd t^2 =
+-\omega^2 x$, which is \cref{eq:ne-spring} if $\omega^2 = k/m$. With
+$\omega = \sqrt{k/m}$, both $\cos\omega t$ and $\sin\omega t$ are such
+sinusoids, and the equation is obeyed also by any combination
+\begin{equation*}
+   x(t) = c_1\cos\omega t + c_2\sin\omega t
+\end{equation*}
+with constant $c_1$ and $c_2$. Differentiating twice with the chain rule
+confirms it,
+\begin{align*}
+   \frac{\dd x}{\dd t} &= -c_1\omega\sin\omega t + c_2\omega\cos\omega t ,\\
+   \frac{\dd^2 x}{\dd t^2} &= -c_1\omega^2\cos\omega t
+      - c_2\omega^2\sin\omega t
+      && \text{differentiating again}\\
+   &= -\omega^2 x = -\frac{k}{m}\,x
+      && \text{taking out the common factor $-\omega^2$,}
+\end{align*}
+so \cref{eq:ne-spring} holds whatever the values of $c_1$ and $c_2$.
+
+\subsection*{Matching the starting state}
+
+The two constants are fixed by the state at $t = 0$. Since $\cos 0 = 1$
+and $\sin 0 = 0$, setting $t = 0$ in $x$ and $\dd x/\dd t$ gives $x_0 =
+c_1$ and $v_0 = c_2\omega$, where $x_0$ and $v_0$ are the starting position
+and velocity. The motion is therefore
+\begin{equation}
+   x(t) = x_0\cos\omega t + \frac{v_0}{\omega}\,\sin\omega t .
+   \label{eq:ne-spring-solution}
+\end{equation}
+Every starting state $(x_0, v_0)$ is matched in this way, so by the
+uniqueness of solutions (\cref{sec:ne-equations})
+\cref{eq:ne-spring-solution} is the motion for every start. With $x_0 =
+v_0 = 0$ it gives $x = 0$ for all time: a block at rest at its resting
+place stays there.
+
+The same motion can be written as a single sinusoid, which shows at a
+glance how far the block swings. We write it with a cosine,
+\begin{equation*}
+   x(t) = A\cos(\omega t + \phi) ,
+\end{equation*}
+which by the quarter-turn relation $\cos\theta = \sin(\theta + \pi/2)$ is
+the sinusoid of \cref{eq:mo-sinusoid} with its phase larger by $\pi/2$.
+Expanding it with the addition formula \cref{eq:mo-addition},
+\begin{equation*}
+   A\cos(\omega t + \phi) = A\cos\phi\,\cos\omega t - A\sin\phi\,\sin\omega t ,
+\end{equation*}
+which is \cref{eq:ne-spring-solution} when the coefficients of $\cos\omega
+t$ and $\sin\omega t$ agree,
+\begin{equation*}
+   A\cos\phi = x_0, \qquad A\sin\phi = -\frac{v_0}{\omega} .
+\end{equation*}
+To find $A$, we square both equations and add them, using $\cos^2\phi +
+\sin^2\phi = 1$:
+\begin{equation*}
+   x_0^2 + \Bigl(\frac{v_0}{\omega}\Bigr)^2
+   = A^2\bigl(\cos^2\phi + \sin^2\phi\bigr) = A^2
+   \quad\Longrightarrow\quad
+   A = \sqrt{x_0^2 + (v_0/\omega)^2} .
+\end{equation*}
+If $A = 0$ the block rests at $x = 0$ and the phase plays no part.
+Otherwise the two equations give $\cos\phi = x_0/A$ and $\sin\phi =
+-v_0/(\omega A)$. Together these fix the point $(\cos\phi, \sin\phi)$ on
+the unit circle, and so fix $\phi$ up to whole turns of $2\pi$. The
+arcsine of \cref{sec:mo-trig} returns the angle between $-\pi/2$ and
+$\pi/2$ with the right sine; the cosine of that angle is never negative,
+and by $\cos^2 + \sin^2 = 1$ it equals $+\sqrt{1 - \sin^2\phi}$, which is
+$\cos\phi$ itself when $\cos\phi \ge 0$. In that case, therefore, $\phi =
+\arcsin(\sin\phi)$.
+When $\cos\phi < 0$ the angle is $\pi - \arcsin(\sin\phi)$ instead, which
+has the same sine, since $\sin(\pi - \theta) = \sin\theta$, and a
+negative cosine, since $\cos(\pi - \theta) = -\cos\theta$. The sign of
+the cosine thus selects between the two angles that share a sine.
+
+Take a block of \SI{0.5}{\kilogram} on the spring of
+\SI{50}{\newton\per\metre}, so that $\omega = \sqrt{50/0.5} =
+\SI{10}{\radian\per\second}$, and start it \SI{3}{\centi\metre} from its
+resting place, moving outwards, away from the wall, at
+\SI{0.4}{\metre\per\second}. In metres,
+$x_0 = 0.03$ and $v_0/\omega = 0.04$, so $x(t) = 0.03\cos 10t +
+0.04\sin 10t$ by \cref{eq:ne-spring-solution}, and
+\begin{align*}
+   A &= \sqrt{0.03^2 + 0.04^2} = \SI{0.05}{\metre} ,\\
+   \cos\phi &= 0.03/0.05 = 0.6, \qquad
+   \sin\phi = -0.04/0.05 = -0.8 .
+\end{align*}
+The block swings out to \SI{5}{\centi\metre} before turning back. The
+cosine is positive, so $\phi = \arcsin(-0.8) = \SI{-0.927}{\radian}$.
+Started instead \SI{3}{\centi\metre} on the wall side, $x_0 = -0.03$,
+with the same velocity, the block has the same amplitude, but $\cos\phi =
+-0.6$ is negative, so $\phi = \pi - \arcsin(-0.8) = \pi + 0.927 =
+\SI{4.069}{\radian}$.
+
+\subsection*{The period and the motion}
+
+The block repeats its motion when $\omega t$ grows by $2\pi$, so its
+angular frequency and period are
+\begin{equation}
+   \omega = \sqrt{\frac{k}{m}}, \qquad
+   \frac{2\pi}{\omega} = 2\pi\sqrt{\frac{m}{k}} .
+   \label{eq:ne-spring-omega}
+\end{equation}
+A heavier block oscillates more slowly and a stiffer spring more quickly.
+As long as Hooke's law holds, the period does not depend on the
+amplitude, and there is a simple reason.
+Pull the block twice as far and the spring pulls twice as hard, so at
+every stage the acceleration is twice as large; the block covers twice the
+distance at twice the speed and takes the same time. In the language of
+the equation, if $x(t)$ solves \cref{eq:ne-spring} then so does $2x(t)$,
+because both sides double.
+
+\Cref{fig:ne-spring} shows the simplest start of all, the same block
+pulled out \SI{4}{\centi\metre} and released from rest, for which $\phi
+= 0$, since then $x_0 = A$ and $v_0 = 0$. The period is $2\pi/10 =
+\SI{0.628}{\second}$. On the way in, the spring pulls the block in the
+direction it is moving, so the block speeds up all the way to the centre;
+past the centre the spring pulls against the motion and slows it. The
+speed is therefore largest at $x = 0$. Differentiating $x = A\cos(\omega
+t + \phi)$ with the chain rule gives $\dd x/\dd t = -A\omega\sin(\omega t
++ \phi)$; where $x = 0$ the cosine is zero, so the sine is $\pm1$ by
+$\cos^2 + \sin^2 = 1$, and the speed there is $A\omega = 0.04\times 10 =
+\SI{0.4}{\metre\per\second}$. At the turning points, $x = \pm A$, the
+block is momentarily at rest, yet its acceleration there, $-\omega^2 x =
+\mp A\omega^2 = \mp\SI{4}{\metre\per\second\squared}$ by
+\cref{eq:ne-spring}, is the largest it ever has, since $\lvert x\rvert$
+never exceeds $A$. This is the top of the throw of \cref{sec:mo-acceleration} again:
+zero velocity does not mean zero acceleration.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch02_newton/spring}
+\caption{A block of \SI{0.5}{\kilogram} on a spring of
+\SI{50}{\newton\per\metre}, released from rest \SI{4}{\centi\metre} from
+its resting place, over two periods. (a) Position, (b) velocity and (c)
+acceleration. At the dotted lines the block turns: its velocity is zero
+and its acceleration largest. At the dashed lines it passes the centre:
+its speed is largest and its acceleration zero.}
+\label{fig:ne-spring}
+\end{figure}
+
+\notebook{02}{change the mass, stiffness and starting state of the block}
+
+\begin{selfcheck}
+A block oscillates on a spring with a period of \SI{1}{\second}. What is
+the period if the mass is made four times larger? What if the block is
+pulled out twice as far before release?
+\end{selfcheck}

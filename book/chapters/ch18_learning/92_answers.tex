@@ -1,0 +1,49 @@
+%=============================================================================!
+% 18.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:lo-answers}
+
+\answerto{sec:lo-loss}Zero, since the line passes through every reading.
+The misses about the fitted line are then all zero, so the estimated
+$\sigma_{\mathrm m}$ and the error of $\hat k$ are zero too: ten perfect
+readings leave no trace of their noise, and an error estimated from the
+misses is only as good as the misses are typical.
+
+\answerto{sec:lo-basis}Fifteen weights and fifteen readings make the
+design matrix square, and for distinct distances it can be inverted, so
+$X\vb{w} = \vb{y}$ has an exact solution, which makes the loss zero. Any
+fifteen readings, noise and all, are fitted exactly, so a training miss
+can always be driven to zero and says nothing about prediction.
+
+\answerto{sec:lo-ridge}$\lambda = \sigma^2/\sigma_w^2$ grows four times,
+so the penalty weighs more against the misses, and the fit follows the
+readings less closely, keeping nearer the smooth curve that the prior
+prefers: noisier readings deserve less trust.
+
+\answerto{sec:lo-gp}At $x_1$, $K = h^2$ and $\vb{k}_\ast = h^2$, so the
+mean is $h^2y_1/h^2 = y_1$ and the variance $h^2 - h^4/h^2 = 0$: the curve
+passes through the reading with no doubt. Far from $x_1$, $\vb{k}_\ast$
+vanishes, the mean returns to the prior's zero and the variance to $h^2$.
+
+\answerto{sec:lo-descent}The rate must lie below $2/\lambda_{\max} = 2/50 = 0.04$. With $\kappa =
+100$ the slow direction shrinks by $(100 - 1)/(100 + 1) = 0.980$ a step.
+
+\answerto{sec:lo-sgd}The scatter falls as $1/\sqrt b$, so a third of it
+needs nine times the batch, 90 readings; an epoch of 2001 readings is then
+$2001/90 = 22.2$, so 23 steps, the last batch short.
+
+\answerto{sec:lo-momentum}With $\sqrt\kappa = 100$, gradient descent
+shrinks by $(10^4 - 1)/(10^4 + 1) = 0.9998$ and momentum by $(100 -
+1)/(100 + 1) = 0.980$ a step: about 100 times fewer steps for the same
+fall.
+
+\answerto{sec:lo-splits}\num{10000} steps worth one independent frame
+each 400 are about 25 independent frames. A validation block should be
+longer than the memory, several times 400 steps, say 1 to
+\SI{2}{\pico\second}, or better a separate run.
+
+\answerto{sec:lo-training}The model is learning the noise of its
+training readings, overfitting. Keep the weights of the step where the
+validation loss was least, early stopping, or retrain with a penalty or
+fewer weights.

@@ -1,0 +1,245 @@
+%=============================================================================!
+% 3.10  CONSERVATIVE FORCES AND THE GRADIENT                                  !
+%=============================================================================!
+\section{Conservative forces and the gradient}
+\label{sec:en-gradient}
+
+The weight does the same work along every route, and the swirl does not.
+This section names the forces that behave like the weight, gives each a
+potential energy, and shows how the force is recovered from that energy
+by differentiating in several directions at once. The tools are the
+partial derivative and the gradient, and a hill on a walker's map makes
+both easy to picture.
+
+\subsection*{Conservative forces}
+
+\begin{definition}
+A force $\vb{F}(\vb{r})$ that depends on position is conservative if the
+work $W[C]$ from $A$ to $B$ is the same for every path $C$ from $A$ to
+$B$, for every pair of points $A$ and $B$.
+\end{definition}
+
+An equivalent statement is that the work around every closed path is
+zero. Any closed path, starting at $A$ and passing through some other
+point $B$, is made of a path $C_1$ from $A$ to $B$ followed by a second
+path $C_2$ traversed backwards, from $B$ to $A$, and any two paths from $A$
+to $B$ make a closed path in this way. Its work is $W[C_1] - W[C_2]$, since reversing $C_2$ changes the
+sign of its work, and this vanishes for every such pair of paths exactly
+when the work does not depend on the path.
+
+For a conservative force, fix a reference point $\vb{r}_0$ and define,
+as on a line,
+\begin{equation}
+   U(\vb{r}) = -\int_{\vb{r}_0}^{\vb{r}}\vb{F}\cdot\dd\vb{r}' ,
+   \label{eq:en-potential-3d}
+\end{equation}
+the line integral along any path from $\vb{r}_0$ to $\vb{r}$, all of which
+give the same value. Going from $A$ to $B$ by way of $\vb{r}_0$, exactly
+as in \cref{sec:en-potential},
+\begin{equation*}
+   W_{A\to B} = U(A) - U(B) :
+\end{equation*}
+the work is the drop in potential energy. On a line, $F = -\dd U/\dd x$
+recovered the force. In space, $U$ changes differently in different
+directions, and we need the slope in each.
+
+\subsection*{Slopes on a map}
+
+A hill is described on a map by its height $h(x, y)$ above each point,
+with $x$ measured east and $y$ north. Our example, drawn in
+\cref{fig:en-hill}, is
+\begin{equation*}
+   h(x, y) = 300\,\mathrm{e}^{-(x^2 + 2y^2)/2} ,
+\end{equation*}
+in metres, with $x$ and $y$ in kilometres: a summit \SI{300}{\metre} high
+at the origin, its contours (lines of equal height) ellipses longer in
+the east-west direction.
+
+\begin{toolbox}[Partial derivatives]
+A walker heading due east keeps $y$ fixed, and the height changes with
+$x$ alone. The slope in that direction is the derivative with respect to
+$x$ with $y$ held constant, the partial derivative
+\begin{equation*}
+   \frac{\partial h}{\partial x}
+   = \lim_{\Delta x\to0}\frac{h(x + \Delta x, y) - h(x, y)}{\Delta x} ,
+\end{equation*}
+written with a rounded $\partial$ to show that the other variables are
+held fixed. The slope due north is $\partial h/\partial y$, with $x$ held
+fixed. Each is found by the ordinary rules of differentiation, treating
+the other variable as a constant. For the hill, write the exponent as $u
+= -\tfrac12 x^2 - y^2$. Holding $y$ fixed, $-y^2$ is a constant, whose
+derivative is zero, so $\partial u/\partial x = -x$; holding $x$ fixed,
+$-\tfrac12 x^2$ is the constant, so $\partial u/\partial y = -2y$. Since
+$\mathrm{e}^u$ has derivative $\mathrm{e}^u$ (\cref{sec:ne-drag}), the
+chain rule of \cref{sec:mo-acceleration} gives
+\begin{equation*}
+   \frac{\partial h}{\partial x} = 300\,\mathrm{e}^{u}\times(-x) = -x\,h ,
+   \qquad
+   \frac{\partial h}{\partial y} = 300\,\mathrm{e}^{u}\times(-2y)
+   = -2y\,h .
+\end{equation*}
+At the point $P = (0.6, 0.5)$\,\si{\kilo\metre}, $h =
+300\,\mathrm{e}^{-(0.36 + 0.5)/2} = \SI{195.2}{\metre}$, so $\partial
+h/\partial x = -0.6\times195.2 = \SI{-117.1}{\metre}$ per kilometre and
+$\partial h/\partial y = -2\times0.5\times195.2 = \SI{-195.2}{\metre}$
+per kilometre: heading east from $P$ the walker sets off downhill at
+\SI{117}{\metre} per kilometre, and heading north at \SI{195}{\metre} per
+kilometre, rates that hold only near $P$ (\cref{fig:en-hill}b and c). A function of three variables, or of $3N$,
+has one partial derivative for each. Partial derivatives can be taken
+again: $\partial^2 h/\partial x^2$ differentiates $\partial h/\partial x$
+with respect to $x$, and $\partial^2 h/\partial x\,\partial y$ means
+$\partial(\partial h/\partial y)/\partial x$.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch03_energy/hill}
+\caption{Partial derivatives and the gradient of a hill, $h =
+300\,\mathrm{e}^{-(x^2 + 2y^2)/2}$\,\si{\metre}. (a) Contours every
+\SI{50}{\metre}, with the gradient $\grad h$ at a grid of points (grey)
+and at $P = (0.6, 0.5)$\,\si{\kilo\metre} (teal). Each arrow points
+straight uphill, across the contours. (b) The height along the east-west
+line through $P$ (dotted in a), whose slope at $P$ is $\partial h/\partial
+x$. (c) The height along the north-south line through $P$, whose slope at
+$P$ is $\partial h/\partial y$.}
+\label{fig:en-hill}
+\end{figure}
+
+\begin{toolbox}[The gradient]
+The two partial derivatives together give the change of height for a
+short step in any direction. Step from $(x, y)$ to $(x + \Delta x, y +
+\Delta y)$ in two legs, first east and then north, adding and subtracting
+the height at the corner $(x + \Delta x, y)$:
+\begin{align*}
+   h(x + \Delta x, y + \Delta y) - h(x, y)
+   &= \bigl[h(x + \Delta x, y + \Delta y) - h(x + \Delta x, y)\bigr]\\
+   &\quad + \bigl[h(x + \Delta x, y) - h(x, y)\bigr] .
+\end{align*}
+The second bracket is a step east, and by the definition of $\partial
+h/\partial x$ it is $(\partial h/\partial x)\,\Delta x$ plus an error
+that is small compared with $\Delta x$. The first is a step north, taken
+from the corner, so it is about $\Delta y$ times the northward slope at
+the corner, with an error small compared with $\Delta y$; that slope
+approaches the northward slope at $(x, y)$ as the step shrinks, provided that the slopes change smoothly from place to place, as
+they do for this hill. Hence
+\begin{equation*}
+   \Delta h \approx \frac{\partial h}{\partial x}\,\Delta x
+   + \frac{\partial h}{\partial y}\,\Delta y
+   = \grad h\cdot\Delta\vb{r} ,
+   \qquad
+   \grad h = \Bigl(\frac{\partial h}{\partial x},
+   \frac{\partial h}{\partial y}\Bigr) ,
+\end{equation*}
+with an error small compared with the length of the step $\Delta\vb{r} =
+(\Delta x, \Delta y)$. The vector $\grad h$, read `grad $h$', is the
+gradient of $h$; in three dimensions it has a third component, $\partial
+h/\partial z$, and the step a third leg. Three consequences follow.
+\begin{itemize}
+\item \emph{Steepest ascent.} For a step of length $\ell$ in the
+   direction of a unit vector $\vb{n}$, a vector of length 1, $\Delta\vb{r}
+   = \ell\vb{n}$ and $\Delta h \approx \ell\,\grad h\cdot\vb{n}$. Dividing
+   by $\ell$, the height changes at the rate $\grad h\cdot\vb{n} =
+   \lvert\grad h\rvert\,\lvert\vb{n}\rvert\cos\theta = \lvert\grad
+   h\rvert\cos\theta$ per unit distance, with $\theta$ the angle between
+   $\vb{n}$ and $\grad h$. The rate is greatest for $\theta = 0$, where
+   $\cos\theta = 1$: the gradient points up the steepest slope, and its
+   length is that slope.
+\item \emph{Contours.} Along a contour $h$ does not change, so for
+   $\vb{n}$ pointing along the contour $\grad h\cdot\vb{n} = 0$: wherever
+   $\grad h$ is not zero, it is perpendicular to the contour through the
+   point.
+\item \emph{Along a path.} If a point moves along a path $\vb{r}(t)$, then
+   over a short interval $\Delta t$ it moves by $\Delta\vb{r} = \vb{r}(t +
+   \Delta t) - \vb{r}(t)$ and the height changes by $\Delta h =
+   h\bigl(\vb{r}(t + \Delta t)\bigr) - h\bigl(\vb{r}(t)\bigr)$, so
+   \begin{align*}
+      \frac{\Delta h}{\Delta t}
+      &\approx \grad h\cdot\frac{\Delta\vb{r}}{\Delta t}
+         && \text{dividing $\Delta h \approx \grad h\cdot\Delta\vb{r}$
+            by $\Delta t$}\\
+      \frac{\dd}{\dd t}\,h\bigl(\vb{r}(t)\bigr)
+      &= \grad h\cdot\frac{\dd\vb{r}}{\dd t}
+         && \text{letting $\Delta t \to 0$,}
+   \end{align*}
+   the chain rule along a path. The error of the first line is an error
+   small compared with $\lvert\Delta\vb{r}\rvert$, divided by $\Delta t$;
+   since $\lvert\Delta\vb{r}\rvert/\Delta t$ approaches $\lvert\dd\vb{r}/
+   \dd t\rvert$, it vanishes in the limit.
+\end{itemize}
+At $P$ the gradient is $(-117.1, -195.2)$ metres per kilometre, of length
+\begin{equation*}
+   \lvert\grad h\rvert = \sqrt{117.1^2 + 195.2^2} = 227.6
+\end{equation*}
+metres per kilometre. That is a rise of $227.6/1000 = 0.2276$ metres per
+metre, and the angle whose tangent is 0.2276 is \ang{12.8}. Walking
+straight towards the summit instead, in the direction of the unit vector
+$\vb{n} = (-0.6, -0.5)/0.781$, where $0.781 = \sqrt{0.6^2 + 0.5^2}$ is the
+length of $(-0.6, -0.5)$, the height rises at the rate
+\begin{equation*}
+   \grad h\cdot\vb{n}
+   = \frac{(-117.1)(-0.6) + (-195.2)(-0.5)}{0.781}
+   = \frac{167.86}{0.781} = 214.9
+\end{equation*}
+metres per kilometre, less than 227.6: on elliptical contours the
+steepest way up need not point at the summit (\cref{fig:en-hill}a); it
+does only along the axes of the ellipses.
+\end{toolbox}
+
+\subsection*{The force is minus the gradient}
+
+Now let $U(\vb{r})$ be the potential energy of a conservative force. For
+a short straight step $\Delta\vb{r}$ from $\vb{r}$, the force hardly
+changes along the step, so, since the work along the step is the drop
+$U(A) - U(B)$ with $A = \vb{r}$ and $B = \vb{r} + \Delta\vb{r}$,
+\cref{eq:en-work-constant} makes $U$ change by about $-\vb{F}\cdot\Delta
+\vb{r}$. By the gradient toolbox it also changes by about $\grad U\cdot
+\Delta\vb{r}$. The two agree, to within errors small compared with the
+step, for steps in every direction, which is possible only if
+\begin{equation}
+   \vb{F} = -\grad U ,
+   \qquad\text{that is,}\quad
+   F_x = -\frac{\partial U}{\partial x},\quad
+   F_y = -\frac{\partial U}{\partial y},\quad
+   F_z = -\frac{\partial U}{\partial z} .
+   \label{eq:en-gradient}
+\end{equation}
+Taking the step along $x$, for example, the first gives $-F_x\,\Delta x$
+and the second $(\partial U/\partial x)\,\Delta x$; dividing both by
+$\Delta x$ and letting the step shrink removes the errors, leaving $F_x =
+-\partial U/\partial x$.
+
+The converse holds as well. Suppose $\vb{F} = -\grad U$ for some $U$
+with smoothly varying partial derivatives. Along any path $\vb{r}(s)$
+from $A$ to $B$, the chain rule along a path gives $\vb{F}\cdot\dd\vb{r}/
+\dd s = -\grad U\cdot\dd\vb{r}/\dd s = -\dd U(\vb{r}(s))/\dd s$, so the
+line integral is
+\begin{align*}
+   \int_{s_A}^{s_B} -\frac{\dd}{\dd s}\,U\bigl(\vb{r}(s)\bigr)\,\dd s
+   &= -\bigl[U(B) - U(A)\bigr]
+      && \text{by the fundamental theorem of calculus}\\
+   &= U(A) - U(B) ,
+\end{align*}
+the same for every path. \emph{A force is conservative exactly when it is
+minus the gradient of a potential energy.} For the weight, $U = mgz$, and
+$-\grad U = (0, 0, -mg)$, as it should be.
+
+\Cref{eq:en-gradient} makes the force a property of the shape of $U$. By
+the gradient toolbox, the force points in the direction in which the
+potential energy falls fastest, its size is the steepest slope of $U$,
+and it is perpendicular to the contours of $U$, which in space are
+surfaces of equal $U$. A small block placed on the hillside of
+\cref{fig:en-hill}(a), with no friction to hold it, is likewise pushed
+straight down the slope, opposite to the arrows of $\grad h$. Where $\grad
+U = \vb{0}$ the force vanishes, and a body at rest stays at rest. In two or
+three dimensions most such equilibria are of three kinds: minima, from which every direction leads up; maxima, from
+which every direction leads down; and saddle points, like a mountain
+pass, which is the lowest point on the ridge between two valleys and the
+highest point on the path through the pass. Chapter~4 develops the test
+that tells them apart.
+
+\begin{selfcheck}
+On a map, the contours on one side of a hill are crowded together and on
+the other side widely spaced. On which side is $\lvert\grad h\rvert$
+larger? In which direction does $\grad h$ point where it crosses a
+contour?
+\end{selfcheck}

@@ -1,0 +1,174 @@
+%=============================================================================!
+% 12.4  A SYSTEM AND ITS BATH                                                 !
+%=============================================================================!
+\section{A system and its bath}
+\label{sec:sm-canonical}
+
+Most systems of interest are not isolated: a sample exchanges energy with
+its container, and a few hundred atoms in a simulation stand for a small
+part of a much larger piece of matter. This section finds the
+probabilities of the states of a system kept in contact with a much
+larger one, its bath, and with them the partition function from which
+averages and fluctuations follow.
+
+\subsection*{The Boltzmann factor}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round]
+   \draw[line width=0.8pt, fill=black!6] (0,0) rectangle (6.4,2.6);
+   \draw[line width=0.8pt, fill=white] (2.4,0.7) rectangle (4.0,1.9);
+   \node[align=center] at (3.2,1.3) {system\\[2pt]\small $E_s$};
+   \node[align=center] at (1.1,1.3) {bath\\[2pt]\small $E - E_s$};
+   \node at (5.3,1.3) {\small energy};
+   \draw[-{Stealth[length=5pt]}, line width=0.8pt, accent]
+      (4.05,1.55) -- (4.75,1.55);
+   \draw[{Stealth[length=5pt]}-, line width=0.8pt, accent]
+      (4.05,1.05) -- (4.75,1.05);
+\end{tikzpicture}
+\caption{A small system inside a large bath. The two together are
+isolated, with energy $E$; the system holds $E_s$ and the bath the rest,
+and energy passes between them.}
+\label{fig:sm-bath}
+\end{figure}
+
+The system and its bath (\cref{fig:sm-bath}) together are isolated, with
+the energy $E$, so the pair is microcanonical: all its microstates of
+energy $E$ are equally likely. We fix one microstate of the system, with
+energy $E_s$. The bath then holds $E - E_s$, in any of its
+$\Omega_{\mathrm B}(E - E_s)$ microstates, so the probability of that one
+microstate of the system is proportional to $\Omega_{\mathrm B}(E - E_s)$.
+The system's energy is small against the bath's, so we expand about $E$
+in a Taylor series. $\Omega_{\mathrm B}$ itself changes enormously with its
+energy, roughly as $E^{3N/2}$ for an ideal gas (\cref{sec:sm-micro}), but
+its logarithm changes slowly, so it is the logarithm we expand:
+\begin{align*}
+   \ln\Omega_{\mathrm B}(E - E_s) &= \ln\Omega_{\mathrm B}(E)
+   - E_s\,\frac{\dd\ln\Omega_{\mathrm B}}{\dd E}
+   + \tfrac12E_s^2\,\frac{\dd^2\ln\Omega_{\mathrm B}}{\dd E^2} - \dotsb\\
+   &= \ln\Omega_{\mathrm B}(E) - \frac{E_s}{\kB T} + \dotsb ,
+\end{align*}
+the second line by \cref{eq:sm-temperature}, with $T$ the temperature of
+the bath. The second derivative is the rate
+at which $\dd\ln\Omega_{\mathrm B}/\dd E = 1/\kB T$ changes, $-(1/\kB
+T^2)\,\dd T/\dd E$ by the chain rule, so the next term is
+$-\frac12E_s^2(\dd T/\dd E)/\kB T^2$; divided by the term kept,
+$-E_s/\kB T$, it gives the ratio $\frac12E_s(\dd T/\dd E)/T$, in which
+$\dd T/\dd E$ is how far the bath's temperature rises per unit of energy
+it gains. For a bath that is an ideal gas, $T = 2E/3N\kB$ gives $\dd
+T/\dd E = 2/3N\kB = T/E$, and the ratio is $E_s/2E$, half the system's
+share of the energy: negligible for a bath much larger than the system
+(\cref{ex:sm-bath}), and the dropped term itself, $(E_s/\kB T)(E_s/2E)$,
+is small when $E \gg E_s^2/\kB T$. The factor $\Omega_{\mathrm B}(E)$ is the same for
+every microstate of the system and joins the constant of proportionality,
+so, taking the exponential of both sides,
+\begin{equation}
+   \mathcal{P}(\text{microstate}) \propto \mathrm{e}^{-E_s/\kB T}
+   = \mathrm{e}^{-\beta E_s} , \qquad \beta = \frac{1}{\kB T} :
+   \label{eq:sm-boltzmann}
+\end{equation}
+the probability of a state of the system falls exponentially with its
+energy, by the Boltzmann factor. The bath enters only through its
+temperature. The ensemble of a system at fixed $N$, $V$ and $T$ with these
+probabilities is the canonical ensemble.
+
+\subsection*{The partition function}
+
+The probabilities must add up to one, so the probability of microstate
+$s$ is $\mathcal{P}_s = \mathrm{e}^{-\beta E_s}/Z$, with $Z$ the sum over
+all the system's microstates, or for the continuous phase space of
+classical atoms the integral over it, the partition function:
+\begin{equation}
+   Z = \sum_s\mathrm{e}^{-\beta E_s} , \qquad\text{or}\qquad
+   Z = \int\mathrm{e}^{-\beta H(\Gamma)}\,\dd\Gamma .
+   \label{eq:sm-partition}
+\end{equation}
+with $\dd\Gamma$ measured in the unit of phase-space volume of
+\cref{sec:sm-micro}, so that $Z$ is a pure number; changing that unit
+adds a constant to $S$ and $\kB T$ times a constant to $F$, which drop out
+of every difference and derivative below.
+Averages follow from it by differentiation with respect to $\beta$:
+\begin{align*}
+   -\frac{\dd\ln Z}{\dd\beta} &= -\frac1Z\,\frac{\dd Z}{\dd\beta}
+   = \frac{1}{Z}\sum_sE_s\mathrm{e}^{-\beta E_s} = \ens{E} ,\\
+   \frac{\dd^2\ln Z}{\dd\beta^2} &= -\frac{\dd\ens{E}}{\dd\beta}
+   = \frac{1}{Z}\sum_sE_s^2\mathrm{e}^{-\beta E_s}
+   - \Bigl(\frac1Z\sum_sE_s\mathrm{e}^{-\beta E_s}\Bigr)^2
+   = \ens{E^2} - \ens{E}^2 ,
+\end{align*}
+the first by the chain rule, with $\dd Z/\dd\beta = -\sum_sE_s
+\mathrm{e}^{-\beta E_s}$, and the second by the product rule
+(\cref{sec:ne-drag}) applied to $\ens{E} = (1/Z)\sum_sE_s
+\mathrm{e}^{-\beta E_s}$: the sum has the derivative $-\sum_sE_s^2
+\mathrm{e}^{-\beta E_s}$, and $1/Z$, by the chain rule, the derivative
+$-(1/Z^2)\,\dd Z/\dd\beta = (1/Z^2)\sum_sE_s\mathrm{e}^{-\beta E_s}$.
+The energy of a system in contact with a bath fluctuates, and its
+variance is the rate at which $-\ens{E}$ changes with $\beta$. The heat
+capacity $C_V = \dd\ens{E}/\dd T$ is the energy taken up per degree, at
+fixed volume. By the chain rule $C_V = (\dd\ens{E}/\dd\beta)(\dd\beta/\dd
+T)$, and $\dd\beta/\dd T = -1/(\kB T^2)$, so
+\begin{equation}
+   \ens{E^2} - \ens{E}^2 = -\frac{\dd\ens{E}}{\dd\beta}
+   = \kB T^2\,C_V .
+   \label{eq:sm-fluctuation}
+\end{equation}
+The size of the energy's fluctuations measures how much energy the
+system takes up when warmed. The free energy is defined by
+\begin{equation*}
+   F = -\kB T\ln Z ,
+\end{equation*}
+and equals $\ens{E} - TS$ with the entropy $S = -\kB\sum_s\mathcal{P}_s\ln
+\mathcal{P}_s$, which for the equal probabilities $1/\Omega$ of the
+microcanonical ensemble is \cref{eq:sm-entropy} (\cref{ex:sm-free}).
+
+\subsection*{A spring, and the odds of a hop}
+
+One coordinate on a spring, $H = p^2/2m + \frac12kx^2$, has, by the
+Gaussian integral of \cref{sec:md-ewald} twice,
+\begin{equation*}
+   Z = \int\mathrm{e}^{-\beta p^2/2m}\dd p\int\mathrm{e}^{-\beta kx^2/2}
+   \dd x = \sqrt{\frac{2\pi m}{\beta}}\sqrt{\frac{2\pi}{\beta k}}
+   = \frac{2\pi}{\beta\omega} ,
+\end{equation*}
+with $\omega = \sqrt{k/m}$. Then $\ln Z = -\ln\beta + \text{a constant}$,
+and $\ens{E} = -\dd\ln Z/\dd\beta = 1/\beta = \kB T$: a classical vibration holds
+$\kB T$ on average, whatever its stiffness, which makes precise the
+`typical energy of order $\kB T$' of \cref{sec:pe-classical}. At
+\SI{300}{\kelvin}, $\kB T = \SI{0.02585}{\electronvolt}$.
+
+The Boltzmann factor also answers the question of \cref{sec:en-surface},
+how often an atom reaches the top of its barrier. The kinetic energy
+depends on the momenta alone and $U$ on the positions alone, so
+$\mathrm{e}^{-\beta H}$ is $\mathrm{e}^{-\beta U}$ times a factor of the
+momenta, and integrating over the momenta turns that factor into a number
+that is the same at every position. The positions are left with the
+density $\mathrm{e}^{-\beta U}$, in which the masses no longer appear, as
+\cref{sec:cs-mass} anticipated: of two places whose potential energies
+differ by $\Delta U$, an atom is found near the higher, per unit volume,
+$\mathrm{e}^{-\Delta U/\kB T}$ times as often as near the lower. For the
+lithium atom of that model, which moves over the surface, the density is
+per unit area, and at the bridge, \SI{0.3}{\electronvolt} above its
+hollow, the odds are $\mathrm{e}^{-0.3/0.02585} = \num{9.1e-6}$ at
+\SI{300}{\kelvin}, and $\num{3.0e-3}$ at \SI{600}{\kelvin}, 331 times
+larger: a barrier that is rarely reached at room temperature is reached
+hundreds of times as often when the temperature doubles. For an atom
+moving in two directions the same number is also the probability that its
+kinetic energy is at least the barrier, since its kinetic energy has the
+density $\mathrm{e}^{-K/\kB T}/\kB T$ (\cref{sec:sm-kinetic}). How often an atom actually hops depends also on how
+often it tries, which Chapters~16 and~17 measure.
+
+\begin{keyidea}
+A system in contact with a bath at temperature $T$ is found in a
+microstate of energy $E_s$ with a probability proportional to
+$\mathrm{e}^{-E_s/\kB T}$. The partition function $Z$ normalises the
+probabilities; $\ens{E} = -\dd\ln Z/\dd\beta$, the energy's variance is
+$\kB T^2C_V$, and $F = -\kB T\ln Z$. A classical vibration holds $\kB T$
+on average.
+\end{keyidea}
+
+\notebook{12}{set a barrier and a temperature and read off the odds}
+
+\begin{selfcheck}
+What are the odds of the \SI{0.3}{\electronvolt} barrier at
+\SI{100}{\kelvin}?
+\end{selfcheck}

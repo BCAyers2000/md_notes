@@ -1,0 +1,182 @@
+%=============================================================================!
+% 1.9  FROM BALLS TO ATOMS                                                    !
+%=============================================================================!
+\section{From balls to atoms}
+\label{sec:mo-atoms}
+
+None of the preceding sections depended on the moving object being a
+ball, and the same description applies directly to atoms. A system of $N$
+atoms has a position vector for each atom, $\vb{r}_1(t), \dots,
+\vb{r}_N(t)$, and each atom has its own velocity $\vb{v}_i =
+\dd\vb{r}_i/\dd t$ and acceleration $\vb{a}_i = \dd\vb{v}_i/\dd t$. When
+all the positions are collected into a single list of $3N$ numbers,
+$\vb{r}^N = (\vb{r}_1, \dots, \vb{r}_N)$ (the superscript is a label,
+not a power), the motion of the whole system becomes a single path
+$\vb{r}^N(t)$: just as three numbers locate a point in space, $3N$
+numbers locate a point in a space of $3N$ dimensions, which cannot be
+drawn but obeys the same component-by-component rules, and every result of the preceding sections applies to each of its components.
+The only change is in the units, which become \si{\angstrom},
+\si{\femto\second}, \si{\angstrom\per\femto\second} and
+\si{\angstrom\per\femto\second\squared}.
+
+\subsection*{Velocities from frames}
+
+A molecular dynamics calculation does not record this path continuously.
+It stores frames instead, the positions of all the atoms at times
+separated by an interval $\tau$, and the velocities must sometimes be
+recovered from these frames afterwards. The derivative, a limit as $\tau
+\to 0$, must then be replaced by a finite difference with $\tau$ fixed, and
+the Taylor series of \cref{eq:mo-taylor} tells us how large an error this
+introduces. We treat one coordinate $x$; every component of every atom
+behaves in the same way.
+
+The simplest choice is the forward difference, the secant slope of
+\cref{sec:mo-velocity}. Subtracting $x(t)$ from both sides of
+\cref{eq:mo-taylor} and dividing by $\tau$,
+\begin{equation*}
+   \frac{x(t+\tau) - x(t)}{\tau} = v(t) + \tfrac12 a(t)\,\tau
+   + \order{\tau^2},
+\end{equation*}
+where the term $\tfrac16\dddot{x}\,\tau^2$ and the remainder, now
+$\order{\tau^4}/\tau = \order{\tau^3}$, are both no larger than a constant
+times $\tau^2$ when $\tau$ is small, and so together are $\order{\tau^2}$.
+So the forward difference returns the velocity with an error whose leading
+term, $\tfrac12 a\tau$, is proportional to $\tau$. For the ball this is
+the term $-\tfrac12 g\tau$ of \cref{eq:mo-secant}.
+
+A better estimate uses the frames on both sides of $t$. Writing the
+Taylor series forwards and backwards in time, by replacing $\tau$ with
+$-\tau$ in the second,
+\begin{align*}
+   x(t+\tau) &= x + v\tau + \tfrac12 a\tau^2 + \tfrac16\dddot{x}\tau^3
+      + \tfrac1{24}x^{(4)}\tau^4 + \order{\tau^5},\\
+   x(t-\tau) &= x - v\tau + \tfrac12 a\tau^2 - \tfrac16\dddot{x}\tau^3
+      + \tfrac1{24}x^{(4)}\tau^4 + \order{\tau^5},
+\end{align*}
+where $x$, $v$, $a$, $\dddot{x}$ and $x^{(4)}$ are evaluated at $t$. The terms with
+even powers of $\tau$ have the same sign in both lines, and those with odd
+powers have opposite signs. Subtracting the second line from the first
+therefore cancels the even terms and doubles the odd ones,
+\begin{equation*}
+   x(t+\tau) - x(t-\tau) = 2v\tau + \tfrac13\dddot{x}\,\tau^3
+   + \order{\tau^5},
+\end{equation*}
+where the remainder is of order $\tau^5$ because the $\tau^4$ terms also
+cancel. Dividing by $2\tau$ gives the central difference,
+\begin{equation*}
+   \frac{x(t+\tau) - x(t-\tau)}{2\tau} = v(t) + \tfrac16\,\dddot{x}(t)\,
+   \tau^2 + \order{\tau^4},
+\end{equation*}
+whose error is proportional to $\tau^2$. Halving the interval therefore
+halves the error of the forward difference but quarters that of the
+central difference. In \texttt{mdlab} the central difference occupies a
+single line.
+
+\begin{code}
+def central_difference(positions: ArrayLike, tau: float) -> NDArray:
+    x = np.asarray(positions, dtype=float)
+    return (x[2:] - x[:-2]) / (2.0 * tau)
+\end{code}
+
+Listings in this book are taken from \texttt{mdlab} without their
+docstrings, which give the shape and unit of every argument. Python
+counts from 0, so \texttt{x[2:]} holds the frames from the third onwards
+and \texttt{x[:-2]} those up to the third from last; entry $k$ of their
+difference is $x_{k+2} - x_k$, the central difference at frame $k + 1$,
+so the first and last frames receive no velocity. \texttt{np.asarray}
+turns the input into a NumPy array of decimal numbers, and the
+annotations after the colons and the arrow only document the types
+expected and returned.
+
+\subsection*{A vibrating coordinate}
+
+The atoms in molecules and solids vibrate (Chapter~4), and a vibrating
+coordinate can be modelled by the sinusoid of \cref{sec:mo-trig} with zero
+phase, $x(t) = A\sin\omega t$, of amplitude $A$, angular frequency $\omega$
+and period $2\pi/\omega$. For this motion the central difference
+can be evaluated exactly. Subtracting the two sine formulae of
+\cref{eq:mo-addition},
+\begin{align*}
+   \sin(p+q) - \sin(p-q)
+   &= (\sin p\cos q + \cos p\sin q) - (\sin p\cos q - \cos p\sin q)\\
+   &= 2\cos p\sin q .
+\end{align*}
+With $p = \omega t$ and $q = \omega\tau$, and multiplying through by
+$A/2\tau$,
+\begin{equation}
+   \frac{x(t+\tau) - x(t-\tau)}{2\tau}
+   = \frac{A\cos\omega t\,\sin\omega\tau}{\tau}
+   = \underbrace{A\omega\cos\omega t}_{v(t)}\;
+     \frac{\sin\omega\tau}{\omega\tau} ,
+   \label{eq:mo-sinc}
+\end{equation}
+where the last step multiplies and divides by $\omega$ so that the true
+velocity $v(t) = A\omega\cos\omega t$ appears. Every recovered velocity is
+therefore too small by the same factor, $\sin(\omega\tau)/(\omega\tau)$.
+To see how close this factor is to 1, we divide the series for $\sin y$ in
+\cref{eq:mo-sin-series} by $y$,
+\begin{equation*}
+   \frac{\sin y}{y} = 1 - \frac{y^2}{6} + \order{y^4} .
+\end{equation*}
+The relative error, the error divided by the true velocity, is therefore
+\begin{equation*}
+   \frac{v(t) - v(t)\sin(\omega\tau)/(\omega\tau)}{v(t)}
+   = 1 - \frac{\sin\omega\tau}{\omega\tau} \approx \frac{(\omega\tau)^2}{6} .
+\end{equation*}
+
+For an amplitude of \SI{0.1}{\angstrom} and a period of
+\SI{20}{\femto\second}, the angular frequency is $\omega =
+2\pi/\SI{20}{\femto\second} = \SI{0.3142}{\per\femto\second}$. Frames
+saved every \SI{1}{\femto\second} then give $\omega\tau = 0.3142$ and an
+error of $0.3142^2/6 = \SI{1.645}{\percent}$ by the approximation, against
+\SI{1.637}{\percent} exactly. Frames every \SI{0.1}{\femto\second} give
+\SI{0.016}{\percent} either way, and frames every \SI{2}{\femto\second}
+give \SI{6.58}{\percent} by the approximation against \SI{6.45}{\percent}
+exactly (\cref{fig:mo-differences}). When $\tau$ equals half a
+period, $\omega\tau = \pi$ and the factor $\sin\pi/\pi$ vanishes
+altogether: $x(t+\tau)$ and $x(t-\tau)$ are then a whole period apart and
+therefore equal, and the central difference detects no motion at all.
+
+\begin{figure}[tb]
+\centering
+\includegraphics{ch01_motion/differences}
+\caption{Velocities recovered from frames. A coordinate $x = A\sin\omega
+t$ with $A = \SI{0.1}{\angstrom}$ and period $2\pi/\omega =
+\SI{20}{\femto\second}$ is sampled every $\tau$. (a) Largest error of the
+forward and central differences, with their leading terms
+$A\omega^2\tau/2$ and $A\omega^3\tau^2/6$ (dashed). (b) Relative error of
+the central difference, $1 - \sin(\omega\tau)/(\omega\tau)$, against its
+leading term; the dotted line marks $\tau = \SI{1}{\femto\second}$.}
+\label{fig:mo-differences}
+\end{figure}
+
+\begin{practice}
+Frames must be closely spaced compared with the fastest motion that they
+are intended to resolve, and \cref{eq:mo-sinc} makes this requirement
+quantitative. The coordinates of real atoms move as sums of sinusoids of
+several frequencies (Chapter~4). The central difference of a sum is the
+sum of the central differences of its terms, so it shrinks the velocity
+of each sinusoid by that sinusoid's own factor $\sin(\omega\tau)/
+(\omega\tau)$. If the interval satisfies $(\omega_{\max}\tau)^2/6 \le
+\epsilon$ for the highest angular frequency $\omega_{\max}$ present, each
+sinusoid's velocity is recovered to a relative accuracy $\epsilon$, and
+the error in the whole velocity is at most $\epsilon$ times the sum of
+the largest speeds $A\omega$ of the sinusoids, since the size of a sum is
+at most the sum of the sizes of its terms. This bounds the error
+relative to the typical speed of the motion, not relative to the velocity
+at each instant: where the sinusoids cancel and the velocity passes
+through zero, even a small error is a large fraction of it. For $x =
+\sin t - \tfrac12\sin 2t$, in metres with $t$ in seconds, and $\tau =
+\SI{0.1}{\second}$, $(\omega_{\max}\tau)^2/6 = \SI{0.67}{\percent}$ with
+$\omega_{\max} = 2$. The true velocity is $\cos t - \cos 2t$, while by
+\cref{eq:mo-sinc} applied to each term the central difference is $\cos
+t\,(\sin 0.1/0.1) - \cos 2t\,(\sin 0.2/0.2)$. At $t =
+\SI{0.01}{\second}$, where the true velocity is
+\SI{1.5e-4}{\metre\per\second}, the central difference gives
+\SI{5.1e-3}{\metre\per\second}, 34 times too large. A path saved less
+frequently than the criterion allows should store the velocities
+directly. A related requirement limits the
+size of the step that molecular dynamics itself can take (Chapter~9).
+\end{practice}
+
+\notebook{01}{sample an oscillation and recover its velocity}

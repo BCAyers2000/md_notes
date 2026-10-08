@@ -1,0 +1,307 @@
+%=============================================================================!
+% 2.7  DRAG AND TERMINAL VELOCITY                                             !
+%=============================================================================!
+\section{Drag and terminal velocity}
+\label{sec:ne-drag}
+
+Drop a small bead into a jar of honey or a thick oil. It speeds up for a
+moment and then sinks at a steady speed, however tall the jar. This is
+the first force we meet that depends on the velocity, and solving its
+equation of motion needs a new function, the exponential. The same
+equation returns in Chapter~13, where it describes how a thermostat
+steadies the temperature of a simulation.
+
+\subsection*{The drag force}
+
+The liquid resists the motion of the bead with a drag force that points
+against the velocity. For small bodies moving slowly through a thick
+liquid this force is, to a good approximation, proportional to the
+velocity,
+\begin{equation*}
+   \vb{F}_{\mathrm{drag}} = -b\,\vb{v} ,
+\end{equation*}
+where the drag coefficient $b$, in kilograms per second, depends on the
+size of the body and the thickness of the liquid. Fast bodies moving
+through air feel a drag that grows more nearly as the square of the
+speed, which we do not treat. The liquid also pushes the bead upwards
+with a constant force called buoyancy, equal to the weight of the liquid
+that the bead displaces. For a bead much denser than the liquid this is
+a small correction, and we neglect it.
+
+\subsection*{The equation of motion}
+
+We measure the depth $x$ downwards, so that the weight $mg$ is positive
+and the drag $-bv$ opposes a downward velocity. The second law for the
+bead is
+\begin{equation*}
+   m\,\frac{\dd v}{\dd t} = mg - bv ,
+\end{equation*}
+and dividing both sides by $m$,
+\begin{equation}
+   \frac{\dd v}{\dd t} = g - \gamma v, \qquad \gamma = \frac{b}{m} .
+   \label{eq:ne-drag}
+\end{equation}
+The constant $\gamma$, called the drag rate, has units of
+$(\si{\kilogram\per\second})/\si{\kilogram} = \si{\per\second}$, an
+inverse time; we shall see that $1/\gamma$ sets the time scale on which the
+bead settles into its steady motion.
+
+Before solving \cref{eq:ne-drag} we can find the steady speed directly.
+The bead stops speeding up when $\dd v/\dd t = 0$, which happens when the
+drag has grown to balance the weight,
+\begin{equation*}
+   0 = g - \gamma v_\infty
+   \quad\Longrightarrow\quad
+   v_\infty = \frac{g}{\gamma} = \frac{mg}{b} .
+\end{equation*}
+This steady speed is called the terminal velocity. We write it
+$v_\infty$, read `v infinity', because the bead approaches it as the time
+grows without limit.
+
+\subsection*{Measuring the velocity from its terminal value}
+
+\Cref{eq:ne-drag} becomes simpler if we follow not the velocity itself
+but its distance from the terminal velocity, $w = v - v_\infty$. Since
+$v_\infty$ is a constant, $\dd w/\dd t = \dd v/\dd t$, and substituting
+$v = w + v_\infty$ into \cref{eq:ne-drag},
+\begin{align*}
+   \frac{\dd w}{\dd t}
+   &= g - \gamma\,(w + v_\infty)
+      && \text{substituting for $v$}\\
+   &= (g - \gamma v_\infty) - \gamma w
+      && \text{multiplying out the bracket}\\
+   &= -\gamma w
+      && \text{since $\gamma v_\infty = g$.}
+\end{align*}
+The gap between the velocity and its terminal value therefore shrinks at
+a rate proportional to the gap itself: when the gap is large it closes
+quickly, and as it narrows it closes ever more slowly. To solve this
+equation we need a function whose derivative is a constant times the
+function, and the boxes below build it.
+
+\begin{toolbox}[The exponential function]
+Define $\mathrm{E}(s)$ as the function that equals its own derivative and
+takes the value 1 at $s = 0$,
+\begin{equation*}
+   \frac{\dd\mathrm{E}}{\dd s} = \mathrm{E}(s), \qquad \mathrm{E}(0) = 1 .
+\end{equation*}
+Differentiating both sides again shows that the second derivative also
+equals $\mathrm{E}$, and so on for every derivative, so at $s = 0$ every
+derivative of $\mathrm{E}$ equals 1. The Taylor series of
+\cref{sec:mo-taylor} about $s = 0$ is therefore
+\begin{equation*}
+   \mathrm{E}(s) = 1 + s + \frac{s^2}{2!} + \frac{s^3}{3!} + \dotsb .
+\end{equation*}
+Differentiating the series term by term confirms that it is its own
+derivative: since $n! = n\times(n-1)!$, the term $s^n/n!$ becomes
+$n\,s^{n-1}/n! = s^{n-1}/(n-1)!$, the term before it, so the
+differentiated series is the same series again. Such a function
+therefore exists, and since $\dd\mathrm{E}/\dd s = \mathrm{E}$ is a
+first-order differential equation, the uniqueness theorem of
+\cref{sec:ne-equations} allows only one with $\mathrm{E}(0) = 1$.
+Its value at $s = 1$ is a number called $\mathrm{e}$. Adding the first
+seven terms, $1 + 1 + 0.5 + 0.1667 + 0.0417 + 0.0083 + 0.0014 = 2.7181$;
+the next three terms, $0.0002$, $0.00002$ and $0.000003$, raise this to
+$2.71828$, and later terms are too small to change these digits:
+$\mathrm{e} = 2.71828\ldots$.
+
+Now let $\lambda$ be any constant. By the chain rule of
+\cref{sec:mo-acceleration}, with inner function $\lambda t$,
+\begin{equation*}
+   \frac{\dd}{\dd t}\,\mathrm{E}(\lambda t)
+   = \mathrm{E}'(\lambda t)\,\lambda = \lambda\,\mathrm{E}(\lambda t) ,
+\end{equation*}
+the second step using $\mathrm{E}' = \mathrm{E}$,
+so $\mathrm{E}(\lambda t)$ is a function whose derivative is $\lambda$
+times itself, which is what we need. The series also gives values at
+negative $s$, for instance
+\begin{equation*}
+   \mathrm{E}(-1) = 1 - 1 + 0.5 - 0.1667 + 0.0417 - 0.0083 + 0.0014 - \dotsb
+   = 0.368 .
+\end{equation*}
+\end{toolbox}
+
+\begin{toolbox}[The product rule]
+For two functions $p(s)$ and $q(s)$, the change in their product over a
+small step $h$ can be split into a change in $p$ and a change in $q$, by
+adding and subtracting $p(s)\,q(s+h)$,
+\begin{equation*}
+   p(s+h)\,q(s+h) - p(s)\,q(s)
+   = \bigl[p(s+h) - p(s)\bigr]\,q(s+h) + p(s)\,\bigl[q(s+h) - q(s)\bigr] .
+\end{equation*}
+Dividing by $h$ and letting $h \to 0$, the brackets divided by $h$ become
+the derivatives $p'$ and $q'$, and $q(s+h)$ becomes $q(s)$, so
+\begin{equation*}
+   \frac{\dd}{\dd s}\bigl(pq\bigr) = p'q + pq' .
+\end{equation*}
+\end{toolbox}
+
+The product rule shows why $\mathrm{E}$ deserves its usual name. Fix a
+number $c$ and consider $f(s) = \mathrm{E}(c + s)\,\mathrm{E}(-s)$. The
+derivative of $\mathrm{E}(-s)$ is $-\mathrm{E}(-s)$, by the chain rule
+with $\lambda = -1$, and the derivative of $\mathrm{E}(c + s)$ is
+$\mathrm{E}(c + s)$, by the chain rule with inner function $c + s$, whose
+derivative is 1, so
+\begin{align*}
+   f'(s) &= \mathrm{E}(c+s)\,\mathrm{E}(-s)
+      + \mathrm{E}(c+s)\,\bigl[-\mathrm{E}(-s)\bigr]
+      && \text{by the product rule}\\
+   &= 0 .
+\end{align*}
+A function whose derivative is zero everywhere does not change, by
+\cref{eq:mo-integrals} (with $f$ in place of $v$ and $f' = 0$ in place
+of $a$, it reads $f(s) = f(0) + \int_0^s 0\,\dd s' = f(0)$), so $f$ keeps its value at $s = 0$, which is
+$\mathrm{E}(c)\,\mathrm{E}(0) = \mathrm{E}(c)$. Setting $c = 0$ gives
+$\mathrm{E}(s)\,\mathrm{E}(-s) = 1$, and dividing $\mathrm{E}(c+s)\,
+\mathrm{E}(-s) = \mathrm{E}(c)$ by $\mathrm{E}(-s)$, which is the same as
+multiplying by $\mathrm{E}(s)$,
+\begin{equation*}
+   \mathrm{E}(c + s) = \mathrm{E}(c)\,\mathrm{E}(s) .
+\end{equation*}
+This is the rule obeyed by powers, $\mathrm{e}^{c+s} =
+\mathrm{e}^c\,\mathrm{e}^s$. Applying it with $c = s = 1$ gives
+$\mathrm{E}(2) = \mathrm{e}^2$, then $\mathrm{E}(3) = \mathrm{e}^3$, and
+so on, and $\mathrm{E}(-s) = 1/\mathrm{E}(s)$ matches $\mathrm{e}^{-s} =
+1/\mathrm{e}^s$. Two further facts follow. Since $\mathrm{E}(s)\,
+\mathrm{E}(-s) = 1$, $\mathrm{E}$ is never zero, and since $\mathrm{E}(s)
+= \mathrm{E}(\tfrac s2)^2$, by the rule with both $c$ and $s$ set to
+$\tfrac s2$, it is never negative; so $\mathrm{E}(s) > 0$ for every $s$.
+Its derivative, equal to itself, is then positive too, so $\mathrm{E}$
+rises steadily and never takes the same value at two different $s$.
+Fractions agree with powers as well: $\mathrm{E}(\tfrac12)^2 =
+\mathrm{E}(\tfrac12 + \tfrac12) = \mathrm{E}(1) = \mathrm{e}$, so
+$\mathrm{E}(\tfrac12) = \sqrt{\mathrm{e}} = \mathrm{e}^{1/2}$, the positive
+root. The
+function $\mathrm{E}$ therefore extends the powers of $\mathrm{e}$ to
+every real number, and from now on we write it $\mathrm{e}^s$, the
+exponential function. Because it never takes a value twice, it can be
+undone: its inverse is the natural logarithm, $\ln$, defined by
+$\ln(\mathrm{e}^s) = s$. It is not the base-10 logarithm $\log$ of
+\cref{sec:mo-taylor}; calculators mark it `ln'.
+
+The rule for sums also explains how a decaying exponential decays.
+Lowering $s$ by one multiplies the function by a fixed factor,
+$\mathrm{e}^{s-1} = \mathrm{e}^s\,\mathrm{e}^{-1} = 0.368\,\mathrm{e}^s$.
+In $\mathrm{e}^{\lambda t}$ with negative $\lambda$ the exponent $s =
+\lambda t$ falls by $\lambda\times(1/\lvert\lambda\rvert) = -1$ each time
+$t$ grows by $1/\lvert\lambda\rvert$, so the function falls to about
+\SI{37}{\percent} of its value over every such interval, wherever it
+starts.
+
+\subsection*{Solving the equation}
+
+The gap obeys $\dd w/\dd t = -\gamma w$, and by the toolbox, with
+$\lambda = -\gamma$, the function $w = C\,\mathrm{e}^{-\gamma t}$ has
+derivative $-\gamma C\,\mathrm{e}^{-\gamma t} = -\gamma w$ for any
+constant $C$. At $t = 0$ the exponential is 1, so $C$ is the starting gap,
+$C = v_0 - v_\infty$, where $v_0$ is the velocity at release. Here the
+force depends on the velocity alone, so the second of
+\cref{eq:ne-first-order} involves $v$ alone, and by the uniqueness
+theorem of \cref{sec:ne-equations} the starting velocity fixes its
+solution. We have therefore found it, and adding $v_\infty$ back,
+\begin{equation}
+   v(t) = v_\infty + (v_0 - v_\infty)\,\mathrm{e}^{-\gamma t} .
+   \label{eq:ne-drag-v}
+\end{equation}
+Whatever the starting velocity, the gap shrinks to $\mathrm{e}^{-1} =
+\SI{37}{\percent}$ of its size every interval $1/\gamma$, and the
+velocity approaches $v_\infty$ from below if the bead starts slower and
+from above if it starts faster. A bead released from rest has $v_0 = 0$,
+and then $v(t) = v_\infty\,(1 - \mathrm{e}^{-\gamma t})$.
+
+As an example, take a bead of mass \SI{0.01}{\kilogram} with a drag
+coefficient of \SI{0.05}{\kilogram\per\second}. Then $\gamma = 0.05/0.01
+= \SI{5}{\per\second}$, so $1/\gamma = \SI{0.2}{\second}$, and the
+terminal velocity is $v_\infty = 9.80665/5 = \SI{1.961}{\metre\per
+\second}$. These values are chosen so that the approach is easy to see
+on a scale of seconds. A real bead this heavy and this fast would feel a
+drag that is not proportional to its speed, while for the small, slow
+beads to which the linear law applies the whole approach is over in a
+small fraction of a second. Released from rest, the bead's velocity as a
+fraction of $v_\infty$ is $1 - \mathrm{e}^{-\gamma t}$, where
+$\mathrm{e}^{-2} = 0.368^2$, $\mathrm{e}^{-3} = 0.368^3$ and
+$\mathrm{e}^{-5} = 0.368^5$ by the rule for sums:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$t$ / \si{\second} & $\gamma t$ & $\mathrm{e}^{-\gamma t}$
+   & $v/v_\infty = 1 - \mathrm{e}^{-\gamma t}$\\
+\midrule
+0.2 & 1 & 0.368 & \SI{63.2}{\percent}\\
+0.4 & 2 & 0.135 & \SI{86.5}{\percent}\\
+0.6 & 3 & 0.050 & \SI{95.0}{\percent}\\
+1.0 & 5 & 0.007 & \SI{99.3}{\percent}\\
+\bottomrule
+\end{tabular}
+\end{center}
+To find when it reaches \SI{90}{\percent} of $v_\infty$, we need
+$\mathrm{e}^{-\gamma t} = 0.1$. Taking the natural logarithm of both
+sides gives $-\gamma t = \ln 0.1 = -2.303$, the value of the logarithm
+coming from a calculator, so $t = 2.303/5 =
+\SI{0.461}{\second}$ (\cref{fig:ne-drag}a).
+
+\subsection*{The distance fallen}
+
+The depth follows by integrating the velocity, as in
+\cref{sec:mo-integrating}. The function $-\mathrm{e}^{-\gamma t'}/\gamma$
+has derivative $\mathrm{e}^{-\gamma t'}$, by the toolbox with $\lambda =
+-\gamma$, so
+\begin{equation*}
+   \int_0^t \mathrm{e}^{-\gamma t'}\,\dd t'
+   = \Bigl[-\frac{\mathrm{e}^{-\gamma t'}}{\gamma}\Bigr]_0^t
+   = \frac{1 - \mathrm{e}^{-\gamma t}}{\gamma} ,
+\end{equation*}
+and for a bead released from rest at $x = 0$,
+\begin{equation}
+   x(t) = \int_0^t v_\infty\bigl(1 - \mathrm{e}^{-\gamma t'}\bigr)\,\dd t'
+   = v_\infty\,t - \frac{v_\infty}{\gamma}\,\bigl(1 -
+   \mathrm{e}^{-\gamma t}\bigr) .
+   \label{eq:ne-drag-x}
+\end{equation}
+Two limits check this result. Long after release the exponential has
+died away and $x \approx v_\infty t - v_\infty/\gamma$: the bead sinks at
+its terminal velocity, but a fixed distance $v_\infty/\gamma$ behind
+where it would be had it moved at that velocity from the start, because
+it spent its first moments speeding up. For the example bead this lag is
+$1.961/5 = \SI{0.392}{\metre}$. Just after release, when $\gamma t$ is
+small, the exponential series with $s = -\gamma t$ gives
+$\mathrm{e}^{-\gamma t} = 1 - \gamma t + \tfrac12\gamma^2 t^2 +
+\order{t^3}$, so $1 - \mathrm{e}^{-\gamma t} = \gamma t - \tfrac12\gamma^2
+t^2 + \order{t^3}$, with $\order{t^3}$ as in
+\cref{sec:mo-taylor}, and substituting into
+\cref{eq:ne-drag-x},
+\begin{align*}
+   x(t) &= v_\infty t - \frac{v_\infty}{\gamma}\Bigl(\gamma t
+      - \tfrac12\gamma^2 t^2\Bigr) + \order{t^3}\\
+   &= v_\infty t - v_\infty t + \tfrac12 v_\infty\gamma\, t^2 + \order{t^3}
+      && \text{multiplying out the bracket}\\
+   &= \tfrac12 g t^2 + \order{t^3}
+      && \text{since $v_\infty\gamma = g$.}
+\end{align*}
+At first the bead is moving too slowly for the drag to matter, and it
+falls freely. For the example bead, after \SI{0.02}{\second} it has
+fallen \SI{1.898}{\milli\metre} against \SI{1.961}{\milli\metre} in free
+fall; after \SI{0.1}{\second}, \SI{41.79}{\milli\metre} against
+\SI{49.03}{\milli\metre}; and after a second, \SI{1.572}{\metre} against
+\SI{4.903}{\metre} (\cref{fig:ne-drag}b).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch02_newton/drag}
+\caption{Falling from rest with a drag proportional to the velocity. (a)
+Velocity for three drag rates $\gamma$, approaching the terminal velocity
+$v_\infty = g/\gamma$ (dotted), against free fall (dashed); dots mark $t
+= 1/\gamma$, where \SI{63}{\percent} of the terminal velocity is reached.
+(b) Distance fallen for $\gamma = \SI{5}{\per\second}$, which follows
+free fall at first and then the line $v_\infty(t - 1/\gamma)$.}
+\label{fig:ne-drag}
+\end{figure}
+
+\notebook{02}{change the mass and drag coefficient and watch the approach
+to terminal velocity}
+
+\begin{selfcheck}
+A bead is fired downwards into the honey faster than its terminal
+velocity. Does it speed up or slow down? Sketch its velocity against
+time.
+\end{selfcheck}

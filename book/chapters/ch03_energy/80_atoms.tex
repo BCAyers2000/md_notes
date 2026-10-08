@@ -1,0 +1,190 @@
+%=============================================================================!
+% 3.12  THE ENERGY OF ATOMS                                                   !
+%=============================================================================!
+\section{The energy of atoms}
+\label{sec:en-atoms}
+
+Every result of this chapter was found with boxes, beads and carts. This
+section carries them to atoms: it introduces the unit in which the
+energies of atoms are measured, converts the kinetic energy into the
+units of this book, and proves that Newton's laws conserve the total
+energy of any number of atoms whose forces come from a potential energy.
+
+\subsection*{The electronvolt}
+
+The joule is far too large a unit for a single atom. The lithium atom of
+\cref{sec:ne-atoms}, of mass $6.94\times\SI{1.66054e-27}{\kilogram} =
+\SI{1.1524e-26}{\kilogram}$, moving at \SI{1390}{\metre\per\second} after
+\SI{10}{\femto\second} under a force of \SI{1}{\electronvolt\per
+\angstrom}, has a kinetic energy of $\frac12\times1.1524\times10^{-26}
+\times1390^2 = \SI{1.113e-20}{\joule}$. Energies of atoms are therefore
+measured in electronvolts, the unit already used for forces in
+\cref{sec:ne-atoms}, with
+\begin{equation*}
+   \SI{1}{\electronvolt} = \SI{1.602176634e-19}{\joule}
+\end{equation*}
+exactly. The name comes from electricity, which this book does not need;
+the size of the unit in joules is fixed by the definition of the SI units,
+and only its size matters here. The lithium atom has $1.113\times10^{-20}/1.602\times
+10^{-19} = \SI{0.0695}{\electronvolt}$, and \cref{sec:ne-atoms} found
+that it had moved \SI{0.0695}{\angstrom}. The force of
+\SI{1}{\electronvolt\per\angstrom} has done
+$1\times0.0695 = \SI{0.0695}{\electronvolt}$ of work on it, equal to its
+kinetic energy, as the work-energy theorem requires.
+
+\subsection*{Kinetic energy in eV, \AA, fs and amu}
+
+With masses in atomic mass units and velocities in
+\si{\angstrom\per\femto\second}, the product $\frac12 mv^2$ comes out in
+\si{\amu\angstrom\squared\per\femto\second\squared}, which is not the
+electronvolt; Newton's law needed a conversion factor in
+\cref{sec:ne-atoms} for the same reason. We convert one unit of each
+kind. A mass of \SI{1}{\amu} is \SI{1.66053906892e-27}{\kilogram}, and a
+velocity of \SI{1}{\angstrom\per\femto\second} is $10^{-10}/10^{-15} =
+\SI{e5}{\metre\per\second}$, whose square is
+\SI{e10}{\metre\squared\per\second\squared}. Their product is, in joules,
+\begin{equation*}
+   \SI{1}{\amu\angstrom\squared\per\femto\second\squared}
+   = 1.66053906892\times10^{-27}\times10^{10}\,\si{\joule}
+   = \SI{1.66053906892e-17}{\joule} ,
+\end{equation*}
+since $-27 + 10 = -17$. Dividing by the size of an electronvolt in joules,
+\begin{equation*}
+   \frac{1.66053906892\times10^{-17}}{1.602176634\times10^{-19}}
+   = 1.036427\times10^{2} = 103.6427 ,
+\end{equation*}
+where $1.66053906892/1.602176634 = 1.036427$ and $10^{-17}/10^{-19} =
+10^{-17-(-19)} = 10^{2}$. Therefore
+\begin{equation}
+   \SI{1}{\amu\angstrom\squared\per\femto\second\squared}
+   = \SI{103.6427}{\electronvolt} ,
+   \qquad
+   K\,[\si{\electronvolt}] = \tfrac12\,m\,[\si{\amu}]\;
+   v^2\,[\si{\angstrom\squared\per\femto\second\squared}]
+   \times103.6427 .
+   \label{eq:en-mv2}
+\end{equation}
+This factor and the factor of Newton's law, \num{9.648533e-3}, are each
+other's inverse, $1/103.6427 = \num{9.648533e-3}$, and for a reason.
+\Cref{eq:en-mv2} says that one electronvolt is $1/103.6427$ of an
+\si{\amu\angstrom\squared\per\femto\second\squared}, so a force of
+\SI{1}{\electronvolt\per\angstrom}, divided by a mass of \SI{1}{\amu},
+is $(1/103.6427)\,\si{\amu\angstrom\squared\per\femto\second\squared}$
+divided by \si{\angstrom\amu}, which, cancelling the \si{\amu} and one
+\si{\angstrom}, is $(1/103.6427)\,\si{\angstrom\per\femto\second\squared}$:
+both factors
+express the electronvolt in atomic mass units, \aa ngstr\"oms and
+femtoseconds. In \texttt{mdlab} the kinetic-energy factor is
+\texttt{MV2\_TO\_EV}, computed from the CODATA values of the constants,
+and the Newton factor \texttt{FORCE\_TO\_ACCEL} is defined as its inverse,
+so the two can never disagree. The kinetic energy of a group of atoms is
+then a few lines.
+
+\begin{code}
+def kinetic_energy(masses: ArrayLike, velocities: ArrayLike) -> float:
+    masses = np.asarray(masses, dtype=float)
+    velocities = np.asarray(velocities, dtype=float)
+    speed_squared = np.sum(velocities**2, axis=-1)  # v · v, one per atom
+    if masses.ndim > 0 and masses.shape != speed_squared.shape:
+        raise ValueError("give one mass for each row of velocities")
+    in_amu_a2_per_fs2 = 0.5 * np.sum(masses * speed_squared)
+    return float(in_amu_a2_per_fs2) * units.MV2_TO_EV
+\end{code}
+
+The velocities arrive with one row per atom and one column per component,
+as the forces did in \cref{sec:ne-atoms}. Squaring the array squares every
+component, and adding along the last axis, \texttt{axis=-1}, adds the
+three squared components within each row, which is $\vb{v}_i\cdot
+\vb{v}_i$ for each atom $i$. The check applies when the masses come as a
+list, for which \texttt{masses.ndim}, the number of dimensions of the
+array, is 1: it stops the function with a message unless
+\texttt{masses.shape}, the length of each dimension, matches that of the
+squared speeds, one mass for each atom. A single number, which has no
+dimensions, skips the check and serves as the mass of every atom. Multiplying the masses by the squared
+speeds pairs each atom's mass with its own speed, the sum over atoms and
+the factor one half give $\sum_i\frac12 m_i v_i^2$ in
+\si{\amu\angstrom\squared\per\femto\second\squared}, and the last line
+converts to electronvolts. The lithium atom, which moves along a line
+and so has a velocity of one component, called as
+\texttt{kinetic\_energy(6.94, [0.0139])}, returns
+\SI{0.0695}{\electronvolt}.
+
+\subsection*{The potential energy of many atoms}
+
+For $N$ atoms the potential energy is a function of all their positions,
+$U(\vb{r}^N)$, a function of $3N$ coordinates. Chapter~8 shows where such
+functions come from; here we need only that the force on each atom is
+minus the gradient of $U$ with respect to that atom's own coordinates,
+\begin{equation}
+   \vb{F}_i = -\grad_i U
+   = -\Bigl(\frac{\partial U}{\partial x_i}, \frac{\partial U}{\partial
+   y_i}, \frac{\partial U}{\partial z_i}\Bigr) ,
+   \label{eq:en-force-atoms}
+\end{equation}
+where the subscript on $\grad_i$ says which atom's coordinates are
+differentiated, all the others held fixed. Everything in
+\cref{sec:en-paths,sec:en-gradient,sec:en-curl} carries over with $3N$
+coordinates in place of three: a path moves all the atoms at once, from
+one arrangement to another; the work done on them along it is the sum
+over atoms of $\vb{F}_i\cdot\Delta\vb{r}_i$ added over its short steps,
+and for these forces it is the drop in $U$ between the two
+arrangements.
+
+\begin{proposition}
+\label{prop:en-energy-atoms}
+Let $N$ atoms move according to Newton's second law, $m_i\,\dd\vb{v}_i/\dd
+t = \vb{F}_i$, with forces $\vb{F}_i = -\grad_i U(\vb{r}^N)$ from a
+potential energy that does not depend on time except through the
+positions. Then the total energy
+\begin{equation*}
+   E = \sum_{i=1}^{N}\tfrac12 m_i v_i^2 + U(\vb{r}^N)
+\end{equation*}
+is constant along every motion.
+\end{proposition}
+
+\begin{proof}
+By \cref{sec:en-varying}, applied to each atom, the kinetic energy changes
+at the rate $\dd K/\dd t = \sum_i\vb{F}_i\cdot\vb{v}_i$, where $K =
+\sum_i\frac12 m_i v_i^2$, the sum of the
+powers of the forces; this is where the second law enters. The gradient
+toolbox of \cref{sec:en-gradient}, with a step of $3N$ legs, one along
+each coordinate, in place of two, gives, grouping the legs atom by atom,
+\begin{equation*}
+   \Delta U \approx \sum_{i=1}^{N}\Bigl(\frac{\partial U}{\partial x_i}
+   \Delta x_i + \frac{\partial U}{\partial y_i}\Delta y_i
+   + \frac{\partial U}{\partial z_i}\Delta z_i\Bigr)
+   = \sum_{i=1}^{N}\grad_i U\cdot\Delta\vb{r}_i ,
+\end{equation*}
+and the chain rule along a path then reads
+\begin{equation*}
+   \frac{\dd U}{\dd t} = \sum_{i=1}^{N}\grad_i U\cdot\frac{\dd\vb{r}_i}{\dd
+   t} = -\sum_{i=1}^{N}\vb{F}_i\cdot\vb{v}_i .
+\end{equation*}
+The two rates cancel, so $\dd E/\dd t = 0$.
+\end{proof}
+
+A potential energy that depends only on the distance between two atoms,
+like the energy $\frac12 k\xi^2$ of the spring between the carts of
+\cref{sec:en-bodies}, is of this form, and \cref{ex:en-pair} shows that
+for it \cref{eq:en-force-atoms}
+produces the equal and opposite forces of the third law by itself.
+
+\Needspace{10\baselineskip}
+\begin{bridge}
+In Born--Oppenheimer molecular dynamics, $U(\vb{r}^N)$ is the
+ground-state energy of the electrons with the nuclei held at $\vb{r}^N$,
+plus the repulsion between the nuclei, and the forces are its negative
+gradient. The Hellmann--Feynman theorem supplies the part that comes from
+the explicit dependence of the Hamiltonian on the nuclear positions, and
+the Pulay terms add the part that comes from basis functions moving with
+the atoms. A force computed without the Pulay terms, or from an
+incompletely converged density, is not exactly $-\grad_i U$ of the energy
+reported with it, and \cref{sec:en-drift} shows what such a discrepancy
+does to the total energy.
+\end{bridge}
+
+\begin{selfcheck}
+An oxygen atom (\SI{15.999}{\amu}) moves at
+\SI{0.01}{\angstrom\per\femto\second}. What is its kinetic energy in
+electronvolts?
+\end{selfcheck}

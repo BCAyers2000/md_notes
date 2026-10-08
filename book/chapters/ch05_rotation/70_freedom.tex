@@ -1,0 +1,196 @@
+%=============================================================================!
+% 5.7  DEGREES OF FREEDOM                                                     !
+%=============================================================================!
+\section{Degrees of freedom}
+\label{sec:ro-freedom}
+
+The positions of $N$ atoms are $3N$ numbers, so a molecule can move in
+$3N$ independent ways, called its degrees of freedom. Some of these move
+the molecule as a whole, without changing any distance inside it. This
+section counts them, shows that they appear as zero frequencies among the
+normal modes of \cref{sec:os-modes}, and finds how many ways a molecule
+has left to vibrate.
+
+\subsection*{Counting}
+
+A rigid motion of the whole molecule is a drift in some direction, a
+combination of drifts along $x$, $y$ and $z$, three ways, plus a turning
+about some axis through the centre of mass, a combination of turnings
+about $x$, $y$ and $z$, three more. For a linear molecule, turning about
+its own line moves no atom (\cref{sec:ro-remove}), so it has only two.
+What is left changes the shape of the molecule:
+\begin{equation*}
+   3N - 6 \text{ internal degrees of freedom, or } 3N - 5
+   \text{ for a linear molecule.}
+\end{equation*}
+Water, with $N = 3$, has $9 - 6 = 3$, the two stretches and the bend of
+\cref{tab:os-vibrations}; carbon dioxide, linear, has $9 - 5 = 4$;
+methane, CH$_4$, has $15 - 6 = 9$, and benzene, C$_6$H$_6$, $36 - 6 =
+30$.
+
+\subsection*{Rigid motions as zero modes}
+
+Near its minimum the motion of a molecule is a sum of normal modes, with
+squared angular frequencies the eigenvalues of the mass-weighted Hessian
+(\cref{sec:os-modes}). A rigid motion stretches nothing, so we expect
+nothing to pull it back: a mode of zero frequency. We show this for a
+molecule held together by springs between pairs of atoms.
+
+\emph{The Hessian of one spring.} A spring of stiffness $k$ joins atoms $i$
+and $j$ and stores $\frac12 k(r_{ij} - d)^2$, with $d$ its natural
+length; we take every spring to be at its natural length at the minimum,
+$r_{ij} = d$, with $\vb{e} = (\vb{r}_j - \vb{r}_i)/d$ the unit vector along
+it. Displace the atoms by small amounts $\vb{q}_i$ and $\vb{q}_j$. The new
+separation is $(\vb{r}_j + \vb{q}_j) - (\vb{r}_i + \vb{q}_i) = d\,\vb{e} +
+\vb{q}_j - \vb{q}_i$, since $\vb{r}_j - \vb{r}_i = d\,\vb{e}$, and the new
+length is its length. For a vector $\vb{a}$ and a small vector $\vb{s}$ of
+length $s$, expand $\lvert\vb{a} + \vb{s}\rvert^2 = (\vb{a} + \vb{s})\cdot
+(\vb{a} + \vb{s})$ and set beside it the square of a guess for the length,
+chosen so that the first two terms agree:
+\begin{align*}
+   \lvert\vb{a} + \vb{s}\rvert^2
+   &= \lvert\vb{a}\rvert^2 + 2\,\vb{a}\cdot\vb{s} + s^2 ,\\
+   \Bigl(\lvert\vb{a}\rvert + \frac{\vb{a}\cdot\vb{s}}{\lvert\vb{a}\rvert}
+   \Bigr)^2
+   &= \lvert\vb{a}\rvert^2 + 2\,\vb{a}\cdot\vb{s}
+      + \frac{(\vb{a}\cdot\vb{s})^2}{\lvert\vb{a}\rvert^2} .
+\end{align*}
+The two squares differ by $s^2 - (\vb{a}\cdot\vb{s})^2/\lvert\vb{a}
+\rvert^2$, of order $s^2$ since $\lvert\vb{a}\cdot\vb{s}\rvert = \lvert
+\vb{a}\rvert s\,\lvert\cos\theta\rvert \le \lvert\vb{a}\rvert s$, with
+$\theta$ the angle between them. Two positive numbers
+$X$ and $Y$ differ by $(X^2 - Y^2)/(X + Y)$, and here $X + Y$ is close to
+$2\lvert\vb{a}\rvert$, so the numbers themselves differ by order $s^2$
+too:
+\begin{equation*}
+   \lvert\vb{a} + \vb{s}\rvert = \lvert\vb{a}\rvert
+   + \frac{\vb{a}\cdot\vb{s}}{\lvert\vb{a}\rvert} + \order{s^2} .
+\end{equation*}
+With $\vb{a} = d\,\vb{e}$ and $\vb{s} = \vb{q}_j - \vb{q}_i$, the stretch
+is $r_{ij} - d = \vb{e}\cdot(\vb{q}_j - \vb{q}_i) + \order{q^2}$, with $q$
+the size of the displacements. Squaring, the correction of order $q^2$
+appears only multiplied by $\vb{e}\cdot(\vb{q}_j - \vb{q}_i)$, of order
+$q$, or by itself, so the energy, to second order in the displacements,
+is
+\begin{equation*}
+   U = \tfrac12 k\,\bigl[\vb{e}\cdot(\vb{q}_j - \vb{q}_i)\bigr]^2 :
+\end{equation*}
+only the part of the relative displacement along the spring stretches it.
+By the chain rule, since $\vb{e}\cdot\vb{q}_j = \sum_b
+e_b(\vb{q}_j)_b$ with $(\vb{q}_j)_b$ the component $b$ of $\vb{q}_j$, $\partial U/
+\partial (\vb{q}_j)_a = ke_a\,\vb{e}\cdot(\vb{q}_j - \vb{q}_i)$ and $\partial U/
+\partial (\vb{q}_i)_a = -ke_a\,\vb{e}\cdot(\vb{q}_j - \vb{q}_i)$. Differentiating
+once more, $\partial^2U/\partial (\vb{q}_j)_a\partial (\vb{q}_j)_b = \partial^2U/
+\partial (\vb{q}_i)_a\partial (\vb{q}_i)_b = ke_ae_b$ and $\partial^2U/\partial (\vb{q}_i)_a
+\partial (\vb{q}_j)_b = -ke_ae_b$. The Hessian of the spring is made of these $3\times3$ blocks,
+and that of a molecule is the sum over its springs. The function
+\texttt{spring\_hessian} of \texttt{mdlab} builds it, and its tests check
+it against second differences of the energy.
+
+\emph{Rigid displacements cost no energy.} Move every atom by the same
+small vector $\vb{c}$: then $\vb{q}_j - \vb{q}_i = \vb{0}$ for every
+spring, and $U$ does not change. Turn the molecule through a small angle
+about an axis along the unit vector $\vb{n}$ through the origin: by
+\cref{eq:ro-rigid}, turning at the angular speed $\omega$ for a short time
+$t$ moves each atom by its velocity times $t$, $\vb{q}_i = \omega t\,\vb{n}
+\times\vb{r}_i = \theta\,\vb{n}\times\vb{r}_i$, with $\theta =
+\omega t$ the small angle turned. Then
+\begin{equation*}
+   \vb{e}\cdot(\vb{q}_j - \vb{q}_i)
+   = \theta\,\vb{e}\cdot\bigl(\vb{n}\times(\vb{r}_j - \vb{r}_i)\bigr)
+   = \theta d\,\vb{e}\cdot(\vb{n}\times\vb{e}) = 0 ,
+\end{equation*}
+since $\vb{n}\times\vb{e}$ is at right angles to $\vb{e}$. Again no spring
+is stretched. The force of a spring on atom $j$ is minus the derivative of
+its energy, by the chain rule $-k\,\vb{e}\,[\vb{e}\cdot(\vb{q}_j -
+\vb{q}_i)]$, and that on atom $i$ is its opposite, so for both kinds of
+rigid displacement every force vanishes. The force is
+$-\boldsymbol{\Phi}\vb{q}$ (\cref{sec:os-modes}), so $\boldsymbol{\Phi}
+\vb{q} = \vb{0}$. With $w_b = \sqrt{m_b}\,q_b$, where $a$ and $b$ now run
+over all $3N$ coordinates as in \cref{sec:os-modes}, row $a$ of the
+mass-weighted Hessian gives
+\begin{equation*}
+   \sum_b\frac{\Phi_{ab}}{\sqrt{m_am_b}}\,\sqrt{m_b}\,q_b
+   = \frac{1}{\sqrt{m_a}}\sum_b\Phi_{ab}\,q_b = 0 ,
+\end{equation*}
+cancelling $\sqrt{m_b}$: $\vb{w}$ is an eigenvector with eigenvalue zero, a
+normal mode of zero frequency (\cref{ex:ro-null} checks a case by hand).
+The three drifts and three turnings are independent, none a combination
+of the others, and a symmetric matrix has as many zero eigenvalues as it
+has independent vectors that it turns into zero (a general result we use
+without proof, like that of \cref{sec:os-modes}), so they give six zero
+modes, five for a linear molecule. The other $3N - 6$ ($3N - 5$)
+eigenvalues are positive only if every change of shape costs energy, as at
+the minimum of a real molecule.
+
+The same holds for any potential energy that does not change when the
+whole molecule is moved or turned, as for every isolated molecule,
+provided the atoms sit at a minimum. A moved or turned copy of the minimum
+is then a minimum too, where every force vanishes. A small rigid
+displacement $\eta\vb{u}$ lands within $\order{\eta^2}$ of
+such a copy, so the force there, $-\eta\boldsymbol{\Phi}\vb{u}$ to
+first order, is of order $\eta^2$; dividing by $\eta$ and
+letting $\eta$ shrink leaves $\boldsymbol{\Phi}\vb{u} = \vb{0}$.
+
+\subsection*{A spring model of water}
+
+Model water, at the measured geometry and with the masses of
+\cref{sec:ro-tensor}, by three springs: two O--H bonds of stiffness
+$k_{\mathrm{OH}}$, and an H--H spring of stiffness $k_{\mathrm{HH}}$ that
+stands in for the molecule's resistance to bending; without it the bend
+would cost no energy and give a seventh zero eigenvalue. Its Hessian is
+$9\times9$, and with the masses of the atoms \texttt{normal\_modes} gives
+nine eigenvalues. Six are zero to within the rounding error of the computer's
+arithmetic, which keeps about 16 significant figures, all
+below \SI{1e-15}{\per\femto\second\squared} against
+\SI{0.09}{\per\femto\second\squared} for the slowest vibration: the three
+drifts and the three turnings. In the antisymmetric
+stretch one hydrogen atom moves out as the other moves in, and the H--H
+distance does not change to first order, so $k_{\mathrm{OH}}$ alone sets
+its frequency. Choosing $k_{\mathrm{OH}} = \SI{48.48}{\electronvolt\per
+\angstrom\squared}$ to match the measured antisymmetric stretch of
+\cref{tab:os-vibrations}, and then $k_{\mathrm{HH}} =
+\SI{17.66}{\electronvolt\per\angstrom\squared}$ to match the bend, makes
+the other three eigenvalues 0.09028, 0.5006 and
+\SI{0.7338}{\per\femto\second\squared}; with $\omega$ the square root of
+each and $\tilde\nu = \omega/(2\pi c)$ from \cref{sec:os-molecules}, they
+are 1595, 3756 and \SI{4548}{\per\centi\metre}, the last, the symmetric
+stretch, \SI{24}{\percent} above the measured \SI{3657}{\per\centi
+\metre}. The count of modes is exact; their
+frequencies are only as good as the model, and three springs are a crude
+model of a molecule. A single spring between two atoms likewise gives five
+zero eigenvalues and one vibration.
+
+\Needspace{8\baselineskip}
+\begin{bridge}
+A vibrational analysis from electronic-structure calculations builds the
+Hessian, usually by finite differences of the forces, and diagonalises its
+mass-weighted form (\cref{sec:os-molecules}). The six rigid modes then come
+out close to zero but not at zero: the geometry is never exactly at the
+minimum, and the forces left over give the turnings a small stiffness of
+either sign; the finite differences add errors of their own; and a
+real-space integration grid is not quite unchanged when the atoms are
+moved or turned against it. The rigid motions can then be
+projected out of the Hessian before it is diagonalised, the matrix
+counterpart of the recipe of \cref{sec:ro-remove}.
+\end{bridge}
+
+The count returns in Chapter~12, which measures temperature by the kinetic
+energy shared among the degrees of freedom in which the atoms are free to
+move. A simulation that removes the drift has three fewer, and one of an
+isolated molecule that also removes the turning has six fewer, five if the
+molecule is linear.
+
+\begin{keyidea}
+A molecule of $N$ atoms has $3N$ degrees of freedom: three drifts, three
+turnings (two if it is linear) and $3N - 6$ ($3N - 5$) internal motions.
+The rigid motions stretch nothing, and appear as zero eigenvalues of the
+mass-weighted Hessian.
+\end{keyidea}
+
+\notebook{05}{the nine modes of the spring model of water}
+
+\begin{selfcheck}
+How many internal degrees of freedom has ethane, C$_2$H$_6$, and how many
+has acetylene, C$_2$H$_2$, whose four atoms lie on a line?
+\end{selfcheck}

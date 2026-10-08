@@ -1,0 +1,162 @@
+%=============================================================================!
+% 10.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:md-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:md-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~10 checks every numerical answer.
+
+\begin{exercise}[a large enough sample]
+\label{ex:md-surface}
+How many atoms must a cube of $n^3$ atoms hold before fewer than 1\% of
+them are on its surface?
+\end{exercise}
+
+\begin{exercise}[fractional coordinates in graphite]
+\label{ex:md-fractional}
+Graphite's cell has $\vb{a} = (a, 0, 0)$, $\vb{b} = (-\frac12a,
+\frac{\sqrt3}2a, 0)$ and $\vb{c} = (0, 0, c)$. Find the fractional
+coordinates of $\vb{r} = (\frac12a, \frac{\sqrt3}2a, \frac14c)$, and the
+position to which wrapping moves it.
+\end{exercise}
+
+\begin{exercise}[graphite's volume and widths]
+\label{ex:md-graphite}
+Show that graphite's cell has volume $\frac{\sqrt3}2a^2c$ and
+perpendicular widths $\frac{\sqrt3}2a$, $\frac{\sqrt3}2a$ and $c$, and
+evaluate them for $a = \SI{2.464}{\angstrom}$ and $c =
+\SI{6.711}{\angstrom}$.
+\end{exercise}
+
+\begin{exercise}[the primitive cell of a face-centred lattice]
+\label{ex:md-primitive}
+The face-centred cubic lattice also has a cell of one atom, with $\vb{a} =
+\frac12a_0(0, 1, 1)$, $\vb{b} = \frac12a_0(1, 0, 1)$ and $\vb{c} =
+\frac12a_0(1, 1, 0)$. Find its volume and its perpendicular widths, and
+the largest cutoff a single such cell allows for $a_0 =
+\SI{5.267}{\angstrom}$.
+\end{exercise}
+
+\begin{exercise}[rounding in a rectangular cell]
+\label{ex:md-round}
+In the cell with sides 2, 3 and \SI{4}{\angstrom} along the axes, find the
+nearest copy of $\vb{d} = (1.8, -2.9, 0.1)$\,\AA\ by rounding, and check
+that no other copy is shorter.
+\end{exercise}
+
+\begin{exercise}[a normalised Gaussian]
+\label{ex:md-normal}
+Show that $\int_{-\infty}^{\infty}\mathrm{e}^{-(x - x_0)^2/(2s^2)}\,\dd x
+= s\sqrt{2\pi}$ for any $x_0$ and any $s > 0$.
+\end{exercise}
+
+\begin{exercise}[the error function near zero]
+\label{ex:md-erf}
+From the Taylor series of $\mathrm{e}^{-u^2}$, show that
+$\operatorname{erf}(x) = (2/\sqrt\pi)(x - x^3/3 + \dotsb)$, and hence that
+$\operatorname{erf}(\alpha r)/r$ tends to $2\alpha/\sqrt\pi$ as $r \to 0$.
+\end{exercise}
+
+\begin{exercise}[waves that do not mix]
+\label{ex:md-orthogonal}
+Show that the average over one period $L$ of $\cos(2\pi mx/L)\cos(2\pi
+m'x/L)$, for $m$ and $m'$ among $0, 1, 2, \dots$ and not both zero, is
+$\frac12$ if $m = m'$ and zero if $m \neq m'$.
+\end{exercise}
+
+\begin{exercise}[graphite's reciprocal vectors]
+\label{ex:md-reciprocal}
+Show that the reciprocal vectors of graphite's cell are $\vb{a}^* =
+\frac{2\pi}{a}(1, \frac1{\sqrt3}, 0)$, $\vb{b}^* = \frac{2\pi}{a}(0,
+\frac2{\sqrt3}, 0)$ and $\vb{c}^* = \frac{2\pi}{c}(0, 0, 1)$, and find
+their lengths for $a = \SI{2.464}{\angstrom}$ and $c =
+\SI{6.711}{\angstrom}$.
+\end{exercise}
+
+\begin{exercise}[the Ewald forces]
+\label{ex:md-forces}
+Show that the reciprocal-space force on atom $i$ is
+\begin{equation*}
+   \vb{F}_i = \frac{4\pi k_{\mathrm e}}{V}\,q_i\sum_{\vb{G}\neq\vb{0}}
+   \frac{\mathrm{e}^{-G^2/(4\alpha^2)}}{G^2}\,\vb{G}\,\bigl[\mathcal{C}(\vb{G})
+   \sin(\vb{G}\cdot\vb{r}_i) - \mathcal{S}(\vb{G})\cos(\vb{G}\cdot\vb{r}_i)\bigr] ,
+\end{equation*}
+and that the real-space pair term $k_{\mathrm e}q_iq_j\operatorname{erfc}
+(\alpha r)/r$ has the slope $-k_{\mathrm e}q_iq_j[\operatorname{erfc}(\alpha
+r)/r + (2\alpha/\sqrt\pi)\,\mathrm{e}^{-\alpha^2r^2}]/r$.
+\end{exercise}
+
+\begin{exercise}[the waves of rock salt]
+\label{ex:md-rocksalt}
+Rock salt in its cubic cell of side 2, with $d = 1$, has cations at $(0,
+0, 0)$, $(0, 1, 1)$, $(1, 0, 1)$ and $(1, 1, 0)$ and anions shifted from
+them by $(1, 0, 0)$. Show that its waves are $\vb{G} = \pi(m_1, m_2,
+m_3)$, that $\mathcal{S}(\vb{G}) = 0$ for all of them, and that $\mathcal{C}(\vb{G}) = 8$
+when $m_1$, $m_2$ and $m_3$ are all odd and zero otherwise.
+\end{exercise}
+
+\begin{exercise}[the cost of Ewald]
+\label{ex:md-cost}
+At fixed density $\rho = N/V$, the real-space sum costs about $N$ times
+the number of copies within $r_{\mathrm c} \propto 1/\alpha$, and the
+reciprocal sum $N$ times the number of waves within $G_{\mathrm c}
+\propto \alpha$. Show that the cheapest $\alpha$ is proportional to
+$(N/V^2)^{1/6}$ and that the total cost then grows as $N^{3/2}$.
+\end{exercise}
+
+\begin{exercise}[choosing the Ewald parameters]
+\label{ex:md-parameters}
+For 1000 ions in a cubic cell of side \SI{30}{\angstrom}, with
+$\epsilon_{\mathrm E} = 10^{-6}$ and the real-space cutoff at half the
+side, find $\alpha$, $G_{\mathrm c}$ and roughly how many waves the
+reciprocal sum needs.
+\end{exercise}
+
+\begin{exercise}[neighbours in water]
+\label{ex:md-water}
+Liquid water holds about 0.0334 molecules per \AA$^3$. How many molecules
+lie within \SI{10}{\angstrom} of a given one?
+\end{exercise}
+
+\begin{exercise}[counting small cells]
+\label{ex:md-cells}
+With $r_{\mathrm c} + r_{\mathrm{skin}} = \SI{9.5}{\angstrom}$, how many small
+cells does a cell list use in cubes of side 40, 30 and
+\SI{25}{\angstrom}, and in which does \texttt{mdlab} test all pairs
+instead?
+\end{exercise}
+
+\begin{exercise}[how often to rebuild]
+\label{ex:md-rebuild}
+Argon atoms with \SI{0.0104}{\electronvolt} of kinetic energy each move
+at a root-mean-square speed $\sqrt{2K/m}$, with the factor of
+\cref{eq:en-mv2} to put it in \si{\angstrom\per\femto\second}. How many
+steps of
+\SI{10}{\femto\second} does such an atom take to move half a skin of
+\SI{1}{\angstrom}, and why does the run of \cref{sec:md-loop} rebuild its
+list about twice as often?
+\end{exercise}
+
+\begin{exercise}[no drift]
+\label{ex:md-drift}
+Show that subtracting $\vb{P}/M$ from every velocity leaves the total
+momentum zero, and that multiplying every velocity by one factor then
+keeps it zero.
+\end{exercise}
+
+\begin{exercise}[half the energy]
+\label{ex:md-half}
+A single harmonic vibration is started at its minimum with kinetic energy
+$K_0$. Show that its kinetic energy averages $\frac12K_0$ over a period.
+\end{exercise}
+
+\begin{exercise}[two femtoseconds]
+\label{ex:md-femtosecond}
+ASE's femtosecond differs from \texttt{mdlab}'s by 4.6 parts in $10^9$.
+Roughly how far apart would two runs of \SI{1000}{\femto\second} put an
+atom moving at \SI{0.0031}{\angstrom\per\femto\second}, and how does this
+compare with the $\num{1.6e-8}$\,\AA\ of \cref{sec:md-loop}?
+\end{exercise}

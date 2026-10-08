@@ -1,0 +1,344 @@
+%=============================================================================!
+% 4.9  COUPLED OSCILLATORS AND NORMAL MODES                                   !
+%=============================================================================!
+\section{Coupled oscillators and normal modes}
+\label{sec:os-modes}
+
+For small displacements from equilibrium, the forces in a molecule or
+crystal can be approximated by coupled springs. When one atom moves, its
+neighbours feel it, so the motion of one atom cannot be solved on its own.
+Within this harmonic approximation the system has simple collective
+motions, its normal modes, in which the atoms oscillate at a common
+angular frequency. Their sum describes a general motion of the coupled
+system. Finding the modes needs two new tools, matrices and their
+eigenvalues.
+
+\subsection*{Two coupled carts}
+
+Two carts of mass $m$ stand on a smooth track between two walls, each
+joined to its wall by a spring of stiffness $k$, and to each other by a
+third such spring; all three springs are at their natural lengths when
+the carts rest. Let $x_1$ and $x_2$ be the carts' displacements from rest.
+The left spring is stretched by $x_1$ and pulls cart 1 with $-kx_1$; the
+middle spring is stretched by $x_2 - x_1$ and pulls cart 1 forwards with
+$k(x_2 - x_1)$ and cart 2 backwards with $-k(x_2 - x_1)$; the right spring
+is squashed by $x_2$ and pushes cart 2 with $-kx_2$. Adding the forces on
+each cart,
+\begin{equation}
+   m\ddot{x}_1 = -2k\,x_1 + k\,x_2 , \qquad
+   m\ddot{x}_2 = k\,x_1 - 2k\,x_2 .
+   \label{eq:os-two-carts}
+\end{equation}
+Each equation contains both displacements: the carts are coupled. Started
+by pulling one cart aside, the swing passes back and forth between them
+(\cref{fig:os-modes}c), and neither moves as a single spring. A table of
+numbers organises such equations.
+
+\begin{toolbox}[Matrices]
+A matrix is a rectangular table of numbers. A square matrix $\vb{A}$
+with entries $A_{ab}$, in row $a$ and column $b$, acts on a vector
+$\vb{u} = (u_1, \dots, u_n)$ to give the vector $\vb{A}\vb{u}$ whose
+$a$th component is the scalar product of row $a$ with $\vb{u}$,
+\begin{equation*}
+   (\vb{A}\vb{u})_a = \sum_{b=1}^{n} A_{ab}\,u_b ;
+   \qquad\text{for example}\quad
+   \begin{pmatrix} 2 & -1\\ -1 & 2 \end{pmatrix}
+   \begin{pmatrix} u_1\\ u_2 \end{pmatrix}
+   = \begin{pmatrix} 2u_1 - u_2\\ -u_1 + 2u_2 \end{pmatrix} .
+\end{equation*}
+This product is linear: $\vb{A}(\vb{u} + \vb{w}) = \vb{A}\vb{u} +
+\vb{A}\vb{w}$ and $\vb{A}(c\vb{u}) = c\,\vb{A}\vb{u}$ for a
+number $c$, since each component is a sum of products. A number times a
+matrix multiplies every entry, so $(c\vb{A})\vb{u} = c\,(\vb{A}\vb{u})$.
+A diagonal matrix $\vb{B}$ has zeros everywhere off its diagonal, the
+entries $B_{aa}$ from top left to bottom right, so it multiplies each
+component by its own entry, $(\vb{B}\vb{u})_a = B_{aa}u_a$. A matrix with
+$A_{ab} = A_{ba}$ for every pair is symmetric, and the identity matrix
+$\vb{I}$, with ones on the diagonal and zeros elsewhere, leaves every
+vector unchanged, $\vb{I}\vb{u} = \vb{u}$.
+\end{toolbox}
+
+With the displacements as a vector $\vb{x} = (x_1, x_2)$,
+\cref{eq:os-two-carts} reads
+\begin{equation*}
+   m\ddot{\vb{x}} = -\boldsymbol{\Phi}\vb{x} , \qquad
+   \boldsymbol{\Phi} = k\begin{pmatrix} 2 & -1\\ -1 & 2 \end{pmatrix} .
+\end{equation*}
+The matrix $\boldsymbol{\Phi}$, called the force-constant matrix, is the
+table of second derivatives of the energy stored in the springs, $U =
+\frac12 kx_1^2 + \frac12 k(x_2 - x_1)^2 + \frac12 kx_2^2$. By the chain
+rule, $\partial U/\partial x_1 = kx_1 - k(x_2 - x_1) = 2kx_1 - kx_2$,
+minus the force on cart 1, so $\partial^2U/\partial x_1^2 = 2k$ and
+$\partial^2U/\partial x_2\partial x_1 = -k$, the first row of
+$\boldsymbol{\Phi}$; the second row follows in the same way. Such a table
+of all the second derivatives of an energy is called its Hessian, the
+table promised in \cref{sec:en-curl}, and the equality of mixed partial
+derivatives proved there makes it symmetric.
+
+\subsection*{Normal modes}
+
+Look for a motion in which both carts swing as sinusoids with the same
+angular frequency and phase, $\vb{x} = \vb{u}\cos(\omega t + \phi)$, with
+$\vb{u}$ a fixed vector, the pattern of the motion. Then $\ddot{\vb{x}} =
+-\omega^2\vb{x}$, and the equation of motion becomes $-m\omega^2\vb{u}
+\cos(\omega t + \phi) = -\boldsymbol{\Phi}\vb{u}\cos(\omega t + \phi)$, which holds
+at all times only if
+\begin{equation}
+   \boldsymbol{\Phi}\vb{u} = m\omega^2\,\vb{u} .
+   \label{eq:os-eigen}
+\end{equation}
+The matrix must turn the pattern into a multiple of itself. A motion of
+this kind is called a normal mode, and \cref{eq:os-eigen} is an eigenvalue
+problem.
+
+\begin{toolbox}[Eigenvalues and eigenvectors]
+A non-zero vector $\vb{u}$ with $\vb{A}\vb{u} = \lambda\vb{u}$ for some
+number $\lambda$ is an eigenvector of $\vb{A}$, and $\lambda$ its
+eigenvalue. For a $2\times2$ matrix with entries $a$, $b$ in the first
+row and $c$, $d$ in the second, the condition is the pair of equations
+\begin{equation*}
+   (a - \lambda)\,u_1 + b\,u_2 = 0 , \qquad
+   c\,u_1 + (d - \lambda)\,u_2 = 0 .
+\end{equation*}
+Multiply the first by $d - \lambda$ and the second by $b$, and subtract:
+the $u_2$ terms cancel, leaving $[(a - \lambda)(d - \lambda) - bc]\,u_1 =
+0$. Multiplying instead by $c$ and by $a - \lambda$ and subtracting leaves
+the same bracket times $u_2$. Since $u_1$ and $u_2$ are not both zero,
+the bracket must vanish:
+\begin{equation*}
+   (a - \lambda)(d - \lambda) - bc = 0 .
+\end{equation*}
+This quadratic equation, the characteristic equation, gives the
+eigenvalues, and putting each back into either of the pair gives its
+eigenvector, up to a factor: any multiple $c\vb{u}$ of an eigenvector is
+another, since $\vb{A}(c\vb{u}) = c\,\vb{A}\vb{u} = \lambda\,(c\vb{u})$.
+For a symmetric matrix, $c = b$, multiplying out gives $\lambda^2 - (a +
+d)\lambda + (ad - b^2) = 0$, whose discriminant, the quantity under the
+square root in the formula for the roots of a quadratic, is
+\begin{equation*}
+   (a + d)^2 - 4(ad - b^2) = a^2 - 2ad + d^2 + 4b^2 = (a - d)^2 + 4b^2 ,
+\end{equation*}
+expanding $(a + d)^2$ and collecting $2ad - 4ad = -2ad$. A sum of squares
+is never negative, so the eigenvalues are real. An $n\times
+n$ symmetric matrix likewise has $n$ real eigenvalues, with eigenvectors
+that can be chosen at right angles to one another; we use this general
+result without proof.
+\end{toolbox}
+
+For the carts, dividing \cref{eq:os-eigen} by $k$ gives the eigenvalue
+problem, with $\lambda = m\omega^2/k$, of the matrix with rows $(2, -1)$ and $(-1, 2)$, whose
+characteristic equation is $(2 - \lambda)^2 - 1 = 0$, so $2 - \lambda =
+\pm1$ and $\lambda = 1$ or 3.
+\begin{itemize}
+\item $\lambda = 1$: the first equation, $(2 - 1)u_1 - u_2 = 0$, gives
+   $\vb{u} = (1, 1)$. Both carts move together, the middle spring is never
+   stretched, and $\omega = \sqrt{k/m}$.
+\item $\lambda = 3$: $(2 - 3)u_1 - u_2 = 0$ gives $\vb{u} = (1, -1)$. The
+   carts move in opposite directions, and $\omega = \sqrt{3k/m}$.
+\end{itemize}
+With $m = \SI{1}{\kilogram}$ and $k = \SI{100}{\newton\per\metre}$ the
+two modes have $\omega = 10$ and $\SI{17.32}{\radian\per\second}$
+(\cref{fig:os-modes}a, b). The two patterns are at right angles,
+$(1, 1)\cdot(1, -1) = 0$.
+
+Because the equations are linear, a sum of normal modes is also a motion,
+as in \cref{sec:os-driven}. Any starting displacements split between the
+two patterns, $(x_1, x_2) = \frac12(x_1 + x_2)\,(1, 1) + \frac12(x_1 -
+x_2)\,(1, -1)$, and the starting velocities likewise, so an amplitude and
+a phase for each mode can match any starting state, and by the uniqueness
+of solutions (\cref{sec:ne-equations}) every motion of the carts is a sum
+of normal modes. (A mode with $\omega = 0$, met below, contributes a
+steady drift $(c_1 + c_2t)\,\vb{u}$ in place of a sinusoid.) Pulling cart
+1 out by \SI{4}{\centi\metre} and releasing both carts at rest starts the
+two modes equally, since $(4, 0) = 2\,(1, 1) + 2\,(1, -1)$, each at a
+turning point, with phase zero:
+\begin{equation*}
+   \vb{x}(t) = 2\,(1, 1)\cos 10t + 2\,(1, -1)\cos 17.32t
+   \quad\text{in centimetres.}
+\end{equation*}
+The fast mode gains on the slow one by $17.32 - 10 = 7.32$ radians every
+second. When it has gained $\pi$, its cosine is minus the slow one's, so
+cart 1 stands nearly still and cart 2 swings \SI{4}{\centi\metre} out;
+when it has gained $2\pi$ the two are back in step. The swing therefore
+passes from one cart to the other and back every $2\pi/7.32 =
+\SI{0.858}{\second}$ (\cref{fig:os-modes}c).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/modes}
+\caption{Two carts of \SI{1}{\kilogram} between walls, joined by three
+springs of \SI{100}{\newton\per\metre}. (a) The slow mode: both start
+\SI{2}{\centi\metre} out and swing together at
+\SI{10}{\radian\per\second}. (b) The fast mode: cart
+1 starts \SI{2}{\centi\metre} out one way and cart 2 \SI{2}{\centi\metre}
+the other, and they swing against each other at
+\SI{17.32}{\radian\per\second}. (c) Only cart 1 displaced: the sum of the
+two modes, in which the swing passes back and forth between the carts.
+Cart 1 is solid and cart 2 dashed, so both remain identifiable where
+they move together.}
+\label{fig:os-modes}
+\end{figure}
+
+\subsection*{Many atoms}
+
+Near a minimum of the potential energy $U(\vb{r}^N)$, let $q_1, \dots,
+q_n$, with $n = 3N$, be the displacements of the coordinates from the
+minimum. Along the straight line from the minimum in the direction of a
+displacement $\vb{q}$, the energy is $f(s) = U(\text{minimum} + s\vb{q})$.
+The chain rule along a path of \cref{sec:en-gradient}, with $\dd(\text{minimum} +
+s\vb{q})/\dd s = \vb{q}$, gives $f'(s) = \sum_a(\partial U/\partial
+q_a)\,q_a$. Each $\partial U/\partial q_a$ is itself a function of
+position, so the same rule gives its rate of change along the line as
+$\sum_b(\partial^2U/\partial q_b\,\partial q_a)\,q_b$, and since the $q_a$
+are fixed numbers,
+\begin{equation*}
+   f''(s) = \sum_a\sum_b\frac{\partial^2U}{\partial q_b\,\partial q_a}\,
+   q_aq_b = \sum_{a,b}\Phi_{ab}\,q_aq_b ,
+\end{equation*}
+where $\sum_{a,b}$ runs over every pair $a$, $b$, $n^2$ terms in all, and
+$\Phi_{ab} = \partial^2U/\partial q_a\partial q_b$, the same in either
+order (\cref{sec:en-curl}), is the Hessian. At the minimum $f'(0) = 0$, so
+the Taylor series of $f$ about $s = 0$, stopped after the term in $s^2$
+and taken at $s = 1$, gives
+\begin{equation*}
+   U = U_{\min} + \tfrac12\sum_{a,b} \Phi_{ab}\,q_a q_b + \order{q^3} ,
+\end{equation*}
+with $\Phi_{ab}$ taken at the minimum and $q$ the length of $\vb{q}$. The
+step $s = 1$ is not short, but by \cref{sec:mo-taylor} the error is at
+most the largest size of $f'''$ divided by $3! = 6$, and $f'''$, from the
+chain rule a third time, is a sum of third derivatives of $U$ times
+products of three components of $\vb{q}$, so the error shrinks as $q^3$.
+This is the many-dimensional version of \cref{sec:os-small}.
+
+The same expansion gives the test promised in \cref{sec:en-gradient}. Let
+$\vb{u}_1, \dots, \vb{u}_n$ be eigenvectors of $\boldsymbol{\Phi}$ of
+length 1, at right angles to one another, with eigenvalues $\lambda_1,
+\dots, \lambda_n$, and write a displacement as $\vb{q} = \sum_k
+c_k\vb{u}_k$. Since $\sum_{a,b}\Phi_{ab}q_aq_b = \vb{q}\cdot
+(\boldsymbol{\Phi}\vb{q})$, and $\vb{u}_k\cdot\vb{u}_l$ is 1 for $k = l$
+and 0 otherwise, the quadratic term is $\frac12\sum_k\lambda_k c_k^2$.
+Where the gradient vanishes, $U$ therefore has a minimum if every
+eigenvalue of $\boldsymbol{\Phi}$ is positive, a maximum if every one is
+negative, and a saddle point if there are some of each. Zero eigenvalues
+need separate attention: higher terms may decide the behaviour, or a
+symmetry may allow free motion, as in the translation below.
+
+Differentiating the expansion with respect to $q_c$, with the other
+displacements held fixed, the product rule gives each term $\Phi_{ab}q_aq_b$
+the derivative $\Phi_{cb}q_b$ if $a = c$, plus $\Phi_{ac}q_a$ if $b = c$,
+and nothing if neither index is $c$, so
+\begin{equation*}
+   \frac{\partial U}{\partial q_c}
+   = \tfrac12\sum_b \Phi_{cb}\,q_b + \tfrac12\sum_a \Phi_{ac}\,q_a
+   = \sum_b \Phi_{cb}\,q_b ,
+\end{equation*}
+the second step renaming $a$ as $b$ and using $\Phi_{bc} = \Phi_{cb}$.
+Neglecting terms of order $q^2$, the force is therefore $F_c = -\sum_b
+\Phi_{cb}q_b$, and Newton's law for each coordinate, $m_c\ddot{q}_c = F_c$,
+reads $\vb{M}\ddot{\vb{q}} = -\boldsymbol{\Phi}\vb{q}$, with $\vb{M}$ the
+diagonal matrix of the masses, each atom's mass appearing for its $x$,
+$y$ and $z$. A normal mode $\vb{q} = \vb{u}\cos(\omega t + \phi)$ now needs
+$\boldsymbol{\Phi}\vb{u} = \omega^2\vb{M}\vb{u}$. When the masses differ, this
+is not yet an eigenvalue problem of a symmetric matrix, but the
+substitution $w_a = \sqrt{m_a}\,u_a$ makes it one. The $a$th row reads
+$\sum_b \Phi_{ab}u_b = \omega^2 m_a u_a$; putting $u_b = w_b/\sqrt{m_b}$
+on the left and $m_au_a = \sqrt{m_a}\,w_a$ on the right, and dividing by
+$\sqrt{m_a}$,
+\begin{equation*}
+   \sum_b \frac{\Phi_{ab}}{\sqrt{m_a m_b}}\,w_b = \omega^2 w_a ,
+\end{equation*}
+the eigenvalue problem of the mass-weighted Hessian, which is symmetric.
+Its $n$ eigenvalues are the squared angular frequencies of the $n$ normal
+modes. The function \texttt{normal\_modes} of \texttt{mdlab} solves it with
+NumPy's routine for symmetric matrices, \texttt{eigh}:
+
+\begin{code}
+def normal_modes(
+    hessian: ArrayLike, masses: ArrayLike, *, force_to_accel: float
+) -> tuple[NDArray, NDArray]:
+    hessian = np.asarray(hessian, dtype=float)
+    root_m = np.sqrt(np.asarray(masses, dtype=float))
+    weighted = hessian / np.outer(root_m, root_m)  # Φ_ab / √(m_a m_b)
+    omega_squared, vectors = np.linalg.eigh(weighted)
+    modes = vectors / root_m[:, np.newaxis]  # w_a / √m_a back to u_a
+    return omega_squared * force_to_accel, modes
+\end{code}
+
+The lone \texttt{*} in the first line makes the argument after it a
+keyword argument, passed by name as \texttt{force\_to\_accel=1.0}.
+\texttt{np.outer(root\_m, root\_m)} is the table of products $\sqrt{m_a
+m_b}$, so the division forms the mass-weighted Hessian entry by entry;
+\texttt{eigh} returns its eigenvalues in increasing order and its
+eigenvectors as columns, each of length 1 and of either sign.
+\texttt{root\_m[:, np.newaxis]}, in which \texttt{:} takes the whole of
+the one dimension that \texttt{root\_m} has, is the column of the
+$\sqrt{m_a}$, as in \cref{sec:ne-atoms}, so the next division divides row
+$a$ by $\sqrt{m_a}$ and turns each $\vb{w}$ back into a pattern of
+displacements $\vb{u}$. The factor \texttt{force\_to\_accel} is 1 in SI
+units and the Newton factor \num{9.648533e-3} of \cref{sec:ne-atoms} for a
+Hessian in \si{\electronvolt\per\angstrom\squared} and masses in
+\si{\amu}, giving $\omega^2$ in \si{\per\femto\second\squared}, as for
+the lithium atom of \cref{sec:os-small}.
+
+\subsection*{A linear molecule of three atoms}
+
+A molecule like carbon dioxide, an oxygen atom on either side of a carbon
+atom in a line, can be modelled along its axis by two springs of
+stiffness $k$ between the three atoms, with masses $m_{\mathrm O}$,
+$m_{\mathrm C}$, $m_{\mathrm O}$. Its energy is $U = \frac12 k(x_2 -
+x_1)^2 + \frac12 k(x_3 - x_2)^2$, with no walls, and differentiating twice
+as for the carts gives a Hessian with rows $k(1, -1, 0)$, $k(-1, 2, -1)$
+and $k(0, -1, 1)$. It has three modes
+(\cref{fig:os-triatomic}). The first, $\vb{u} = (1, 1, 1)$, moves the whole
+molecule without stretching a spring, so $\boldsymbol{\Phi}\vb{u} =
+\vb{0}$ and $\omega = 0$: no force resists this pattern, and the molecule
+drifts along it at a steady velocity, a motion of the whole called a
+translation. In the second, $\vb{u} = (1, 0, -1)$, the
+carbon stays still while the oxygens move in and out together;
+$\boldsymbol{\Phi}\vb{u} = k(1, 0, -1)$ and $\vb{M}\vb{u} = (m_{\mathrm O}, 0,
+-m_{\mathrm O})$, so $\omega^2 = k/m_{\mathrm O}$. In the third, the oxygens
+move one way and the carbon the other, so that the centre of mass stays
+still, $m_{\mathrm O}u_1 + m_{\mathrm C}u_2 + m_{\mathrm O}u_3 = 0$ with
+$u_1 = u_3 = 1$, which gives $\vb{u} = (1, -2m_{\mathrm O}/m_{\mathrm C},
+1)$, and
+\cref{ex:os-triatomic} shows that $\omega^2 = (k/m_{\mathrm O})(1 +
+2m_{\mathrm O}/m_{\mathrm C})$. With $m_{\mathrm O} = \SI{15.999}{\amu}$ and
+$m_{\mathrm C} = \SI{12.011}{\amu}$, the third mode is faster than the
+second by $\sqrt{1 + 2\times15.999/12.011} = 1.914$, whatever $k$ is.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, scale=1.0,
+   disp/.style={-{Stealth[length=4pt]}, line width=0.9pt, accent}]
+   \foreach \row/\name/\uo/\uc/\ut in {0/translation/0.5/0.5/0.5,
+      1/symmetric stretch/0.5/0/-0.5, 2/antisymmetric stretch/0.3/-0.799/0.3} {
+      \begin{scope}[yshift=-\row*1.0cm]
+         \draw[black!40, line width=0.6pt] (0,0) -- (3.2,0);
+         \fill[black!25, draw=black, line width=0.4pt] (0,0) circle (0.2);
+         \fill[black!60, draw=black, line width=0.4pt] (1.6,0) circle (0.18);
+         \fill[black!25, draw=black, line width=0.4pt] (3.2,0) circle (0.2);
+         \ifdim \uo pt=0pt \else \draw[disp] (0,0.35) -- ++(\uo,0); \fi
+         \ifdim \uc pt=0pt \else \draw[disp] (1.6,0.35) -- ++(\uc,0); \fi
+         \ifdim \ut pt=0pt \else \draw[disp] (3.2,0.35) -- ++(\ut,0); \fi
+         \node[anchor=west] at (4.2,0) {\small \name};
+      \end{scope}
+   }
+   \node[below] at (0,-2.25) {\small O};
+   \node[below] at (1.6,-2.25) {\small C};
+   \node[below] at (3.2,-2.25) {\small O};
+\end{tikzpicture}
+\caption{The three normal modes of a linear O--C--O chain along its axis.
+Arrows show the pattern $\vb{u}$ of displacements, to scale within each
+mode. In the antisymmetric stretch the carbon moves $2m_{\mathrm O}/
+m_{\mathrm C} = 2.66$ times as far as each oxygen, in the opposite
+direction, so that the centre of mass stays still.}
+\label{fig:os-triatomic}
+\end{figure}
+
+\notebook{04}{animate the normal modes of the carts and the triatomic
+chain}
+
+\begin{selfcheck}
+In the slow mode of the two carts, why does the middle spring not affect
+the angular frequency?
+\end{selfcheck}

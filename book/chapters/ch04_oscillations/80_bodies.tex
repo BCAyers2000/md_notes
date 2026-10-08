@@ -1,0 +1,80 @@
+%=============================================================================!
+% 4.8  TWO BODIES AND THE REDUCED MASS                                        !
+%=============================================================================!
+\section{Two bodies and the reduced mass}
+\label{sec:os-bodies}
+
+So far one end of every spring has been fixed to a wall. Two atoms joined
+by a bond, or the two carts of Chapter~2, have no wall: both ends move.
+This section shows that their motion splits into a steady drift of the
+pair and an oscillation of the distance between them, with a mass smaller
+than either.
+
+\subsection*{The relative motion}
+
+Two bodies of masses $m_1$ and $m_2$, at positions $x_1 < x_2$ on a line,
+are joined by a spring of stiffness $k$ and natural length $\ell$. Its
+stretch is $x_2 - x_1 - \ell$, so it pulls the first body forwards and the
+second backwards with forces of size $k(x_2 - x_1 - \ell)$:
+\begin{equation*}
+   m_1\ddot{x}_1 = +k\,(x_2 - x_1 - \ell) , \qquad
+   m_2\ddot{x}_2 = -k\,(x_2 - x_1 - \ell) .
+\end{equation*}
+No external force acts along the line, so by \cref{sec:ne-bodies} the
+centre of mass moves at a constant velocity. For the separation $r = x_2 -
+x_1$, divide each equation by its mass and subtract the first from the
+second:
+\begin{align*}
+   \ddot{r} = \ddot{x}_2 - \ddot{x}_1
+   &= -\frac{k}{m_2}\,(r - \ell) - \frac{k}{m_1}\,(r - \ell)
+   = -k\Bigl(\frac{1}{m_1} + \frac{1}{m_2}\Bigr)(r - \ell) .
+\end{align*}
+Defining the reduced mass $m_{\mathrm r}$ by $1/m_{\mathrm r} = 1/m_1 + 1/m_2$, or, putting the
+fractions over a common denominator and inverting,
+\begin{equation}
+   m_{\mathrm r} = \frac{m_1 m_2}{m_1 + m_2} ,
+   \label{eq:os-reduced}
+\end{equation}
+the separation obeys $m_{\mathrm r}\ddot{r} = -k(r - \ell)$. Writing $s =
+r - \ell$ for the stretch, $\ddot{s} = \ddot{r}$ since $\ell$ is constant,
+so $m_{\mathrm r}\ddot{s} = -ks$: the stretch oscillates about zero like a
+single body of mass $m_{\mathrm r}$ on a spring fixed to a wall
+(\cref{sec:ne-spring}), with $\omega = \sqrt{k/m_{\mathrm r}}$.
+
+The carts of \cref{sec:ne-bodies}, of \SI{1}{\kilogram} and
+\SI{3}{\kilogram}, have $m_{\mathrm r} = 3/4 = \SI{0.75}{\kilogram}$, and with the
+spring of \SI{200}{\newton\per\metre} the separation would oscillate with
+$\omega = \sqrt{200/0.75} = \SI{16.33}{\radian\per\second}$. Released at
+rest with the spring compressed, the separation starts at a turning point
+and reaches the natural length a quarter of a period later, at
+$\frac14\times2\pi/\omega = \SI{0.0962}{\second}$. This is the moment,
+found in \cref{sec:ne-bodies} by computer, at which the spring fell away.
+
+\subsection*{Light partners do the moving}
+
+The reduced mass is smaller than either mass, since $m_{\mathrm r} =
+m_1\times m_2/(m_1 + m_2)$ with $m_2/(m_1 + m_2) < 1$, and likewise
+$m_{\mathrm r} = m_2\times m_1/(m_1 + m_2)$ with $m_1/(m_1 + m_2) < 1$. When one body is much heavier, it is close to
+the lighter mass: for an oxygen atom and a hydrogen atom,
+\begin{equation*}
+   m_{\mathrm r} = \frac{1.008\times15.999}{1.008 + 15.999} = \SI{0.9483}{\amu} ,
+\end{equation*}
+\SI{94}{\percent} of the hydrogen mass. For a molecule that is not drifting,
+the centre of mass stays still, so $m_{\mathrm H}x_{\mathrm H} + m_{\mathrm
+O}x_{\mathrm O}$ keeps its value and any changes obey $m_{\mathrm
+H}\,\Delta x_{\mathrm H} = -m_{\mathrm O}\,\Delta x_{\mathrm O}$: the
+hydrogen moves $15.999/1.008 = 15.9$ times as far as the oxygen, the other
+way: the vibration
+of an O--H bond is mostly the hydrogen atom moving against an almost still
+partner. For the same spring, a smaller mass means a higher frequency,
+$\omega = \sqrt{k/m_{\mathrm r}}$, which is why bonds to hydrogen vibrate fastest
+(\cref{sec:os-molecules}). For two atoms in a Morse or Lennard-Jones well
+(\cref{sec:os-anharmonic}), the same argument applies with $r$ the
+distance between them and $m_{\mathrm r}$ in place of $m$, for motion
+along their line of centres without rotation.
+
+\begin{selfcheck}
+Two equal masses $m$ are joined by a spring of stiffness $k$. What is the
+reduced mass, and with what angular frequency does the separation
+oscillate?
+\end{selfcheck}

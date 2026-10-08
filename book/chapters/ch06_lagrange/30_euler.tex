@@ -1,0 +1,168 @@
+%=============================================================================!
+% 6.3  THE EULER-LAGRANGE EQUATION                                            !
+%=============================================================================!
+\section{The Euler--Lagrange equation}
+\label{sec:la-euler}
+
+Hamilton's principle picks out the true path among all paths with the
+same ends. This section turns it into an equation that the true path
+obeys at every instant, using two tools, and shows that for a body moving
+in a potential the equation is Newton's second law.
+
+\begin{toolbox}[Integration by parts]
+The product rule, $(fg)' = f'g + fg'$, integrated from $a$ to $b$ by the
+fundamental theorem of calculus (\cref{sec:mo-integrating}), gives
+$[fg]_a^b = \int_a^b f'g\,\dd t + \int_a^b fg'\,\dd t$, where $[fg]_a^b =
+f(b)g(b) - f(a)g(a)$, so
+\begin{equation*}
+   \int_a^b f\,g'\,\dd t = \bigl[fg\bigr]_a^b - \int_a^b f'\,g\,\dd t :
+\end{equation*}
+an integral of $f$ times the derivative of $g$ becomes one of the
+derivative of $f$ times $g$, at the cost of the bracket. For example,
+with $f = t$ and $g = \sin t$, so that $f' = 1$ and $g' = \cos t$,
+\begin{equation*}
+   \int_0^{\pi/2} t\cos t\,\dd t = \Bigl[t\sin t\Bigr]_0^{\pi/2}
+   - \int_0^{\pi/2}\sin t\,\dd t = \frac{\pi}{2} - \Bigl[-\cos t
+   \Bigr]_0^{\pi/2} = \frac{\pi}{2} - 1 ,
+\end{equation*}
+since $\sin\frac{\pi}{2} = 1$ and $\sin 0 = 0$, and $-\cos t$, whose
+derivative is $\sin t$, rises from $-1$ to 0.
+\end{toolbox}
+
+\subsection*{The first-order change of the action}
+
+Change the path $q(t)$ to $q(t) + \zeta\eta(t)$, with $\eta$ any smooth
+function that is zero at both ends, $\eta(t_1) = \eta(t_2) = 0$, so that
+the changed path keeps the same ends. At each instant the Lagrangian
+changes from $\Lag(q, \dot{q})$ to $\Lag(q + \zeta\eta, \dot{q} +
+\zeta\dot\eta)$.
+
+\begin{toolbox}[The first-order change of a function of a path]
+Read $\Lag(q + \zeta\eta, \dot{q} + \zeta\dot\eta)$, at a fixed instant,
+as a function of $\zeta$ alone: as $\zeta$ grows from 0, the point $(q +
+\zeta\eta, \dot q + \zeta\dot\eta)$ moves in a straight line in the
+plane of the two variables of $\Lag$, changing at the rate $(\eta, \dot
+\eta)$ per unit of $\zeta$: at a fixed instant $\eta$ and $\dot\eta$ are
+two fixed numbers, and $\zeta$ plays the part that time played in
+\cref{sec:en-gradient}.
+The chain rule along a path of \cref{sec:en-gradient}, $\dd\Lag/\dd\zeta
+= \grad\Lag\cdot(\eta, \dot\eta)$, gives at $\zeta = 0$
+\begin{equation*}
+   \frac{\dd\Lag}{\dd\zeta} = \frac{\partial\Lag}{\partial q}\,\eta
+   + \frac{\partial\Lag}{\partial\dot{q}}\,\dot\eta ,
+\end{equation*}
+where $\partial\Lag/\partial\dot q$ is the partial derivative with respect
+to the second variable, the first held fixed (\cref{sec:en-gradient}).
+At a single instant $q$ and $\dot q$ are two numbers, and $\Lag$ is an
+ordinary function of the two, like the height $h(x, y)$ of a map; holding
+$q$ fixed here does not make $\dot q$ zero, because the link between them,
+that $\dot q$ is the rate of change of $q$, appears only once a whole path
+is put in. By
+the Taylor series (\cref{sec:mo-taylor}), $\Lag$ at $\zeta$ is $\Lag$ at 0
+plus $\zeta$ times this, plus a remainder no larger than a
+constant times $\zeta^2$.
+\end{toolbox}
+
+Integrating over the path, these remainders add up to at most $(t_2 -
+t_1)$ times the largest such constant times $\zeta^2$, still of order
+$\zeta^2$, so the action changes by
+\begin{equation*}
+   \Act(\zeta) - \Act(0) = \zeta\int_{t_1}^{t_2}\Bigl(\frac{\partial\Lag}
+   {\partial q}\,\eta + \frac{\partial\Lag}{\partial\dot{q}}\,\dot\eta
+   \Bigr)\dd t + \order{\zeta^2} .
+\end{equation*}
+
+The integral multiplying $\zeta$ contains both $\eta$ and $\dot\eta$. Along
+the path, $\partial\Lag/\partial\dot{q}$ takes one value at each instant,
+found by putting that instant's $q(t)$ and $\dot{q}(t)$ into it, so it is
+a function of $t$ alone; its rate of change with time is written
+$\dd(\partial\Lag/\partial\dot{q})/\dd t$, with an ordinary $\dd$
+because nothing is now held fixed (for $\Lag = \frac12 m\dot{x}^2 - U$
+below it is $\dd(m\dot{x})/\dd t = m\ddot{x}$). Integrating the second
+term by parts, with $f = \partial\Lag/\partial\dot{q}$ and $g = \eta$,
+\begin{equation*}
+   \int_{t_1}^{t_2}\frac{\partial\Lag}{\partial\dot{q}}\,\dot\eta\,\dd t
+   = \Bigl[\frac{\partial\Lag}{\partial\dot{q}}\,\eta\Bigr]_{t_1}^{t_2}
+   - \int_{t_1}^{t_2}\frac{\dd}{\dd t}\Bigl(\frac{\partial\Lag}
+   {\partial\dot{q}}\Bigr)\,\eta\,\dd t ,
+\end{equation*}
+and the bracket is zero, because $\eta$ is zero at both ends. Putting what
+is left in place of the second term, and gathering the two integrals into
+one, since both contain the factor $\eta$,
+\begin{equation*}
+   \Act(\zeta) - \Act(0) = \zeta\int_{t_1}^{t_2}\Bigl[\frac{\partial\Lag}
+   {\partial q} - \frac{\dd}{\dd t}\Bigl(\frac{\partial\Lag}
+   {\partial\dot{q}}\Bigr)\Bigr]\eta\,\dd t + \order{\zeta^2} .
+\end{equation*}
+
+\subsection*{The equation}
+
+For the action to be stationary, its change must be of order $\zeta^2$
+(\cref{sec:la-action}), so the term in $\zeta$ must vanish for every bump
+$\eta$. Call the square bracket $B(t)$. If $B$ were positive at
+some instant $t^*$, it would be positive on a short interval around
+$t^*$, since it changes smoothly; choose $\eta$ positive on that interval
+and zero everywhere else, such as $\eta = \sin^2 u$ with $u = \pi(t -
+a)/(b - a)$ between the ends $a$ and $b$ of the interval, whose slope
+$(2\pi/(b - a))\sin u\cos u$ is zero at both ends, so that it joins the
+zero outside smoothly; the integral of $B\eta$ is positive, not
+zero. The same argument rules out a negative $B$. So $B(t) = 0$ at every
+instant:
+\begin{equation}
+   \frac{\dd}{\dd t}\Bigl(\frac{\partial\Lag}{\partial\dot{q}}\Bigr)
+   = \frac{\partial\Lag}{\partial q} .
+   \label{eq:la-euler}
+\end{equation}
+This is the Euler--Lagrange equation. Conversely, on a path that obeys it
+at every instant $B = 0$, so the term in $\zeta$ vanishes for every bump:
+the equation and Hamilton's principle pick out the same paths. A system
+with several generalised coordinates has one such equation for each, $\dd(\partial\Lag/\partial
+\dot{q}_k)/\dd t = \partial\Lag/\partial q_k$, since each coordinate can
+be given its own bump while the others are left alone.
+
+\subsection*{Newton's law again}
+
+For a body on a line in a potential energy $U(x)$, $\Lag = \frac12 m
+\dot{x}^2 - U(x)$. The partial derivatives are $\partial\Lag/\partial
+\dot{x} = m\dot{x}$, with $x$ held fixed, and $\partial\Lag/\partial x =
+-U'(x)$, with $\dot{x}$ held fixed, so \cref{eq:la-euler} reads
+\begin{equation*}
+   \frac{\dd}{\dd t}\bigl(m\dot{x}\bigr) = -U'(x) ,
+   \qquad\text{that is}\qquad m\ddot{x} = F(x) ,
+\end{equation*}
+Newton's second law with the force $F = -U'$ of \cref{sec:en-potential}.
+For the thrown ball, $U = mgx$, so $B = -mg - m\ddot{x}$, which is zero on
+the true path, where $\ddot{x} = -g$. The middle integral of
+\cref{sec:la-action} is the term in $\zeta$ above, which by parts is $\int
+B\eta\,\dd t$, and this is why it vanished. For $N$ atoms with
+$\Lag = \sum_i\frac12 m_i\lvert\dot{\vb{r}}_i\rvert^2 - U(\vb{r}^N)$, the
+$3N$ equations are $m_i\ddot{\vb{r}}_i = -\grad_iU$, the equations of
+motion of \cref{sec:en-atoms}. Hamilton's principle therefore contains
+Newton's laws for every system whose forces come from a potential energy,
+and from here on either can be used.
+
+\Needspace{10\baselineskip}
+\begin{bridge}
+The Euler--Lagrange equation is the condition that a functional, a number
+computed from a whole function, be stationary: the bracket $\partial\Lag/
+\partial q - \dd(\partial\Lag/\partial\dot{q})/\dd t$ is the functional
+derivative $\delta\Act/\delta q(t)$. It is the same operation as the
+derivative $\delta E[n]/\delta n(\vb{r})$ of the density functional with
+respect to the electron density; setting it equal to a Lagrange
+multiplier that holds the number of electrons fixed gives the Euler
+equation of density-functional theory, $\delta E/\delta n(\vb{r}) = \mu$,
+with the chemical potential $\mu$ as the
+multiplier\cite{Parr1978} (\cref{sec:la-multipliers}).
+\end{bridge}
+
+\begin{keyidea}
+Hamilton's principle holds for a path exactly when, at every instant,
+$\dd(\partial\Lag/\partial\dot{q}_k)/\dd t = \partial\Lag/\partial q_k$
+for each generalised coordinate. For forces from a potential this is
+Newton's second law.
+\end{keyidea}
+
+\begin{selfcheck}
+Write down the Euler--Lagrange equation for a block on a spring, $\Lag =
+\frac12 m\dot{x}^2 - \frac12 kx^2$.
+\end{selfcheck}

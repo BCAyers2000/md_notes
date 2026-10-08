@@ -1,0 +1,139 @@
+%=============================================================================!
+% 11.4  MULTIPLE TIME STEPS                                                   !
+%=============================================================================!
+\section{Multiple time steps}
+\label{sec:cs-respa}
+
+Constraints remove the fast motions. A second route keeps every motion
+and recognises that the forces behind them differ, in how fast they change
+and in what they cost. In the flexible water of \cref{sec:cs-water}, the
+springs inside each molecule change over the \SI{7.33}{\femto\second}
+period of its fastest vibration and cost almost nothing to compute: one
+call for all 64 molecules takes \SI{0.04}{\milli\second}. The
+Lennard-Jones and Ewald forces between molecules change mainly as whole
+molecules move and turn, and one call takes between 23 and
+\SI{26}{\milli\second} in our measurements, some 600 times as long. Velocity Verlet
+computes both at every step of \SI{0.41}{\femto\second}. This section
+builds a method that computes the costly forces less often.
+
+\subsection*{A splitting within a splitting}
+
+\Cref{sec:in-splitting} split the Liouville operator into a part
+$\Liou_{\mathrm r}$ that moves the positions and a part $\Liou_{\mathrm
+p}$ that moves the momenta by the forces. The forces are a sum, fast plus
+slow, $\vb{F}_i = \vb{F}_i^{\mathrm f} + \vb{F}_i^{\mathrm s}$, and since
+$\Liou_{\mathrm p}A = \sum_i\vb{F}_i\cdot\grad_{\vb{p}_i}A$ contains each
+force to the first power, it splits in the same way, $\Liou_{\mathrm p} =
+\Liou_{\mathrm p}^{\mathrm f} + \Liou_{\mathrm p}^{\mathrm s}$, each part a
+kick by its own forces alone. The derivation of \cref{eq:in-trotter}
+used nothing about $X$ and $Y$ beyond keeping the order of their products,
+so with $X = \Liou_{\mathrm p}^{\mathrm s}$ and $Y = \Liou_{\mathrm r} +
+\Liou_{\mathrm p}^{\mathrm f}$ it gives
+\begin{equation*}
+   \mathrm{e}^{\dt\Liou} = \mathrm{e}^{\frac12\dt\Liou_{\mathrm p}^{\mathrm s}}
+   \,\mathrm{e}^{\dt(\Liou_{\mathrm r} + \Liou_{\mathrm p}^{\mathrm f})}\,
+   \mathrm{e}^{\frac12\dt\Liou_{\mathrm p}^{\mathrm s}} + \order{\dt^3} :
+\end{equation*}
+half a kick by the slow forces, the motion for $\dt$ under the fast forces
+alone, and half a kick by the slow forces. The middle factor is the
+motion of a system with only the cheap forces, which $n$ velocity Verlet
+steps of $\dt/n$ follow,
+\begin{equation*}
+   \mathrm{e}^{\dt(\Liou_{\mathrm r} + \Liou_{\mathrm p}^{\mathrm f})}
+   = \Bigl(\mathrm{e}^{\frac{\dt}{2n}\Liou_{\mathrm p}^{\mathrm f}}\,
+   \mathrm{e}^{\frac{\dt}{n}\Liou_{\mathrm r}}\,
+   \mathrm{e}^{\frac{\dt}{2n}\Liou_{\mathrm p}^{\mathrm f}}\Bigr)^n
+   + \order{\dt^3/n^2} ,
+\end{equation*}
+the error of $n$ steps each in error by order $(\dt/n)^3$, $n(\dt/n)^3
+= \dt^3/n^2$ in all. The outer
+step is $\dt$, taken with one call of the slow forces; the inner step is
+$\dt/n$, taken $n$ times with one call of the fast forces each. Every factor is a
+kick or a drift, so the product, like velocity Verlet, keeps the full
+symplectic condition (\cref{sec:in-reversal}), and since it reads the same
+from either end, reversing the velocities and stepping again undoes it
+factor by factor, as for velocity Verlet in \cref{sec:in-reversal}: it is
+reversible. Tuckerman, Berne and Martyna derived the
+method in this way, as the reversible reference system propagator
+algorithm, RESPA\cite{Tuckerman1992}. With $n = 1$ it is velocity Verlet
+with the two forces added (\cref{ex:cs-respa-one}).
+
+The function \texttt{respa\_step} of \texttt{mdlab.respa} is the outer
+step:
+\begin{code}
+    v += 0.5 * dt * force_to_accel * np.asarray(slow_forces) / m
+    u_fast = 0.0
+    for _ in range(n_inner):
+        v += 0.5 * h * force_to_accel * f_fast / m
+        r += h * v
+        u_fast, f_fast = fast(r)
+        v += 0.5 * h * force_to_accel * f_fast / m
+    u_slow, f_slow = slow(r)
+    v += 0.5 * dt * force_to_accel * f_slow / m
+\end{code}
+\noindent where \texttt{h} is the inner step $\dt/n$ and \texttt{f\_fast}
+holds the fast forces at the start of the step, passed in from the step
+before. Its test checks
+that with one inner step it gives the
+positions and velocities of velocity Verlet to $10^{-12}$. For water,
+\texttt{WaterModel} supplies the two parts: \texttt{intramolecular}, the
+springs, as the fast forces, and \texttt{intermolecular}, Lennard-Jones
+and Ewald, as the slow ones.
+
+\subsection*{What it buys}
+
+\Cref{fig:cs-respa} runs the flexible box with inner steps of
+\SI{0.25}{\femto\second}, at which velocity Verlet alone keeps the energy
+fluctuation at 0.36\% of the kinetic energy's, and outer steps from
+\SI{0.25}{\femto\second} to \SI{4.5}{\femto\second}. At an outer step of
+\SI{1}{\femto\second} the fluctuation is 1.8\%, where velocity Verlet at
+the same step gives 6.7\%. At the 1\% level RESPA reaches an outer step
+of \SI{0.72}{\femto\second} against velocity Verlet's
+\SI{0.41}{\femto\second}, 1380 calls of the slow forces per picosecond
+against 2430 (from the steps before rounding), a factor of 1.76; at 2\% the factor is 1.82
+(\cref{fig:cs-respa}b). Since the slow forces take nearly all the time,
+the run is faster by close to that factor.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/respa}
+\caption{Multiple time steps for 64 molecules of flexible water: the
+springs are the fast forces, followed with inner steps of
+\SI{0.25}{\femto\second}; Lennard-Jones and Ewald forces are the slow
+ones, applied once per outer step $\dt$. (a) The standard deviation of the
+total energy over that of the kinetic energy, against $\dt$, for RESPA
+and for velocity Verlet taking all forces at every step $\dt$ (dashed);
+dotted, a quarter, a third and a half of the period $\mathcal{T} =
+\SI{7.33}{\femto\second}$ of the fastest vibration, and half the next,
+$\mathcal{T}' = \SI{8.88}{\femto\second}$. (b) The same fluctuation
+against the number of calls of the slow forces per picosecond, which sets
+the cost of a run.}
+\label{fig:cs-respa}
+\end{figure}
+
+The gain stops early. Beyond an outer step of about
+\SI{1.8}{\femto\second}, a quarter of the fastest period, the fluctuation
+climbs much faster than $\dt^2$, to 8.8\% at \SI{2}{\femto\second} and
+43\% at \SI{3}{\femto\second}, and the run blows up at
+\SI{4.5}{\femto\second}. Following the fast motion more closely does not
+help: inner steps of \SI{0.125}{\femto\second} with an outer step of
+\SI{2}{\femto\second} give 10.4\%, no better than 8.8\%. What fails is
+the outer step itself, and \cref{sec:cs-resonance} finds why.
+
+\begin{keyidea}
+RESPA splits the forces into fast and slow parts and the Liouville
+operator with them: half a kick by the slow forces, $n$ velocity Verlet
+steps of $\dt/n$ under the fast forces alone, and half a kick by the slow
+forces. It is reversible and symplectic. On flexible water it cuts the
+calls of the costly forces by a factor of about 1.8 at equal accuracy, and
+fails beyond outer steps of about a quarter of the fastest period.
+\end{keyidea}
+
+\notebook{11}{split the forces of water and choose the outer step}
+
+\begin{selfcheck}
+With \SI{24}{\milli\second} and \SI{0.04}{\milli\second} per call, about how long does one picosecond of
+flexible water take by velocity Verlet at \SI{0.41}{\femto\second}, and by
+RESPA at an outer step of \SI{0.72}{\femto\second} with three inner
+steps?
+\end{selfcheck}

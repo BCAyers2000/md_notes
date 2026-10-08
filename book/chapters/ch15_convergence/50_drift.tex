@@ -1,0 +1,181 @@
+%=============================================================================!
+% 15.5  A SLOW DRIFT                                                          !
+%=============================================================================!
+\section{A slow drift}
+\label{sec:cv-drift}
+
+A run can settle and still not hold still. An integration step that is too
+long lets the total energy creep, a thermostat set to the wrong target
+moves the temperature slowly, and a transient that discarding the start
+found in \cref{sec:cv-equilibration} did not remove leaves a slow slope. Each is a
+trend under the fluctuations, and this section fits a straight line to a
+run to find it, with an error that accounts for the run's memory.
+
+\subsection*{A tyre that may be leaking}
+
+A bicycle tyre is checked with a gauge every morning for a month. The
+gauge scatters by \SI{0.05}{bar} from reading to reading, and a slow leak
+of \SI{0.01}{bar} a day hides under that scatter from one day to the
+next, but not over thirty days. The straight line that passes closest to
+the thirty readings finds it, and the toolbox gives that line and the
+error of its slope.
+
+\begin{toolbox}[A straight line through scattered points]
+Readings $A_i$ at the times $t_i$, $i = 1, \dots, n$, are to be described by
+$A \approx a + \dot A\,(t - \bar t)$, with $\bar t$ the mean time. The line
+of least squares chooses $a$ and the slope $\dot A$ to make the sum of
+squared misses $S_{\mathrm m} = \sum_i\bigl[A_i - a - \dot A(t_i - \bar
+t)\bigr]^2$ as small as it can be, where its rates of change with $a$ and
+with $\dot A$ both vanish. With respect to $a$,
+\begin{equation*}
+   \frac{\partial S_{\mathrm m}}{\partial a} = -2\sum_i\bigl[A_i - a - \dot A(t_i -
+   \bar t)\bigr] = -2\Bigl(n\bar A - na - \dot A\cdot0\Bigr) = 0 ,
+\end{equation*}
+since the deviations $t_i - \bar t$ add to zero, so $a = \bar A$. With
+respect to $\dot A$, multiplying each miss by $t_i - \bar t$,
+\begin{equation*}
+   \frac{\partial S_{\mathrm m}}{\partial\dot A} = -2\sum_i(t_i - \bar t)\bigl[A_i -
+   \bar A - \dot A(t_i - \bar t)\bigr] = 0 , \qquad
+   \dot A = \frac{\sum_i(t_i - \bar t)(A_i - \bar A)}{S_{tt}} ,
+\end{equation*}
+with $S_{tt} = \sum_i(t_i - \bar t)^2$. The slope is a weighted sum of the
+readings, $\dot A = \sum_iw_iA_i$ with $w_i = (t_i - \bar t)/S_{tt}$, since
+$\sum_iw_i\bar A = 0$. If the misses about the true line are independent
+with variance $\sigma_{\mathrm m}^2$, the variances of the terms add, and a
+constant factor $w_i$ multiplies a variance by $w_i^2$
+(\cref{sec:cv-mean}), so
+\begin{equation*}
+   \operatorname{var}(\dot A) = \sigma_{\mathrm m}^2\sum_iw_i^2
+   = \frac{\sigma_{\mathrm m}^2}{S_{tt}^2}\sum_i(t_i - \bar t)^2
+   = \frac{\sigma_{\mathrm m}^2}{S_{tt}} .
+\end{equation*}
+$\sigma_{\mathrm m}^2$ is estimated from the misses about the fitted line, their sum
+of squares divided by $n - 2$, since two quantities have been fitted to
+the same readings; for the thousands of samples of a run the difference
+from $n$ is negligible.
+\end{toolbox}
+
+For thirty daily readings $S_{tt} = \SI{2247.5}{\day\squared}$, so the
+slope is known to $0.05/\sqrt{2247.5} = 0.00105$\,bar a day. One
+month of readings drawn by computer with the leak gives $\dot A =
+(-0.0109 \pm 0.0012)$\,bar a day, nine errors from zero (the
+misses of this month scatter by \SI{0.057}{bar}, hence 0.0012 rather than
+0.00105): the leak is certain, though no single day shows it.
+
+\subsection*{The slope of a correlated series}
+
+The samples of a run are correlated, and so are their misses about the
+line. The variance of the weighted sum is then, as in
+\cref{sec:cv-correlation}, a double sum over pairs,
+\begin{equation*}
+   \operatorname{var}(\dot A) = \sigma_{\mathrm m}^2\sum_i\sum_jw_iw_j
+   \operatorname{corr}(\lvert i - j\rvert)
+   \approx \sigma_{\mathrm m}^2\sum_iw_i^2\Bigl[1 +
+   2\sum_{k\ge1}\operatorname{corr}(k)\Bigr]
+   = \frac{g\,\sigma_{\mathrm m}^2}{S_{tt}} ,
+\end{equation*}
+the approximation taking $w_j = w_i$ wherever $\operatorname{corr}$ is not
+negligible, which holds when the run is much longer than its memory: across
+a memory of about $g$ samples a weight changes by $g\dt/S_{tt}$, a fraction
+$2g/n$ of the largest weight, $(t_{\mathrm f}/2)/S_{tt}$. The slope's
+error carries the same factor $\sqrt g$ as the mean's, with $g$ found from
+the misses. For $n$ samples evenly spaced by $\dt$, $S_{tt} = n(n^2 -
+1)\dt^2/12$ (\cref{ex:cv-stt}), close to $nt_{\mathrm f}^2/12$ for a run
+of length $t_{\mathrm f} = n\dt$, so with $\tau_{\mathrm{int}} = g\dt/2$,
+\begin{equation*}
+   \operatorname{var}(\dot A) \approx
+   \frac{12\,g\,\sigma_{\mathrm m}^2\dt}{t_{\mathrm f}^3}
+   = \frac{24\,\sigma_{\mathrm m}^2\tau_{\mathrm{int}}}{t_{\mathrm f}^3} :
+\end{equation*}
+the error of a slope falls as $t_{\mathrm f}^{-3/2}$, and a run four times
+as long can detect a slope eight times smaller. The ratio of the slope to
+its error then tests for a drift: for a series with none it is Gaussian
+with unit spread, and lies beyond $\pm2$ in 4.6\% of runs
+(\cref{sec:sm-probability}). Applied to 1000 series of 5000 samples of the
+kind in \cref{fig:cv-ou}, with $g = 39$ and no drift, the
+test \texttt{drift\_test} of \texttt{mdlab.analysis.stats} finds a drift
+in 0.051 of them. A slope beyond two errors is evidence of drift worth investigating; within them, the run shows none that it can detect.
+
+\subsection*{The time step}
+
+Chapter~9 judged a time step by the spread of the total energy at fixed
+energy, which should fall as $\dt^2$ and stay small beside the spread of
+the kinetic energy, and by the absence of a drift (\cref{sec:in-stability}).
+The drift test makes the last of these quantitative.
+\Cref{fig:cv-drift} follows the liquid at fixed energy for
+\SI{1}{\nano\second} at each of six steps. The spread of the total energy
+over that of the kinetic energy is 3.93 times larger at 10 than at
+\SI{5}{\femto\second} and 4.12 times larger at 20 than at
+\SI{10}{\femto\second}, the factor 4 of $\dt^2$, but 3.93 times larger at
+30 than at \SI{20}{\femto\second}, where $\dt^2$ gives 2.25, and 6.18 times
+larger at 35 than at \SI{30}{\femto\second}, where it gives 1.36: beyond
+\SI{20}{\femto\second} the step is leaving the range in which its error is
+a small, smooth correction. The drift per atom per nanosecond is $0.00
+\pm 0.01$ and $-0.04 \pm 0.05$\,\si{\micro\electronvolt} at 5 and
+\SI{10}{\femto\second}; $-0.66 \pm 0.17$\,\si{\micro\electronvolt} at
+\SI{20}{\femto\second}; $-54 \pm 29$\,\si{\micro\electronvolt} at
+\SI{30}{\femto\second}; $+642 \pm 69$\,\si{\micro\electronvolt} at
+\SI{35}{\femto\second}; and at \SI{40}{\femto\second} the energy climbs by
+\SI{11}{\milli\electronvolt} per atom per nanosecond over the
+\SI{363}{\pico\second} it takes to gain \SI{1}{\electronvolt} in all, and
+the run blows up at \SI{557}{\pico\second}.
+
+Whether a drift matters depends on what the run measures. At fixed energy
+a drift $\dot E$ moves the temperature at the rate $\dot E/C_V$, and over
+a run of length $t_{\mathrm f}$ moves its mean by half of $\dot
+Et_{\mathrm f}/C_V$. Asking that this be smaller than the mean's own error
+$\sigma_{\bar T}$,
+\begin{equation*}
+   \frac{\lvert\dot E\rvert}{N} < \frac{2\sigma_{\bar T}}{t_{\mathrm f}}\,
+   \frac{C_V}{N} .
+\end{equation*}
+For this liquid $C_V/N = 2.347\kB$, the mean of the five single-run
+estimates of \cref{sec:sm-kinetic} (the slope of $E$ against $T$ gives
+2.376, within the 3\% errors of those runs, \cref{sec:cv-observables}), and $\sigma_{\bar T} =
+\SI{0.0513}{\kelvin}$ over \SI{1}{\nano\second} at fixed
+energy, so the limit for a run of \SI{1}{\nano\second} is
+\SI{20.8}{\micro\electronvolt} per atom per nanosecond (dotted in
+\cref{fig:cv-drift}(b)). The drift at \SI{20}{\femto\second} is significant,
+3.8 errors from zero, and harmless: it moves the temperature by
+\SI{0.0033}{\kelvin} in a nanosecond. The drift at \SI{30}{\femto\second}
+lies 1.8 errors from zero and 1.1 above the limit, so the run can show it
+neither significant nor harmful; at \SI{35}{\femto\second} it moves the
+temperature by \SI{3.2}{\kelvin} per nanosecond. Significance grows with the length of a run, which can detect
+ever smaller drifts; importance is set by the quantity measured. For this liquid \SI{20}{\femto\second} passes Chapter~9's tests
+of the spread, and its drift, though significant, is harmless for a run of
+\SI{1}{\nano\second} and at the limit for one of \SI{10}{\nano\second}
+(\cref{ex:cv-drift-limit}); \SI{10}{\femto\second}, the step used
+throughout, passes them with a wide margin and shows no drift the test can
+detect.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/drift}
+\caption{A slow drift: the liquid at fixed energy for \SI{1}{\nano\second}
+at each step. (a) The total energy per atom less its start, at 20 (teal),
+30 (ochre), 35 (oxblood) and \SI{40}{\femto\second} (grey, until it passes
+\SI{1}{\electronvolt} in all). (b) The size of the drift per atom per
+nanosecond, with its error, against the step, and the largest drift that
+moves the mean temperature of a \SI{1}{\nano\second} run by less than its
+error (dotted). (c) The spread of the total energy over that of the
+kinetic energy, against $\dt^2$ through the point at \SI{5}{\femto\second}
+(dashed).}
+\label{fig:cv-drift}
+\end{figure}
+
+\begin{keyidea}
+A drift is the slope of the line of least squares through a run, with the
+error $\sqrt{g\sigma_{\mathrm m}^2/S_{tt}}$ that the run's memory requires; a slope
+beyond two errors is evidence of drift under this test. Whether it matters depends on what is
+measured: at fixed energy it is harmless while it moves the mean
+temperature by less than its error. A step is acceptable while the
+energy's spread grows as $\dt^2$ and its drift is harmless.
+\end{keyidea}
+
+\notebook{15}{hide a leak under noise and test for it}
+
+\begin{selfcheck}
+A run of \SI{500}{\pico\second} gives a drift of $(3 \pm 2)$ in some unit.
+Is it a drift, and what would a run of \SI{2}{\nano\second} with the same
+true slope be expected to show?
+\end{selfcheck}

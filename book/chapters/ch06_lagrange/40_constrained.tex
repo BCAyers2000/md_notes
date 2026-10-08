@@ -1,0 +1,134 @@
+%=============================================================================!
+% 6.4  CONSTRAINED MOTION                                                     !
+%=============================================================================!
+\section{Constrained motion}
+\label{sec:la-constrained}
+
+The Euler--Lagrange equation holds in any generalised coordinates. Applied to the bead's single coordinate $x$, it
+gives the equation of motion along the wire without the wire's push ever
+appearing, and with it the times that \cref{sec:en-track} left to this
+chapter.
+
+\subsection*{The bead on the wire}
+
+From \cref{sec:la-coordinates}, $\Lag = \frac12 m(1 + h'^2)\dot{x}^2 -
+mgh(x)$, with $h$, $h'$ and $h''$ all functions of $x$. The two partial
+derivatives are
+\begin{equation*}
+   \frac{\partial\Lag}{\partial\dot{x}} = m\,(1 + h'^2)\,\dot{x} ,
+   \qquad
+   \frac{\partial\Lag}{\partial x} = m\,h'h''\,\dot{x}^2 - mg\,h' ,
+\end{equation*}
+the second by the chain rule, with $\dot{x}$ held fixed, since
+$\dd(h'^2)/\dd x = 2h'h''$. The rate
+of change of the first along the motion needs the product rule, and the
+chain rule for $h'^2$, which changes at the rate $2h'h''\dot{x}$:
+\begin{equation*}
+   \frac{\dd}{\dd t}\frac{\partial\Lag}{\partial\dot{x}}
+   = m\,(1 + h'^2)\,\ddot{x} + 2m\,h'h''\,\dot{x}^2 .
+\end{equation*}
+Setting the two equal, by \cref{eq:la-euler},
+\begin{align*}
+   m\,(1 + h'^2)\,\ddot{x} + 2m\,h'h''\,\dot{x}^2
+   &= m\,h'h''\,\dot{x}^2 - mg\,h'\\
+   (1 + h'^2)\,\ddot{x} &= -h'h''\,\dot{x}^2 - g\,h'
+   && \text{dividing by $m$, moving $2h'h''\dot{x}^2$ across}\\
+   &= -h'\,\bigl(g + h''\dot{x}^2\bigr)
+   && \text{taking out $-h'$,}
+\end{align*}
+and dividing by $1 + h'^2$,
+\begin{equation}
+   \ddot{x} = -\frac{h'\,\bigl(g + h''\dot{x}^2\bigr)}{1 + h'^2} .
+   \label{eq:la-bead}
+\end{equation}
+The mass has cancelled. On a straight slope at the angle $\alpha$, $h =
+x\tan\alpha$, $h' = \tan\alpha$ and $h'' = 0$. Dividing $\cos^2\alpha +
+\sin^2\alpha = 1$ by $\cos^2\alpha$ gives $1 + \tan^2\alpha =
+1/\cos^2\alpha$, so \cref{eq:la-bead} gives $\ddot{x} = -g\tan\alpha
+\cos^2\alpha = -g\sin\alpha\cos\alpha$, with $\tan\alpha = \sin\alpha/
+\cos\alpha$. The distance along the slope is the hypotenuse of a
+right-angled triangle with horizontal side $x$, $x/\cos\alpha$, so its
+acceleration is $\ddot{x}/\cos\alpha = -g\sin\alpha$: the part
+$mg\sin\alpha$ of the weight down the ramp of \cref{sec:en-friction},
+divided by $m$, with no friction. On a curved wire
+the term in $h''\dot{x}^2$ adds the effect of the bending.
+
+Why did the push of the wire never appear? It acts at right angles to the
+wire, so it does no work in any motion along the wire; it has no
+potential energy, and $\Lag = K - U$, made from the bead's speed and
+height alone, does not contain it. Describing the bead by $x$ alone compares only paths
+that keep it on the wire, and Newton's laws show that Hamilton's principle
+holds among those. In $x$ and $y$ the bead obeys $m\ddot{\vb{r}} = -\grad
+U + \vb{N}$, with $\vb{N}$ the push. Change the path by $\zeta
+\boldsymbol\eta(t)$ along the wire, zero at both ends. The steps of
+\cref{sec:la-euler}, once for $x$ and once for $y$, change the action by
+$\zeta\int(-\grad U - m\ddot{\vb{r}})\cdot\boldsymbol\eta\,\dd t =
+-\zeta\int\vb{N}\cdot\boldsymbol\eta\,\dd t$ plus terms in $\zeta^2$, and
+this is zero because $\vb{N}$ is at right angles to the wire and
+$\boldsymbol\eta$ along it. The true path therefore makes the action
+stationary among the paths that stay on the wire, which are the paths of
+$x$ alone, and the push never enters. \Cref{sec:la-multipliers} runs the
+same argument backwards for the pendulum. This is the reason
+for writing mechanics this way: constraints that do no work are obeyed by
+choosing the coordinates, and their forces drop out.
+
+\subsection*{The bead against the clock}
+
+The function \texttt{solve\_wire} of \texttt{mdlab} solves
+\cref{eq:la-bead}. Released from rest on the wire of \cref{sec:en-track}
+at its left turning point for $h_E = \SI{1.3}{\metre}$, $x =
+\SI{-2.206}{\metre}$ (\cref{sec:en-diagrams}), the bead
+reaches the bottom of the deep valley after \SI{0.554}{\second}, the top
+of the hill after \SI{1.097}{\second} and the bottom of the shallow valley
+after \SI{1.533}{\second}, and turns at $x = \SI{2}{\metre}$ after
+\SI{2.016}{\second}, coming back to its start after \SI{4.032}{\second}
+(\cref{fig:la-bead}). Its speed along the wire, $\sqrt{1 + h'^2}\,
+\lvert\dot{x}\rvert$, equals $\sqrt{2g(1.3 - h)}$ at every point, the
+speed that \cref{sec:en-track} found from energy alone: 4.680, 2.387 and
+\SI{3.686}{\metre\per\second} at the three places. The same times follow
+from the energy, by adding up the time $\sqrt{1 + h'^2}\,\dd x/\sqrt{2g(1.3
+- h)}$, length over speed, of each short stretch of wire, as
+\cref{sec:os-anharmonic} did for the period; the equation of motion is the
+route that still works with more than one coordinate.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch06_lagrange/bead}
+\caption{The bead on the wire of \cref{sec:en-track}, released from rest
+at $x = \SI{-2.206}{\metre}$, \SI{1.3}{\metre} high, its motion found from
+\cref{eq:la-bead}. (a) Its position along $x$ against time, through one
+swing to $x = \SI{2}{\metre}$ (dotted) and back; the dots mark the bottom
+of the deep valley, the top of the hill and the bottom of the shallow
+valley on the way out. (b) Its speed along the wire against $x$ on the way
+out, lying on the speed from energy (dashed), which it hides.}
+\label{fig:la-bead}
+\end{figure}
+
+\subsection*{The pendulum}
+
+With $\Lag = \frac12 mL^2\dot\theta^2 - mgL(1 - \cos\theta)$,
+$\partial\Lag/\partial\dot\theta = mL^2\dot\theta$ and $\partial\Lag/
+\partial\theta = -mgL\sin\theta$, so \cref{eq:la-euler} gives
+$mL^2\ddot\theta = -mgL\sin\theta$, or
+\begin{equation}
+   \ddot\theta = -\frac{g}{L}\sin\theta ,
+   \label{eq:la-pendulum}
+\end{equation}
+in one line, with the rod's pull nowhere. For small swings $\sin\theta
+\approx \theta$ (\cref{sec:mo-taylor}), and $\ddot\theta = -(g/L)\theta$
+is the spring of \cref{sec:ne-spring} with $\omega_0 = \sqrt{g/L}$, as
+\cref{sec:os-small} found from the energy.
+
+\begin{keyidea}
+Constraints that do no work are obeyed by choosing generalised
+coordinates, and the Euler--Lagrange equations in those coordinates give
+the motion without the constraining forces: for the bead, $\ddot{x} =
+-h'(g + h''\dot{x}^2)/(1 + h'^2)$.
+\end{keyidea}
+
+\notebook{06}{put the bead on any wire and time its journey}
+
+\begin{selfcheck}
+How long does the bead released at \SI{1.3}{\metre} take to go from the
+bottom of the deep valley to the bottom of the shallow one?
+\end{selfcheck}

@@ -1,0 +1,151 @@
+%=============================================================================!
+% 10.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:code}: Building a molecular dynamics code}
+\label{sec:md-solutions}
+
+\solutionto{ex:md-surface}The fraction is below 1\% when $(1 - 2/n)^3 >
+0.99$, that is $1 - 2/n > 0.99^{1/3} = 0.99665549$, or $n > 2/0.00334451 =
+597.995$. So $n = 598$, at which the fraction is 0.0099999, just below
+1\%, and $N = 598^3 = \num{2.14e8}$ atoms. The estimate $6/n$ would give
+$n = 600$.
+
+\solutionto{ex:md-fractional}$\vb{r} = s_1\vb{a} + s_2\vb{b} + s_3\vb{c}$
+reads $as_1 - \frac12as_2 = \frac12a$, $\frac{\sqrt3}2as_2 =
+\frac{\sqrt3}2a$ and $cs_3 = \frac14c$. The second gives $s_2 = 1$, then
+the first $s_1 = 1$, and the third $s_3 = \frac14$. Wrapping removes the
+whole numbers, leaving $(0, 0, \frac14)$, the position $(0, 0, \frac14c)$:
+the atom is a copy of the one at fractional coordinates $(0, 0, \frac14)$,
+the first of graphite's four (\cref{sec:md-start}).
+
+\solutionto{ex:md-graphite}$\vb{b}\times\vb{c} = (\frac{\sqrt3}2ac,
+\frac12ac, 0)$, of length $ac$, and $\vb{a}\cdot(\vb{b}\times\vb{c}) =
+\frac{\sqrt3}2a^2c$. Likewise $\vb{c}\times\vb{a} = (0, ac, 0)$, of length
+$ac$, and $\vb{a}\times\vb{b} = (0, 0, \frac{\sqrt3}2a^2)$. The widths
+$V/\lvert\vb{b}\times\vb{c}\rvert$, $V/\lvert\vb{c}\times\vb{a}\rvert$ and
+$V/\lvert\vb{a}\times\vb{b}\rvert$ are $\frac{\sqrt3}2a$, $\frac{\sqrt3}2a$
+and $c$: $V = \SI{35.29}{\angstrom\cubed}$, and the widths are 2.134,
+2.134 and \SI{6.711}{\angstrom}.
+
+\solutionto{ex:md-primitive}With the factor $\frac12a_0$ taken out of each
+vector, $(1, 0, 1)\times(1, 1, 0) = (-1, 1, 1)$, of length $\sqrt3$, and
+$(0, 1, 1)\cdot(-1, 1, 1) = 2$, so $V = 2(\frac12a_0)^3 = \frac14a_0^3$
+and the width is $2(\frac12a_0)^3/(\sqrt3(\frac12a_0)^2) = a_0/\sqrt3$,
+the same in all three directions by symmetry. For $a_0 =
+\SI{5.267}{\angstrom}$: $V = \SI{36.53}{\angstrom\cubed}$, widths
+\SI{3.041}{\angstrom}, and a cutoff of at most \SI{1.520}{\angstrom}.
+
+\solutionto{ex:md-round}$\vb{s} = (0.9, -0.967, 0.025)$, which rounds to
+$(1, -1, 0)$, so the copy is $\vb{d} - (2, -3, 0) = (-0.2, 0.1, 0.1)$\,\AA.
+Each component can be changed only by a whole side, and $-0.2$, 0.1 and
+0.1 are already within half a side of zero, so no copy is shorter.
+
+\solutionto{ex:md-normal}With $u = (x - x_0)/(s\sqrt2)$, $\dd x =
+s\sqrt2\,\dd u$ and the limits stay infinite, so the integral is
+$s\sqrt2\int\mathrm{e}^{-u^2}\dd u = s\sqrt2\sqrt\pi = s\sqrt{2\pi}$.
+
+\solutionto{ex:md-erf}$\mathrm{e}^{-u^2} = 1 - u^2 + \frac12u^4 - \dotsb$,
+from the series of $\mathrm{e}^y$ (\cref{sec:ne-drag}) with $y = -u^2$. Integrating term by
+term from 0 to $x$ gives $x - x^3/3 + x^5/10 - \dotsb$, so
+$\operatorname{erf}(\alpha r)/r = (2/\sqrt\pi)(\alpha - \alpha^3r^2/3 +
+\dotsb)$, which tends to $2\alpha/\sqrt\pi$ as $r \to 0$.
+
+\solutionto{ex:md-orthogonal}The product is $\frac12[\cos(2\pi(m -
+m')x/L) + \cos(2\pi(m + m')x/L)]$. For a whole number $k \neq 0$,
+$\cos(2\pi kx/L)$ has the antiderivative $L\sin(2\pi kx/L)/(2\pi k)$,
+which takes the same value at $x = 0$ and $x = L$, so its average over a
+period is zero; for $k = 0$ the cosine is 1. If $m = m'$, then $m + m'
+\neq 0$ and the average is $\frac12(1 + 0)$; if $m \neq m'$, neither $m -
+m'$ nor $m + m'$ is zero and the average is 0.
+
+\solutionto{ex:md-reciprocal}With $\vb{a} = (a, 0, 0)$, $\vb{b} =
+(-\frac12a, \frac{\sqrt3}2a, 0)$ and $\vb{c} = (0, 0, c)$: $\vb{a}\cdot
+\vb{a}^* = 2\pi$, $\vb{b}\cdot\vb{a}^* = \frac{2\pi}{a}(-\frac12a +
+\frac{\sqrt3}2a\cdot\frac1{\sqrt3}) = 0$, $\vb{a}\cdot\vb{b}^* = 0$,
+$\vb{b}\cdot\vb{b}^* = \frac{2\pi}{a}\cdot\frac{\sqrt3}2a\cdot
+\frac2{\sqrt3} = 2\pi$, and $\vb{c}^*$ is at right angles to $\vb{a}$
+and $\vb{b}$ with $\vb{c}\cdot\vb{c}^* = 2\pi$, while $\vb{a}^*$ and
+$\vb{b}^*$ have no $z$ component. The lengths are $\lvert\vb{a}^*\rvert =
+\lvert\vb{b}^*\rvert = \frac{2\pi}{a}\sqrt{1 + \frac13} = 4\pi/(\sqrt3a) =
+\SI{2.9445}{\per\angstrom}$ and $\lvert\vb{c}^*\rvert = 2\pi/c =
+\SI{0.9363}{\per\angstrom}$.
+
+\solutionto{ex:md-forces}Only $\mathcal{C}$ and $\mathcal{S}$ depend on $\vb{r}_i$, through
+the terms $q_i\cos(\vb{G}\cdot\vb{r}_i)$ and $q_i\sin(\vb{G}\cdot
+\vb{r}_i)$, whose gradients (\cref{sec:en-gradient}) are $-q_i\sin(\vb{G}
+\cdot\vb{r}_i)\,\vb{G}$ and $q_i\cos(\vb{G}\cdot\vb{r}_i)\,\vb{G}$. The
+gradient of $\mathcal{C}^2 + \mathcal{S}^2$ is $2\mathcal{C}$ times the first plus
+$2\mathcal{S}$ times the
+second, $2q_i\vb{G}\,[\mathcal{S}(\vb{G})\cos(\vb{G}\cdot\vb{r}_i) -
+\mathcal{C}(\vb{G})\sin(\vb{G}\cdot\vb{r}_i)]$, and $\vb{F}_i$ is minus
+$2\pi k_{\mathrm e}/V$ times the sum of $\mathrm{e}^{-G^2/(4\alpha^2)}/G^2$
+times that; the minus sign reverses the bracket and the 2 makes $4\pi$,
+which is the formula. For
+the real-space term, $\frac{\dd}{\dd r}\operatorname{erfc}(\alpha r) =
+-(2/\sqrt\pi)\,\alpha\,\mathrm{e}^{-\alpha^2r^2}$ by the fundamental theorem
+of calculus and the chain rule, and the product rule gives the slope of
+$\operatorname{erfc}(\alpha r)\cdot r^{-1}$ as $-\operatorname{erfc}(\alpha
+r)/r^2 - (2\alpha/\sqrt\pi)\,\mathrm{e}^{-\alpha^2r^2}/r$.
+
+\solutionto{ex:md-rocksalt}The cell is $2\vb{I}$, so the reciprocal
+vectors are $\pi$ along the axes and $\vb{G} = \pi(m_1, m_2, m_3)$. For a cation at
+$\vb{p}$, $\vb{G}\cdot\vb{p} = \pi\,\vb{m}\cdot\vb{p}$ is a whole multiple
+of $\pi$, and for its anion $\pi m_1$ more, so every sine is zero and
+$\mathcal{S} = 0$. By the addition formula, $\cos(x + \pi m_1) = (-1)^{m_1}\cos x$,
+so $\mathcal{C} = (1 - (-1)^{m_1})\sum_{\vb{p}}\cos(\pi\,\vb{m}\cdot\vb{p})$, and,
+since $\cos k\pi = (-1)^k$ for a whole number $k$, the sum over the four
+cations is $1 + (-1)^{m_2 + m_3} + (-1)^{m_1 + m_3} +
+(-1)^{m_1 + m_2}$. If the $m_k$ are all even or all odd, every exponent is
+even and the sum is 4; otherwise one of them differs in parity from the
+other two, the two sums that contain it are odd and the third even, and
+the sum is $1 + 1 - 1 - 1 = 0$. The factor $1 - (-1)^{m_1}$ is 2 for odd
+$m_1$ and 0 for even, so $\mathcal{C} = 8$ when all are odd and 0 otherwise.
+
+\solutionto{ex:md-cost}The copies within $r_{\mathrm c}$ number about
+$\frac43\pi r_{\mathrm c}^3\rho \propto \rho/\alpha^3$; the waves within
+$G_{\mathrm c}$ number about $\frac43\pi G_{\mathrm c}^3$ divided by the
+volume per wave, $(2\pi)^3/V$, the cube of the spacing $2\pi/L$ for a cube
+of side $L$, so $\propto V\alpha^3$. The cost is $T = C_1N\rho/\alpha^3 +
+C_2NV\alpha^3$ for constants $C_1$ and $C_2$, and $\dd T/\dd\alpha =
+-3C_1N\rho/\alpha^4 + 3C_2NV\alpha^2 = 0$ gives $\alpha^6 =
+C_1\rho/(C_2V) = (C_1/C_2)\,N/V^2$. There the two terms are equal, and $T
+= 2C_2NV\alpha^3 \propto NV(N/V^2)^{1/2} = N^{3/2}$.
+
+\solutionto{ex:md-parameters}$\sqrt{-\ln10^{-6}} = 3.717$, so $\alpha =
+3.717/\SI{15}{\angstrom} = \SI{0.2478}{\per\angstrom}$ and $G_{\mathrm c}
+= 2\times0.2478\times3.717 = \SI{1.842}{\per\angstrom}$. The waves form a
+cubic grid of spacing $2\pi/30 = \SI{0.2094}{\per\angstrom}$, one per
+$(2\pi/30)^3$ of volume, so the sphere of radius $G_{\mathrm c}$ holds
+about $\frac43\pi(1.842)^3/(0.2094)^3 = 2850$; counting the grid points
+gives 2896.
+
+\solutionto{ex:md-water}$\frac43\pi(10)^3\times0.0334 = 139.9$, about
+140 molecules.
+
+\solutionto{ex:md-cells}$\lfloor40/9.5\rfloor = 4$, so $4^3 = 64$ small
+cells; $\lfloor30/9.5\rfloor = 3$, 27 small cells; and $\lfloor25/9.5
+\rfloor = 2$, fewer than three, so all pairs are tested.
+
+\solutionto{ex:md-rebuild}$\sqrt{2K/m} = \sqrt{2\times0.0104/(39.948\times
+103.64)} = \SI{0.00224}{\angstrom\per\femto\second}$, with the factor
+\texttt{MV2\_TO\_EV} of \cref{eq:en-mv2}, or \SI{0.0224}{\angstrom}
+a step, so \SI{0.5}{\angstrom} takes 22 steps. The run rebuilds every
+10.7 steps because it rebuilds as soon as any one of 500 atoms has moved
+half the skin, and some atoms move faster than the root-mean-square speed.
+
+\solutionto{ex:md-drift}$\sum_im_i(\vb{v}_i - \vb{P}/M) = \vb{P} -
+M\vb{P}/M = \vb{0}$, and $\sum_im_i(c\vb{v}_i) = c\sum_im_i\vb{v}_i =
+\vb{0}$.
+
+\solutionto{ex:md-half}Started at the minimum, $x = A\sin\omega t$ and
+$K = \frac12m\omega^2A^2\cos^2\omega t$, with $K_0 = \frac12m\omega^2A^2$.
+The average of $\cos^2$ over a period is $\frac12$ (\cref{sec:os-energy}),
+so $\overline{K} = \frac12K_0$.
+
+\solutionto{ex:md-femtosecond}The run in ASE's units lasts 1000 of its
+femtoseconds, $1000\times\num{4.6e-9} = \SI{4.6e-6}{\femto\second}$
+longer than \texttt{mdlab}'s, and starts with velocities smaller by the
+same fraction. For an atom in free flight the two cancel; a vibrating
+atom keeps its frequency whatever its speed, so the extra time carries it
+on by about its speed times \SI{4.6e-6}{\femto\second}, $0.0031\times
+\num{4.6e-6} = \num{1.4e-8}$\,\AA: the size of the difference found.

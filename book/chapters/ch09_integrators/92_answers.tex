@@ -1,0 +1,35 @@
+%=============================================================================!
+% 9.A  ANSWERS TO THE CHECKS                                                  !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:in-answers}
+
+\answerto{sec:in-steps}Dividing by $4 = 2^2$ means the global error is of
+order $\dt^2$, so the method is of order 2, and its local error is of
+order $\dt^3$.
+
+\answerto{sec:in-verlet}With $a_n = a_{n+1} = -g$, \cref{eq:in-vv} gives
+$x_{n+1} = x_n + \dt\,v_n - \frac12 g\dt^2$ and $v_{n+1} = v_n - g\dt$, the
+exact motion of \cref{sec:mo-integrating} over a time $\dt$, so no error
+is made at any step.
+
+\answerto{sec:in-reversal}$\partial x'/\partial x = 1$, $\partial x'/
+\partial v = 0$, $\partial v'/\partial x = \frac12\dt\,\dd a/\dd x$ and
+$\partial v'/\partial v = 1$, so the determinant is $1\times1 -
+0\times\frac12\dt\,\dd a/\dd x = 1$.
+
+\answerto{sec:in-splitting}With $\Liou = (p/m)\,\partial/\partial q$,
+$\Liou q^2 = 2qp/m$, $\Liou^2q^2 = 2p^2/m^2$ and $\Liou^3q^2 = 0$, so
+$\mathrm{e}^{\dt\Liou}q^2 = q^2 + 2qp\,\dt/m + p^2\dt^2/m^2 = (q +
+\dt\,p/m)^2$.
+
+\answerto{sec:in-shadow}$\omega^2\dt^2/4 = 0.04/4 = 0.01$, a band of 1\%;
+$\cos\tilde\omega\dt = 1 - 0.02 = 0.98$ gives $\tilde\omega\dt = 0.2003$,
+so the motion runs 0.17\% fast.
+
+\answerto{sec:in-stability}$\omega = 2\pi/170.3 =
+\SI{0.0369}{\radian\per\femto\second}$, so $\dt < 2/\omega =
+\SI{54.2}{\femto\second}$.
+
+\answerto{sec:in-long}Velocity Verlet: $1000/0.5 = 2000$ steps of one
+force evaluation each, 2000. RK4: $1000/2 = 500$ steps of four, also 2000.

@@ -1,0 +1,204 @@
+%=============================================================================!
+% 11.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:constraints}: Constraints and multiple time
+steps}
+\label{sec:cs-solutions}
+
+\solutionto{ex:cs-freedoms}Six atoms have $3\times6 = 18$ freedoms, and
+each of the four held bonds removes one: 14 per molecule. For 100
+molecules, $1800 - 400 = 1400$, and removing the drift of the centre of
+mass leaves 1397.
+
+\solutionto{ex:cs-one-bond}$d^2 = 2.25$, $\tilde{\vb{r}}_{ij}\cdot
+\vb{r}_{ij} = 1.6\times1.5 = 2.4$ and $\lvert\tilde{\vb{r}}_{ij}\rvert^2
+= 2.56 + 0.09 = 2.65$, so \cref{eq:cs-quadratic} reads
+\begin{equation*}
+   2.25\,\eta^2 + 4.8\,\eta + 0.40 = 0 ,
+\end{equation*}
+and by the quadratic formula
+\begin{equation*}
+   \eta = \frac{-4.8 \pm \sqrt{4.8^2 - 4\times2.25\times0.40}}{2\times2.25}
+   = \frac{-4.8 \pm 4.4091}{4.5} ,
+\end{equation*}
+giving $-0.08687$ or $-2.0465$. The root near zero is the correction;
+the other turns the bond round. With $m_{\mathrm r} = 2\times5/7 =
+\SI{1.4286}{\amu}$, atom $j$ moves by $\eta m_{\mathrm r}/m_j\,
+\vb{r}_{ij} = -0.08687\times1.4286/5\times(1.5, 0, 0) = (-0.03723, 0,
+0)$\,\AA\ and atom $i$ by $-\eta m_{\mathrm r}/m_i\,\vb{r}_{ij} =
+(+0.09308, 0, 0)$\,\AA. The new bond, $\vb{r}_j - \vb{r}_i$, has $x$
+component $1.6 - 0.03723 - 0.09308 = 1.4697$ and $y$ component 0.3, so
+its length is $\sqrt{2.1600 + 0.09} = \SI{1.5000}{\angstrom}$.
+
+\solutionto{ex:cs-newton}$f'(y) = 2y$, so $y_{n+1} = y_n - (y_n^2 -
+3)/(2y_n)$: $y_1 = 2 - 1/4 = 1.75$, $y_2 = 1.75 - 0.0625/3.5 =
+1.7321428571$, $y_3 = 1.7320508100$, with errors $\num{1.8e-2}$,
+$\num{9.2e-5}$ and $\num{2.4e-9}$, against 0.27 for $y_0$: each is the
+square of the one before divided by $2y_n$, which is 4, then 3.5, then
+3.46 (\cref{ex:cs-newton-error}).
+
+\solutionto{ex:cs-newton-error}With $f'(y) = 2y$,
+\begin{equation*}
+   y_{n+1} = y_n - \frac{y_n^2 - a}{2y_n} = \frac{2y_n^2 - y_n^2 + a}{2y_n}
+   = \frac12\Bigl(y_n + \frac{a}{y_n}\Bigr) .
+\end{equation*}
+Writing $y_{n+1} = (y_n^2 + a)/(2y_n)$ and $\sqrt a = 2y_n\sqrt
+a/(2y_n)$,
+\begin{equation*}
+   y_{n+1} - \sqrt a = \frac{y_n^2 + a - 2y_n\sqrt a}{2y_n}
+   = \frac{(y_n - \sqrt a)^2}{2y_n} ,
+\end{equation*}
+since $(y_n - \sqrt a)^2 = y_n^2 - 2y_n\sqrt a + a$.
+
+\solutionto{ex:cs-centre}The centre of mass of the pair is $(m_i\vb{r}_i
++ m_j\vb{r}_j)/(m_i + m_j)$. The correction moves $\vb{r}_j$ by
+$(\eta m_{\mathrm r}/m_j)\vb{r}_{ij}$ and $\vb{r}_i$ by $-(\eta m_{\mathrm
+r}/m_i)\vb{r}_{ij}$, so the numerator changes by $m_j(\eta m_{\mathrm
+r}/m_j)\vb{r}_{ij} - m_i(\eta m_{\mathrm r}/m_i)\vb{r}_{ij} = \eta
+m_{\mathrm r}\vb{r}_{ij} - \eta m_{\mathrm r}\vb{r}_{ij} = \vb{0}$.
+
+\solutionto{ex:cs-kinetic}Solving $M\vb{V} = m_i\vb{v}_i + m_j\vb{v}_j$
+and $\vb{v}_{ij} = \vb{v}_j - \vb{v}_i$ for the two velocities gives
+$\vb{v}_i = \vb{V} - (m_j/M)\vb{v}_{ij}$ and $\vb{v}_j = \vb{V} +
+(m_i/M)\vb{v}_{ij}$. Expanding the squares by $\lvert\vb{a} +
+\vb{b}\rvert^2 = \lvert\vb{a}\rvert^2 + 2\vb{a}\cdot\vb{b} +
+\lvert\vb{b}\rvert^2$, the kinetic energy
+$\frac12m_i\lvert\vb{v}_i\rvert^2 + \frac12m_j\lvert\vb{v}_j\rvert^2$ has
+three kinds of term: $\frac12(m_i + m_j)\lvert\vb{V}\rvert^2 =
+\frac12M\lvert\vb{V}\rvert^2$; the cross terms
+\begin{equation*}
+   \vb{V}\cdot\vb{v}_{ij}\Bigl(-\frac{m_im_j}{M} + \frac{m_jm_i}{M}\Bigr)
+   = 0 ;
+\end{equation*}
+and
+\begin{equation*}
+   \frac12\Bigl(\frac{m_im_j^2}{M^2} + \frac{m_jm_i^2}{M^2}\Bigr)
+   \lvert\vb{v}_{ij}\rvert^2
+   = \frac12\,\frac{m_im_j}{M}\,\lvert\vb{v}_{ij}\rvert^2 ,
+\end{equation*}
+since $m_im_j^2 + m_jm_i^2 = m_im_j(m_i + m_j) = m_im_jM$. Their sum is the
+result, with $m_im_j/M = m_{\mathrm r}$. The correction changes $m_j\vb{v}_j$ by
+$m_{\mathrm r}\zeta\vb{r}_{ij}$ and $m_i\vb{v}_i$ by the opposite, so
+$M\vb{V}$ and $\vb{V}$ are unchanged, and $\vb{v}_{ij}$ becomes
+$\vb{v}_{ij} + \zeta\vb{r}_{ij}$. With $\vb{r}_{ij} = d\,\vb{e}$ and
+$\zeta = -\vb{v}_{ij}\cdot\vb{e}/d$, this is $\vb{v}_{ij} -
+(\vb{v}_{ij}\cdot\vb{e})\vb{e}$, the relative velocity without its part
+along $\vb{e}$, so
+\begin{equation*}
+   \lvert\vb{v}_{ij} - (\vb{v}_{ij}\cdot\vb{e})\vb{e}\rvert^2
+   = \lvert\vb{v}_{ij}\rvert^2 - 2(\vb{v}_{ij}\cdot\vb{e})^2
+   + (\vb{v}_{ij}\cdot\vb{e})^2 = \lvert\vb{v}_{ij}\rvert^2
+   - (\vb{v}_{ij}\cdot\vb{e})^2 ,
+\end{equation*}
+using $\vb{e}\cdot\vb{e} = 1$, and the kinetic energy falls by
+$\frac12m_{\mathrm r}(\vb{v}_{ij}\cdot\vb{e})^2$.
+
+\solutionto{ex:cs-oh}$\vb{v}_{ij} = \vb{v}_{\mathrm H} - \vb{v}_{\mathrm
+O} = (0.019, 0.01, 0)$ and $\vb{r}_{ij} = (0.96, 0, 0)$, so $\zeta =
+-0.019\times0.96/0.96^2 = -0.019792$\,fs$^{-1}$. With $m_{\mathrm r} =
+16/17 = \SI{0.94118}{\amu}$, the hydrogen's $x$-velocity changes by
+$m_{\mathrm r}\zeta\times0.96/1 = -0.017882$ and the oxygen's by
+$-m_{\mathrm r}\zeta\times0.96/16 = +0.0011176$: $\vb{v}_{\mathrm O} =
+(0.0021176, 0, 0)$ and $\vb{v}_{\mathrm H} = (0.0021176, 0.01, 0)$\,\AA/fs,
+moving together along the bond. The momentum along $x$ is 0.036 before
+and after. The kinetic energy falls from $\num{2.580e-4}$ to
+$\num{8.812e-5}$\,amu\,\AA$^2$/fs$^2$, by $\num{1.6988e-4}$, which is
+$\frac12\times0.94118\times0.019^2$, as \cref{ex:cs-kinetic} predicts.
+
+\solutionto{ex:cs-count}$6\times216 - 3 = 1293$ freedoms, and $1293\times
+\SI{12.93}{\milli\electronvolt} = \SI{16.72}{\electronvolt}$.
+
+\solutionto{ex:cs-respa-one}With $n = 1$ the outer step is a half kick
+by $\vb{F}^{\mathrm s}$, a half kick by $\vb{F}^{\mathrm f}$, a drift of
+$\dt$, a half kick by the new $\vb{F}^{\mathrm f}$ and a half kick by the
+new $\vb{F}^{\mathrm s}$. Two kicks in a row, with no drift between,
+happen at the same positions and add: the first two make a half kick by
+$\vb{F}^{\mathrm f} + \vb{F}^{\mathrm s}$ and the last two another, which
+with the drift between is velocity Verlet with the summed force.
+
+\solutionto{ex:cs-cost}Velocity Verlet calls both forces at every step:
+$10^6/0.41 = \num{2.44e6}$ steps of $24 + 0.04 =
+\SI{24.04}{\milli\second}$, \SI{58600}{\second}, about 16 hours. RESPA:
+$10^6/0.72 = \num{1.39e6}$ outer steps of \SI{24}{\milli\second} plus
+three calls of the springs at \SI{0.04}{\milli\second}, together
+\SI{33500}{\second}, about 9 hours.
+
+\solutionto{ex:cs-matrix}$\vb{M}^2$ has rows $(1 + 6, 2 + 8) = (7, 10)$
+and $(3 + 12, 6 + 16) = (15, 22)$. The trace is 5 and the determinant
+$4 - 6 = -2$, so $5\vb{M} + 2\vb{I}$ has rows $(5 + 2, 10) = (7, 10)$ and
+$(15, 20 + 2) = (15, 22)$: the same.
+
+\solutionto{ex:cs-band}With $\theta = 2\pi - \epsilon$ and $\epsilon$
+small and positive, $\cos(2\pi - \epsilon) = \cos\epsilon$ and
+$\sin(2\pi - \epsilon) = -\sin\epsilon$, so $\cos\theta \approx 1 -
+\frac12\epsilon^2$ and $\sin\theta \approx -\epsilon$, so with $\omega_{\mathrm s}^2\dt/\omega_{\mathrm f} =
+b\theta \approx 2\pi b$,
+\begin{equation*}
+   \operatorname{tr}\vb{M} \approx 2 - \epsilon^2 + 2\pi b\,\epsilon ,
+\end{equation*}
+which exceeds 2 when $\epsilon^2 < 2\pi b\,\epsilon$, that is $0 <
+\epsilon < 2\pi b$: $\theta$ from $2\pi(1 - b)$ to $2\pi$. Since $\dt =
+\theta/\omega_{\mathrm f} = \theta\,\mathcal{T}_{\mathrm f}/(2\pi)$, the
+band runs from $(1 - b)\mathcal{T}_{\mathrm f}$ to $\mathcal{T}_{\mathrm
+f}$, of width $b\,\mathcal{T}_{\mathrm f}$.
+
+\solutionto{ex:cs-bands}$b = 0.09$. Below half the period the band runs
+from $\frac12(1 - b) = 0.455$ to $0.5$, against 0.459 to 0.500 from the
+full trace; below the period from $1 - b = 0.910$ to 1, against 0.919 to
+1.000. The upper edges are exact, since $\sin\theta = 0$ there. The lower
+ones come out a little low because the slow term was taken at $\theta =
+\pi$, or $2\pi$, rather than at $\pi - \epsilon$: keeping it, the
+condition $\frac12\epsilon^2 < \frac12b(\pi - \epsilon)\epsilon$ gives
+$\epsilon < b\pi/(1 + b)$ and an edge at $\frac12/(1 + b) = 0.4587$, and
+below the period $1/(1 + b) = 0.9174$. The approximation holds less well
+as $b$ grows.
+
+\solutionto{ex:cs-inner}At \SI{0.25}{\femto\second} the inner steps
+already follow the springs closely: velocity Verlet with all forces at
+that step has a fluctuation of only 0.36\%. The error at an outer step of
+\SI{2}{\femto\second} comes from the slow forces being applied as kicks
+once per outer step, which a finer inner step does not change; the
+resonances of \cref{sec:cs-resonance} depend on the outer step alone.
+That 10.4\% is no better than 8.8\% shows that the inner step was never
+the limit.
+
+\solutionto{ex:cs-hmr-double}The oxygen keeps $15.999 - 2\times1.008 =
+\SI{13.983}{\amu}$. The reduced mass is $13.983\times2.016/(13.983 +
+2.016) = \SI{1.7620}{\amu}$, 1.858 times the ordinary 0.9483, so the
+stretch slows by $\sqrt{1.858} = 1.363$.
+
+\solutionto{ex:cs-hmr-centre}Each hydrogen lies
+$0.9572\times\cos\ang{52.26} = \SI{0.5859}{\angstrom}$ from the oxygen
+along the bisector, their parts across the bisector cancel, and the
+oxygen's own term is zero, so the centre of
+mass is $2m_{\mathrm H}\times0.5859/18.015$ from the oxygen: \SI{0.0656}{\angstrom} with $m_{\mathrm H} = 1.008$ and
+\SI{0.1967}{\angstrom} with 3.024.
+
+\solutionto{ex:cs-hmr-what}The forces and the potential energy do not
+depend on the masses, and the probability of an arrangement depends on
+the potential energy alone (Chapter~12), so the mean potential energy and
+the distribution of O--O distances are unchanged. The diffusion rate and
+the vibrational frequencies depend on how fast the atoms respond to the
+forces, and change.
+
+\solutionto{ex:cs-drift}$\lvert\vb{P}\rvert = \sqrt{0.2817^2 + 0.2936^2
++ 0.4033^2} = \SI{0.5729}{\amu\,\angstrom\per\femto\second}$ and $M =
+64\times18.015 = \SI{1152.96}{\amu}$, so the centre of mass moves at
+\SI{4.969e-4}{\angstrom\per\femto\second}, or $\num{4.969e-4}\times10^6
+= \SI{497}{\angstrom}$ in a nanosecond of $10^6$\,fs, 40 times the side
+of the cell. Its kinetic energy is $\lvert\vb{P}\rvert^2/(2M)$ times the
+factor $\num{103.64}$ of \cref{eq:en-mv2},
+\SI{0.01475}{\electronvolt}.
+
+\solutionto{ex:cs-ase-step}The step is $2\times10.18 =
+\SI{20.36}{\femto\second}$. The O--H stretch has $\omega = 2\pi/8.88 =
+\SI{0.708}{\radian\per\femto\second}$, so $\omega\dt = 14.4$, far beyond
+the limit 2 of \cref{sec:in-stability}: the run blows up.
+
+\solutionto{ex:cs-diagnose}An error of the integration would fall as
+$\dt^2$; a drift that does not shrink when the step is halved, with the
+bonds and the centre of mass healthy, lies in the forces,
+which are not the slopes of a smooth energy, as with a cutoff that jumps
+(\cref{tab:cs-faults}b). Comparing the model's forces with differences of
+its energy (\cref{sec:pe-forces}), and the energy as a pair crosses the
+cutoff, would confirm it.

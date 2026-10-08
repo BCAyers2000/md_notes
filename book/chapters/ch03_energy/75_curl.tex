@@ -1,0 +1,231 @@
+%=============================================================================!
+% 3.11  THE CURL TEST                                                         !
+%=============================================================================!
+\section{The curl test}
+\label{sec:en-curl}
+
+Given a force, how can we tell whether it is conservative? Checking the
+work along every path is impossible. This section derives a test that
+uses only derivatives of the force at each point, and explains what the
+test measures: how much the force circulates around a small loop.
+
+\subsection*{A property of every gradient}
+
+\begin{toolbox}[Mixed partial derivatives]
+For a function $U(x, y)$ whose second partial derivatives change smoothly
+from place to place, the order of differentiation does not matter,
+\begin{equation*}
+   \frac{\partial}{\partial x}\Bigl(\frac{\partial U}{\partial y}\Bigr)
+   = \frac{\partial}{\partial y}\Bigl(\frac{\partial U}{\partial x}\Bigr) .
+\end{equation*}
+For $U = x^2y^3$, for instance, $\partial U/\partial y = 3x^2y^2$, whose
+derivative with respect to $x$ is $6xy^2$, and $\partial U/\partial x =
+2xy^3$, whose derivative with respect to $y$ is also $6xy^2$. To see why
+it holds in general, take the combination of the values of $U$ at the four
+corners of a small rectangle,
+\begin{equation*}
+   D = U(x + \Delta x, y + \Delta y) - U(x + \Delta x, y)
+   - U(x, y + \Delta y) + U(x, y) ,
+\end{equation*}
+and group its four terms in two ways. Grouped as
+\begin{equation*}
+   D = \bigl[U(x + \Delta x, y + \Delta y) - U(x + \Delta x, y)\bigr]
+   - \bigl[U(x, y + \Delta y) - U(x, y)\bigr] ,
+\end{equation*}
+each bracket is a step north, one taken at $x + \Delta x$ and one at $x$.
+Holding $x$ fixed, the fundamental theorem of calculus makes each bracket
+the integral of $\partial U/\partial y$ along its step, so, writing
+$\frac{\partial U}{\partial y}(a, b)$ for its value at the point $(a, b)$,
+\begin{equation*}
+   D = \int_y^{y + \Delta y}\Bigl[\frac{\partial U}{\partial y}(x + \Delta
+   x, y') - \frac{\partial U}{\partial y}(x, y')\Bigr]\dd y'
+\end{equation*}
+exactly. By the same theorem, now holding $y'$ fixed, the square bracket
+is the integral of $\partial(\partial U/\partial y)/\partial x$ from $x$ to
+$x + \Delta x$. Because this second derivative changes smoothly, on a
+small enough rectangle it stays as close as we like to its value at $(x,
+y)$, so $D$ is $\Delta x\,\Delta y$ times $\partial(\partial U/\partial
+y)/\partial x$ at $(x, y)$, with an error small compared with $\Delta
+x\,\Delta y$. Grouped instead as
+\begin{equation*}
+   D = \bigl[U(x + \Delta x, y + \Delta y) - U(x, y + \Delta y)\bigr]
+   - \bigl[U(x + \Delta x, y) - U(x, y)\bigr] ,
+\end{equation*}
+each bracket is a step east, and the same argument with $x$ and $y$
+exchanged makes $D$ equal to $\Delta x\,\Delta y$ times $\partial(\partial
+U/\partial x)/\partial y$ at $(x, y)$, again with an error small compared
+with $\Delta x\,\Delta y$. Both expressions describe the same number $D$,
+so dividing by $\Delta x\,\Delta y$ and letting the rectangle shrink, the
+two mixed derivatives are equal.
+\end{toolbox}
+
+If $\vb{F} = -\grad U$ in the plane, then $F_x = -\partial U/\partial x$
+and $F_y = -\partial U/\partial y$, so by the toolbox
+\begin{equation*}
+   \frac{\partial F_y}{\partial x}
+   = -\frac{\partial}{\partial x}\Bigl(\frac{\partial U}{\partial y}\Bigr)
+   = -\frac{\partial}{\partial y}\Bigl(\frac{\partial U}{\partial x}\Bigr)
+   = \frac{\partial F_x}{\partial y} .
+\end{equation*}
+Every conservative force whose components have smoothly changing partial
+derivatives therefore has
+\begin{equation}
+   \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y} = 0
+   \label{eq:en-curl-zero}
+\end{equation}
+at every point. The swirl $c\,(-y, x)$ of \cref{eq:en-swirl} fails: $F_y
+= cx$ gives $\partial F_y/\partial x = c$, $F_x = -cy$ gives $\partial
+F_x/\partial y = -c$, and the difference is $2c$. The swirl is not
+conservative, as its work around a circle already showed.
+
+\subsection*{Circulation around a small loop}
+
+The combination in \cref{eq:en-curl-zero} has a meaning of its own, which
+the next box finds, and which turns the necessary condition into a test.
+
+\begin{toolbox}[The curl]
+Take the small rectangle of \cref{fig:en-loop}, with corners $(x, y)$ and
+$(x + \Delta x, y + \Delta y)$, and add up the work of a force $\vb{F}$
+once around it anticlockwise, taking the force at the middle of each
+side.
+\begin{itemize}
+\item Along the bottom, eastwards, the displacement is $(\Delta x, 0)$:
+   work $F_x\,\Delta x$, with $F_x$ taken at height $y$.
+\item Up the right side: $F_y\,\Delta y$, with $F_y$ taken at $x +
+   \Delta x$.
+\item Along the top, westwards, the displacement is $(-\Delta x, 0)$:
+   work $-F_x\,\Delta x$, with $F_x$ taken at height $y + \Delta y$.
+\item Down the left side: $-F_y\,\Delta y$, with $F_y$ taken at $x$.
+\end{itemize}
+Pairing the two sides that run east and west, and the two that run north
+and south, the total is
+\begin{align*}
+   \oint\vb{F}\cdot\dd\vb{r}
+   &\approx \bigl[F_y(x + \Delta x) - F_y(x)\bigr]\,\Delta y
+   - \bigl[F_x(y + \Delta y) - F_x(y)\bigr]\,\Delta x\\
+   &\approx \frac{\partial F_y}{\partial x}\,\Delta x\,\Delta y
+   - \frac{\partial F_x}{\partial y}\,\Delta y\,\Delta x
+   = \Bigl(\frac{\partial F_y}{\partial x}
+   - \frac{\partial F_x}{\partial y}\Bigr)\Delta A ,
+\end{align*}
+where each square bracket is the change of one component over one short
+step, and $\Delta A = \Delta x\,\Delta y$ is the area. The combination in
+brackets is therefore the work around a small loop per unit area
+enclosed. The work around a closed loop is called its circulation, so the
+combination is the circulation per unit area; it is called the curl of
+$\vb{F}$ in the plane. In three dimensions a small loop can lie in the
+$xy$, the $yz$ or the $zx$ plane. Renaming the letters in turn, $x$ to
+$y$, $y$ to $z$ and $z$ to $x$, carries a loop in the $xy$ plane,
+traversed anticlockwise as seen from the positive end of the $z$ axis,
+into one in the $yz$ plane, anticlockwise as seen from the positive end of
+the $x$ axis, and carries $\partial F_y/\partial x - \partial F_x/\partial
+y$ into $\partial F_z/\partial y - \partial F_y/\partial z$; renaming once
+more gives the $zx$ plane and $\partial F_x/\partial z - \partial
+F_z/\partial x$. The three combinations form the curl vector, written
+$\grad\times\vb{F}$ and read `curl $\vb{F}$' (the $\times$ is the cross
+product of Chapter~5, not needed here),
+\begin{equation*}
+   \grad\times\vb{F} = \Bigl(
+   \frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z},\;
+   \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x},\;
+   \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y}
+   \Bigr) ,
+\end{equation*}
+whose third component is the one found above, for a loop in the $xy$
+plane.
+
+A large loop made of the sides of many small rectangles, tiling the
+region it encloses, has a circulation equal to the sum of the
+circulations of the small rectangles. Each inner side belongs to two
+neighbouring rectangles and is traversed once in each direction, so its
+two contributions cancel, and only the outer boundary is left. Hence the
+work around the loop is the sum of the curl times $\Delta A$ over the
+rectangles. As the rectangles shrink, such a sum of values times small
+areas approaches a limit, written $\iint\dots\dd A$ and called the
+integral over the area, just as a sum of values times short steps
+approaches the integral of \cref{sec:mo-integrating}; when the value is a
+constant, the sum, and so the integral, is that constant times the whole
+area. So
+\begin{equation*}
+   \oint\vb{F}\cdot\dd\vb{r} = \iint\Bigl(\frac{\partial F_y}{\partial x}
+   - \frac{\partial F_x}{\partial y}\Bigr)\dd A ,
+\end{equation*}
+a result known as Green's theorem, for a loop traversed anticlockwise. It
+needs $\vb{F}$ and its partial derivatives to change smoothly at every
+point inside the loop, because every small rectangle of the tiling must
+have a curl. A smooth curved loop is approached by staircases of ever
+smaller rectangles. A staircase never becomes as short as the curve, which
+would matter for friction; but for a force that depends only on position,
+the work over each short stretch is nearly $\vb{F}\cdot\Delta\vb{r}$, and
+the staircase and the stretch of curve beside it share the same
+displacement $\Delta\vb{r}$, so the theorem holds for the curve too.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.1,
+   side/.style={-{Stealth[length=5pt]}, line width=0.9pt, accent}]
+   \draw[side] (0,0) -- (3,0) node[midway, below] {\small $F_x\,\Delta x$
+      at $y$};
+   \draw[side] (3,0) -- (3,2) node[midway, right] {\small $F_y\,\Delta y$
+      at $x + \Delta x$};
+   \draw[side] (3,2) -- (0,2) node[midway, above] {\small $-F_x\,\Delta x$
+      at $y + \Delta y$};
+   \draw[side] (0,2) -- (0,0) node[midway, left] {\small $-F_y\,\Delta y$
+      at $x$};
+   \fill (0,0) circle (1.3pt) node[below left] {\small $(x, y)$};
+   \fill (3,2) circle (1.3pt) node[above right]
+      {\small $(x + \Delta x, y + \Delta y)$};
+\end{tikzpicture}
+\caption{The work of a force once anticlockwise around a small rectangle,
+side by side. The two sides that run east and west differ only in their
+height, and the two that run north and south only in their east-west
+position.}
+\label{fig:en-loop}
+\end{figure}
+
+\subsection*{The test}
+
+The curl test now reads in both directions. If a force is conservative,
+its curl is zero everywhere, by \cref{eq:en-curl-zero}. Conversely, if
+the curl is zero everywhere in a region with no holes, every loop in the
+region encloses only points of the region, so Green's theorem makes the
+work around it zero; within the region the work then does not depend on
+the path, and the force is conservative there. In three dimensions
+the same holds, because any loop can be spanned by a surface tiled with
+small loops in the same way, a result called Stokes' theorem whose details
+we do not need. The proviso about holes is real: \cref{ex:en-vortex} gives
+a force whose curl is zero wherever it is defined, but which is not
+defined at the origin, and whose work around the origin is not zero.
+
+For the swirl, with curl $2c$ everywhere, Green's theorem gives the work
+anticlockwise around any loop as $2c$ times the area it encloses. On the
+circle of the line-integral toolbox that is $2c\times\pi R^2 = 2\pi
+cR^2$, as computed there directly.
+
+When the test is passed, $U$ follows from \cref{eq:en-potential-3d} along
+whichever path is easiest. From the origin, go along the $x$ axis to $(x,
+0)$, a leg on which only $F_x$ does work, and then straight north to $(x,
+y)$, on which only $F_y$ does:
+\begin{equation*}
+   U(x, y) = -\int_0^x F_x(x', 0)\,\dd x' - \int_0^y F_y(x, y')\,\dd y' .
+\end{equation*}
+
+For many atoms the test has the same form, with every pair of the $3N$
+coordinates in place of $x$ and $y$. Numbering the coordinates $q_1,
+\dots, q_{3N}$, a force is conservative only if
+\begin{equation*}
+   \frac{\partial F_a}{\partial q_b} = \frac{\partial F_b}{\partial q_a}
+   \qquad\text{for every pair $a$ and $b$,}
+\end{equation*}
+where $F_a$ is the force component along $q_a$. For a conservative
+force these derivatives are minus the second derivatives of $U$, which
+Chapter~4 collects into a table called the Hessian.
+
+\notebook{03}{compute the curl of a force symbolically, and the work
+around loops}
+
+\begin{selfcheck}
+Is the force $\vb{F} = (y, x)$ conservative? If so, find a potential
+energy $U$ with $\vb{F} = -\grad U$.
+\end{selfcheck}

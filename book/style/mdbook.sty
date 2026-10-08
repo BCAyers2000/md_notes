@@ -1,0 +1,172 @@
+%=============================================================================!
+% MDBOOK: TEXTBOOK FURNITURE ON THE THESIS HOUSE STYLE                        !
+% ----------------------------------------------------                        !
+% Load after uosthesis.cls and thesis-style.sty, which are copied verbatim    !
+% from the thesis and set every typographic decision: font, spacing,          !
+% margins, heads, captions, statements, equations, links. This file adds      !
+% only what a textbook needs and a thesis does not. Do not restyle here.      !
+%=============================================================================!
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mdbook}[2026/10/01 textbook furniture on the thesis style]
+
+%-----------------------------------------------------------------------------!
+% COLOUR ROLES                                                                !
+% accent is the thesis teal; the rest match mdbook.mplstyle role for role.    !
+%-----------------------------------------------------------------------------!
+\colorlet{accent}{thesisaccent}
+\colorlet{housegrey}{thesisgrey}
+\definecolor{ochre}{HTML}{C28E0E}
+\definecolor{oxblood}{HTML}{7C2529}
+\definecolor{sage}{HTML}{5B7553}
+
+%-----------------------------------------------------------------------------!
+% MATHEMATICS                                                                 !
+% Additions to the thesis vocabulary for mechanics and sampling.              !
+%-----------------------------------------------------------------------------!
+\RequirePackage{bm}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\vb}[1]{\bm{\mathrm{#1}}}
+\newcommand{\grad}{\bm{\nabla}}
+\newcommand{\ens}[1]{\langle #1 \rangle}
+\newcommand{\kB}{k_{\mathrm{B}}}
+\newcommand{\dt}{\delta t}            % integrator step
+\newcommand{\Dt}{\Delta t}            % learned stride
+\newcommand{\order}[1]{\mathcal{O}(#1)}
+\RequirePackage{mathrsfs}
+\newcommand{\Lag}{\mathscr{L}}        % Lagrangian (calligraphic L is the loss)
+\newcommand{\Act}{\mathcal{S}}        % action (S is kept for entropy)
+\newcommand{\Liou}{\hat{L}}           % Liouville operator (L is taken)
+\newcommand{\pb}[2]{\{#1, #2\}}       % Poisson bracket
+\theoremstyle{houseremark}
+\@ifundefined{c@example}{\newtheorem{example}[proposition]{Example}}{}
+% units set in mathematics everywhere, so that text and displays agree
+\sisetup{unit-mode=math}
+% siunitx 3 deprecates \angstrom; keep the name, set the glyph
+\DeclareSIUnit{\angstrom}{\text{\AA}}
+% the mass unit as the text and mdlab write it
+\DeclareSIUnit{\amu}{amu}
+
+%-----------------------------------------------------------------------------!
+% PAGINATION                                                                  !
+% The thesis keeps a heading only if 36% (section) or 24% (subsection) of     !
+% the page remains; a textbook with many short subsections then ends pages    !
+% early. Lower thresholds still keep a heading with its first lines.          !
+%-----------------------------------------------------------------------------!
+\setlength{\sectionneed}{0.2\textheight}
+\setlength{\subsectionneed}{0.1\textheight}
+% Two-digit chapter and section numbers (for example 16.12) need a wider
+% contents label than the thesis's shorter numbering. Keep its fonts/leaders.
+\titlecontents{section}[4.3em]
+   {}{\contentslabel{2.8em}}{}
+   {\enspace\titlerule*[1pc]{.}\contentspage}
+\titlecontents{subsection}[7.5em]
+   {}{\contentslabel{3.2em}}{}
+   {\enspace\titlerule*[1pc]{.}\contentspage}
+% Subheadings bind to the paragraph below them rather than floating
+% between paragraphs, and a display after a short line keeps some air.
+\titlespacing*{\subsection}{0pt}{3.25ex}{0.6ex}
+\AtBeginDocument{\setlength{\abovedisplayshortskip}{10pt plus 3pt}}
+
+%-----------------------------------------------------------------------------!
+% TEACHING BOXES                                                              !
+% A hairline rule on the left in the role colour and a small-caps head.       !
+% keyidea   : the one thing to carry out of a section             (accent)    !
+% bridge    : the link to electronic-structure practice           (grey)      !
+% practice  : what goes wrong in real simulations                 (oxblood)   !
+% toolbox   : a mathematical tool, derived where first needed      (sage)     !
+% check     : a question to test understanding, answered at the end  (ochre)  !
+% Short boxes are unbreakable, so that a box is never split by a page;        !
+% a toolbox may run long and may break.                                       !
+%-----------------------------------------------------------------------------!
+\RequirePackage[most]{tcolorbox}
+\tcbset{housebox/.style={enhanced,breakable,boxrule=0pt,frame hidden,
+   colback=white,borderline west={1.2pt}{0pt}{#1},
+   left=10pt,right=0pt,top=2pt,bottom=2pt,
+   before skip=10pt,after skip=10pt,
+   fonttitle=\normalfont\scshape,coltitle=#1,
+   attach title to upper={\enskip},
+   parbox=false}}
+\newtcolorbox{keyidea}[1][Key idea]{housebox=accent,unbreakable,title={#1.}}
+\newtcolorbox{bridge}[1][From electronic structure]{housebox=housegrey,unbreakable,title={#1.}}
+\newtcolorbox{practice}[1][In practice]{housebox=oxblood,unbreakable,title={#1.}}
+\newtcolorbox{toolbox}[1][Mathematics]{housebox=sage,title={#1.}}
+\newtcolorbox{selfcheck}[1][Check your understanding]{housebox=ochre,unbreakable,title={#1.}}
+
+% \notebook{07}{shadow energy}: pointer to the companion notebook; it stays
+% on the page of the paragraph it follows
+\newcommand{\notebook}[2]{%
+   \par\nopagebreak[4]{\small\color{accent}\textsc{notebook}~{\liningfigs#1}\enskip
+    \color{black!70}\itshape #2}\par}
+
+% \unnumbered{What we now have}: an unnumbered section that also sets the
+% running head, which \section* alone would leave at the previous section.
+% The head is read from titleps marks, so \markright has no effect. As for
+% a numbered section, the first mark records the outgoing title for the
+% page on which the heading falls and the second the new one for the pages
+% after; an empty section number makes the head print the title alone.
+\newcommand{\unnumbered}[1]{\section*{#1}%
+   \begingroup\renewcommand{\thesection}{}%
+   \protected@xdef\ttl@prevmarks{\ttl@marks}\sectionmark{#1}%
+   \gdef\ttl@prevmarks{\ttl@marks}\sectionmark{#1}%
+   \endgroup}
+
+%-----------------------------------------------------------------------------!
+% CODE                                                                        !
+% listings comes with the class; this style replaces its defaults.            !
+%-----------------------------------------------------------------------------!
+\RequirePackage[scaled=0.86]{beramono}
+\lstdefinestyle{house}{
+   language=Python,
+   basicstyle=\ttfamily\small\singlespacing,
+   keywordstyle=\color{accent},
+   commentstyle=\color{housegrey}\itshape,
+   stringstyle=\color{ochre},
+   numberstyle=\tiny\color{black!45}\liningfigs,
+   numbers=left,numbersep=8pt,xleftmargin=18pt,
+   frame=lines,framerule=0.3pt,rulecolor=\color{black!35},
+   aboveskip=10pt,belowskip=6pt,
+   columns=fullflexible,keepspaces=true,
+   showstringspaces=false,breaklines=true,tabsize=4,
+   upquote=true,
+   % mdlab docstrings carry units in Unicode; pdflatex listings need a map
+   literate={Å}{{\AA}}1 {²}{{\textsuperscript{2}}}1
+            {³}{{\textsuperscript{3}}}1 {¹}{{\textsuperscript{1}}}1
+            {⁻}{{\textsuperscript{-}}}1 {₀}{{\textsubscript{0}}}1
+            {−}{{-}}1 {×}{{$\times$}}1 {ẑ}{{\^z}}1
+            {·}{{$\cdot$}}1 {Δ}{{$\Delta$}}1 {√}{{$\surd$}}1
+            {Φ}{{$\Phi$}}1 {Σ}{{$\Sigma$}}1 {ω}{{$\omega$}}1
+            {τ}{{$\tau$}}1}
+% a short listing is kept on one page with the text that introduces it
+\lstnewenvironment{code}[1][]{\needspace{7\baselineskip}\lstset{style=house,#1}}{}
+
+%-----------------------------------------------------------------------------!
+% EXERCISES                                                                   !
+% Numbered within chapter; each states a quantity to compute or a result      !
+% to prove, checkable in the notebook.                                        !
+%-----------------------------------------------------------------------------!
+\RequirePackage{enumitem}
+\newcounter{exercise}[chapter]
+\renewcommand{\theexercise}{\thechapter.\arabic{exercise}}
+\newenvironment{exercise}[1][]{%
+   \refstepcounter{exercise}\par\medskip
+   \noindent{\scshape exercise}~{\liningfigs\color{accent}\theexercise}%
+   \if\relax\detokenize{#1}\relax\else\ {\itshape(#1)}\fi.\enskip}{\par}
+
+%-----------------------------------------------------------------------------!
+% CROSS-REFERENCES AND TIKZ                                                   !
+%-----------------------------------------------------------------------------!
+\RequirePackage{tabularx}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,decorations.pathmorphing}
+\RequirePackage[capitalise,nameinlink,noabbrev]{cleveref}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{exercise}{Exercise}{Exercises}
+
+% answer to the check box of one section, styled like an exercise label
+\newcommand{\answerto}[1]{\par\medskip\noindent{\scshape section}~%
+   {\liningfigs\color{accent}\ref{#1}}.\enskip\ignorespaces}
+% worked solution to one exercise, labelled to match the exercise itself
+\newcommand{\solutionto}[1]{\par\medskip\noindent{\scshape exercise}~%
+   {\liningfigs\color{accent}\ref{#1}}.\enskip\ignorespaces}
+\creflabelformat{equation}{#2(#1)#3}
+
+\endinput

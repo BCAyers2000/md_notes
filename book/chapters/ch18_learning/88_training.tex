@@ -1,0 +1,130 @@
+%=============================================================================!
+% 18.9  WHAT THE TRAINING LOOKS LIKE                                          !
+%=============================================================================!
+\section{What the training looks like}
+\label{sec:lo-training}
+
+A run of molecular dynamics is read through its energies, and a training
+run through its losses. The curve of the loss against the step, for the
+training readings and for the validation readings, is the first thing to
+look at when a model is trained, and most faults show in it.
+\Cref{fig:lo-training} trains the polynomials of \cref{sec:lo-basis} on
+the fifteen readings of argon's pair energy by lowering the mean squared
+miss from zero weights, once healthily and then broken in four ways, and
+\cref{tab:lo-faults} gathers the checks.
+
+\textit{Healthy.} Degree 8 in the scaled distance, Adam at the rate
+$10^{-4}$, 40\,000 steps: the training miss falls to
+\SI{0.202}{\milli\electronvolt} and the validation miss with it, to
+0.187, both at the noise of \SI{0.2}{\milli\electronvolt}
+(\cref{fig:lo-training}a). Two curves that fall together and level at the
+noise are the picture of a model that has learned what the readings
+hold.
+
+\textit{The rate.} Gradient descent on the same fit at 0.9 of its
+stability limit $2/\lambda_{\max}$ brings the training miss to
+\SI{0.28}{\milli\electronvolt} in 400 steps; at 1.1 of it the miss grows
+without bound, to \SI{1.7e32}{\milli\electronvolt}; at a thousandth of
+it the miss has fallen only to \SI{3.6}{\milli\electronvolt}
+(\cref{fig:lo-training}b). A loss that rises, or swings with growing
+amplitude, means a rate past the limit; one that barely moves, a rate far
+below it. Adam shows a milder form of the first: at a fixed rate of
+$10^{-3}$ its training miss jumps by up to
+\SI{0.24}{\milli\electronvolt} in a single step late in training, when
+its running mean square has decayed and the steps no longer shrink with
+the gradient, against \SI{0.005}{\milli\electronvolt} at $10^{-4}$, the
+smaller rate removing the spikes.
+
+\textit{Overfitting.} Degree 14 with no penalty, Adam at $10^{-4}$ for
+\num{e5} steps: the training miss keeps falling, to
+\SI{0.150}{\milli\electronvolt}, below the noise, while the validation
+miss is least, \SI{0.38}{\milli\electronvolt}, after 160 steps and then
+rises to \SI{2.95}{\milli\electronvolt} (\cref{fig:lo-training}c). Two
+curves that part, the training miss below the noise and the validation
+miss climbing, mean the model is learning the noise. Stopping at the
+step of least validation miss, \emph{early stopping}, keeps the model of
+that step and works as a penalty does, since the weights have not yet
+grown into the directions the readings barely constrain; a penalty or
+fewer weights cure it outright.
+
+\textit{Unscaled features.} Degree 8 in $r$ itself, whose design has the
+condition number \num{3.3e26} against \num{4.6e6} for the scaled
+distance, trained by gradient descent at 0.9 of each one's stability
+limit: after 2000 steps the training miss is
+\SI{5.3}{\milli\electronvolt} with powers of $r$ and
+\SI{0.22}{\milli\electronvolt} with the scaled distance
+(\cref{fig:lo-training}d). A loss that falls a little and then crawls,
+with no sign of the noise floor, points to badly scaled inputs before it
+points to a bad model; scaling each input to a spread of about one is the
+cure, and the reason the readings of a learned potential are normalised
+before training.
+
+\textit{A leaked split.} The fault that the loss curves cannot show is
+the one of \cref{sec:lo-splits}: with frames split at random, training
+and validation misses fall together to a healthy-looking floor, 30.5
+against an independent run's \SI{128}{\milli\electronvolt}. Only a
+validation set separated in time, or a separate run, reveals it.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/training}
+\caption{What the training looks like: the rms miss on the fifteen
+training readings of argon's pair energy, and on fifteen validation
+readings, against the step, from zero weights. (a) Healthy: degree 8,
+Adam at $10^{-4}$. (b) Gradient descent at 0.9 and 1.1 of its stability
+limit and at a thousandth of it. (c) Overfitting: degree 14, Adam at
+$10^{-4}$, with the step of least validation miss (grey). (d) Degree 8 in
+$r$ itself and in the scaled distance, gradient descent at 0.9 of each
+one's limit. The noise of the readings, \SI{0.2}{\milli\electronvolt},
+dotted.}
+\label{fig:lo-training}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\small
+\caption{Faults of training, the check that catches each, and its value
+in the healthy run and in the broken one.}
+\label{tab:lo-faults}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}
+   >{\raggedright\arraybackslash}p{0.34\linewidth}
+   >{\raggedright\arraybackslash}p{0.17\linewidth}
+   >{\raggedright\arraybackslash}p{0.17\linewidth}@{}}
+\toprule
+fault & check & healthy & broken\\
+\midrule
+rate past the limit & training miss after 400 steps & \SI{0.28}{\milli
+\electronvolt} & \SI{1.7e32}{\milli\electronvolt}\\
+rate far too small & training miss after 400 steps & \SI{0.28}{\milli
+\electronvolt} & \SI{3.6}{\milli\electronvolt}\\
+Adam's rate too large & largest jump of the training miss in a step &
+\SI{0.005}{\milli\electronvolt} & \SI{0.24}{\milli\electronvolt}\\
+overfitting & validation miss at the end against its least &
+\num{0.19} against 0.18 (degree 8) & \num{2.95} against \SI{0.38}{\milli
+\electronvolt}\\
+unscaled features & condition number of $X^{\mathsf T}X$ & \num{4.6e6} &
+\num{3.3e26}\\
+leaked split & validation miss against an independent run's &
+\num{92} against 128 (blocked) & \num{30.5} against
+\SI{128}{\milli\electronvolt}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyidea}
+The training and validation losses against the step are read as a run's
+energies are: falling together to the noise is healthy; a rising or
+swinging loss means a rate past the limit; a crawl, a rate too small or
+inputs badly scaled; curves that part, overfitting, cured by early
+stopping, a penalty or fewer weights. A leaked split looks healthy, and
+only a validation set separated in time reveals it.
+\end{keyidea}
+
+\notebook{18}{break a training run in each of these ways and read its
+loss curves}
+
+\begin{selfcheck}
+A model's training loss falls steadily, and its validation loss falls
+for a while and then rises. What is happening, and which step's weights
+should be kept?
+\end{selfcheck}

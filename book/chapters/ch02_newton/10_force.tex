@@ -1,0 +1,121 @@
+%=============================================================================!
+% 2.1  FORCE AND THE FIRST LAW                                                !
+%=============================================================================!
+\section{Force and the first law}
+\label{sec:ne-force}
+
+In everyday speech a force is a push or a pull: a hand pushing a door, a
+rope pulling a sledge, a magnet pulling a pin. To build a law of motion on
+forces we first need to measure them, and this section shows how, before
+stating the first of Newton's three laws.
+
+\subsection*{Measuring a force}
+
+A spring stretches when it is pulled, and the harder the pull, the further
+it stretches. A spring with a scale beside it, called a spring balance,
+therefore turns a pull into a reading. We can define a unit of force as
+the pull that stretches one particular standard spring by one particular
+amount. Two identical standard springs pulling side by side, each
+stretched by that amount, then exert two units, three springs exert three
+units, and so on (\cref{fig:ne-force}a). In this way a force acquires a
+size, a number of units. \Cref{sec:ne-second} replaces this home-made
+unit by the
+standard one, the newton.
+
+A force also has a direction, the direction in which it pulls, so it is a
+vector. When several forces act on one body together, experiment shows
+that their combined effect on its motion from place to place is that of a
+single force equal to their vector sum, called the net force,
+\begin{equation*}
+   \vb{F} = \vb{F}_1 + \vb{F}_2 + \dotsb ,
+\end{equation*}
+in the sense in which a net profit is what remains when everything is
+added up. A pull of 4 units towards the east and a pull of 3 units towards
+the north, for example, are the vectors $(4, 0)$ and $(0, 3)$ when the
+$x$ axis points east and the $y$ axis north. Adding component by
+component (\cref{sec:mo-plane}) gives $(4, 3)$. This is the same as
+drawing the second arrow from the tip of the first, since starting at the
+tip of $(4, 0)$ and moving by $(0, 3)$ ends at $(4, 3)$
+(\cref{fig:ne-force}b). The two pulls therefore act like a single pull of
+length $(4^2 + 3^2)^{1/2} = 5$ units, by Pythagoras' theorem, directed at
+an angle $\theta$ north of east. Writing $(4, 3) = 5(\cos\theta,
+\sin\theta)$ gives $\tan\theta = \sin\theta/\cos\theta = 3/4$. The tangent can be
+undone as the sine was in \cref{sec:mo-trig}: for any number $s$,
+$\arctan s$ is the angle between $-\pi/2$ and $\pi/2$ whose tangent is
+$s$, and here $\theta = \arctan(3/4) = \SI{0.644}{\radian}$, or
+\ang{36.9}. Two forces of equal size pulling
+in opposite directions add to zero, so a body can be pushed and pulled by
+several forces while the net force on it vanishes. Such a body may
+still turn: two equal and opposite pushes at opposite corners of a book
+lying on a table add to zero, yet set the book spinning, because where a
+force acts decides how it turns a body. Turning is the subject of
+Chapter~5, and until then every body is a particle, for which only the
+net force matters.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.1pt},
+   coil/.style={decorate, decoration={coil, aspect=0.45,
+      segment length=3pt, amplitude=3pt, pre length=3pt,
+      post length=3pt}, line width=0.6pt}]
+   % (a) one spring, then two side by side, each stretched by one unit
+   \begin{scope}
+      \node[anchor=west] at (-0.4,1.75) {\small (a)};
+      \fill[black!35] (-0.25,1.45) rectangle (2.95,1.55);
+      \draw[coil] (0.3,1.45) -- (0.3,0.35);
+      \draw[black!40] (0.0,0.35) -- (0.0,1.25);
+      \foreach \y in {0.35,0.65,0.95,1.25}
+         \draw[black!40] (0.0,\y) -- (0.08,\y);
+      \draw[force] (0.3,0.35) -- (0.3,-0.35);
+      \node[below] at (0.3,-0.38) {\small 1 unit};
+      \draw[coil] (1.9,1.45) -- (1.9,0.35);
+      \draw[coil] (2.4,1.45) -- (2.4,0.35);
+      \draw[line width=0.8pt] (1.8,0.35) -- (2.5,0.35);
+      \draw[force] (2.15,0.35) -- (2.15,-1.05);
+      \node[below] at (2.15,-1.08) {\small 2 units};
+   \end{scope}
+   % (b) two forces added tip to tail
+   \begin{scope}[xshift=5.0cm, yshift=-0.9cm, scale=0.62]
+      \node[anchor=west] at (-0.6,4.1) {\small (b)};
+      \draw[force] (0,0) -- (4,0) node[midway, below] {\small 4 east};
+      \draw[force] (4,0) -- (4,3) node[midway, right] {\small 3 north};
+      \draw[force, accent] (0,0) -- (4,3)
+         node[midway, above left] {\small net force, 5};
+      \draw[black!50, line width=0.4pt] (1.0,0) arc[start angle=0,
+         end angle=36.87, radius=1.0];
+      \node at (1.45,0.42) {\small \ang{36.9}};
+      \fill (0,0) circle (1.5pt);
+   \end{scope}
+\end{tikzpicture}
+\caption{Measuring and adding forces. (a) A unit of force stretches a
+standard spring by a set amount; two such springs pulling together exert
+two units. (b) Pulls of 4 units east and 3 units north, drawn tip to tail,
+add to a net force of 5 units at \ang{36.9} north of east.}
+\label{fig:ne-force}
+\end{figure}
+
+\subsection*{The first law}
+
+A book slid across a table slows down and stops. The table and the air
+exert forces on it: friction, the grip of one surface sliding over
+another, and drag, the resistance of the air or liquid a body moves
+through. Where these forces are made small, the book's behaviour changes.
+On smooth ice, or on an air-hockey table, where a cushion of air lifts the
+puck clear of the surface, a puck glides on at nearly constant speed in a
+straight line. We call a surface smooth when the friction it exerts is
+small enough to neglect.
+
+Since forces acting together behave like their net force, a body whose
+forces add to zero moves as one with no force on it at all. Newton's
+first law states the result: a body on which no net force acts keeps moving in a straight line at constant
+speed, that is, at constant velocity, and a body at rest stays at rest. A
+force is therefore not needed to keep a body moving, only to change its
+motion. The next section shows that this law cannot be true for every
+observer, and uses that fact to pick out the viewpoints from which all
+three laws hold.
+
+\begin{selfcheck}
+A puck glides across smooth ice in a straight line at a steady
+\SI{3}{\metre\per\second}. What is the net force on it?
+\end{selfcheck}

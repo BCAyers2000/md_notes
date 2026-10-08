@@ -1,0 +1,211 @@
+%=============================================================================!
+% 5.4  RIGID ROTATION                                                         !
+%=============================================================================!
+\section{Rigid rotation}
+\label{sec:ro-rigid}
+
+A wheel, a spinning top and, to a good approximation, a molecule are rigid:
+the distances between their parts do not change as they turn. This section
+finds the velocity of every part of a turning rigid body, its angular
+momentum and its kinetic energy, and then keeps the promise of
+\cref{sec:en-track} by racing a rolling disc and a rolling hoop against a sliding block; a
+ball joins the race in \cref{ex:ro-sphere}.
+
+\subsection*{Turning about a fixed axis}
+
+Let a rigid body turn about the $z$ axis at the angular speed $\omega$.
+Each part moves round a circle about the axis, of radius $\rho$, its
+distance from the axis, at the speed $\omega\rho$ (\cref{sec:mo-circle}).
+Define the angular velocity as the vector $\boldsymbol{\omega} = (0, 0,
+\omega)$, along the axis, of length the angular speed, and pointing by the
+right-hand rule: fingers curled along the motion, thumb along
+$\boldsymbol{\omega}$. Then the velocity of the part at $\vb{r} = (x, y,
+z)$ is
+\begin{equation}
+   \vb{v} = \boldsymbol{\omega}\times\vb{r} = (-\omega y,\ \omega x,\ 0) ,
+   \label{eq:ro-rigid}
+\end{equation}
+by the components of the cross product; for a part at $x = \rho\cos
+\omega t$, $y = \rho\sin\omega t$ this is $\rho\omega(-\sin\omega t, \cos
+\omega t, 0)$, the velocity of \cref{eq:mo-circle}. For an axis
+through the origin in any direction, with $\theta$ the angle between
+$\boldsymbol{\omega}$ and $\vb{r}$, the length $\omega\lvert\vb{r}\rvert
+\sin\theta$ of $\boldsymbol{\omega}\times\vb{r}$ is $\omega\rho$, since
+$\lvert\vb{r}\rvert\sin\theta$ is the distance from the axis, and its
+direction, at right angles to the axis and to $\vb{r}$ by the right-hand
+rule, is along the circle the way the body turns. Neither refers to the
+$x$, $y$ and $z$ axes, so $\boldsymbol{\omega}\times\vb{r}$ gives the
+velocity for any such axis.
+
+The angular momentum about the axis is the sum over the parts of
+$m_i(x_iv_{y,i} - y_iv_{x,i})$, and with $v_{x,i} = -\omega y_i$ and
+$v_{y,i} = \omega x_i$,
+\begin{equation}
+   L_z = \sum_i m_i\,\omega\,(x_i^2 + y_i^2) = I\omega , \qquad
+   I = \sum_i m_i\rho_i^2 ,
+   \label{eq:ro-moment}
+\end{equation}
+where $\rho_i^2 = x_i^2 + y_i^2$. The number $I$, the masses weighted by
+their squared distances from the axis, is the moment of inertia about the
+axis. The kinetic energy is likewise $\sum_i\frac12 m_i(\omega\rho_i)^2 =
+\frac12 I\omega^2$. Set beside $p = mv$ and $K = \frac12 mv^2$, these say
+that $I$ does for turning what the mass does for moving: the larger $I$,
+the harder the body is to set turning or to stop, since a torque $G_z$
+about the fixed axis changes $L_z = I\omega$ at the rate $G_z$
+(\cref{eq:ro-system}), and so changes $\omega$ at the rate $G_z/I$.
+
+\subsection*{Some moments of inertia}
+
+\emph{Two bodies on a rod.} Masses $m_1$ and $m_2$ a distance $d$ apart
+turn about an axis through their centre of mass at right angles to the
+line joining them. The centre of mass is at distances $d_1$ from $m_1$
+and $d_2$ from $m_2$, with $d_1 + d_2 = d$. Measured along the line from
+the centre of mass, $m_1$ is at $-d_1$ and $m_2$ at $+d_2$, and by
+\cref{sec:ne-bodies} $-m_1d_1 + m_2d_2 = 0$, so $m_1d_1 = m_2d_2$.
+Putting $d_2 = d - d_1$ gives $(m_1 + m_2)\,d_1 = m_2d$, so $d_1 =
+m_2d/(m_1 + m_2)$, and likewise $d_2 = m_1d/(m_1 + m_2)$. Then
+\begin{equation}
+   I = m_1d_1^2 + m_2d_2^2
+   = \frac{m_1m_2^2 + m_2m_1^2}{(m_1 + m_2)^2}\,d^2
+   = \frac{m_1m_2}{m_1 + m_2}\,d^2 = m_{\mathrm r}d^2 ,
+   \label{eq:ro-dumbbell}
+\end{equation}
+since the top is $m_1m_2(m_2 + m_1)$ and one factor $m_1 + m_2$ cancels
+with the bottom: the reduced mass of
+\cref{sec:os-bodies} times the square of the length. A diatomic molecule
+turns with this moment of inertia (\cref{sec:ro-molecules}).
+
+\emph{A hoop} of mass $M$ and radius $R$, about its axis, has all its mass
+at the distance $R$, so $I = MR^2$.
+
+\emph{A disc} of mass $M$ and radius $R$, of even thickness, about its
+axis: cut it into thin rings. The ring between $\rho$ and $\rho + \dd\rho$
+has the area $2\pi\rho\,\dd\rho$, its length times its width, out of the
+disc's $\pi R^2$, so its mass is $M\times2\pi\rho\,\dd\rho/(\pi R^2) =
+(2M/R^2)\,\rho\,\dd\rho$, all at the distance $\rho$. Adding the rings,
+\begin{equation*}
+   I = \int_0^R\rho^2\,\frac{2M}{R^2}\,\rho\,\dd\rho
+   = \frac{2M}{R^2}\int_0^R\rho^3\,\dd\rho
+   = \frac{2M}{R^2}\Bigl[\frac{\rho^4}{4}\Bigr]_0^R
+   = \frac{2M}{R^2}\,\frac{R^4}{4} = \tfrac12 MR^2 ,
+\end{equation*}
+taking the constant outside and integrating $\rho^3$ by
+\cref{eq:mo-integrals}; half the hoop's, since much of the disc's mass lies near the axis.
+
+\subsection*{Pulling in the arms}
+
+A person sits on a stool that turns freely about a vertical axis, holding
+a weight of \SI{2}{\kilogram} in each hand at arm's length,
+\SI{0.8}{\metre} from the axis. Say that the person and the stool have
+$I_0 = \SI{1.5}{\kilogram\metre\squared}$ about the axis, the same whether the arms are out or in. Then, treating
+the weights as points, $I = 1.5 + 2\times2\times0.8^2 =
+\SI{4.06}{\kilogram\metre\squared}$; set turning at
+\SI{1}{\radian\per\second}, the stool has $L_z = \SI{4.06}{\kilogram
+\metre\squared\per\second}$. Nothing outside exerts a torque about the
+axis: each weight is vertical, with $F_x = F_y = 0$, so its $G_z = xF_y - yF_x$
+is zero, and the bearing turns freely; by the $z$ component of
+\cref{eq:ro-system}, $L_z$ is conserved. Pulling the weights in to \SI{0.2}{\metre} reduces $I$ to $1.5 +
+2\times2\times0.2^2 = \SI{1.66}{\kilogram\metre\squared}$, and since $L_z
+= I\omega$ is conserved, $\omega$ rises to $4.06/1.66 = \SI{2.446}{\radian
+\per\second}$. The kinetic energy $\frac12 I\omega^2$ rises from
+$\frac12\times4.06\times1^2 = \SI{2.030}{\joule}$ to $\frac12\times1.66
+\times(4.06/1.66)^2 = \frac12\times4.06^2/1.66 = \SI{4.965}{\joule}$; the arms supply the difference,
+\SI{2.935}{\joule}, by pulling the weights inwards, as the hand pulled
+the puck. A spinning skater who draws in the arms speeds up for the
+same reason.
+
+\subsection*{Rolling}
+
+\Cref{sec:en-track} let a bead slide and noted that a rolling ball also
+spins, and moves more slowly. A wheel, a disc or a ball of radius $R$
+rolls without slipping when the point touching the ground is momentarily
+at rest. Seen from its centre, which moves at the velocity $\vb{V}$, the body
+only turns, so every part has the velocity $\vb{V}$ plus the turning velocity
+of \cref{eq:ro-rigid} measured from the centre, velocities adding as in
+\cref{sec:ne-frames}. For a body rolling in the $+x$ direction, with $\vb{V}
+= (V, 0, 0)$ and turning clockwise as seen from the $+z$ side, $x$ to the
+right and $y$ up, $\boldsymbol{\omega} = (0, 0, -\omega)$,
+and the bottom point, at $(0, -R, 0)$ from the centre, has the turning
+velocity $(0, 0, -\omega)\times(0, -R, 0) = (-\omega R, 0, 0)$. Its total
+velocity is $(V - \omega R, 0, 0)$, and rolling without slipping means
+\begin{equation*}
+   V = \omega R .
+\end{equation*}
+
+The kinetic energy splits like the angular momentum of
+\cref{sec:ro-system}. With $\vb{v}_i = \vb{V} + \vb{v}_i'$ and $\sum_i
+m_i\vb{v}_i' = \vb{0}$,
+\begin{equation*}
+   K = \sum_i\tfrac12 m_i\,\lvert\vb{V} + \vb{v}_i'\rvert^2
+   = \tfrac12 MV^2 + \vb{V}\cdot\sum_i m_i\vb{v}_i'
+     + \sum_i\tfrac12 m_i\lvert\vb{v}_i'\rvert^2
+   = \tfrac12 MV^2 + \tfrac12 I\omega^2 ,
+\end{equation*}
+expanding the square as a scalar product; the middle term vanishes, and
+the last is the energy of turning about the centre, $\frac12 I\omega^2$,
+since each $\vb{v}_i'$ is the turning velocity. With $\omega = V/R$ and $I =
+\kappa MR^2$, where $\kappa$ is 1 for a hoop and $\frac12$ for a disc,
+\begin{equation*}
+   K = \tfrac12 MV^2 + \tfrac12\kappa MR^2\,\frac{V^2}{R^2}
+   = \tfrac12\,(1 + \kappa)\,MV^2 .
+\end{equation*}
+To roll, the body needs a grip on the ground, a friction force along the
+ground at the point of contact; but that point is at rest, so the power $\vb{F}\cdot\vb{v}$ of the friction, and of the ground's push
+at the same point, is zero and neither does work. The forces holding the
+body together do none either: a pair $\vb{F}_{ij} = c\,(\vb{r}_i -
+\vb{r}_j)$ has the power $\vb{F}_{ij}\cdot(\vb{v}_i - \vb{v}_j) = \frac12
+c\,\dd\lvert\vb{r}_i - \vb{r}_j\rvert^2/\dd t$, zero since the distance is
+fixed (\cref{sec:en-bodies}). Only the weight works, and a body
+rolling from rest down a height $h$ has $\frac12(1 + \kappa)MV^2 = Mgh$, so
+\begin{equation*}
+   V = \sqrt{\frac{2gh}{1 + \kappa}} ,
+\end{equation*}
+whatever its mass and radius. After a drop of \SI{1}{\metre}, a block
+sliding without friction ($\kappa = 0$) moves at \SI{4.429}{\metre\per
+\second}, a rolling disc at \SI{3.616}{\metre\per\second} and a rolling
+hoop at \SI{3.132}{\metre\per\second}: a third of the disc's kinetic
+energy and half the hoop's are in the turning, $\kappa/(1 + \kappa)$. On a
+slope at the angle $\alpha$, the height fallen after a distance $s$ is
+$s\sin\alpha$, so $V^2 = 2gs\sin\alpha/(1 + \kappa)$; differentiating with
+respect to time, by the chain rule on the left, $2V\dot{V} =
+2g\sin\alpha\,\dot{s}/(1 + \kappa)$, and with $\dot s = V$, dividing both
+sides by $2V$, the acceleration is the constant
+\begin{equation*}
+   \dot{V} = \frac{g\sin\alpha}{1 + \kappa} .
+\end{equation*}
+On a slope of \ang{30}, with $\sin\ang{30} = \frac12$, it is $g/2 =
+4.903$, $g/3 = 3.269$ and $g/4 = \SI{2.452}{\metre\per\second\squared}$.
+From rest at constant acceleration each covers $s = \frac12\dot{V}t^2$
+(\cref{eq:mo-constant}), so \SI{2}{\metre} takes $t = \sqrt{2\times2/
+\dot{V}}$: 0.903, 1.106 and \SI{1.277}{\second} (\cref{fig:ro-rolling}). Real wheels and balls lose a
+little energy as they and the ground flex, which we neglect. The spinning
+wheels of the braking car of \cref{sec:en-kinetic} carry kinetic energy of
+this kind, a small part of the whole because the wheels are light
+compared with the car.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch05_rotation/rolling}
+\caption{A block sliding without friction, a disc and a hoop rolling
+without slipping, all released from rest on a slope of \ang{30}.
+(a) Distance down the slope against time; the line marks
+\SI{2}{\metre}. (b) The share of each one's kinetic energy in moving
+along the slope, $\frac12 MV^2$, and in turning, $\frac12 I\omega^2$.
+Neither panel depends on the mass or the radius.}
+\label{fig:ro-rolling}
+\end{figure}
+
+\begin{keyidea}
+A rigid body turning at $\boldsymbol{\omega}$ about a fixed axis moves
+with $\vb{v} = \boldsymbol{\omega}\times\vb{r}$, and has $L_z = I\omega$
+and $K = \frac12 I\omega^2$, with $I = \sum m\rho^2$. Two bodies a
+distance $d$ apart have $I = m_{\mathrm r}d^2$. A rolling body keeps part
+of its kinetic energy in its turning.
+\end{keyidea}
+
+\notebook{05}{race a block, a disc and a hoop down a slope}
+
+\begin{selfcheck}
+A hoop and a disc of the same mass and radius spin about their axes at the
+same angular speed. Which has more kinetic energy, and by what factor?
+\end{selfcheck}

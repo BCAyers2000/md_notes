@@ -1,0 +1,191 @@
+%=============================================================================!
+% 15.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:convergence}: Equilibration, convergence and uncertainty}
+\label{sec:cv-solutions}
+
+\solutionto{ex:cv-rolls}The half-width is $1.96\,\sigma_x/\sqrt n$ with
+$\sigma_x^2 = 35/12$, so
+\begin{equation*}
+   n \ge \frac{1.96^2\times35/12}{0.01^2} = 112\,046.7 ,
+\end{equation*}
+which is 112\,047 rolls.
+
+\solutionto{ex:cv-student}$2.776/1.96 = 1.416$: the interval is 41.6\%
+wider. With five samples $s$ is itself uncertain, and a run whose $s$
+happens to be small would otherwise claim too narrow an interval; the
+wider factor restores 95\% for Gaussian samples (\cref{sec:cv-mean}).
+
+\solutionto{ex:cv-cov}With $\delta x = x - \ens{x}$ and $\delta y = y -
+\ens{y}$, the deviation of $x - y$ from its mean is $\delta x - \delta y$,
+and
+\begin{equation*}
+   \operatorname{var}(x - y) = \ens{(\delta x - \delta y)^2}
+   = \ens{\delta x^2} + \ens{\delta y^2} - 2\ens{\delta x\,\delta y} ,
+\end{equation*}
+expanding the square and averaging term by term; the last average is
+$\operatorname{cov}(x, y)$. In the run of \cref{sec:sm-equipartition}, at
+fixed energy, kinetic energy passes back and forth between the two
+species, so when one is warmer the other tends to be cooler: over the last
+\SI{10}{\pico\second} the two temperatures have the correlation $-0.50$,
+and their difference fluctuates more than $\operatorname{var}(x) +
+\operatorname{var}(y)$ suggests, $\SI{145.1}{\kelvin\squared}$ against
+47.2 and \SI{49.6}{\kelvin\squared}. Combining the two errors as for
+independent quantities gives \SI{1.73}{\kelvin}, too small against the
+\SI{2.14}{\kelvin} of the gap's own series; taking the gap at each frame
+as the series lets its own spread and its own $g$ measure it, whatever
+the sign of the covariance.
+
+\solutionto{ex:cv-ou-var}$z_k$ is independent of $x_k$, so the variances of
+the two terms add, and a factor $a$ multiplies a variance by $a^2$:
+\begin{equation*}
+   \operatorname{var}(x_{k+1}) = c^2\operatorname{var}(x_k) + (1 - c^2) ,
+   \qquad 1 - \operatorname{var}(x_{k+1}) = c^2\bigl[1 -
+   \operatorname{var}(x_k)\bigr] ,
+\end{equation*}
+the second by subtracting the first from 1. Starting from
+$\operatorname{var}(x_0) = 0$, the shortfall from 1 is multiplied by $c^2$
+at each step, so $1 - \operatorname{var}(x_k) = c^{2k}$. It falls below
+0.01 when $2k\ln(1/c) > \ln100$, $k > 44.9$ for $c = 0.95$: 45 steps,
+\SI{450}{\femto\second}, a little over two correlation times.
+
+\solutionto{ex:cv-g-ou}$g = (1 + c)/(1 - c) = 1.99/0.01 = 199$ and
+$\tau_{\mathrm{int}} = g\dt/2 = \SI{995}{\femto\second}$, equal to
+$\tau_{\mathrm c} = -\dt/\ln c = \SI{995.0}{\femto\second}$ to the figures
+shown. A run of \SI{1}{\nano\second} holds $10^5$ samples, worth $10^5/199
+= 502.5$ independent ones.
+
+\solutionto{ex:cv-ksum}Let $S = \sum_{k\ge1}kc^k$. Then
+\begin{equation*}
+   (1 - c)S = \sum_{k\ge1}kc^k - \sum_{k\ge1}kc^{k+1}
+   = \sum_{k\ge1}kc^k - \sum_{k\ge2}(k - 1)c^k
+   = \sum_{k\ge1}c^k = \frac{c}{1 - c} ,
+\end{equation*}
+renaming $k + 1$ as $k$ in the second sum, which then runs from $k = 2$,
+or from $k = 1$ since that term is zero; at each power the two leave $kc^k
+- (k - 1)c^k = c^k$. Dividing by $1 - c$, $S = c/(1 - c)^2$.
+
+\solutionto{ex:cv-error-error}Integrating by parts as in
+\cref{sec:sm-probability}, with $u^3$ as the factor differentiated and
+$u\,\mathrm{e}^{-u^2/(2\sigma_u^2)}$ as the factor integrated, to
+$-\sigma_u^2\mathrm{e}^{-u^2/(2\sigma_u^2)}$,
+\begin{align*}
+   \int u^4\mathrm{e}^{-u^2/(2\sigma_u^2)}\dd u
+   &= \Bigl[-\sigma_u^2u^3\mathrm{e}^{-u^2/(2\sigma_u^2)}\Bigr]_{-\infty}^\infty
+   + 3\sigma_u^2\int u^2\mathrm{e}^{-u^2/(2\sigma_u^2)}\dd u\\
+   &= 0 + 3\sigma_u^2\times\sigma_u^2\,\sigma_u\sqrt{2\pi} ,
+\end{align*}
+and dividing by $\sigma_u\sqrt{2\pi}$, $\ens{u^4} = 3\sigma_u^4$. The $u_i^2$
+are independent, each with mean $\sigma_u^2$ and variance $\ens{u^4} -
+\ens{u^2}^2 = 2\sigma_u^4$, so their mean $s'^2$ has the variance
+$2\sigma_u^4/n$ (\cref{eq:cv-mean}), a relative spread of $\sqrt{2/n}$. A
+small relative change of $s'^2$ changes its square root by half as much,
+since $\dd\sqrt y/\sqrt y = \frac12\dd y/y$, so $s'$ has the relative error
+$1/\sqrt{2n}$. Measuring the deviations from the samples' own mean leaves
+$n - 1$ free deviations, as for Student's density (\cref{sec:cv-mean}),
+and for Gaussian samples $n$ becomes $n - 1$, a result quoted here without
+proof and confirmed by the blocks of \cref{fig:cv-blocks}.
+
+\solutionto{ex:cv-block-length}Blocks of at least $5g = 300$ samples miss
+about 5\% (\cref{eq:cv-short}). The run of 65\,536 samples holds 218 of
+them, and their spread gives the error to $1/\sqrt{2\times217} = 0.048$. With
+the doubled lengths of Flyvbjerg and Petersen the first length long enough
+is 512, giving 128 blocks and 0.063.
+
+\solutionto{ex:cv-offset}The mean of the offset over the samples from
+$t_0$ to $t_{\mathrm f}$ is
+\begin{equation*}
+   \frac{1}{t_{\mathrm f} - t_0}\int_{t_0}^{t_{\mathrm f}}\delta A_0\,\mathrm{e}^{-t/\tau_{\mathrm r}}\,\dd t
+   = \frac{\delta A_0\,\tau_{\mathrm r}}{t_{\mathrm f} - t_0}\Bigl[-\mathrm{e}^{-t/\tau_{\mathrm
+   r}}\Bigr]_{t_0}^{t_{\mathrm f}}
+   = \frac{\delta A_0\,\tau_{\mathrm r}\bigl(\mathrm{e}^{-t_0/\tau_{\mathrm r}} -
+   \mathrm{e}^{-t_{\mathrm f}/\tau_{\mathrm r}}\bigr)}{t_{\mathrm f} - t_0} .
+\end{equation*}
+With the values given, $3\times2\times(\mathrm{e}^{-2.67} -
+\mathrm{e}^{-25})/44.66 = 0.0093$, as \cref{sec:cv-equilibration} found.
+
+\solutionto{ex:cv-stt}$\bar t = (n + 1)\dt/2$, since $\sum_ii = n(n + 1)/2$
+(the first and last terms pair to $n + 1$, in $n/2$ pairs), and
+$\sum_i(t_i - \bar t)^2 = \sum_it_i^2 - n\bar t^2$, by the expansion of
+\cref{sec:cv-mean} with $0$ in place of $\ens{x}$. So
+\begin{align*}
+   \frac{1}{\dt^2}\sum_i(t_i - \bar t)^2
+   &= \frac{n(n + 1)(2n + 1)}{6} - \frac{n(n + 1)^2}{4}\\
+   &= \frac{n(n + 1)\bigl[2(2n + 1) - 3(n + 1)\bigr]}{12}
+   = \frac{n(n + 1)(n - 1)}{12} ,
+\end{align*}
+since $2(2n + 1) - 3(n + 1) = n - 1$; this is $n(n^2 - 1)/12$.
+
+\solutionto{ex:cv-drift-limit}The limit is $2\sigma_{\bar T}C_V/(Nt_{\mathrm f})$,
+and $\sigma_{\bar T}$ falls as $t_{\mathrm f}^{-1/2}$, so the limit falls as
+$t_{\mathrm f}^{-3/2}$:
+for \SI{10}{\nano\second} it is $20.8\times10^{-3/2} =
+\SI{0.658}{\micro\electronvolt}$ per atom per nanosecond.
+
+\solutionto{ex:cv-steepest}$F = -kx$, so the step gives $x' = x - hkx = (1
+- hk)x$ and $U' = (1 - hk)^2U$. This is below $U$ when $(1 - hk)^2 < 1$,
+that is $-1 < 1 - hk < 1$, or, subtracting 1 and multiplying by $-1$, $0 <
+hk < 2$; for $h = 1/k$, $x' = 0$, the minimum. A longer
+step overshoots, and beyond $h = 2/k$ each step lands farther up the other
+side.
+
+\solutionto{ex:cv-pressure}From \cref{eq:cv-length}, under CSVR and at
+fixed energy,
+\begin{equation*}
+   t_{\mathrm f} \ge \frac{2\times\SI{940}{\femto\second}\times0.01328^2}{0.0005^2}
+   = \SI{1.33}{\nano\second} , \qquad
+   t_{\mathrm f} \ge \frac{2\times\SI{123}{\femto\second}\times0.009613^2}{0.0005^2}
+   = \SI{0.091}{\nano\second} .
+\end{equation*}
+
+\solutionto{ex:cv-short}After the start \SI{140}{\pico\second} hold
+$140/(2\times2) = 35$ independent samples, short of 100. A hundred need
+\SI{400}{\pico\second} after the start, a run of \SI{410}{\pico\second},
+\SI{260}{\pico\second} longer. Its start, at \SI{10}{\pico\second}, passes
+the first check.
+
+\solutionto{ex:cv-gamma-ratio}With $Z_i = \int_0^\infty E^{a-1}
+\mathrm{e}^{-\beta_iE}\dd E$ the normalising integral at $\beta_i$,
+$\ln[\mathcal{P}(E \mid \beta_2)/\mathcal{P}(E \mid \beta_1)] = \ln(Z_1/Z_2) + (a - 1)\ln E - (a - 1)\ln E - \beta_2E +
+\beta_1E$, in which the factors $E^{a-1}$ cancel: a straight line with the
+slope $\beta_1 - \beta_2$. For 300 and \SI{310}{\kelvin} it is
+$(1/300 - 1/310)/\kB = \SI{1.2478}{\per\electronvolt}$.
+
+\solutionto{ex:cv-units}$\kB T$ is an energy, \si{\kilo\gram\metre\squared
+\per\second\squared}; a viscosity is a force per area, a pascal or
+\si{\kilo\gram\per\metre\per\second\squared}, divided by the rate $u/d$,
+\si{\per\second}, which gives \si{\kilo\gram\per\metre\per\second}; so
+$\kB T/(\eta_{\mathrm s}L)$ has the units \si{\kilo\gram\metre\squared
+\per\second\squared} over \si{\kilo\gram\per\second}, which is
+\si{\metre\squared\per\second}, those of $D$. A product $(\kB
+T)^a\eta_{\mathrm s}^bL^c$ has the units
+\si{\kilo\gram}$^{a+b}$\,\si{\metre}$^{2a-b+c}$\,\si{\second}$^{-2a-b}$;
+matching \si{\metre\squared\per\second} needs $a + b = 0$, $2a - b + c =
+2$ and $2a + b = 1$, so $a = 1$, $b = -1$, $c = -1$, and no other choice.
+
+\solutionto{ex:cv-yh}$\kB T = 0.011633\times1.602177\times10^{-19} =
+\SI{1.8638e-21}{\joule}$, so the correction is
+\begin{equation*}
+   \frac{2.837297\times1.8638\times10^{-21}}{6\pi\times2.18\times10^{-4}
+   \times23.26\times10^{-10}} = \SI{5.53e-10}{\metre\squared\per\second} ,
+\end{equation*}
+and since \SI{1}{\angstrom\squared\per\femto\second} is
+\SI{e-5}{\metre\squared\per\second}, that is
+\SI{0.553e-4}{\angstrom\squared\per\femto\second}, 14\% of the $D$ of that
+box.
+
+\solutionto{ex:cv-why-blocks}Single samples drawn at random lose the order
+of the run, and the resampled runs have no memory: the spread of their
+statistic is that of $n$ independent samples, too small by about $\sqrt g$.
+Blocks keep the memory within each; they must be several correlation
+times long, as for block averages, so that neighbouring blocks are nearly
+independent, $5g$ samples or more.
+
+\solutionto{ex:cv-referee}A heat capacity is a variance, and a flat running
+mean of $K$ says nothing about the error of its variance. It has shown
+neither the error of $C_V$ nor that the run has enough independent samples
+to know it. The block bootstrap of the heat capacity gives it, 2.9 to
+3.9\% for a run of \SI{50}{\pico\second} (\cref{sec:cv-observables}), and
+$(2.292 \pm 0.067)\,N\kB$ for the run near \SI{130}{\kelvin}; the
+criterion applied to $(K - \bar K)^2$, whose mean is the variance, and a
+second run would show whether that error is to be trusted.

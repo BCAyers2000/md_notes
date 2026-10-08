@@ -1,0 +1,147 @@
+%=============================================================================!
+% 18.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:lo-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:lo-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~18 checks every numerical answer.
+
+\begin{exercise}[the least loss]
+\label{ex:lo-least}
+For the line through the origin, show that the least loss is
+$L(\hat k) = \sum_iF_i^2 - \bigl(\sum_ix_iF_i\bigr)^2/\sum_ix_i^2$.
+\end{exercise}
+
+\begin{exercise}[the error of a stiffness]
+\label{ex:lo-error}
+A spring is stretched by 1, 2, \dots, \SI{10}{\centi\metre} and its force
+read with an error of \SI{0.05}{\newton} each, independently. What is
+the error of the fitted stiffness?
+\end{exercise}
+
+\begin{exercise}[a line with an intercept]
+\label{ex:lo-intercept}
+For the model $\hat y = c + sx$, write $X^{\mathsf T}X$ and $X^{\mathsf
+T}\vb{y}$ in terms of sums over the readings, and show that the normal
+equations give the slope $s = \sum_i(x_i - \bar x)(y_i - \bar y)/\sum_i(x_i
+- \bar x)^2$ of \cref{sec:cv-drift}.
+\end{exercise}
+
+\begin{exercise}[a stiffness that changes]
+\label{ex:lo-stiffness}
+Show that the stiffness of the Morse well, $-\dd F/\dd x$ for the force
+$F = -\dd U_{\mathrm M}/\dd x$, is $2Da^2(2\mathrm{e}^{-2ax} -
+\mathrm{e}^{-ax})$, and that it is $2Da^2(1 - 3ax)$ to first order in
+$x$. By what fraction does it change over $x = \pm\SI{0.0345}{\angstrom}$
+for $a = \SI{2}{\per\angstrom}$?
+\end{exercise}
+
+\begin{exercise}[as many weights as readings]
+\label{ex:lo-square}
+Show that if the design matrix $X$ is square and has an inverse, the
+normal equations give $X\vb{w} = \vb{y}$ exactly, so the fit passes
+through every reading.
+\end{exercise}
+
+\begin{exercise}[shrinkage]
+\label{ex:lo-shrink}
+With $X^{\mathsf T}X$ having the eigenvalues $d_k$, show that each
+component of the ridge weights along an eigenvector is that of the
+weights without the penalty times $d_k/(d_k + \lambda)$, for $d_k > 0$.
+\end{exercise}
+
+\begin{exercise}[the prior's spread]
+\label{ex:lo-prior}
+With readings of noise $\sigma = \SI{0.2}{\milli\electronvolt}$, what
+spread $\sigma_w$ of the weights does $\lambda = 10^{-3}$ express, and
+what $\lambda$ would express $\sigma_w = \SI{1}{\milli\electronvolt}$?
+\end{exercise}
+
+\begin{exercise}[conditioning two Gaussians]
+\label{ex:lo-condition}
+Two jointly Gaussian numbers $a$ and $b$ have mean zero, variances 4 and
+1, and covariance 1.5. Given $b = 2$, what are the mean and the variance
+of $a$?
+\end{exercise}
+
+\begin{exercise}[a process with one reading]
+\label{ex:lo-one}
+A Gaussian process with the kernel of \cref{eq:lo-kernel} is conditioned
+on one reading $y_1$ at $x_1$ with noise of spread $\sigma$. Show that
+its mean at $x$ is $y_1\,\mathrm{e}^{-(x - x_1)^2/2\ell^2}\,h^2/(h^2 +
+\sigma^2)$, and find its variance.
+\end{exercise}
+
+\begin{exercise}[a learning rate]
+\label{ex:lo-rate}
+A loss has a Hessian with the eigenvalues 2 and 200. Find the upper
+bound on a stable rate, the best fixed rate, the factor by which the slow direction
+shrinks at it, and the steps that bring the loss down a millionfold.
+\end{exercise}
+
+\begin{exercise}[steps against the condition number]
+\label{ex:lo-kappa}
+Show that for a large condition number the best fixed rate needs about
+$\kappa\ln(1/\varepsilon)/4$ steps to bring the loss down by the factor
+$\varepsilon$, using $\ln(1 + y) \approx y$ for small $y$.
+\end{exercise}
+
+\begin{exercise}[the batch for a precision]
+\label{ex:lo-batch}
+The readings' gradients scatter by $\sigma_g = 0.585$. What batch gives
+the mini-batch gradient a scatter of 0.05?
+\end{exercise}
+
+\begin{exercise}[the memory of momentum]
+\label{ex:lo-memory}
+With $\mu = 0.9$ and no gradient, after how many steps has the velocity
+fallen to $1/\mathrm{e}$ of its value, and what is the friction $1 - \mu$
+of the equivalent damped motion?
+\end{exercise}
+
+\begin{exercise}[Polyak's momentum]
+\label{ex:lo-polyak}
+For eigenvalues 1 and 100, find Polyak's $\sqrt\mu$, $\mu$ and $\eta$, and
+use the asymptotic contraction factors to estimate the steps needed to
+shrink the slow direction by $10^{-4}$, with momentum and with gradient
+descent at its best fixed rate. Ignore the initial transient.
+\end{exercise}
+
+\begin{exercise}[Adam's correction]
+\label{ex:lo-adam}
+A weight's gradient is a steady $g$. With $\beta_1 = 0.9$ and $\beta_2 =
+0.999$, what are $m$ and $s$ after 10 steps, and by what factor would the
+step be too large if neither were corrected for its start at zero?
+\end{exercise}
+
+\begin{exercise}[Adam and scale]
+\label{ex:lo-scale}
+Show that, with $\epsilon$ neglected, Adam's step for a weight is
+unchanged when all that weight's gradients are multiplied by a constant
+$c > 0$.
+\end{exercise}
+
+\begin{exercise}[independent frames]
+\label{ex:lo-frames}
+A run's energy, kept every \SI{10}{\femto\second}, has the statistical
+inefficiency $g = 109$. How many independent frames are there in 2 and
+in \SI{20}{\pico\second}?
+\end{exercise}
+
+\begin{exercise}[why a neighbour helps]
+\label{ex:lo-neighbour}
+A validation frame of a random split has training frames
+\SI{10}{\femto\second} before and after it. Explain why a model that interpolates nearby frames can
+predict this frame well while performing poorly on a new run.
+\end{exercise}
+
+\begin{exercise}[a plan for the splits]
+\label{ex:lo-plan}
+Fifty first-principles runs of lithium in graphite, each
+\SI{5}{\pico\second} at one of ten temperatures, are to train a learned
+potential. Propose training, validation and test sets, and say what each
+must not share.
+\end{exercise}

@@ -1,0 +1,33 @@
+%=============================================================================!
+% 6.S  WHAT WE NOW HAVE                                                       !
+%=============================================================================!
+\unnumbered{What we now have}
+
+Mechanics can be written in any coordinates that fix the positions of a
+system once its constraints are obeyed, its generalised coordinates, with
+the Lagrangian $\Lag = K - U$ expressed in them. Among all paths with the
+same ends in space and time, the true one makes the action $\Act = \int
+\Lag\,\dd t$ stationary, which is not always least. Changing a path by a
+small bump and integrating by parts turns this into the Euler--Lagrange
+equations, $\dd(\partial\Lag/\partial\dot{q}_k)/\dd t = \partial\Lag/
+\partial q_k$, one for each coordinate, which for forces from a potential
+are Newton's second law.
+
+Constraints that do no work drop out of $\Lag$:
+solving the bead's equation along its wire gives the times of the journey
+that Chapter~3 described by its speeds, and the pendulum's equation takes
+one line.
+
+The momentum $p_k = \partial\Lag/\partial\dot{q}_k$ of a
+coordinate that $\Lag$ does not contain is conserved, which is why a
+central force conserves angular momentum; the distance from the centre
+then moves in the effective potential $U + L^2/(2mr^2)$.
+
+When a
+constraining force is wanted, or no convenient coordinates exist, a Lagrange multiplier keeps the constraint: for a pendulum it gives the
+force of the rod, $-\lambda L$, and for bonds held at fixed length the
+multipliers are what Chapter~11 computes at every step.
+
+Chapter~7 trades the generalised velocities for the momenta and arrives at
+Hamilton's equations, the form of mechanics on which the methods of
+simulation are built.

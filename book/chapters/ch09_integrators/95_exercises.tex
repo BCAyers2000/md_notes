@@ -1,0 +1,169 @@
+%=============================================================================!
+% 9.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:in-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:in-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~09 checks every numerical answer.
+
+\begin{exercise}[Euler and a falling ball]
+\label{ex:in-fall}
+Show that forward Euler steps of $\dt$ for a body falling from $x_0$ with
+velocity $v_0$ under the acceleration $-g$ give, after $n$ steps,
+$x_n = x_0 + v_0n\dt - \frac12 g\dt^2n(n - 1)$, and that at the time
+$t_{\mathrm f} = n\dt$ the error is $\frac12 gt_{\mathrm f}\dt$, of order
+$\dt$.
+\end{exercise}
+
+\begin{exercise}[reading an order]
+\label{ex:in-read}
+Halving the step divides a method's error at a given time by 16. What is
+its order, and its local error?
+\end{exercise}
+
+\begin{exercise}[the error of Störmer--Verlet]
+\label{ex:in-stormer}
+Show that the term of order $\dt^4$ in $x(t + \dt) + x(t - \dt)$ is
+$\frac1{12}\ddot{a}\,\dt^4$, so that the local error of
+\cref{eq:in-stormer} is $\frac1{12}\ddot{a}\,\dt^4$.
+\end{exercise}
+
+\begin{exercise}[velocities from positions]
+\label{ex:in-central}
+With $x_{n\pm1}$ the true positions $x(t \pm \dt)$, show that $(x_{n+1} -
+x_{n-1})/(2\dt)$ differs from the true velocity $v(t)$ by
+$\frac16\dot{a}\,\dt^2$ plus terms of higher order.
+\end{exercise}
+
+\begin{exercise}[the local error of velocity Verlet]
+\label{ex:in-local}
+Show that the position after one step of \cref{eq:in-vv} from a correct
+start differs from the true one by $\frac16\dot{a}\,\dt^3$ plus terms of
+higher order.
+\end{exercise}
+
+\begin{exercise}[leapfrog]
+\label{ex:in-leapfrog}
+Show that the positions of the leapfrog method, $v_{n+\frac12} =
+v_{n-\frac12} + \dt\,a_n$ and $x_{n+1} = x_n + \dt\,v_{n+\frac12}$, obey
+\cref{eq:in-stormer}.
+\end{exercise}
+
+\begin{exercise}[Euler does not run backwards]
+\label{ex:in-euler-reverse}
+For a spring with $m = k = 1$, take one forward Euler step from $(q, v) =
+(1, 0)$, reverse the velocity and take another. Where does it land?
+\end{exercise}
+
+\begin{exercise}[one coordinate]
+\label{ex:in-omega}
+Show that for a $2\times2$ matrix $\vb{J}$, $\vb{J}^{\mathsf T}
+\boldsymbol{\Omega}\vb{J} = (\det\vb{J})\,\boldsymbol{\Omega}$, with
+$\boldsymbol{\Omega} = \bigl(\begin{smallmatrix}0 & 1\\ -1 &
+0\end{smallmatrix}\bigr)$, so that for one coordinate the symplectic
+condition is $\det\vb{J} = 1$.
+\end{exercise}
+
+\begin{exercise}[the unsymmetric product]
+\label{ex:in-unsymmetric}
+Show that $\mathrm{e}^{\dt X}\mathrm{e}^{\dt Y}$ and $\mathrm{e}^{\dt(X +
+Y)}$ differ at second order by $\frac12\dt^2(XY - YX)$.
+\end{exercise}
+
+\begin{exercise}[which acts first]
+\label{ex:in-order}
+For one coordinate, show that $\mathrm{e}^{\dt\Liou_{\mathrm p}}\mathrm{e}^{
+\dt\Liou_{\mathrm r}}$ applied to $q$ gives $q + \dt\,\bigl(p + \dt\,
+F(q)\bigr)/m$: a kick, then a drift.
+\end{exercise}
+
+\begin{exercise}[a drift of a function]
+\label{ex:in-drift}
+With $\Liou_{\mathrm r} = (p/m)\,\partial/\partial q$, show from the
+series that $\mathrm{e}^{\dt\Liou_{\mathrm r}}q^3 = (q + \dt\,p/m)^3$.
+\end{exercise}
+
+\begin{exercise}[the shadow energy]
+\label{ex:in-shadow}
+Complete the derivation of \cref{sec:in-shadow}: put $p_{\frac12} = p' +
+\frac12\dt\,kq'$ into $p_{\frac12}^2/(2m) + \frac12 kq'^2 - \bigl(\dt\,
+k/(2m)\bigr)\,q'p_{\frac12}$ and show that the result is $\tilde{H}(q',
+p')$.
+\end{exercise}
+
+\begin{exercise}[the band of symplectic Euler]
+\label{ex:in-se-shadow}
+Show that the symplectic Euler step for the spring, $p' = p - \dt\,kq$
+and then $q' = q + \dt\,p'/m$, keeps $p^2/(2m) + \frac12 kq^2 - \bigl(\dt
+\,k/(2m)\bigr)\,qp$. Writing $q = A\cos\phi$ and $p/(m\omega) =
+A\sin\phi$, as for the circle of \cref{sec:os-circle}, show that along a curve on which this is constant the
+energy $H$ ranges between $1/(1 + \omega\dt/2)$ and $1/(1 - \omega\dt/2)$
+times it.
+\end{exercise}
+
+\begin{exercise}[the step's matrix]
+\label{ex:in-trace}
+Show that one step of velocity Verlet for the spring is $q' = (1 -
+\frac12\omega^2\dt^2)\,q + (\dt/m)\,p$ and $p' = -k\dt\,(1 - \frac14
+\omega^2\dt^2)\,q + (1 - \frac12\omega^2\dt^2)\,p$, and that its matrix,
+the Jacobian matrix of the step, has determinant 1 and trace, the sum of
+its diagonal entries, $2 - \omega^2\dt^2$.
+\end{exercise}
+
+\begin{exercise}[growth beyond the limit]
+\label{ex:in-growth}
+Beyond the limit the computed motion grows by a factor $\lvert\lambda
+\rvert$ per step, with $\lambda$ the eigenvalue of larger size of the
+step's matrix, a root of $\lambda^2 - (2 - \omega^2\dt^2)\lambda + 1 = 0$,
+the characteristic equation with the trace and determinant of
+\cref{ex:in-trace} (the toolbox of \cref{sec:in-reversal}). Find the
+factor at $\omega\dt = 2.05$.
+\end{exercise}
+
+\begin{exercise}[a step for water]
+\label{ex:in-water}
+What is the longest step for which the energy of the antisymmetric O--H
+stretch, of period \SI{8.88}{\femto\second}, fluctuates by no more than 3\%?
+\end{exercise}
+
+\begin{exercise}[a step for lithium]
+\label{ex:in-lithium}
+For the model lithium atom in its hollow, of period
+\SI{170.3}{\femto\second}, find the step that keeps its energy band to
+1\%, and compare it with the stability limit.
+\end{exercise}
+
+\begin{exercise}[steps per period]
+\label{ex:in-per-period}
+What is $2\pi/(\omega\dt)$, the number of steps per period, for which
+velocity Verlet keeps an energy band of 1\%?
+\end{exercise}
+
+\begin{exercise}[RK4 and a spring]
+\label{ex:in-rk4-spring}
+For the spring, one RK4 step in the variables $q$ and $u = v/\omega$ is
+$q' = cq + su$ and $u' = -sq + cu$, with $c = 1 - \frac12x^2 +
+\frac1{24}x^4$, $s = x - \frac16x^3$ and $x = \omega\dt$. Show that it
+multiplies $q^2 + u^2$, and so the energy, by $c^2 + s^2 = 1 -
+\frac1{72}x^6 + \frac1{576}x^8$, and find the fraction of the energy lost
+in 10\,000 steps at $x = 0.2$.
+\end{exercise}
+
+\begin{exercise}[a learned long step]
+\label{ex:in-long-step}
+A learned propagator predicts the state of water \SI{5}{\femto\second}
+ahead, ten steps of \SI{0.5}{\femto\second}. What is $\omega\dt$ for the
+O--H stretch at a step of \SI{5}{\femto\second}, and could velocity
+Verlet take it?
+\end{exercise}
+
+\begin{exercise}[a shifted line]
+\label{ex:in-spectrum}
+A simulation of water with $\dt = \SI{0.7}{\femto\second}$ runs the O--H
+stretch slightly fast. At what wavenumber does the antisymmetric stretch,
+\SI{3756}{\per\centi\metre} (period \SI{8.88}{\femto\second}), appear in
+it?
+\end{exercise}

@@ -1,0 +1,94 @@
+%=============================================================================!
+% 18.6  STOCHASTIC GRADIENTS                                                  !
+%=============================================================================!
+\section{Stochastic gradients}
+\label{sec:lo-sgd}
+
+A poll does not ask every voter; a thousand chosen at random give the
+share of a party to within a few per cent, at a tiny fraction of the
+cost. The gradient of a loss is an average over the readings, and it too
+can be estimated from a few of them. A learned potential is trained on
+hundreds of thousands of configurations, each with hundreds of forces,
+and an exact gradient over all of them for every step would make training
+impossibly slow.
+
+\subsection*{A gradient from a few readings}
+
+Written as the mean over $n$ readings of a loss $\ell_i$ for each,
+$L = \frac1n\sum_i\ell_i(\vb{w})$, the loss has the gradient $\grad L =
+\frac1n\sum_i\grad\ell_i$, a mean of $n$ numbers. A \emph{mini-batch} of
+$b$ readings chosen at random gives the estimate $\vb{g} =
+\frac1b\sum_{i\in\text{batch}}\grad\ell_i$, whose average over the
+possible batches is the true gradient. If the readings' gradients scatter
+about their mean with the spread $\sigma_g$, each component of $\vb{g}$
+scatters by
+\begin{equation*}
+   \frac{\sigma_g}{\sqrt b} ,
+\end{equation*}
+the error of a mean of $b$ independent samples (\cref{sec:cv-mean}).
+\emph{Stochastic gradient descent} steps with $\vb{g}$ in place of
+$\grad L$, one step per batch, and a pass through all the readings, an
+\emph{epoch}, takes $n/b$ steps for the cost of one exact gradient.
+
+\Cref{fig:lo-sgd} fits the force of the A--B bond at \SI{300}{\kelvin},
+2001 readings from \cref{sec:lo-loss}, with a straight line in the
+scaled stretch $x/\sigma_x$, its loss the mean squared miss. At the least
+loss, where the exact gradient is zero, the gradient of the slope's
+weight from batches of ten readings scatters by \num{0.180}, against the
+$\sigma_g/\sqrt{10} = \num{0.185}$ that the readings' own spread gives
+(\cref{fig:lo-sgd}b); its histogram is not yet Gaussian, since a mean of
+ten skewed numbers is still skewed, but its width is as predicted.
+
+\subsection*{A noise floor, and a rate that falls}
+
+The noise has a cost. With the rate fixed at half the stability limit,
+full-batch descent reaches the least loss in under ten epochs, while
+batches of ten never settle: after 50 epochs their loss is still
+\num{4.7e-3}\,(\si{\electronvolt\per\angstrom})$^2$ above the least, with
+spikes far above it (\cref{fig:lo-sgd}a). Near the minimum the true
+gradient vanishes but the estimate does not, and each step moves the
+weights by about $\eta\sigma_g/\sqrt b$ in a random direction, so the
+weights wander in a cloud whose size is set by the rate. A rate that
+falls as training proceeds, here $\eta/(1 + \text{epoch}/5)$, shrinks the
+cloud, and after 50 epochs the loss lies \num{4.4e-4} above the least.
+The rate must fall slowly enough that the steps still add up to the
+distance the weights must travel, and fast enough that the wandering
+dies away; schedules of this kind, and the batch size, are among the
+settings that every training run of planned Chapter~19 and after reports.
+
+Each run of the figure evaluated the gradient of one reading
+\num{100050} times; the full-batch run took 50 steps with them, the
+mini-batch runs \num{10050}. When the readings are many and alike, as
+the frames of a long run are, a mini-batch gradient is nearly as good as
+the full one at a small fraction of the cost, and taking many cheap
+noisy steps is faster than taking a few exact ones.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/sgd}
+\caption{Gradients from mini-batches. The force of the A--B bond at
+\SI{300}{\kelvin} (2001 readings) fitted by a straight line in the
+scaled stretch. (a) The mean squared miss over all the readings against
+the epoch, for gradient descent on all of them, for batches of ten at a
+fixed rate, and for batches of ten at a rate that falls, with the least
+loss (dashed). (b) The gradient of the slope's weight from 1000 batches
+of ten at the least loss, against a Gaussian of spread $\sigma_g/\sqrt{10}$
+(dashed).}
+\label{fig:lo-sgd}
+\end{figure}
+
+\begin{keyidea}
+A mini-batch of $b$ readings estimates the gradient with an error that
+falls as $\sigma_g/\sqrt b$, at $b/n$ of the cost. At a fixed rate the
+weights end in a cloud about the minimum whose size the rate sets; a
+rate that falls slowly shrinks it.
+\end{keyidea}
+
+\notebook{18}{change the batch size and the schedule and watch the loss
+settle}
+
+\begin{selfcheck}
+Batches of 10 give a gradient that scatters by 0.18. What batch size
+would bring the scatter to 0.06, and how many steps would an epoch of
+2001 readings then take?
+\end{selfcheck}

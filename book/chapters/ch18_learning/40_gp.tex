@@ -1,0 +1,161 @@
+%=============================================================================!
+% 18.4  KERNELS AND GAUSSIAN PROCESSES                                        !
+%=============================================================================!
+\section{Kernels and Gaussian processes}
+\label{sec:lo-gp}
+
+A forecaster who knows the temperature at a few weather stations
+estimates it in a village between them by leaning on the nearest
+stations most, since temperatures a few kilometres apart are alike, and
+says how sure they are: close to a station they are nearly certain, far
+from every station they can say little more than what is usual for the
+season. A Gaussian process makes this reasoning exact. It needs no basis
+functions chosen in advance, only a statement of how alike the values at
+two points are expected to be, and it returns, at every point, an
+estimate and an error bar.
+
+\subsection*{A random function}
+
+Before any reading, the unknown curve $f(x)$ is treated as random: its
+values at any set of points are jointly Gaussian with mean zero, and the
+values at two points $x$ and $x'$ have the covariance
+\begin{equation}
+   k(x, x') = h^2\exp\Bigl[-\frac{(x - x')^2}{2\ell^2}\Bigr] ,
+   \label{eq:lo-kernel}
+\end{equation}
+the \emph{kernel}. Each value has the variance $k(x, x) = h^2$, a spread
+$h$ about zero; values at points much closer than the length scale $\ell$
+are nearly equal, their covariance almost $h^2$, and values much further
+apart are nearly independent. The kernel is the forecaster's belief that
+nearby temperatures are alike, written as a number. Readings $y_i =
+f(x_i) + \epsilon_i$ with independent noise $\epsilon_i$ of spread
+$\sigma$ then have the covariances $K_{ij} = k(x_i, x_j) +
+\sigma^2\delta_{ij}$, the noise adding to each reading's own variance
+only. The value $f(x_\ast)$ at a new point and the readings are jointly
+Gaussian, with the covariances $k(x_\ast, x_i)$, collected in the vector
+$\vb{k}_\ast$. The question is what the readings say about $f(x_\ast)$:
+the Gaussian conditioned on them.
+
+\begin{toolbox}[A Gaussian conditioned on another]
+Let $a$ and $b$ be jointly Gaussian with mean zero, variances
+$\sigma_a^2$ and $\sigma_b^2$ and covariance $c = \ens{ab}$. The number
+$e = a - (c/\sigma_b^2)\,b$ has the covariance with $b$
+\begin{equation*}
+   \ens{eb} = \ens{ab} - \frac{c}{\sigma_b^2}\ens{b^2}
+   = c - \frac{c}{\sigma_b^2}\sigma_b^2 = 0 .
+\end{equation*}
+A linear combination of jointly Gaussian numbers is Gaussian, and two
+jointly Gaussian numbers with zero covariance are independent, since
+their joint density, $\exp(-e^2/2\sigma_e^2 - b^2/2\sigma_b^2)$ up to a
+constant, is the product of the two densities (\cref{sec:sm-probability}).
+So knowing $b$ says nothing about $e$, and $a = (c/\sigma_b^2)b + e$ has,
+given $b$, the mean $(c/\sigma_b^2)\,b$ and the variance of $e$,
+\begin{align*}
+   \sigma_e^2 &= \ens{a^2} - 2\frac{c}{\sigma_b^2}\ens{ab}
+      + \frac{c^2}{\sigma_b^4}\ens{b^2}
+      && \text{expanding the square of $e$}\\
+   &= \sigma_a^2 - \frac{2c^2}{\sigma_b^2} + \frac{c^2}{\sigma_b^2}
+   = \sigma_a^2 - \frac{c^2}{\sigma_b^2}
+      && \text{collecting the terms in $c^2$.}
+\end{align*}
+The same steps with $b$ a vector of readings, of covariance matrix
+$K$, and $\vb{c} = \ens{a\vb{b}}$ a vector, give the mean $\vb{c}^{\mathsf
+T}K^{-1}\vb{b}$ and the variance $\sigma_a^2 - \vb{c}^{\mathsf
+T}K^{-1}\vb{c}$, the division by $\sigma_b^2$ becoming the inverse matrix
+(\cref{sec:ro-remove}). Knowing $b$ moves the mean and always lowers
+the variance.
+\end{toolbox}
+
+\noindent With $a = f(x_\ast)$, $\vb{b} = \vb{y}$ and $\vb{c} =
+\vb{k}_\ast$, the readings give $f(x_\ast)$ the mean and variance
+\begin{equation}
+   \bar f(x_\ast) = \vb{k}_\ast^{\mathsf T}K^{-1}\vb{y} , \qquad
+   \operatorname{var} f(x_\ast) = h^2 - \vb{k}_\ast^{\mathsf T}K^{-1}
+   \vb{k}_\ast .
+   \label{eq:lo-gp}
+\end{equation}
+The mean is a weighted sum of the readings, as the forecaster's estimate
+is, the weights $K^{-1}\vb{k}_\ast$ larger for readings near $x_\ast$.
+Close to a reading the variance falls to about the noise's $\sigma^2$;
+far from all of them $\vb{k}_\ast$ vanishes and the variance returns to
+the prior's $h^2$. This is the posterior of the weights of
+\cref{sec:lo-ridge} in another form: a Gaussian process is ridge
+regression on as many basis functions as the kernel implies, possibly
+infinitely many, solved through the $n\times n$ matrix $K$ of the
+readings rather than the $p\times p$ matrix $X^{\mathsf T}X$ of the
+weights\cite{Rasmussen2006}. \texttt{mdlab.learn.GaussianProcess} solves
+it with the factor $K = LL^{\mathsf T}$, $L$ lower triangular, by which a
+system with $K$ becomes two systems with triangles, each solved one
+unknown at a time.
+
+\subsection*{The pair energy from eight readings}
+
+Eight readings of argon's pair energy, drawn as in \cref{sec:lo-basis},
+are fitted with $h = \SI{10}{\milli\electronvolt}$, about the depth of the
+well, and the known noise of \SI{0.2}{\milli\electronvolt}
+(\cref{fig:lo-gp}). The length scale still has to be chosen, and the
+readings themselves choose it through their \emph{marginal likelihood},
+the density of the readings under the prior. Since $\vb{y}$ is Gaussian
+with covariance $K$, its logarithm is
+\begin{equation*}
+   \ln p(\vb{y}) = -\tfrac12\vb{y}^{\mathsf T}K^{-1}\vb{y}
+   - \tfrac12\ln\det K - \tfrac n2\ln2\pi ,
+\end{equation*}
+the multivariable form of the Gaussian of \cref{sec:sm-maxwell}. The
+first term rewards a prior under which the readings are typical; the
+second penalises a prior so loose, with $\ell$ so short, that it would
+have found any readings typical. Their balance peaks at $\ell =
+\SI{0.70}{\angstrom}$ (\cref{fig:lo-gp}c). There the mean follows the
+readings, and its standard deviation is at most
+\SI{0.2}{\milli\electronvolt} at the readings and
+\SI{1.1}{\milli\electronvolt} midway across the widest gap, from 3.36 to
+\SI{4.13}{\angstrom}. A length a quarter as long makes the curve sag
+towards zero between readings, with an honest but useless band; one four
+times as long makes it too stiff, with a band too narrow
+(\cref{fig:lo-gp}b).
+
+The band must also be right. Over the test, \num{0.75} of the noise-free
+values lie within twice the standard deviation at $\ell =
+\SI{0.70}{\angstrom}$, against the 0.95 that a correct Gaussian band
+holds, and the misses gather at the steep wall below \SI{3.8}{\angstrom}
+and at the bottom of the well, where no reading falls. A kernel with one
+length scale cannot be both smooth enough for the slow tail and supple
+enough for the wall, and the error bar is only as good as the kernel's
+belief. At a quarter of the length the band holds 0.99 of the test, and
+at four times only 0.15. Gaussian processes on atoms, with kernels built
+on descriptions of each atom's surroundings, are the Gaussian
+Approximation Potentials\cite{Bartok2010}, among the first learned
+potentials; their error bar is what lets a learned potential say where
+it needs another first-principles calculation, the subject of
+planned Chapter~23.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/gp}
+\caption{A Gaussian process through eight readings of argon's pair
+energy (dots, noise \SI{0.2}{\milli\electronvolt}), with $h =
+\SI{10}{\milli\electronvolt}$, against the pair energy (grey dashed). (a)
+The posterior mean and twice its standard deviation (band) for the length
+scale of greatest marginal likelihood. (b) The same for a length a
+quarter of that and four times it. (c) The log marginal likelihood of the
+readings against the length scale, with its greatest value (dashed).}
+\label{fig:lo-gp}
+\end{figure}
+
+\begin{keyidea}
+A Gaussian process treats the unknown curve as a random function whose
+values covary by a kernel; conditioning on the readings gives the mean
+$\vb{k}_\ast^{\mathsf T}K^{-1}\vb{y}$ and the variance $h^2 -
+\vb{k}_\ast^{\mathsf T}K^{-1}\vb{k}_\ast$ at every point, an estimate with
+an error bar that grows away from the readings. The marginal likelihood
+chooses the kernel's length. The error bar is only as reliable as the
+kernel, and checking it against held-out values is part of the fit.
+\end{keyidea}
+
+\notebook{18}{move the readings and the length scale and watch the band}
+
+\begin{selfcheck}
+A Gaussian process is conditioned on one reading $y_1$ at $x_1$, with no
+noise. What are its mean and variance at $x_1$, and at a point very far
+from $x_1$?
+\end{selfcheck}

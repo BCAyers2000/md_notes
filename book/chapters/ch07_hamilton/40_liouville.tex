@@ -1,0 +1,240 @@
+%=============================================================================!
+% 7.4  LIOUVILLE'S THEOREM                                                    !
+%=============================================================================!
+\section{Liouville's theorem}
+\label{sec:ha-liouville}
+
+A drop of ink in a shallow, slow stream, whose water moves alike at every
+depth, is carried downstream, stretched and folded by the current; the
+water cannot be squeezed, and none rises from below or sinks, so the patch
+of ink keeps its area while its shape changes. The Hamiltonian
+flow does the same to a patch of states. We start many copies of
+the pendulum from slightly different states, filling a small region of
+the phase plane, a blob, and let each move by Hamilton's equations. This
+section shows that the blob keeps its area, whatever the system, and that
+drag makes it shrink.
+
+\Cref{fig:ha-blob}(a) follows such a blob of pendulums: an ellipse of
+starting states centred on \SI{1.6}{\radian} at rest, reaching
+\SI{0.4}{\radian} either side in angle and
+\SI{0.8}{\kilogram\metre\squared\per\second} either way in momentum, a
+circle of radius 1 stretched by 0.4 along one axis and 0.8 along the
+other. Swings of different
+size take different times (\cref{sec:os-anharmonic}), so the blob is
+sheared into a curved streak; yet its area, $\pi\times0.4\times0.8 = \SI{1.00531}{\joule\second}$,
+is the same at every time drawn, to within 2.6 parts in $10^7$, the error
+of drawing its edge with 6000 points. An area in this plane is an angle
+times an angular momentum, and has the unit of the action of
+\cref{sec:la-action}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch07_hamilton/blob}
+\caption{A blob of states of the pendulum of \cref{fig:ha-portrait},
+centred on $\theta = \SI{1.6}{\radian}$ at rest, carried by the flow and
+drawn at the times given, inside the separatrix (grey). (a) Without drag:
+sheared, with its area unchanged. (b) With the drag rate $\gamma =
+\SI{0.5}{\per\second}$: shrinking towards the state of rest at the
+bottom.}
+\label{fig:ha-blob}
+\end{figure}
+
+\subsection*{Why the area is kept}
+
+We write the velocity of the flow at the point $(q, p)$ as $(u, w)$, with
+$u = \dot{q}$ and $w = \dot{p}$. Each short piece of the edge of the
+blob, of length $\Delta s$, moves with the flow, and in a short time
+$\tau$ it sweeps out a thin strip. Only the part of the velocity at
+right angles to the piece sweeps area, so if $\vb{n}$ is the arrow of
+length one at right angles to the piece, pointing out of the blob, the
+strip has the area $(u, w)\cdot\vb{n}\,\Delta s\,\tau$, counted
+positive when the edge moves outwards. Adding the strips around the whole
+edge, the area $\mathcal{A}$ of the blob changes at the rate
+\begin{equation*}
+   \frac{\dd\mathcal{A}}{\dd t} = \oint (u, w)\cdot\vb{n}\,\dd s ,
+\end{equation*}
+the flow out through the edge. Going round the edge anticlockwise, a
+piece $(\Delta q, \Delta p)$ has the blob on its left, and turning it a
+right angle clockwise gives $(\Delta p, -\Delta q)$, which points out of
+the blob and has the length $\Delta s$; so $\vb{n}\,\Delta s = (\Delta
+p, -\Delta q)$, and
+\begin{equation*}
+   \frac{\dd\mathcal{A}}{\dd t} = \oint\bigl(u\,\dd p - w\,\dd q\bigr) .
+\end{equation*}
+Green's theorem (\cref{sec:en-curl}) turns a loop integral into an
+integral over the area inside: for any smooth $(F_q, F_p)$, $\oint(F_q\,
+\dd q + F_p\,\dd p) = \iint(\partial F_p/\partial q - \partial F_q/\partial
+p)\,\dd A$, around the loop anticlockwise. With $F_q = -w$ and $F_p = u$,
+\begin{equation}
+   \frac{\dd\mathcal{A}}{\dd t} = \iint\Bigl(\frac{\partial u}{\partial q}
+   + \frac{\partial w}{\partial p}\Bigr)\dd A .
+   \label{eq:ha-area-rate}
+\end{equation}
+The sum in the large brackets is called the divergence of the flow: by
+\cref{eq:ha-area-rate}, applied to a blob so small that the sum hardly
+changes across it, it is the rate at which the blob's area grows, divided
+by that area. For the Hamiltonian
+flow, $u = \partial H/\partial p$ and $w = -\partial H/\partial q$, so
+\begin{equation*}
+   \frac{\partial u}{\partial q} + \frac{\partial w}{\partial p}
+   = \frac{\partial^2H}{\partial q\,\partial p}
+   - \frac{\partial^2H}{\partial p\,\partial q} = 0 ,
+\end{equation*}
+because the two mixed partial derivatives of a smooth function are equal
+(\cref{sec:en-curl}). The integrand is zero everywhere, so $\dd\mathcal{A}
+/\dd t = 0$: the Hamiltonian flow keeps the area of every region it
+carries. This is Liouville's theorem.
+
+With the drag of \cref{sec:os-damped}, $\dot{p} = -\partial H/\partial q -
+\gamma p$, so $w$ gains the term $-\gamma p$, and $\partial w/\partial p$
+gains $-\gamma$. The divergence is then $-\gamma$ everywhere, and
+\cref{eq:ha-area-rate} gives $\dd\mathcal{A}/\dd t = -\gamma\mathcal{A}$,
+the equation of \cref{sec:ne-drag}, so
+\begin{equation*}
+   \mathcal{A}(t) = \mathcal{A}_0\,\mathrm{e}^{-\gamma t} .
+\end{equation*}
+With $\gamma = \SI{0.5}{\per\second}$, the blob of \cref{fig:ha-blob}(b)
+keeps 0.60653, 0.36788 and 0.22313 of its area after 1, 2 and
+\SI{3}{\second}, the values of $\mathrm{e}^{-\gamma t}$ to the five
+figures printed. Every state ends at rest at the bottom: the drag erases
+the differences between starting states, which a Hamiltonian flow never
+does.
+
+\subsection*{The stretching of a small square}
+
+Liouville's theorem can also be read off a single state and its close
+neighbours, which is the form Chapter~9 uses for methods that move in
+steps.
+
+\begin{toolbox}[The Jacobian determinant]
+The flow over a time $t$ carries each starting state $(q_0, p_0)$ to the
+state $(q, p)$ reached at time $t$, so $q$ and $p$ are functions of $q_0$
+and $p_0$. We take a small square of starting states with one corner at
+$(q_0, p_0)$ and sides of length $\varepsilon$ along the two axes
+(\cref{fig:ha-square}). By the Taylor series to first order, the corner
+at $(q_0 + \varepsilon, p_0)$ goes to $(q, p) + \varepsilon\,\vb{a}$, with
+$\vb{a} = (\partial q/\partial q_0, \partial p/\partial q_0)$, and the
+corner at $(q_0, p_0 + \varepsilon)$ goes to $(q, p) + \varepsilon\,
+\vb{b}$, with $\vb{b} = (\partial q/\partial p_0, \partial p/\partial
+p_0)$. The far corner $(q_0 + \varepsilon, p_0 +
+\varepsilon)$ is a step $\varepsilon$ in both variables, and the
+first-order rule $\Delta h \approx (\partial h/\partial x)\,\Delta x +
+(\partial h/\partial y)\,\Delta y$ of \cref{sec:en-gradient}, applied to
+$q$ and to $p$, takes it to $(q, p) + \varepsilon\vb{a} + \varepsilon
+\vb{b}$. To first order, then, the square becomes the parallelogram on the
+arrows $\varepsilon\vb{a}$ and $\varepsilon\vb{b}$. The area of the
+parallelogram on $\vb{a} = (a_1, a_2)$ and $\vb{b} = (b_1, b_2)$ is the
+length of their cross product (\cref{sec:ro-cross}); with third
+components zero, the cross product has only the third component $a_1b_2 -
+a_2b_1$, so the area is $\lvert a_1b_2 - a_2b_1\rvert$. The four
+derivatives form the Jacobian matrix of the flow,
+\begin{equation*}
+   \vb{J} = \begin{pmatrix}
+      \partial q/\partial q_0 & \partial q/\partial p_0\\
+      \partial p/\partial q_0 & \partial p/\partial p_0
+   \end{pmatrix} ,
+\end{equation*}
+whose columns are $\vb{a}$ and $\vb{b}$, and the number $a_1b_2 - a_2b_1$
+made from a $2\times2$ matrix in this way, the product of the diagonal
+entries minus the product of the other two, is its determinant, $\det
+\vb{J}$. The square of area $\varepsilon^2$ therefore becomes a
+parallelogram of area $\lvert\det\vb{J}\rvert\,\varepsilon^2$: the
+determinant is the factor by which the flow stretches small areas. For a
+body in free flight, $q = q_0 + p_0t/m$ and $p = p_0$, so
+\begin{equation*}
+   \vb{J} = \begin{pmatrix} 1 & t/m\\ 0 & 1 \end{pmatrix} ,
+   \qquad \det\vb{J} = 1\times1 - \frac{t}{m}\times0 = 1 ,
+\end{equation*}
+a shear that tilts the square without changing its area
+(\cref{ex:ha-shear}). For a map of $n$ variables, the $n\times n$
+Jacobian matrix has a determinant too, the factor by which the map
+stretches small volumes in $n$ dimensions; its definition for larger
+matrices, and this property, are standard results of linear algebra that
+we take on trust.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.15,
+   arr/.style={-{Stealth[length=5pt]}, line width=0.8pt}]
+   \fill[black!8] (0,0) rectangle (1.6,1.6);
+   \draw[line width=0.8pt] (0,0) rectangle (1.6,1.6);
+   \draw[arr, accent] (0,0) -- (1.6,0) node[midway, below=2pt]
+      {\small $\varepsilon$ along $q_0$};
+   \draw[arr, accent] (0,0) -- (0,1.6) node[midway, left]
+      {\small $\varepsilon$ along $p_0$};
+   \fill (0,0) circle (1.2pt) node[left=3pt] {\small $(q_0, p_0)$};
+   \draw[-{Stealth[length=6pt]}, line width=0.6pt, black!50]
+      (2.2,0.9) to[bend left=20] node[midway, above] {\small flow} (3.8,0.9);
+   \begin{scope}[shift={(4.6,0.0)}]
+            \fill[black!8] (0,0) -- (1.8,0.55) -- (2.55,2.2) -- (0.75,1.65) -- cycle;
+      \draw[line width=0.8pt] (0,0) -- (1.8,0.55) -- (2.55,2.2) -- (0.75,1.65)
+         -- cycle;
+      \draw[arr, accent] (0,0) -- (1.8,0.55) node[midway, below right]
+         {\small $\varepsilon\vb{a}$};
+            \draw[arr, accent] (0,0) -- (0.75,1.65) node[midway, left]
+         {\small $\varepsilon\vb{b}$};
+      \fill (0,0) circle (1.2pt) node[below left] {\small $(q, p)$};
+   \end{scope}
+\end{tikzpicture}
+\caption{The flow over a time $t$ carries a small square of starting
+states into a parallelogram on the arrows $\varepsilon\vb{a}$ and
+$\varepsilon\vb{b}$, the columns of the Jacobian matrix times the side
+$\varepsilon$; its area is $\lvert\det\vb{J}\rvert$ times that of the
+square.}
+\label{fig:ha-square}
+\end{figure}
+
+Since the Hamiltonian flow keeps the area of every region, a small square
+keeps its area $\varepsilon^2$, while the toolbox gives $\lvert\det\vb{J}
+\rvert\,\varepsilon^2$ with an error that shrinks faster than
+$\varepsilon^2$; letting $\varepsilon$ shrink, $\lvert\det\vb{J}\rvert =
+1$. At $t = 0$ the map does nothing and $\det\vb{J} = 1\times1 - 0\times0
+= 1$, and $\det\vb{J}$ changes smoothly with $t$, so it cannot jump to
+$-1$: $\det\vb{J} = 1$ at every time. With drag, the same reasoning gives
+$\det\vb{J} = \mathrm{e}^{-\gamma t}$. Computed with
+\texttt{flow\_jacobian}, which follows four copies started a small step
+either side of the state along each axis and takes central differences
+(\cref{sec:mo-atoms}) of where they arrive, the Jacobian of the pendulum's flow from
+$(\theta, p) = (\SI{1}{\radian}, \SI{0.5}{\kilogram\metre\squared\per
+\second})$ over \SI{2.5}{\second} has a determinant that differs from 1 by
+about
+$10^{-10}$, although the map is far from doing nothing: its entries are
+1.057 and 0.213 in the first row and 1.157 and 1.179 in the second;
+rounded, they give $1.057\times1.179 - 0.213\times1.157 = 0.9998$, which is
+1 to the accuracy of the rounding.
+
+For $N$ atoms the same holds in the $6N$ dimensions of phase space. The
+divergence of the flow is the sum, over all $6N$ coordinates, of the
+derivative of each coordinate's rate with respect to that coordinate,
+$\sum_k(\partial\dot{q}_k/\partial q_k + \partial\dot{p}_k/\partial p_k)$;
+for Hamilton's equations it is $\sum_k(\partial^2H/\partial q_k\partial
+p_k - \partial^2H/\partial p_k\partial q_k)$, zero term by term, and the form of
+Green's theorem in many dimensions, the divergence
+theorem\cite{Tuckerman2023}, then shows that every region of phase space
+keeps its volume and $\det\vb{J} = 1$. A cloud of states can be stretched and folded by
+the flow but never compressed. In particular, the number of copies in a
+small region that moves with the flow does not change, and neither does
+its volume, so the density of copies seen by an observer moving with any
+one state stays the same. Since each state also keeps its energy, a cloud
+whose density, the number of copies per unit volume, is a function
+$f(H)$ of the energy alone does not change at all: the copies now at a
+state $\Gamma$ came from a state of the same energy, where the density was
+$f\bigl(H(\Gamma)\bigr)$, and have kept that density. Chapter~12 builds statistical mechanics
+on such clouds.
+
+\begin{keyidea}
+The Hamiltonian flow has zero divergence, because the mixed partial
+derivatives of $H$ are equal, so it keeps the area, in many dimensions the
+volume, of every region of phase space it carries: the Jacobian
+determinant of the flow is 1. Drag at the rate $\gamma$ shrinks areas as
+$\mathrm{e}^{-\gamma t}$.
+\end{keyidea}
+
+\notebook{07}{watch a blob of states flow, with and without drag}
+
+\begin{selfcheck}
+A blob of states of the pendulum with drag at $\gamma =
+\SI{0.5}{\per\second}$ has an area of \SI{1}{\joule\second}. What is its
+area \SI{4}{\second} later?
+\end{selfcheck}

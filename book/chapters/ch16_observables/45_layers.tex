@@ -1,0 +1,129 @@
+%=============================================================================!
+% 16.8  DIFFUSION IN LAYERS                                                   !
+%=============================================================================!
+\section{Diffusion in layers}
+\label{sec:ob-layers}
+
+Lithium in graphite can move between the carbon sheets much more readily
+than it can cross them. A single diffusion coefficient hides this
+difference: we need the mean squared displacement in each direction.
+After measuring it in the layered model solid, we connect diffusion to
+hops between lattice sites and test the assumption that successive hops
+are independent.
+
+\subsection*{The diffusion tensor}
+
+The MSD of \cref{eq:ob-einstein} is the sum of three parts, $\ens{\Delta
+x^2} + \ens{\Delta y^2} + \ens{\Delta z^2}$, and each grows as $2D_{xx}t$,
+$2D_{yy}t$ and $2D_{zz}t$ with its own coefficient. More generally the
+products of the components define the diffusion tensor, $\ens{\Delta
+r_\alpha\Delta r_\beta} \to 2D_{\alpha\beta}t$, a symmetric $3\times3$
+matrix whose eigenvectors are the directions in which the spreading is
+fastest and slowest (\cref{sec:os-modes}). In a layered solid with its
+sheets at right angles to $z$, symmetry makes $z$ one of them and leaves
+the two in the plane equal, $D_{xx} = D_{yy}$, and the diffusion
+coefficient that a single number would give, a third of the trace,
+mixes two very different motions.
+
+\Cref{sec:pr-shape} built a model of such a solid: triangular sheets, each
+bound strongly within itself and weakly to its neighbours, with 108 guest
+atoms of lithium's mass grown into the hollows between them. Held at
+\SI{150}{\kelvin} by CSVR in its relaxed cell for \SI{500}{\pico\second},
+its guests' MSD along each axis, measured from the centre of mass, gives
+from five blocks of \SI{100}{\pico\second} and fits over 5 to
+\SI{50}{\pico\second}
+\begin{equation*}
+   D_{xx} = (1.16 \pm 0.11)\times10^{-4}\,\si{\angstrom\squared\per
+   \femto\second} , \qquad
+   D_{yy} = (1.02 \pm 0.05)\times10^{-4}\,\si{\angstrom\squared\per
+   \femto\second} .
+\end{equation*}
+The two in the plane agree within their errors. Along $z$ the MSD is
+\SI{0.113}{\angstrom\squared} at \SI{1}{\pico\second},
+\SI{0.126}{\angstrom\squared} at 10 and \SI{0.132}{\angstrom\squared} at
+\SI{50}{\pico\second} (\cref{fig:ob-layers}a), and no guest moves more
+than \SI{1.73}{\angstrom} along $z$ in the whole run: the guests rattle
+between their two sheets, and none crosses to the next gap,
+\SI{3.40}{\angstrom} away. A single crossing would add
+\SI{11.6}{\angstrom\squared} to one guest's square, and so
+$\SI{11.6}{\angstrom\squared}/108$ to the mean, and one in the
+\SI{500}{\pico\second} would have meant $D_{zz} \approx
+\SI{1.1e-7}{\angstrom\squared\per\femto\second}$. This is the scale of one detectable crossing, not a statistical upper
+bound on $D_{zz}$: a finite run can miss a rare event. It is a thousand
+times smaller than the in-plane value. A straight line fitted to the
+levelling MSD would only measure its slow approach to the plateau;
+\cref{ex:ip-rate} shows how zero events give a confidence bound.
+
+\subsection*{Hops between sites}
+
+On the model surface of \cref{sec:en-surface} a lithium atom moves by
+hops between hollows a distance $a = \SI{2.46}{\angstrom}$ apart, and
+Chapter~13 counted them. If each hop goes to one of the six neighbouring
+hollows at random, independently of the last, the atom performs the
+random walk of \cref{sec:ob-msd} with steps of length $a$, and after $n$
+hops its mean squared displacement is $na^2$. At a rate of $k_{\mathrm h}$ hops
+per unit time, $n = k_{\mathrm h}t$, and comparing $k_{\mathrm h}ta^2$ with $2dDt$ for
+$d = 2$,
+\begin{equation*}
+   D = \frac{k_{\mathrm h}a^2}{4} .
+\end{equation*}
+Counted hops thus give a diffusion coefficient without fitting an MSD,
+and a count has the error bar of \cref{sec:ob-reactions}, $\sqrt n$. If
+the hops have various lengths $\ell$ but still forget their direction,
+the same sum gives $n\ens{\ell^2}$ after $n$ hops, and $D = k_{\mathrm
+h}\ens{\ell^2}/4$.
+
+The relation assumes that hops forget their direction. At
+\SI{1000}{\kelvin}, with Langevin friction of \SI{1}{\per\pico\second}, 1000
+atoms over \SI{200}{\pico\second} make \num{179680} hops, a rate of $k_{\mathrm h}
+= (0.8984 \pm 0.0021)$ per atom and picosecond, Chapter~13's rate again;
+$k_{\mathrm h}a^2/4$ is then \SI{13.6e-4}{\angstrom\squared\per\femto\second},
+but the MSD over 2 to \SI{10}{\pico\second} gives $D =
+\SI{92.3e-4}{\angstrom\squared\per\femto\second}$, 6.79 times more. The
+ratio $f = 4D/k_{\mathrm h}a^2$, the correlation factor, exceeds 1 for two
+reasons. An atom with enough energy to cross a bridge often keeps it long
+enough to cross the next before the friction takes it away, so that 17\%
+of the counted hops, from one hollow where the atom is seen to the next,
+are longer than $a$, and their mean square is $1.96a^2$. And successive
+hops tend to keep their direction: $4D/k_{\mathrm h}\ens{\ell^2}$, which would
+be 1 for hops that forget it, is 3.46. Raising the friction to 3, 10 and
+\SI{30}{\per\pico\second} drains the energy faster: $f$ falls to 3.24,
+1.63 and 1.13, as the product of $\ens{\ell^2}/a^2$, 1.66, 1.29 and 1.07,
+and the memory of direction, 1.96, 1.27 and 1.05 (\cref{fig:ob-layers}b),
+while $k_{\mathrm h}$ stays near 0.90 until the highest friction, which slows
+the hops themselves to 0.708 per picosecond, as Chapter~13 found. How large $f$ is in a real crystal
+depends on how fast the lattice takes away an arriving atom's energy,
+which only a measurement of both $D$ and $k_{\mathrm h}$ settles.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/layers}
+\caption{(a) The guests of the layered model solid at \SI{150}{\kelvin}:
+their mean squared displacement along $x$, $y$ and $z$, measured from the
+centre of mass. (b) Lithium on the model surface at \SI{1000}{\kelvin}:
+the correlation factor $f = 4D/k_{\mathrm h}a^2$, with $D$ from the MSD and
+$k_{\mathrm h}$ from counted hops (circles), and $4D/k_{\mathrm h}\ens{\ell^2}$,
+with $\ens{\ell^2}$ the mean square length of a counted hop (squares),
+against the Langevin friction. (c) The
+vibrational density of states of the lithium atoms at 600 and
+\SI{1000}{\kelvin} (friction \SI{1}{\per\pico\second}), with the
+frequency of small vibrations in a hollow (dotted; \cref{sec:ob-vdos}).}
+\label{fig:ob-layers}
+\end{figure}
+
+\begin{keyidea}
+In an anisotropic solid the MSD is taken along each direction, giving the
+diffusion tensor; in a layered solid the motion along the layers and
+across them differ by orders of magnitude. Diffusion by hops between
+sites a distance $a$ apart gives $D = fk_{\mathrm h}a^2/4$ in two dimensions,
+with $f = 1$ when successive hops are independent and one site long, and
+$f > 1$ when they carry the atom past the next site or keep their
+direction.
+\end{keyidea}
+
+\notebook{16}{split the MSD of the guests into its three directions}
+
+\begin{selfcheck}
+On a simple cubic lattice of spacing $a$ in three dimensions, with
+independent hops at a total rate $k_{\mathrm h}$, what is $D$?
+\end{selfcheck}

@@ -1,0 +1,94 @@
+%=============================================================================!
+% 9.7  LONG RUNS AND ROUGH FORCES                                             !
+%=============================================================================!
+\section{Long runs and rough forces}
+\label{sec:in-long}
+
+A method of higher order makes a smaller error over a fixed time. A
+simulation, however, runs for very many periods of its fastest motion,
+and over such times what matters is whether the energy, and with it the
+statistics of Chapter~12, stays right. This section compares velocity Verlet with a method of fourth
+order over a long run, and measures what a force that jumps costs, as
+\cref{sec:pe-cutoffs} promised.
+
+\subsection*{A fourth-order method}
+
+The classical Runge--Kutta method of fourth order, RK4, advances the pair
+$\vb{w} = (x, v)$, whose rate of change is $\vb{g}(\vb{w}) = (v, a(x))$,
+by four samples of that rate, each taken at a point reached with the one
+before:
+\begin{align*}
+   \vb{s}_1 &= \vb{g}(\vb{w}_n) , &
+   \vb{s}_2 &= \vb{g}\bigl(\vb{w}_n + \tfrac12\dt\,\vb{s}_1\bigr) ,\\
+   \vb{s}_3 &= \vb{g}\bigl(\vb{w}_n + \tfrac12\dt\,\vb{s}_2\bigr) , &
+   \vb{s}_4 &= \vb{g}(\vb{w}_n + \dt\,\vb{s}_3) ,
+\end{align*}
+\begin{equation*}
+   \vb{w}_{n+1} = \vb{w}_n + \tfrac16\dt\,(\vb{s}_1 + 2\vb{s}_2
+   + 2\vb{s}_3 + \vb{s}_4) .
+\end{equation*}
+Its derivation, matching this to the Taylor series up to $\dt^4$, is
+long, and we take it on trust. In \cref{fig:in-orders} its error after a
+time of 4 is $\num{1.6e-9}$ at $\dt = 0.05$, against $\num{4.1e-5}$ for
+velocity Verlet, and falls roughly as $\dt^4$: the error changes sign
+between $\dt = 0.1$ and 0.05, so the points scatter about the line of
+slope 4, with a fitted slope of 4.3. It calls for the forces four times
+per step, and it is neither symplectic nor reversible: for the spring a
+step multiplies areas by $c^2 + s^2 < 1$ (\cref{ex:in-rk4-spring}), and
+reversing the velocity and stepping again returns the start only to
+within that factor.
+
+\Cref{fig:in-long}(a) follows the 32-atom Lennard-Jones cluster of
+\cref{sec:pe-cutoffs} for $200\tau$, where $\tau = \sigma\sqrt{m/
+\varepsilon}$ is the unit of time of \cref{eq:pe-tau}, with velocity Verlet at $\dt =
+0.005\tau$ and RK4 at $\dt = 0.02\tau$, so that each calls for the forces
+40\,000 times. The energy of velocity Verlet stays within a band of
+$\num{3.4e-3}\,\varepsilon$; that of RK4 falls steadily, by
+$0.64\varepsilon$ in all, as if a drag acted on the atoms. For a spring,
+\cref{ex:in-rk4-spring} shows that every step of RK4 multiplies the energy
+by a number slightly less than 1. Over a long run the symplectic method
+keeps the energy better: it keeps a shadow energy (\cref{sec:in-shadow}),
+while RK4 shrinks areas and keeps no such energy.
+
+\subsection*{Forces that jump}
+
+\Cref{fig:in-long}(b) repeats the velocity Verlet run with the potential
+cut off at $2.5\sigma$, once shifted, so that the force jumps when a pair
+crosses the cutoff, and once switched smoothly between $2\sigma$ and
+$2.5\sigma$. With switching the energy stays in a band of
+$\num{3.4e-3}\,\varepsilon$, as without a cutoff. With shifting the
+centre of the band wanders: the mean energy over the second half of the
+run is $\num{1.4e-3}\,\varepsilon$ below that over the first, against
+$\num{4e-6}\,\varepsilon$ with switching, and the range over the run grows
+to $\num{6.3e-3}\,\varepsilon$. Each jump of the force inside a step breaks
+the Taylor series on which the method's accuracy rests, and leaves an
+error that the next steps do not undo. A force that is not smooth lets
+the energy of a fixed-step method wander, which is why the smooth cutoffs of \cref{sec:pe-cutoffs},
+and the smooth envelopes of machine-learned potentials, matter.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch09_integrators/long}
+\caption{The 32-atom Lennard-Jones cluster of \cref{sec:pe-cutoffs} over
+$200\tau$, as the change of its total energy. (a) Velocity Verlet with
+$\dt = 0.005\tau$ and RK4 with $\dt = 0.02\tau$, which call for the forces
+equally often. (b) Velocity Verlet with $\dt = 0.005\tau$ and the
+potential cut at $2.5\sigma$ by switching and by shifting.}
+\label{fig:in-long}
+\end{figure}
+
+\begin{keyidea}
+Over a long run a symplectic method of second order keeps the energy in a
+band, while RK4, more accurate over a short time and four times as
+costly per step, lets it drift. Forces that jump inside a step let the
+energy wander out of its band, so the forces of a simulation must be
+smooth.
+\end{keyidea}
+
+\notebook{09}{long runs with velocity Verlet and RK4}
+
+\begin{selfcheck}
+To cover \SI{1}{\pico\second}, how many force evaluations does velocity
+Verlet need with $\dt = \SI{0.5}{\femto\second}$, and how many does RK4 need
+with $\dt = \SI{2}{\femto\second}$?
+\end{selfcheck}

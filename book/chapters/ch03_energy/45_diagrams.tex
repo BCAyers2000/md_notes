@@ -1,0 +1,129 @@
+%=============================================================================!
+% 3.6  ENERGY DIAGRAMS                                                        !
+%=============================================================================!
+\section{Energy diagrams}
+\label{sec:en-diagrams}
+
+The conservation of energy turns a graph of the potential energy into a
+map of every possible motion. This section reads such a map.
+
+\subsection*{Allowed regions and turning points}
+
+For a body moving along a line with potential energy $U(x)$, or a bead on
+a wire with $U = mgh(x)$, the kinetic energy at each point is what
+remains of the total, $K = E - U(x)$. A kinetic energy $\frac12 mv^2$
+cannot be negative, so the body can only be where
+\begin{equation*}
+   U(x) \le E .
+\end{equation*}
+These points form the allowed region of the motion. Where $U$ rises to
+meet $E$, the kinetic energy falls to zero, the body stops for an
+instant, and the force, which points down the slope of $U$ by
+\cref{eq:en-force-1d} (for the bead, the part of the weight along the
+wire, which points downhill), sends it back the way it came. Such a point, where
+$U(x) = E$ with a non-zero slope of $U$, is a turning point. If $E$ instead
+meets $U$ at an equilibrium, the force also vanishes there: a body placed
+there at rest stays there, and approaching an unstable equilibrium can
+take indefinitely long. Away from these special points, the speed follows
+from $\frac12 mv^2 = E - U(x)$,
+\begin{equation*}
+   v = \sqrt{\frac{2\,\bigl(E - U(x)\bigr)}{m}} .
+\end{equation*}
+
+A graph of $U$ with a horizontal line at the height $E$ is called an
+energy diagram. For the bead, $U/mg = h$ is the shape of the wire itself,
+so its energy diagram is a picture of the track, and $E/mg = h_E$ is the
+height at which the bead would be at rest. \Cref{fig:en-track}(a) draws
+three energies. Their turning points, the solutions of $h(x) = h_E$, were
+found by computer; substituting them into \cref{eq:en-track} checks them,
+and two are exact, $h(-1) = 0.4$ and $h(2) = 1.3$.
+\begin{itemize}
+\item At $h_E = \SI{0.4}{\metre}$ the bead is confined to the deep valley,
+   between the turning points $x = \SI{-1.831}{\metre}$ and
+   \SI{-1.000}{\metre}. It slides back and forth between them for ever.
+\item At $h_E = \SI{0.8}{\metre}$ there are two separate allowed regions,
+   one in each valley: from \num{-2.042} to \SI{-0.477}{\metre}, and from
+   \num{0.795} to \SI{1.724}{\metre}. With the same energy the bead may
+   be in either, but it cannot cross the hill between them, which rises to
+   \SI{1.009}{\metre}. Which valley it occupies depends only on where it
+   started.
+\item At $h_E = \SI{1.3}{\metre}$ the bead passes over the hill and turns
+   only at the steep ends of the track, at \num{-2.206} and
+   \SI{2.000}{\metre}.
+\end{itemize}
+\Cref{fig:en-track}(b) gives the speed along the track at the highest of
+these energies. It falls to zero at the turning points, is greatest at the
+bottom of the deep valley, \SI{4.680}{\metre\per\second}, and dips to
+\SI{2.387}{\metre\per\second} as the bead crosses the hill.
+
+\begin{figure}[tb]
+\centering
+\includegraphics{ch03_energy/track}
+\caption{The track as an energy diagram. (a) The potential energy of the
+bead divided by $mg$, which is the height $h(x)$ of the wire, with three
+total energies $E/mg$. Each energy line is
+solid where the bead may be ($U \le E$) and dotted where it may not; dots
+mark the turning points. Filled circles mark the stable equilibria at the
+valley bottoms, and the open circle the unstable one at the top of the
+hill. (b) The speed along the track at $E/mg = \SI{1.3}{\metre}$; the
+dotted lines are the turning points.}
+\label{fig:en-track}
+\end{figure}
+
+\subsection*{Equilibria}
+
+A body placed at rest stays at rest only where the net force on it is
+zero. By
+\cref{eq:en-force-1d} these are the points where $\dd U/\dd x = 0$, where
+the graph of $U$ is flat: the bottoms of valleys, the tops of hills, and
+any level shelf. Such a point $x_0$ is called an equilibrium. For the
+bead, the push of the wire and the weight balance where the wire is
+horizontal, $\dd h/\dd x = 0$, since only there is the push, which is
+perpendicular to the wire, vertical, so that it can cancel the weight. Differentiating \cref{eq:en-track} with the
+power rule,
+\begin{equation*}
+   \frac{\dd h}{\dd x} = 0.6\,x^3 - 1.2\,x + 0.15 ,
+\end{equation*}
+and this cubic is zero at three points, which a computer finds to be $x =
+\SI{-1.473}{\metre}$ (the deep valley, $h = \SI{0.183}{\metre}$), $x =
+\SI{0.126}{\metre}$ (the hill, $h = \SI{1.009}{\metre}$) and $x =
+\SI{1.347}{\metre}$ (the shallow valley, $h = \SI{0.607}{\metre}$).
+
+The equilibria differ in what happens after a small nudge. At the bottom
+of a valley, the slope of $U$ on either side points back down into the
+valley, so the force on a displaced body points back towards the
+equilibrium, and the body swings about it: the equilibrium is stable. At
+the top of a hill, the slope on either side leads away, and a body nudged
+off it runs away down one side: the equilibrium is unstable.
+
+The second derivative of $U$ tells the two apart without a picture. Near
+an equilibrium $x_0$, the Taylor series of \cref{sec:mo-taylor}, applied
+to the force $F$ about $x_0$ with $x - x_0$ in the role of the interval
+$\tau$, gives
+\begin{align*}
+   F(x) &= F(x_0) + F'(x_0)\,(x - x_0) + \order{(x - x_0)^2}\\
+   &= -U''(x_0)\,(x - x_0) + \order{(x - x_0)^2}
+      && \text{since $F(x_0) = 0$ and $F' = -U''$,}
+\end{align*}
+where $U''$ is the second derivative of $U$ with respect to $x$. If
+$U''(x_0) > 0$, the graph of $U$ curves upwards, as at a valley bottom,
+and close to $x_0$ the force is that of a spring of stiffness $k =
+U''(x_0)$, $F \approx -k\,(x - x_0)$: it always points back, the
+equilibrium is stable. By \cref{sec:ne-spring}, with the displacement
+$x - x_0$ in place of $x$, the body then oscillates about $x_0$,
+approximately, with angular frequency $\sqrt{U''(x_0)/m}$,
+and Chapter~4 examines how good the approximation is. If $U''(x_0) <
+0$, the force points away on both sides, and the equilibrium is unstable.
+If $U''(x_0) = 0$, the next terms of the series decide. For the track,
+$\dd^2 h/\dd x^2 = 1.8\,x^2 - 1.2$, which is \SI{+2.706}{\per\metre} and
+\SI{+2.066}{\per\metre} at the two valley bottoms and
+\SI{-1.171}{\per\metre} at the top of the hill, as the picture says.
+
+\notebook{03}{move $E$ on the energy diagram and watch the allowed regions
+change}
+
+\begin{selfcheck}
+At $E/mg = \SI{0.8}{\metre}$ a bead starts at rest at $x =
+\SI{0.795}{\metre}$. Where does it next turn back, where is it fastest,
+and how fast is it moving there?
+\end{selfcheck}

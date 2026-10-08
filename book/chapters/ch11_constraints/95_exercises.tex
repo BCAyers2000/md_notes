@@ -1,0 +1,162 @@
+%=============================================================================!
+% 11.E  EXERCISES                                                             !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:cs-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:cs-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~11 checks every numerical answer.
+
+\begin{exercise}[freedoms of methanol]
+\label{ex:cs-freedoms}
+Methanol, CH$_3$OH, has six atoms and four bonds to hydrogen. How many
+freedoms has one molecule with those four bonds held, and how many have
+100 such molecules once the drift of their centre of mass is removed?
+\end{exercise}
+
+\begin{exercise}[one bond solved exactly]
+\label{ex:cs-one-bond}
+Atoms $i$ and $j$, of masses 2 and \SI{5}{\amu}, are joined by a bond held
+at \SI{1.5}{\angstrom}, with $\vb{r}_{ij} = (1.5, 0, 0)$\,\AA\ at the start
+of a step. The provisional bond is $\tilde{\vb{r}}_{ij} = (1.6, 0.3,
+0)$\,\AA. Solve \cref{eq:cs-quadratic} for $\eta$, choose the root, and
+find how far each atom moves.
+\end{exercise}
+
+\begin{exercise}[Newton's method for a square root]
+\label{ex:cs-newton}
+Apply Newton's method to $f(y) = y^2 - 3$ from $y_0 = 2$, and give $y_1$,
+$y_2$, $y_3$ and their errors against $\sqrt3$.
+\end{exercise}
+
+\begin{exercise}[the error squares]
+\label{ex:cs-newton-error}
+Show that for $f(y) = y^2 - a$, with $a > 0$, Newton's method gives
+$y_{n+1} = \frac12(y_n + a/y_n)$, and that $y_{n+1} - \sqrt a = (y_n -
+\sqrt a)^2/(2y_n)$ exactly.
+\end{exercise}
+
+\begin{exercise}[SHAKE keeps the centre of mass]
+\label{ex:cs-centre}
+Show that a SHAKE correction of one bond, for any $\eta$, leaves the
+centre of mass of its two atoms where it was.
+\end{exercise}
+
+\begin{exercise}[what the velocity correction removes]
+\label{ex:cs-kinetic}
+For two atoms, show that their kinetic energy is $\frac12M\lvert\vb{V}
+\rvert^2 + \frac12m_{\mathrm r}\lvert\vb{v}_{ij}\rvert^2$, with $M$ and
+$\vb{V}$ their total mass and the velocity of their centre of mass. Hence
+show that the velocity correction of RATTLE leaves the total momentum
+unchanged and lowers the kinetic energy by $\frac12m_{\mathrm r}
+(\vb{v}_{ij}\cdot\vb{e})^2$, with $\vb{e}$ the unit vector along the
+bond.
+\end{exercise}
+
+\begin{exercise}[correcting an O--H pair]
+\label{ex:cs-oh}
+An oxygen atom of mass \SI{16}{\amu} and a hydrogen of mass \SI{1}{\amu}
+are joined by a bond held at \SI{0.96}{\angstrom}, with $\vb{r}_{\mathrm H}
+- \vb{r}_{\mathrm O} = (0.96, 0, 0)$\,\AA, and velocities $\vb{v}_{\mathrm O} = (0.001, 0, 0)$ and $\vb{v}_{\mathrm H} =
+(0.02, 0.01, 0)$\,\AA/fs. Find $\zeta$, the corrected velocities and the
+kinetic energy removed, in amu\,\AA$^2$/fs$^2$.
+\end{exercise}
+
+\begin{exercise}[a larger box]
+\label{ex:cs-count}
+How many freedoms have 216 rigid water molecules once the drift is
+removed, and what kinetic energy, in \si{\electronvolt}, gives each of them
+\SI{12.93}{\milli\electronvolt}?
+\end{exercise}
+
+\begin{exercise}[one inner step]
+\label{ex:cs-respa-one}
+Show that RESPA with one inner step is velocity Verlet with the force
+$\vb{F}^{\mathrm f} + \vb{F}^{\mathrm s}$.
+\end{exercise}
+
+\begin{exercise}[the cost of a nanosecond]
+\label{ex:cs-cost}
+With \SI{24}{\milli\second} per call of the forces between molecules and
+\SI{0.04}{\milli\second} per call of the springs, how long do velocity
+Verlet at \SI{0.41}{\femto\second} and RESPA with outer steps of
+\SI{0.72}{\femto\second} and three inner steps take for a nanosecond of
+flexible water?
+\end{exercise}
+
+\begin{exercise}[the square of a matrix]
+\label{ex:cs-matrix}
+Check that $\vb{M}^2 = (\operatorname{tr}\vb{M})\vb{M} - (\det\vb{M})
+\vb{I}$ for the matrix with rows $(1, 2)$ and $(3, 4)$.
+\end{exercise}
+
+\begin{exercise}[the second band]
+\label{ex:cs-band}
+Show that, for small $b = (\omega_{\mathrm s}/\omega_{\mathrm f})^2$, the
+trace of \cref{eq:cs-trace} exceeds 2 for $\theta$ from $2\pi(1 - b)$ to
+$2\pi$, a band of width $b\,\mathcal{T}_{\mathrm f}$ in the outer step.
+\end{exercise}
+
+\begin{exercise}[predicted and measured bands]
+\label{ex:cs-bands}
+For $\omega_{\mathrm s} = 0.3\,\omega_{\mathrm f}$, give the predicted
+edges of the two bands of \cref{fig:cs-resonance}, in units of
+$\mathcal{T}_{\mathrm f}$, and compare them with 0.459 to 0.500 and 0.919
+to 1.000 from the full trace.
+\end{exercise}
+
+\begin{exercise}[a finer inner step]
+\label{ex:cs-inner}
+With outer steps of \SI{2}{\femto\second}, RESPA on flexible water gives
+an energy fluctuation of 8.8\% with inner steps of
+\SI{0.25}{\femto\second} and 10.4\% with \SI{0.125}{\femto\second}.
+Explain why the finer inner step does not help.
+\end{exercise}
+
+\begin{exercise}[hydrogen doubled]
+\label{ex:cs-hmr-double}
+The hydrogen atoms of water are made twice as heavy, \SI{2.016}{\amu},
+at the oxygen's expense. Find the new mass of the oxygen, the O--H
+reduced mass, and the factor by which the stretch slows.
+\end{exercise}
+
+\begin{exercise}[where the centre of mass goes]
+\label{ex:cs-hmr-centre}
+How far from the oxygen, along the line bisecting the H--O--H angle, is
+the centre of mass of a TIP3P molecule with ordinary masses, and with the
+hydrogens three times as heavy?
+\end{exercise}
+
+\begin{exercise}[what repartitioning changes]
+\label{ex:cs-hmr-what}
+Which of these change when hydrogen masses are repartitioned: the mean
+potential energy, the distribution of distances between oxygen atoms, the
+rate at which molecules diffuse, the frequencies of the vibrations?
+\end{exercise}
+
+\begin{exercise}[a nanosecond of drift]
+\label{ex:cs-drift}
+The faulty start of \cref{sec:cs-trajectory} gives 64 water molecules
+of \SI{18.015}{\amu} a total momentum $\vb{P}$ with components 0.2817,
+0.2936 and 0.4033\,amu\,\AA/fs. How far does the centre of mass move in a nanosecond,
+and how much kinetic energy does the drift carry?
+\end{exercise}
+
+\begin{exercise}[a step without its unit]
+\label{ex:cs-ase-step}
+ASE measures time in units of \SI{10.18}{\femto\second}. A step written
+as 2 without converting it to that unit is how long, and what is $\omega
+\dt$ for the O--H stretch of period \SI{8.88}{\femto\second}? Is velocity
+Verlet stable?
+\end{exercise}
+
+\begin{exercise}[naming the fault]
+\label{ex:cs-diagnose}
+A run of rigid water at \SI{2}{\femto\second} has a mean total energy that
+falls steadily by \SI{0.5}{\electronvolt\per\pico\second}, by the same
+amount at \SI{1}{\femto\second}; its bond errors are $10^{-10}$\,\AA\ and
+its centre of mass is still. Which fault of \cref{tab:cs-faults} fits, and
+what test of the model would confirm it?
+\end{exercise}

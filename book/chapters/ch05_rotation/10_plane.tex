@@ -1,0 +1,232 @@
+%=============================================================================!
+% 5.1  TURNING IN A PLANE                                                     !
+%=============================================================================!
+\section{Turning in a plane}
+\label{sec:ro-plane}
+
+A puck slides without friction on a smooth level table, an air table that
+floats it on a thin cushion of air. A string tied to the puck runs to a
+small hole in the middle of the table and through it to a hand underneath.
+Set going sideways with the string taut, the puck circles the hole; pull
+the string down, and the puck circles closer and faster. This section
+finds the quantity that stays fixed while the speed changes, and the
+reason it does.
+
+\subsection*{Distance and angle}
+
+Put the origin at the hole and describe the puck's position by its
+distance $r$ from the hole and the angle $\theta$ that the line from the
+hole makes with the $x$ axis, so that, by the definition of sine and
+cosine scaled to a circle of radius $r$ (\cref{sec:mo-trig}),
+\begin{equation*}
+   x = r\cos\theta , \qquad y = r\sin\theta .
+\end{equation*}
+These are called polar coordinates. As the puck moves, both $r$ and
+$\theta$ change with time, at the rates $\dot r$ and $\dot\theta$, the dot
+marking the rate of change with time as in \cref{sec:mo-acceleration}.
+Differentiating $x$ and $y$ with the product rule, and $\cos\theta$ and $\sin\theta$ with the chain rule, so that
+$\dd\cos\theta/\dd t = -\sin\theta\,\dot\theta$ and $\dd\sin\theta/\dd t =
+\cos\theta\,\dot\theta$,
+\begin{equation*}
+   \dot{x} = \dot{r}\cos\theta - r\dot\theta\sin\theta , \qquad
+   \dot{y} = \dot{r}\sin\theta + r\dot\theta\cos\theta .
+\end{equation*}
+Two vectors of length 1, called unit vectors,
+make this easier to read: $\vb{e}_r = (\cos\theta, \sin\theta)$, pointing
+straight away from the hole, and $\vb{e}_\theta = (-\sin\theta,
+\cos\theta)$, at right angles to it in the direction of increasing
+$\theta$, anticlockwise; their scalar product is $-\cos\theta\sin\theta +
+\sin\theta\cos\theta = 0$. Collecting the terms in $\dot r$ and in $r\dot
+\theta$ in each component, $(\dot x, \dot y) = \dot r\,(\cos\theta,
+\sin\theta) + r\dot\theta\,(-\sin\theta, \cos\theta)$, so the velocity is
+\begin{equation}
+   \vb{v} = \dot{r}\,\vb{e}_r + r\dot\theta\,\vb{e}_\theta ,
+   \label{eq:ro-polar}
+\end{equation}
+a part $v_r = \dot r$ straight towards or away from the hole and a part
+$v_\theta = r\dot\theta$ across the line to it. On a circle $r$ is
+constant, $\dot\theta$ is the angular speed $\omega$, and $v_\theta =
+r\dot\theta$ is the speed $R\omega$ of \cref{sec:mo-circle}.
+
+\subsection*{Angular momentum and torque}
+
+For a body of mass $m$ moving in the plane, define
+\begin{equation}
+   L = m\,(x v_y - y v_x) ,
+   \label{eq:ro-ell}
+\end{equation}
+its angular momentum about the origin. In polar coordinates,
+\begin{align*}
+   x v_y - y v_x
+   &= r\cos\theta\,(\dot{r}\sin\theta + r\dot\theta\cos\theta)
+      && \text{putting in $x$, $y$, $\dot x$ and $\dot y$}\\
+   &\quad - r\sin\theta\,(\dot{r}\cos\theta - r\dot\theta\sin\theta)\\
+   &= r^2\dot\theta\,(\cos^2\theta + \sin^2\theta) = r^2\dot\theta
+      && \text{the terms in $\dot r$ cancel; $\cos^2\theta + \sin^2\theta
+      = 1$,}
+\end{align*}
+so $L = mr^2\dot\theta = mr\,v_\theta$: the distance from the origin times
+the part of the momentum across the line to it. Moving straight towards
+or away from the origin gives no angular momentum; going round it
+anticlockwise gives a positive $L$, clockwise a negative one. Its unit is
+\si{\kilogram\metre\squared\per\second}.
+
+How does $L$ change? Differentiating \cref{eq:ro-ell} by the product rule,
+\begin{align*}
+   \frac{\dd L}{\dd t}
+   &= m\,(\dot{x}v_y + x\dot{v}_y - \dot{y}v_x - y\dot{v}_x)\\
+   &= m\,(x a_y - y a_x)
+   && \text{since $\dot x v_y = v_xv_y = \dot y v_x$ and $\dot{\vb{v}} =
+      \vb{a}$,}\\
+   &= x F_y - y F_x
+   && \text{by the second law, $m\vb{a} = \vb{F}$.}
+\end{align*}
+The combination on the right is the torque of the force about the origin,
+\begin{equation}
+   G = x F_y - y F_x , \qquad\text{and}\qquad
+   \frac{\dd L}{\dd t} = G .
+   \label{eq:ro-torque-plane}
+\end{equation}
+Torque is to angular momentum what force is to momentum. Writing the
+force as $\vb{F} = F_r\vb{e}_r + F_\theta\vb{e}_\theta$, the same algebra
+as for $L$, with $F_r$ in place of $\dot r$ and $F_\theta$ in place of
+$r\dot\theta$, gives $G = rF_\theta$: only the part
+of the force across the line from the origin turns the body, and it turns
+it more the further out it acts. Its unit is the newton metre.
+
+This is the lever. A door turns about its hinge (\cref{fig:ro-lever}a). A
+push of \SI{10}{\newton} at right angles to the door at the handle,
+\SI{0.8}{\metre} from the hinge, gives a torque of $0.8\times10 =
+\SI{8}{\newton\metre}$; the same torque \SI{0.2}{\metre} from the hinge
+needs $8/0.2 = \SI{40}{\newton}$, and a push straight towards the hinge,
+with no part across the door, does not turn it at all.
+
+Chapter~2 noted that two equal and opposite pushes at opposite corners of
+a book set it spinning although they add to zero. Put the origin at the
+centre of the book, with a push $(0, F)$ at the corner $(a, b)$ and a push
+$(0, -F)$ at the opposite corner $(-a, -b)$ (\cref{fig:ro-lever}b). The
+net force is zero, but the torques are $aF - b\times0 = aF$ and $(-a)(-F)
+- (-b)\times0 = aF$, a total of $2aF$. Such a pair of forces, adding to no
+force but to a torque, is called a couple.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round,
+   force/.style={-{Stealth[length=5pt]}, line width=1.0pt, accent}]
+   % (a) a door seen from above, turning about its hinge
+   \begin{scope}
+      \fill[black!25] (-0.15,-0.35) rectangle (0,0.35);
+      \draw[line width=2.2pt, black!60] (0,0) -- (3.2,0);
+      \fill (0,0) circle (0.06);
+      \node[left] at (-0.2,0) {\small hinge};
+      \draw[force] (2.6,0) -- (2.6,1.1) node[above] {\small $\vb{F}$};
+      \draw[{Stealth[length=3pt]}-{Stealth[length=3pt]}, line width=0.4pt]
+         (0,-0.45) -- (2.6,-0.45) node[midway, below] {\small $r$};
+      \draw[black!50, ->, line width=0.5pt] (1.4,0.25) arc[start angle=10,
+         end angle=50, radius=1.4];
+      \node at (0.15,1.6) {\small (a)};
+   \end{scope}
+   % (b) a book pushed at two opposite corners: a couple
+   \begin{scope}[xshift=6.2cm, yshift=0.2cm]
+      \draw[line width=0.6pt, fill=black!8] (-1.0,-0.7) rectangle (1.0,0.7);
+      \fill (0,0) circle (0.04);
+      \draw[force] (1.0,0.7) -- (1.0,1.5) node[above] {\small $(0, F)$};
+      \draw[force] (-1.0,-0.7) -- (-1.0,-1.5) node[below] {\small $(0, -F)$};
+      \node[right] at (1.0,0.55) {\small $(a, b)$};
+      \node[left] at (-1.0,-0.55) {\small $(-a, -b)$};
+      \node at (-1.9,1.4) {\small (b)};
+   \end{scope}
+\end{tikzpicture}
+\caption{Torque. (a) A door seen from above: a force $\vb{F}$ at right
+angles to the door, a distance $r$ from the hinge, has the torque $rF$
+about the hinge. (b) A book pushed at two opposite corners: the forces add
+to zero, but their torques about the centre add to $2aF$, and the book
+spins.}
+\label{fig:ro-lever}
+\end{figure}
+
+\subsection*{Pulling the string}
+
+The string pulls the puck straight towards the hole, so its force has no
+part across the line to the hole, $F_\theta = 0$, and its torque about the
+hole is zero. The weight of the puck and the push of the table are
+vertical and turn nothing in the plane. By \cref{eq:ro-torque-plane},
+therefore, $L$ does not change: the angular momentum of the puck is
+conserved, whatever the hand does with the string. A force that always
+points towards or away from one fixed point is called a central force,
+and every central force conserves the angular momentum about its centre.
+
+Let the puck, of mass \SI{0.2}{\kilogram}, circle at $r =
+\SI{0.5}{\metre}$ with speed \SI{1.2}{\metre\per\second}, so that $L = mr
+v_\theta = 0.2\times0.5\times1.2 = \SI{0.12}{\kilogram\metre\squared\per
+\second}$, and pull the string down at a steady \SI{0.05}{\metre\per
+\second} until $r = \SI{0.25}{\metre}$. Since $L = mrv_\theta$ stays
+fixed, $v_\theta = L/(mr)$ grows as $r$ shrinks: at \SI{0.25}{\metre} the
+puck goes round at $0.12/(0.2\times0.25) = \SI{2.4}{\metre\per\second}$,
+twice as fast at half the distance (\cref{fig:ro-puck}). Since
+$\vb{e}_r$ and $\vb{e}_\theta$ are at right angles and of length 1,
+Pythagoras' theorem applied to \cref{eq:ro-polar} gives $\lvert\vb{v}
+\rvert^2 = \dot r^2 + v_\theta^2$, so the kinetic energy splits into a
+part across the line, $\frac12 mv_\theta^2$, and a part along it, $\frac12
+m\dot r^2$. The part across the line rises from $\frac12\times0.2\times
+1.2^2 = \SI{0.144}{\joule}$ to $\frac12\times0.2\times2.4^2 =
+\SI{0.576}{\joule}$, while the part along the line, with $\dot r =
+\SI{-0.05}{\metre\per\second}$, stays a constant $\frac12\times0.2\times
+0.05^2 = \SI{0.25}{\milli\joule}$. The extra
+\SI{0.432}{\joule} is the work of the hand: by \cref{sec:en-kinetic} the
+change in kinetic energy is the work done on the puck, the vertical forces
+do none, and the string pulls inwards while the puck moves inwards, so its
+work is positive.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch05_rotation/puck}
+\caption{A puck of \SI{0.2}{\kilogram} on a string through a hole, circling
+at \SI{0.5}{\metre} and \SI{1.2}{\metre\per\second} and then pulled in at
+a steady \SI{0.05}{\metre\per\second} to \SI{0.25}{\metre}, computed by
+stepping Newton's second law forward in short steps of time
+(\texttt{solve\_newton} in \texttt{mdlab}). (a) The path seen from above, from the dot; the
+shaded sectors are swept in \SI{0.25}{\second} each, at the start, the
+middle and the end of the pull, and all three have the area
+\SI{0.075}{\metre\squared}. (b) The angular momentum $L$, the speed and the
+kinetic energy $K$, each divided by its value at the start, against the
+distance from the hole.}
+\label{fig:ro-puck}
+\end{figure}
+
+\subsection*{Equal areas in equal times}
+
+The line from the hole to the puck sweeps out area as the puck moves. A
+whole circle, of area $\pi r^2$, has the angle $2\pi$, so a sector of
+angle $\Delta\theta$ has the area $\pi r^2\,\Delta\theta/(2\pi) = \frac12
+r^2\,\Delta\theta$. In a short time $\Delta t$ the angle grows by about
+$\dot\theta\,\Delta t$, and the line sweeps a thin sector of area $\Delta A
+\approx \frac12 r^2\dot\theta\,\Delta t$; the change of $r$ in that time
+alters the area only by a part proportional to $(\Delta t)^2$. Dividing by
+$\Delta t$ and letting $\Delta t \to 0$, as in \cref{sec:mo-velocity},
+\begin{equation*}
+   \frac{\dd A}{\dd t} = \tfrac12 r^2\dot\theta = \frac{L}{2m}
+   \qquad\text{since $L = mr^2\dot\theta$.}
+\end{equation*}
+While $L$ is constant the line sweeps equal areas in equal times, here
+$0.12/(2\times0.2) = \SI{0.3}{\metre\squared}$ every second: long thin
+sectors far out, short wide ones close in (\cref{fig:ro-puck}a). A planet
+is pulled by the Sun's gravity towards the Sun, a central force, and the
+same argument gives the law of equal areas that Kepler found in the
+motions of the planets.
+
+\begin{keyidea}
+In a plane, the angular momentum $L = m(xv_y - yv_x) = mr v_\theta$
+changes at the rate of the torque, $G = xF_y - yF_x = rF_\theta$. A
+central force has no torque about its centre, so it conserves $L$: pulled
+inwards, a body goes round faster.
+\end{keyidea}
+
+\notebook{05}{pull the puck in and out and watch $L$, the speed and the
+energy}
+
+\begin{selfcheck}
+The puck circling at \SI{0.5}{\metre} and \SI{1.2}{\metre\per\second} is
+let out slowly to \SI{1}{\metre}. How fast does it then go round, and is
+the work done on it by the string positive or negative?
+\end{selfcheck}

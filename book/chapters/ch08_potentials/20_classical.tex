@@ -1,0 +1,67 @@
+%=============================================================================!
+% 8.2  WHEN THE NUCLEI ARE CLASSICAL                                          !
+%=============================================================================!
+\section{When the nuclei may be treated as classical}
+\label{sec:pe-classical}
+
+The electrons need quantum mechanics; this book moves the nuclei by
+Newton's laws, which \cref{sec:ne-atoms} called an approximation. This
+section finds when it is a good one, from a comparison of two energies.
+
+Quantum mechanics changes the motion of a vibration in one way that
+matters here: a harmonic oscillator (\cref{sec:os-small}) of angular frequency $\omega$
+cannot have any energy it likes, only the values $(n + \frac12)\hbar\omega$, with $n = 0,
+1, 2, \dots$ and $\hbar = \SI{0.6582}{\electronvolt\femto\second}$ the
+reduced Planck constant\cite{Tuckerman2023}. Its energy therefore comes
+in steps of $\hbar\omega$, and even in its lowest state, $n = 0$, it keeps the energy
+$\frac12\hbar\omega$, its zero-point energy, which a classical oscillator
+lacks. At a temperature $T$, the motion of each vibration carries a
+typical energy of order $\kB T$, where $\kB$ is Boltzmann's constant and
+$\kB T = \SI{0.02585}{\electronvolt}$ at \SI{300}{\kelvin}
+(Chapter~12 makes this precise). When $\hbar\omega \ll \kB T$, a typical
+vibration spans many steps, too small to notice, and the classical
+description is good. When $\hbar\omega \gg \kB T$, the vibration
+sits in its lowest state, and a classical model, which lets it lose its
+zero-point energy, describes it wrongly.
+
+With $\omega = 2\pi\nu = 2\pi c\tilde\nu$ for a wavenumber $\tilde\nu$
+(\cref{sec:os-molecules}), $\hbar\omega = 2\pi\hbar c\,\tilde\nu$, and
+$2\pi\hbar c = \SI{1.2398e-4}{\electronvolt\centi\metre}$. At \SI{300}{\kelvin}:
+\begin{itemize}
+\item the symmetric O--H stretch of water, \SI{3657}{\per\centi\metre}
+   (\cref{tab:os-vibrations}), has $\hbar\omega = \SI{0.4534}{\electronvolt}$,
+   17.5 times $\kB T$: thoroughly quantum;
+\item the stretch of LiF, \SI{910.34}{\per\centi\metre}
+   (\cref{sec:ro-molecules}), has $\hbar\omega =
+   \SI{0.1129}{\electronvolt}$, 4.4 times $\kB T$;
+\item the model lithium atom rattling in its hollow with a period
+   $\mathcal{T} = \SI{170.3}{\femto\second}$ (\cref{sec:os-small}) has $\hbar\omega =
+   \hbar\,2\pi/\mathcal{T} = \SI{0.0243}{\electronvolt}$, 0.94 times $\kB
+   T$: borderline at room temperature, and 2.8 times $\kB T$ at
+   \SI{100}{\kelvin}.
+\end{itemize}
+The lighter the atom and the stiffer its bonds, the larger $\omega$ and
+the stronger the quantum character, so the motion of hydrogen is where
+classical nuclei fail first: quantum effects of the nuclei can change
+measured properties of water and other hydrogen-bonded systems at room
+temperature\cite{MarklandCeriotti2018}. A bond between heavier atoms can
+still be quantum, as LiF shows, and the rattle of lithium in its hollow
+is borderline. The motions this book measures, the turning and drifting
+of whole molecules and the hops of lithium and other ions heavier than
+hydrogen, we follow with classical nuclei, accepting that the energy of
+the fast stretches is then wrong.
+Methods that keep the quantum character of the nuclei exist; they are
+beyond the scope of this book.
+
+\begin{keyidea}
+A vibration may be treated classically when its quantum step
+$\hbar\omega = 2\pi\hbar c\,\tilde\nu$ is small compared with $\kB T$. At room
+temperature this holds for slow motions, is borderline for the rattle of
+lithium in its hollow, and fails for the stretches of chemical bonds,
+most of all bonds to hydrogen.
+\end{keyidea}
+
+\begin{selfcheck}
+Is the C--H stretch, near \SI{3000}{\per\centi\metre}, classical at
+\SI{300}{\kelvin}?
+\end{selfcheck}

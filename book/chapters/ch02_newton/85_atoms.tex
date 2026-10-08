@@ -1,0 +1,179 @@
+%=============================================================================!
+% 2.10  FROM BALLS TO ATOMS                                                   !
+%=============================================================================!
+\section{From balls to atoms}
+\label{sec:ne-atoms}
+
+Every law of this chapter was found with balls, carts and springs. This
+section applies the same laws to atoms and writes them in the form, and in
+the units, that molecular dynamics uses.
+
+Atoms are, strictly, quantum objects, and quantum mechanics rather than
+Newton's laws describes them exactly. The nuclei, however, are thousands
+of times heavier than the electrons, and this book treats them as
+classical bodies obeying the second law, while quantum mechanics is used
+only to compute the forces on them (Chapter~8). Treating the nuclei
+classically is an approximation. It is least accurate for the lightest
+nuclei, and for hydrogen the quantum character of the nuclear motion can
+change measured properties even at room temperature; Chapter~8 discusses
+when the classical picture is adequate.
+
+\subsection*{The equations of motion of $N$ atoms}
+
+Each atom $i$, numbered from 1 to $N$, has a mass $m_i$, a position
+$\vb{r}_i$ and a velocity $\vb{v}_i$, and feels a force $\vb{F}_i$ from
+the other atoms. We write $\vb{r}^N$ for the whole list of positions,
+$\vb{r}_1, \dots, \vb{r}_N$. In the models of this book the force on an
+atom depends on where every atom is, but not on how fast the atoms move,
+until the thermostats of Chapter~13 add a drag. Before then it is a
+function of $\vb{r}^N$ alone, and Chapter~8 explains where it comes
+from. The second law for each atom gives
+\begin{equation}
+   m_i\,\frac{\dd^2\vb{r}_i}{\dd t^2} = \vb{F}_i(\vb{r}^N),
+   \qquad i = 1, \dots, N .
+   \label{eq:ne-eom-atoms}
+\end{equation}
+These are $3N$ second-order differential equations, one for each
+component of each position, and they are coupled: the equation for one
+atom contains the positions of all the others through its force, so none
+can be solved alone. Molecular dynamics is the numerical solution of these
+equations. By \cref{sec:ne-equations} the state of the system is the list
+of all positions together with the list of all velocities, $6N$ numbers
+in all, and it determines the motion that follows. The learned
+propagators planned for Part~VI, programs trained to predict the state a long
+step ahead, take this state as their input for that reason.
+
+\subsection*{Newton's law in eV, \AA, fs and amu}
+
+\Cref{eq:ne-eom-atoms} needs one conversion in the units of this book.
+Forces between atoms are measured in electronvolts per \aa ngstr\"om,
+\si{\electronvolt\per\angstrom}. The electronvolt is a unit of energy,
+which Chapter~3 introduces; for now it is enough that $\SI{1}{\electronvolt}
+= \SI{1.602176634e-19}{\newton\metre}$, so that
+\si{\electronvolt\per\angstrom} is a unit of force,
+\begin{equation*}
+   \SI{1}{\electronvolt\per\angstrom}
+   = \frac{\SI{1.602176634e-19}{\newton\metre}}{\SI{e-10}{\metre}}
+   = \SI{1.602176634e-9}{\newton} ,
+\end{equation*}
+since $10^{-19}/10^{-10} = 10^{-19-(-10)} = 10^{-9}$.
+Masses are measured in atomic mass units, $\SI{1}{\amu} =
+\SI{1.66053906892e-27}{\kilogram}$, defined as one twelfth of the mass of
+an atom of carbon-12, the commonest form of carbon; tables of atomic
+masses use this unit. A force of \SI{1}{\electronvolt\per\angstrom}
+acting on a mass of \SI{1}{\amu} therefore produces an acceleration that
+we first find in \si{\metre\per\second\squared} and then convert. For the
+conversion, multiplying $\SI{1}{\angstrom} = \SI{e-10}{\metre}$ by
+$10^{10}$ gives $\SI{1}{\metre} = \SI{e10}{\angstrom}$, and in the same
+way $\SI{1}{\second} = \SI{e15}{\femto\second}$, so that $\SI{1}{\second
+\squared} = (\SI{e15}{\femto\second})^2 = \SI{e30}{\femto\second\squared}$.
+A newton per kilogram is a metre per second squared, by the definition
+of the newton, and dividing the powers of ten gives $10^{-9}/10^{-27} =
+10^{-9-(-27)} = 10^{18}$, so
+\begin{equation*}
+   \frac{\SI{1.602176634e-9}{\newton}}{\SI{1.66053906892e-27}{\kilogram}}
+   = 0.9648533\times10^{18}\,\si{\metre\per\second\squared}
+   = \SI{9.648533e17}{\metre\per\second\squared} ,
+\end{equation*}
+the last step moving the decimal point. Converting to \aa ngstr\"oms and
+femtoseconds,
+\begin{equation*}
+   9.648533\times10^{17}\times\frac{10^{10}}{10^{30}}\,
+   \si{\angstrom\per\femto\second\squared}
+   = \SI{9.648533e-3}{\angstrom\per\femto\second\squared} ,
+\end{equation*}
+since $17 + 10 - 30 = -3$.
+This number converts a force in \si{\electronvolt\per\angstrom} divided by
+a mass in \si{\amu} into an acceleration in
+\si{\angstrom\per\femto\second\squared}.
+
+A lithium atom, of mass \SI{6.94}{\amu}, its standard atomic
+weight\cite{Prohaska2022} (the masses of atoms in this book are these
+values), under a force of
+\SI{1}{\electronvolt\per\angstrom} therefore accelerates at
+$9.648533\times10^{-3}/6.94 = \SI{1.390e-3}{\angstrom\per\femto\second
+\squared}$. Starting from rest, after \SI{10}{\femto\second} it is moving
+at $at = \SI{0.0139}{\angstrom\per\femto\second}$, which, since
+$\SI{1}{\angstrom\per\femto\second} = \SI{e5}{\metre\per\second}$
+(\cref{sec:mo-units}), is \SI{1390}{\metre\per\second}, about four times
+the speed of sound in air, \SI{343}{\metre\per\second},
+and it has moved $\tfrac12 at^2 = \SI{0.0695}{\angstrom}$, about
+\SI{2}{\percent} of the \SI{3}{\angstrom} between neighbouring atoms in
+lithium metal. Atoms are fast, but a few femtoseconds carry them only a
+small fraction of the way to their neighbours, which is why molecular
+dynamics can follow them in short steps; Chapter~9 shows how the step is
+chosen, and a femtosecond is typical. Under the same force a hydrogen
+atom, $6.94/1.008 = 6.88$ times lighter, accelerates $6.88$ times faster.
+
+The same numbers show why molecular dynamics leaves gravity out. A
+lithium atom has mass $6.94\times\SI{1.66054e-27}{\kilogram} =
+\SI{1.152e-26}{\kilogram}$ and so weighs $1.152\times10^{-26}\times
+9.80665 = \SI{1.13e-25}{\newton}$. Dividing by
+\SI{1.602177e-9}{\newton}, the size of \SI{1}{\electronvolt\per\angstrom},
+gives \SI{7e-17}{\electronvolt\per\angstrom}, some $10^{16}$ times
+smaller than the force of \SI{1}{\electronvolt\per\angstrom} used above
+as an example of a force between atoms.
+
+\subsection*{Newton's law in code}
+
+In \texttt{mdlab} the factor is computed once, from the recommended
+values of the physical constants (CODATA), and Newton's law for every
+atom at once is then a few lines of code.
+
+\begin{code}
+def acceleration(forces: ArrayLike, masses: ArrayLike) -> NDArray:
+    forces = np.asarray(forces, dtype=float)
+    masses = np.asarray(masses, dtype=float)
+    # Each atom's single mass divides all three components of its force.
+    return forces / masses[..., np.newaxis] * units.FORCE_TO_ACCEL
+\end{code}
+
+The forces arrive as an array of $N$ rows, one per atom, and three
+columns, one per component, and the masses as a list of $N$ numbers;
+\texttt{np.asarray} turns whatever is passed in, a list for instance, into
+arrays of decimal numbers. The dimensions of an array, in this sense, are
+the directions along which it is indexed: the forces have two, of
+lengths $N$ and 3, and the masses one, of length $N$. When NumPy combines two arrays of different
+shapes it lines up their last dimensions, and a dimension of length 1 is
+repeated as often as needed to match the other array. Dividing the
+$N\times3$ forces by the $N$ masses directly therefore pairs the three
+columns of the forces with the $N$ masses. For most $N$ the lengths
+differ and NumPy stops with an error, but for $N = 3$ they agree and the
+division runs silently with the wrong meaning: the $x$ components of all
+three forces are divided by the mass of atom~1, the $y$ components by the
+mass of atom~2 and the $z$ components by the mass of atom~3. Writing
+\texttt{masses[..., np.newaxis]}, where \texttt{...} stands for every
+dimension the array already has and \texttt{np.newaxis} adds a new last
+dimension of length 1, turns the list of masses into a single column, an
+$N\times1$ array. Its last dimension has length 1, so NumPy
+repeats the column across the three components and divides every row of
+the forces by the mass in the same row, which is \cref{eq:ne-eom-atoms}
+for every atom at once, whatever the value of $N$. Multiplying by \texttt{FORCE\_TO\_ACCEL} gives the accelerations in
+\si{\angstrom\per\femto\second\squared}.
+
+\subsection*{Momentum in a simulation}
+
+In an isolated group of atoms every force is internal, and for the
+models in this book the forces sum to zero, as the forces on the two carts
+did (Chapter~7 shows why this holds even for forces that do not act
+between simple pairs). By \cref{eq:ne-momentum} the total momentum
+$\vb{P}$ of the atoms is then conserved, and their centre of mass moves at
+the constant velocity $\vb{P}/M$.
+
+\begin{practice}
+A simulation whose starting velocities have a non-zero total momentum
+carries the whole system along at $\vb{P}/M$ for ever, a drift that has
+nothing to do with the motion of the atoms relative to one another.
+Subtracting $\vb{P}/M$ from every velocity removes it. By
+\cref{sec:ne-frames} this is only a change to the frame of reference
+moving with the centre of mass, so it alters no acceleration and no
+force, and it is the usual first step when starting velocities are
+assigned (\cref{sec:md-start}).
+\end{practice}
+
+\notebook{02}{Newton's law for a group of atoms, and removing the drift}
+
+\begin{selfcheck}
+Under the same force, which accelerates faster, a lithium atom or an
+oxygen atom (\SI{15.999}{\amu}), and by what factor?
+\end{selfcheck}

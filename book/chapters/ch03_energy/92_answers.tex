@@ -1,0 +1,94 @@
+%=============================================================================!
+% 3.A  ANSWERS TO THE CHECKS                                                  !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:en-answers}
+
+\answerto{sec:en-constant}None. The hand pushes vertically and the tray
+moves horizontally, so the push is perpendicular to the displacement and
+$\vb{F}\cdot\Delta\vb{r} = 0$.
+
+\answerto{sec:en-kinetic}$K$ is proportional to $v^2$, so halving the
+speed divides it by four, to \SI{12.5}{\joule}. A body of
+\SI{2}{\kilogram} at \SI{3}{\metre\per\second} has $K = \frac12\times2
+\times3^2 = \SI{9}{\joule}$.
+
+\answerto{sec:en-varying}By \cref{eq:en-spring-work} with the signs
+reversed, the hand does $\frac12 k(x_B^2 - x_A^2) = \frac12\times50\times
+(0.08^2 - 0.04^2) = \SI{0.12}{\joule}$, three times the
+\SI{0.04}{\joule} of the first \SI{4}{\centi\metre}. The force grows with
+the stretch, so over the second \SI{4}{\centi\metre} the hand pulls
+harder all the way: the area under $kx$ between 4 and \SI{8}{\centi
+\metre} is a trapezium three times the first triangle.
+
+\answerto{sec:en-potential}Taking the ground as $x = 0$, the ball starts
+with $E = \frac12 m\times12^2 + mg\times5$ and reaches the ground with $U
+= 0$, so $\frac12 mv^2 = \frac12 m\times144 + 5mg$, and $v = \sqrt{144 +
+2\times9.80665\times5} = \SI{15.56}{\metre\per\second}$. The direction of
+the throw does not matter: only the weight does work, and by
+\cref{sec:en-kinetic} its work is $-mg$ times the rise whatever the path.
+
+\answerto{sec:en-track}No. Starting at rest at \SI{0.8}{\metre}, the bead
+can never rise above \SI{0.8}{\metre}, and the hill is
+\SI{1.009}{\metre} high. To cross it the bead must at least reach the
+top, where $K \ge 0$ requires $h_E \ge \SI{1.009}{\metre}$, so at the
+bottom of the deep valley it needs
+$\frac12 v^2 \ge g\,(1.009 - 0.183)$, or $v \ge \sqrt{2\times9.80665\times
+0.826} = \SI{4.025}{\metre\per\second}$. This is the limiting speed:
+with exactly the barrier energy the bead approaches the crest ever more
+slowly. Crossing in finite time needs energy strictly above the barrier.
+
+\answerto{sec:en-diagrams}It slides right, down into the shallow valley
+and up the far side, and turns back at the other turning point, $x =
+\SI{1.724}{\metre}$. It is fastest at the bottom of the valley, $x =
+\SI{1.347}{\metre}$, where $h = \SI{0.6072}{\metre}$, with $v =
+\sqrt{2\times9.80665\times(0.8 - 0.6072)} = \SI{1.945}{\metre\per
+\second}$.
+
+\answerto{sec:en-friction}The same distance. The friction is
+$\mu_{\mathrm{k}}mg$ and the kinetic energy $\frac12 mv_0^2$, both
+proportional to the mass, so the stopping distance $v_0^2/2\mu_{\mathrm{k}}
+g$ does not depend on it. The kinetic energy has become the hidden
+kinetic and potential energy of the jiggling atoms of the box and the
+floor, which warm up.
+
+\answerto{sec:en-bodies}With equal masses, momentum gives $v_1 = -v_2$,
+and energy $\frac12\times2\times v_1^2 + \frac12\times2\times v_2^2 =
+2v_2^2 = \SI{1}{\joule}$, so $v_2^2 = 0.5$: the carts separate at \SI{0.7071}{\metre\per\second} each, in
+opposite directions, and share the energy equally.
+
+\answerto{sec:en-paths}None. Along the line from the origin to $(3, 4)$
+the displacement is always along $\vb{r}$, and the swirl is
+perpendicular to $\vb{r}$, so $\vb{F}_{\mathrm{sw}}\cdot\dd\vb{r} = 0$ on
+every chord.
+
+\answerto{sec:en-gradient}Where the contours are crowded, the height
+changes by the same amount over a shorter distance, so the slope, and
+$\lvert\grad h\rvert$, is larger there. Where $\grad h$ crosses a contour
+it is perpendicular to it, pointing uphill.
+
+\answerto{sec:en-curl}Yes. $\partial F_y/\partial x = \partial x/\partial
+x = 1$ and $\partial F_x/\partial y = \partial y/\partial y = 1$, so the
+curl is zero everywhere, and the whole plane has no holes. Taking the
+path of \cref{sec:en-curl} from the origin along the $x$ axis, where $F_x
+= y = 0$, and then straight up to $(x, y)$, where $F_y = x$, gives $U =
+-(0 + xy) = -xy$, and it works: $-\partial U/\partial x = y = F_x$ and $-\partial U/\partial y = x
+= F_y$.
+
+\answerto{sec:en-atoms}By \cref{eq:en-mv2}, $K = \frac12\times15.999
+\times0.01^2\times103.6427 = \SI{0.0829}{\electronvolt}$.
+
+\answerto{sec:en-surface}No: the bridge between hollows is at
+\SI{0.3}{\electronvolt}, more than its total energy of
+\SI{0.25}{\electronvolt}, so it stays in its own hollow. Where $U =
+\SI{0.1}{\electronvolt}$ its kinetic energy is \SI{0.15}{\electronvolt},
+so $v = \sqrt{2\times0.15/(6.94\times103.6427)} =
+\SI{0.0204}{\angstrom\per\femto\second}$.
+
+\answerto{sec:en-drift}A time step too long for the step-by-step solution to follow
+the motion accurately (Chapter~9), and forces that are not exactly minus
+the gradient of the potential energy being reported, such as forces
+predicted directly by a machine-learned model, or a force switched off
+abruptly at some distance. \Cref{eq:en-dEdt} describes the second:
+the energy changes at the rate at which the non-conservative part of the
+force does work.

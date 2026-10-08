@@ -1,0 +1,46 @@
+%=============================================================================!
+% 12.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+A probability is the long-run fraction of trials with an outcome; a
+continuous quantity has a density, the Gaussian chief among them, and
+variances of independent quantities add. An ensemble is a cloud of copies
+of a system in phase space, and the ergodic hypothesis equates its
+averages with the time averages of one run: it is consistent with
+liquid argon over \SI{50}{\pico\second} and fails for the harmonic chain. The chain of Fermi, Pasta, Ulam and
+Tsingou has not shared its energy equally even after millions of units of
+time; this is a finite-time limit on the averages we can obtain.
+
+Counting the states of an isolated
+system gives its entropy $S = \kB\ln\Omega$, and two systems sharing
+energy settle where $\dd\ln\Omega/\dd E = 1/\kB T$ agrees. A system in
+contact with a bath has the Boltzmann probabilities
+$\mathrm{e}^{-E/\kB T}$, the partition function, the free energy $F =
+-\kB T\ln Z$ and an energy variance $\kB T^2C_V$.
+
+Each component of
+velocity is Gaussian with variance $\kB T/m$, whatever the forces, and
+every square term of the energy holds $\frac12\kB T$, so the kinetic
+temperature $2K/(N_{\mathrm f}\kB)$ measures $T$ with $N_{\mathrm f} = 3N -
+n_{\mathrm c} - 3$; \texttt{mdlab} and ASE agree once they count alike.
+
+The kinetic energy has the gamma distribution with relative spread
+$\sqrt{2/N_{\mathrm f}}$ in the canonical ensemble and less at fixed
+energy, by an amount that gave the heat capacity of liquid argon,
+$2.38\,N\kB$, from single runs to within 7.5\%.
+
+Baths that take volume or
+atoms give the $NPT$ and grand canonical ensembles, in which $F + PV$ and
+$F - \mu N$ are least as $F$ is in the canonical one, each the energy's
+Legendre transform with its sign reversed; Fermi-Dirac occupations are the
+grand canonical ensemble of an orbital.
+
+A healthy run
+holds its kinetic temperature in a steady band, the same in every
+direction and for every species, with Gaussian velocities; six faults
+each leave their own mark.
+
+Chapter~13 builds the thermostats that put a simulation in contact with a
+bath, and tests each against the canonical distribution of the kinetic
+energy derived here.

@@ -1,0 +1,224 @@
+%=============================================================================!
+% 7.2  HAMILTON'S EQUATIONS                                                   !
+%=============================================================================!
+\section{Hamilton's equations}
+\label{sec:ha-equations}
+
+The Hamiltonian is built from the Lagrangian, so the Euler--Lagrange
+equation must be expressible through it. Finding how needs the partial
+derivatives of $H$, and these differ from those of $\Lag$ in what is held
+fixed: $\partial\Lag/\partial q$ is taken at fixed $\dot{q}$, while
+$\partial H/\partial q$ is taken at fixed $p$, and at fixed $p$ the rate
+$\dot{q}$ changes with $q$. The chain rule of \cref{sec:en-gradient}
+keeps track of this once it is stated for functions of several
+variables that themselves depend on several others.
+
+\begin{toolbox}[The chain rule in general]
+Let $f(x, y)$ depend on two variables, and let these depend in turn on
+two others, $x(s, t)$ and $y(s, t)$. Holding $s$ fixed and letting $t$
+change moves the point $(x, y)$ along a path, so the chain rule along a
+path (\cref{sec:en-gradient}) gives
+\begin{equation*}
+   \frac{\partial f}{\partial t} = \frac{\partial f}{\partial x}\,
+   \frac{\partial x}{\partial t} + \frac{\partial f}{\partial y}\,
+   \frac{\partial y}{\partial t} ,
+\end{equation*}
+where every derivative with respect to $t$ is taken at fixed $s$, and
+$\partial f/\partial x$ and $\partial f/\partial y$ are evaluated at the
+point $\bigl(x(s, t), y(s, t)\bigr)$. Holding $t$ fixed instead gives
+the same with $s$ in place of $t$, and with more variables there is one
+term for each variable of $f$. For example, $f = x^2y$ with $x = s + t$
+and $y = s - t$ has
+\begin{equation*}
+   \frac{\partial f}{\partial t} = 2xy\times1 + x^2\times(-1)
+   = 2(s + t)(s - t) - (s + t)^2 ,
+\end{equation*}
+which is what differentiating $f = (s + t)^2(s - t)$ directly with respect
+to $t$ gives, by the product rule. A partial derivative is only defined
+once we say which variables are held fixed: $\partial f/\partial x$ at
+fixed $y$ is $2xy$, but if $y$ were written as $s - t$ and $x$ as $s + t$
+and we asked how $f$ changes with $x$ at fixed $s$, so that $y = 2s - x$
+changes too, then $f = x^2(2s - x)$ and the answer would be $2x(2s - x) -
+x^2 = 2xy - x^2$, which differs from $2xy$.
+\end{toolbox}
+
+\subsection*{The equations}
+
+In \cref{eq:ha-hamiltonian}, $\dot{q}$ is a function of $q$ and $p$,
+found from $p = \partial\Lag/\partial\dot{q}$, so
+\begin{equation*}
+   H(q, p) = p\,\dot{q}(q, p) - \Lag\bigl(q, \dot{q}(q, p)\bigr) .
+\end{equation*}
+The variable $p$ enters through the factor $p$ and through $\dot{q}$, and
+$\Lag$ depends on $p$ only through its second variable $\dot{q}$. At fixed
+$q$, by the product rule for the first term and the chain rule for the
+second,
+\begin{align*}
+   \frac{\partial H}{\partial p}
+   &= \dot{q} + p\,\frac{\partial\dot{q}}{\partial p}
+   - \frac{\partial\Lag}{\partial\dot{q}}\,\frac{\partial\dot{q}}
+   {\partial p}
+   && \text{differentiating at fixed $q$}\\
+   &= \dot{q}
+   && \text{since $\partial\Lag/\partial\dot{q} = p$.}
+\end{align*}
+The variable $q$ enters $p\,\dot{q}$ through $\dot{q}(q, p)$, and $\Lag$
+twice, as its first variable, whose rate of change with $q$ is 1, and
+through $\dot{q}(q, p)$. At fixed $p$, the general chain rule, with $\Lag$
+for $f$, $q$ and $\dot{q}$ for $x$ and $y$, and $q$ for $t$, gives one
+term for each,
+\begin{align*}
+   \frac{\partial H}{\partial q}
+   &= p\,\frac{\partial\dot{q}}{\partial q}
+   - \frac{\partial\Lag}{\partial q}
+   - \frac{\partial\Lag}{\partial\dot{q}}\,\frac{\partial\dot{q}}
+   {\partial q}
+   && \text{differentiating at fixed $p$}\\
+   &= -\frac{\partial\Lag}{\partial q}
+   && \text{since $\partial\Lag/\partial\dot{q} = p$ again,}
+\end{align*}
+where $\partial\Lag/\partial q$ is the derivative of \cref{sec:la-euler},
+at fixed $\dot{q}$. The Euler--Lagrange equation \cref{eq:la-euler} says
+$\dot{p} = \dd(\partial\Lag/\partial\dot{q})/\dd t = \partial\Lag/
+\partial q$, which is $-\partial H/\partial q$. Together,
+\begin{equation}
+   \dot{q} = \frac{\partial H}{\partial p} ,
+   \qquad
+   \dot{p} = -\frac{\partial H}{\partial q} .
+   \label{eq:ha-hamilton}
+\end{equation}
+These are Hamilton's equations, one pair for each coordinate, found in
+the same way for each $k$ when there are several. In place of one
+equation in the second derivative $\ddot{q}$ there are two in first
+derivatives, so the state $(q, p)$ at one instant fixes the motion, as
+\cref{sec:ne-equations} found for $(x, v)$.
+
+For the block, $H = p^2/(2m) + \frac12 kx^2$ and \cref{eq:ha-hamilton} give $\dot{x} = p/m$ and
+$\dot{p} = -kx$, so $m\ddot{x} = \dot{p} = -kx$, the spring of
+\cref{sec:ne-spring}. For the pendulum, $\dot\theta = p/(mL^2)$ and
+$\dot{p} = -mgL\sin\theta$, which together give $mL^2\ddot\theta = \dot{p}
+= -mgL\sin\theta$, \cref{eq:la-pendulum}.
+For $N$ atoms, $\dot{\vb{r}}_i = \vb{p}_i/m_i$ and $\dot{\vb{p}}_i =
+-\grad_iU = \vb{F}_i$: Newton's second law in the first-order form of
+\cref{eq:ne-first-order}, with the momentum in place of the velocity.
+\Cref{ex:ha-bead} recovers the bead's equation \cref{eq:la-bead} from its
+Hamiltonian.
+
+\subsection*{Phase space and the flow}
+
+For one coordinate the states $(q, p)$ fill a plane, the phase plane of
+\cref{sec:os-phase} with the momentum in place of the velocity; for $n$
+coordinates they fill a space of $2n$ dimensions, and for $N$ atoms one
+of $6N$. This is phase space. At each of its points Hamilton's equations
+give the velocity of the state, $(\dot{q}, \dot{p}) = (\partial H/
+\partial p, -\partial H/\partial q)$, a velocity attached to every point,
+as the current of a river has a velocity at every point of its surface.
+A state moves as a leaf carried by such a current, and the motions of
+the system are the paths of the leaves, which, by the uniqueness of
+\cref{sec:ne-equations}, never cross when $H$ does not contain the time;
+the separatrix of the pendulum below only seems to cross itself at the
+upright states, which are motions of their own (\cref{sec:os-phase}). This motion of all states at once is
+called the Hamiltonian flow.
+
+The flow keeps the energy. Along any motion, by the chain rule along a
+path,
+\begin{equation*}
+   \frac{\dd H}{\dd t} = \frac{\partial H}{\partial q}\,\dot{q}
+   + \frac{\partial H}{\partial p}\,\dot{p}
+   = \frac{\partial H}{\partial q}\,\frac{\partial H}{\partial p}
+   - \frac{\partial H}{\partial p}\,\frac{\partial H}{\partial q} = 0 .
+\end{equation*}
+Equivalently, the velocity of the flow is at right angles to the
+gradient $(\partial H/\partial q, \partial H/\partial p)$, since their
+dot product is the same zero, and so runs along the contours of $H$
+(\cref{sec:en-gradient}). The phase portrait is therefore the contour
+map of $H$. When $H$ contains the time itself, the chain rule has a third
+term, and $\dd H/\dd t = \partial H/\partial t$. The block pushed by the
+force $F_0\cos\omega t$ of \cref{sec:os-driven}, without drag, has $U =
+\frac12 kx^2 - F_0x\cos\omega t$, whose slope gives the spring's force and
+the push, and $\partial H/\partial t = \omega F_0x\sin\omega t$, which is not zero:
+$H$, which now includes the push's term $-F_0x\cos\omega t$, rises and
+falls as the push feeds energy in and takes it out.
+
+\subsection*{The pendulum's portrait}
+
+For the pendulum of \cref{sec:la-multipliers}, a bob of \SI{0.5}{\kilogram} on a
+rod of \SI{1.2}{\metre}, $mL^2 = \SI{0.72}{\kilogram\metre\squared}$ and
+$mgL = \SI{5.884}{\joule}$. The contours of $H$ (\cref{fig:ha-portrait}a)
+are of three kinds. Below the energy $2mgL$ of the bob held upright, they
+are closed loops around $\theta = 0$: the bob swings, and $p$ changes
+sign at each end of the swing. Above $2mgL$ they are open, wavy lines on
+which $p$ never vanishes: the bob goes over the top. The contour at
+$2mgL$ itself passes through the upright states $(\pm\pi, 0)$ and
+separates the two kinds; it is called the separatrix. On it, at the
+bottom, $p^2/(2mL^2) = 2mgL$, so
+\begin{equation*}
+   p = \sqrt{4m^2gL^3} = 2mL^2\sqrt{\frac{g}{L}} = 2mL^2\omega_0
+   = 2\times0.72\times2.8587 = \SI{4.117}{\kilogram\metre\squared\per
+   \second} ,
+\end{equation*}
+with $\omega_0 = \sqrt{g/L}$ of \cref{sec:os-small}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch07_hamilton/portrait}
+\caption{The pendulum of \SI{0.5}{\kilogram} on a rod of
+\SI{1.2}{\metre}. (a) Contours of $H$ in the phase plane, with arrowheads
+showing the direction of the flow: swinging, below the upright energy
+$2mgL$ (grey); the separatrix, at $2mgL$ (teal); going over the top
+(ochre). (b) Started at the bottom with the momentum of the separatrix,
+the angle still to go, $\pi - \theta$, from Hamilton's equations (dots),
+on a logarithmic axis, against a line that falls as
+$\mathrm{e}^{-\omega_0t}$ (dashed).}
+\label{fig:ha-portrait}
+\end{figure}
+
+A bob given exactly this momentum at the bottom creeps towards the top
+and never arrives, as \cref{sec:os-phase} said. On the separatrix the
+energy is $2mgL$ at every angle, $\frac12 mL^2\dot\theta^2 + mgL(1 -
+\cos\theta) = 2mgL$, so
+\begin{align*}
+   \dot\theta^2 &= \frac{2g}{L}\,(1 + \cos\theta)
+   && \text{subtracting $mgL(1 - \cos\theta)$, dividing by
+   $\tfrac12 mL^2$}\\
+   &= \frac{4g}{L}\cos^2\frac{\theta}{2}
+   && \text{by $\cos\theta = 2\cos^2\tfrac{\theta}{2} - 1$}\\
+   \dot\theta &= 2\omega_0\cos\frac{\theta}{2}
+   && \text{the root for motion towards $+\pi$,}
+\end{align*}
+taking the positive root because $\cos\frac{\theta}{2} > 0$ for $-\pi <
+\theta < \pi$, and where the second line uses the double-angle formula of
+\cref{sec:mo-trig},
+$\cos\theta = \cos^2\frac{\theta}{2} - \sin^2\frac{\theta}{2}$, with
+$\sin^2 = 1 - \cos^2$. Near the top, we write $\varphi = \pi - \theta$
+for the angle still to go. Then $\cos\frac{\theta}{2} = \cos(\frac{\pi}{2} -
+\frac{\varphi}{2}) = \sin\frac{\varphi}{2}$ (\cref{sec:mo-trig}), and $\sin\frac{\varphi}{2}
+\approx \frac{\varphi}{2}$ for small $\varphi$ (\cref{sec:mo-taylor}), and $\dot\varphi = -\dot\theta$,
+so
+\begin{equation*}
+   \dot\varphi \approx -\omega_0\,\varphi .
+\end{equation*}
+This is the equation of the drag of \cref{sec:ne-drag} with $\omega_0$ in
+place of $\gamma$ and nothing to approach but zero, so $\varphi$ falls as
+$\mathrm{e}^{-\omega_0t}$: it halves every $\ln 2/\omega_0 =
+\SI{0.2425}{\second}$, however small it is, and never reaches zero.
+Computed from Hamilton's equations (\cref{fig:ha-portrait}b), the bob
+started at the bottom is \SI{0.229}{\radian} short of the top after
+\SI{1}{\second} and \SI{0.0132}{\radian}, \ang{0.75}, short after
+\SI{2}{\second}, and from then on the gap halves every
+\SI{0.2425}{\second}.
+
+\begin{keyidea}
+Hamilton's equations, $\dot{q} = \partial H/\partial p$ and $\dot{p} =
+-\partial H/\partial q$, move every state of phase space along a flow
+that runs along the contours of $H$, so $H$ is conserved unless it
+contains the time.
+\end{keyidea}
+
+\notebook{07}{launch a pendulum anywhere on its phase portrait}
+
+\begin{selfcheck}
+A ball thrown straight up has $H = p^2/(2m) + mgq$, with $q$ its height.
+Write Hamilton's equations for it, and describe the contours of $H$ in
+its phase plane.
+\end{selfcheck}

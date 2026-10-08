@@ -1,0 +1,62 @@
+%=============================================================================!
+% 0.3  HOW TO USE THE BOOK                                                    !
+%=============================================================================!
+\section{How to use the book}
+\label{sec:or-use}
+
+The book assumes school mathematics and nothing else: algebra,
+trigonometry, and the differentiation and integration of a function of one
+variable. It assumes no physics. Every further tool, from vectors and
+matrices to differential equations, partial derivatives and probability,
+is explained where it is first needed. Part~I
+starts from what a velocity is and builds, one idea at a time, all the
+classical mechanics that molecular dynamics uses; each idea is first seen
+in an everyday system, a thrown ball or a block on a spring, and then
+applied to atoms by the same argument. Statistical mechanics, molecular
+simulation and machine learning are built in the same way from their
+foundations. The notebook demonstrations and chapter exercises also allow
+the material to be used for teaching; longer sections can be spread over
+several sessions.
+
+Each chapter has a companion notebook with the same sections. The book
+carries the argument and the mathematics; the notebook carries the same
+ideas as code to run and vary, and a pointer in the text says what to
+explore. No programming is assumed: Notebook~01 opens with the little
+Python that the early notebooks use.
+
+Make a working copy of each notebook, run its cells in order, then return
+to an example and change a parameter whose effect you can predict. Compare
+the result with that prediction and record the reason for any difference.
+The exercise cells leave space for your answers, with worked solutions
+folded below them. These calculations are intended to be revisited as new
+methods give another way to check an earlier result.
+
+\notebook{01}{the thrown ball: move the time cursor, watch $x$, $v$ and $a$}
+
+The code grows chapter by chapter in a small package, \texttt{mdlab}, from
+a single thrown ball to a molecular dynamics engine with thermostats
+and analysis tools, then to the regression and optimisation routines of
+Chapter~18. The planned continuation develops equivariant networks.
+Every listing is taken from it, and every physical routine in it is tested
+against an analytic result or an independent implementation.
+
+Four boxes set material apart from the argument.
+
+\begin{keyidea}
+The result of a section that later chapters rely on.
+\end{keyidea}
+
+\begin{bridge}
+A connection to electronic-structure theory, for readers who know it. The
+argument never depends on these boxes, and a reader new to the subject can
+pass over them.
+\end{bridge}
+
+\begin{practice}
+What goes wrong in real simulations, and how to diagnose it.
+\end{practice}
+
+\begin{toolbox}
+A mathematical tool, such as the Taylor series, derived in full where it is
+first needed. A reader who already knows it can pass over the box.
+\end{toolbox}

@@ -1,0 +1,60 @@
+%=============================================================================!
+% 16.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:ob-answers}
+
+\answerto{sec:ob-rdf}$1 - 1/500 = 0.998$. Each atom's partners are the
+other $N - 1$, while the divisor assumes $N$; a larger cell at the same
+density holds more atoms, so $1/N$ is smaller and the far value closer
+to 1.
+
+\answerto{sec:ob-sq}At a vector of the crystal's reciprocal lattice every
+phase $\vb{G}\cdot\vb{r}_{ij}$ is a multiple of $2\pi$, every arrow points
+the same way, and $S(\vb{G}) = N$. At an allowed vector of the cell that is not
+one of these, the arrows of the identical unit cells are turned through
+equal steps that come round to the start after a whole number of turns,
+so they sum to zero and $S(\vb{G}) = 0$.
+
+\answerto{sec:ob-bonds}None: $342\,017$ would be $i = 342$, $j = 17$, but
+every key has $i < j$. The bond between atoms 17 and 342 has the key
+$17\,342$ only.
+
+\answerto{sec:ob-reactions}$1/\sqrt{25} = 0.20$, to a fifth. Halving it
+needs four times as many events, 100.
+
+\answerto{sec:ob-msd}Near $t = 2Dm/\kB T$. With $m = \SI{40}{\amu}$, $D =
+\SI{3e-4}{\angstrom\squared\per\femto\second}$ and $T = \SI{300}{\kelvin}$
+this is \SI{96}{\femto\second}.
+
+\answerto{sec:ob-vacf}$D$ is a third of the whole integral of $C_{vv}$.
+After the dip begins, $C_{vv}$ is negative and its integral subtracts from
+what the positive part gave: on average the atom moves back after it
+rebounds from its neighbours, which undoes part of its displacement.
+
+\answerto{sec:ob-charge}Each pair moves $\vb{M}_q$ by $e(\Delta\vb{r}_+ -
+\Delta\vb{r}_-)$, which stays bounded while the two stay together, so the
+mean squared displacement of $\vb{M}_q$ stops growing and $\sigma_{\mathrm e}
+= 0$. $\sigma_{\mathrm{NE}}$ still counts every ion's own diffusion and is
+not zero, so $H_{\mathrm R}$ would be without bound.
+
+\answerto{sec:ob-layers}Each hop moves the atom by $a$ in one of six
+directions, so after $n = k_{\mathrm h}t$ hops the MSD is $k_{\mathrm h}ta^2 = 6Dt$,
+and $D = k_{\mathrm h}a^2/6$.
+
+\answerto{sec:ob-fourier}The Nyquist frequency is $1/(2\times
+\SI{20}{\femto\second}) = \SI{25}{\tera\hertz}$, and \SI{30}{\tera\hertz}
+folds to $50 - 30 = \SI{20}{\tera\hertz}$.
+
+\answerto{sec:ob-vdos}About $1/t_{\mathrm c} = \SI{1}{\tera\hertz}$: peaks
+closer than that blur into one.
+
+\answerto{sec:ob-fes}The positions a distance $r_{\mathrm h}$ from the hollow fill a
+circle of circumference $2\pi r_{\mathrm h}$, so the density of $r_{\mathrm h}$ carries the factor
+$r_{\mathrm h}$, which vanishes at the centre. There are few places that close,
+however low their energy, and $F = -\kB T\ln\mathcal{P}$ rises without
+bound as $r_{\mathrm h} \to 0$.
+
+\answerto{sec:ob-trajectory}Positions wrapped into the cell: $L^2/2$ is
+the mean squared distance between two points placed at random in a cube
+of side $L$, which is what the MSD of wrapped positions approaches.

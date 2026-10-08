@@ -1,0 +1,180 @@
+%=============================================================================!
+% 15.6  HOW LONG FOR EACH QUANTITY                                            !
+%=============================================================================!
+\section{How long for each quantity}
+\label{sec:cv-observables}
+
+Each quantity of a run has its own spread and its own memory, so each
+needs its own length of run for a given precision. This section measures
+both for the liquid, turns them into run lengths, and settles with error
+bars the questions that Chapters~12 to 14 left open.
+
+\subsection*{The length of run for a precision}
+
+With $n_{\mathrm{eff}} = t_{\mathrm f}/(2\tau_{\mathrm{int}})$ independent
+samples in a run of length $t_{\mathrm f}$ (\cref{sec:cv-correlation}), the
+error of the mean is $\sigma_A\sqrt{2\tau_{\mathrm{int}}/t_{\mathrm f}}$.
+Asking for an error no larger than a target $\sigma^\ast$ and solving for
+$t_{\mathrm f}$,
+\begin{equation}
+   t_{\mathrm f} \ge \frac{2\tau_{\mathrm{int}}\,\sigma_A^2}{\sigma^{\ast2}} :
+   \label{eq:cv-length}
+\end{equation}
+twice the correlation time for each of the $(\sigma_A/\sigma^\ast)^2$
+independent samples needed. Halving the error costs four times
+the run. \Cref{fig:cv-observables}(a) checks the $t_{\mathrm f}^{-1/2}$ on the
+\SI{2}{\nano\second} run cut into pieces of 50 to \SI{2000}{\pico\second}:
+for $U$ the means of the pieces spread by 6.77, 5.14 and 3.36 times the
+error of the whole run for pieces of 50, 100 and \SI{200}{\pico\second},
+against $\sqrt{40} = 6.32$, $\sqrt{20} = 4.47$ and $\sqrt{10} = 3.16$. The
+error bar that each piece finds for itself is lower, 5.38 and 4.19 for the
+two shortest,
+as \cref{sec:cv-blocks} found, and meets the line from
+\SI{200}{\pico\second} on.
+
+\Cref{tab:cv-observables} gives the spread, the correlation time and the
+run needed for a stated precision, from \cref{eq:cv-length}, for the
+quantities of the liquid. Two things stand out. The pressure has a spread
+of \SI{0.0133}{\giga\pascal} per sample about a mean of
+\SI{0.085}{\giga\pascal}, a sixth of its value, so with a memory like that
+of $U$ and $T$ its mean is slow to fix relative to its size:
+\SI{1}{\nano\second} fixes it to 0.7\%, against 0.05\% for $U$. And the
+runs at fixed energy need a 15th to a 38th of the time needed under CSVR
+for the same precision of $U$, $T$ and $P$, because their correlation
+times are 8 to 14 times shorter (\cref{sec:cv-correlation}) and their
+spreads smaller. A run at fixed energy samples the microcanonical
+ensemble, at the temperature its energy fixes: here \SI{133.70}{\kelvin},
+\SI{1.1}{\kelvin} below the CSVR run, because the energy it was given is
+the mean of \SI{40}{\pico\second} of CSVR, which, with the
+\SI{1.71}{\pico\second} memory of the energy, is uncertain by about
+\SI{1.6}{\kelvin} of temperature.
+\Cref{sec:th-compare} recommended preparing a run under a thermostat and
+gathering its dynamical quantities at fixed energy; for averages too,
+fixed energy reaches a precision sooner, at the temperature its energy
+sets.
+
+\begin{table}[htb]
+\centering
+\small
+\caption{How long each quantity needs, for liquid argon at
+\SI{135}{\kelvin}: the spread of one sample, the integrated correlation
+time under CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$ and at fixed
+energy, the error of the mean after \SI{1}{\nano\second} under CSVR, and
+the run needed for the target error $\sigma^\ast$, from
+\cref{eq:cv-length}. The
+volume is from Chapter~14's runs under stochastic cell rescaling at
+\SI{0.1}{\giga\pascal}; $D$ from blocks of \SI{100}{\pico\second}.}
+\label{tab:cv-observables}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+& spread & \multicolumn{2}{c}{$\tau_{\mathrm{int}}$ / ps} & error of
+& target & \multicolumn{2}{c}{run / ns}\\
+& CSVR / fixed $E$ & CSVR & fixed $E$ & \SI{1}{\nano\second} &
+$\sigma^\ast$ & CSVR & fixed $E$\\
+\midrule
+$U/N$ & \SI{0.677}{\milli\electronvolt} / 0.532 & 0.73 & 0.077 &
+\SI{0.026}{\milli\electronvolt} & \SI{0.01}{\milli\electronvolt} & 6.7 & 0.44\\
+$T$ & \SI{6.93}{\kelvin} / 4.13 & 1.05 & 0.077 & \SI{0.32}{\kelvin} &
+\SI{0.1}{\kelvin} & 10 & 0.26\\
+$P$ & \SI{0.0133}{\giga\pascal} / 0.0096 & 0.94 & 0.123 &
+\SI{0.00058}{\giga\pascal} & \SI{0.001}{\giga\pascal} & 0.33 & 0.023\\
+$\mathsf{P}_{xy}$ & \SI{0.0121}{\giga\pascal} & 0.18 & 0.18 & & & &\\
+$V$ & \SI{185}{\angstrom\cubed} & 2.5 & & \SI{13}{\angstrom\cubed} &
+\SI{10}{\angstrom\cubed} & 1.7 &\\
+$D$ & & & & 1.0\% & 1\% & 1.0 &\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Diffusion under a thermostat}
+
+Chapter~13 found the diffusion coefficient under CSVR, Nosé-Hoover chains
+and Berendsen coupling 1.01 to 1.07 times its value at fixed energy, in
+runs 0.4 to \SI{1.8}{\kelvin} warmer, and left open whether the difference
+was real (\cref{sec:th-compare}). Cutting each run of this chapter into
+blocks of \SI{100}{\pico\second}, long beside the \SI{20}{\pico\second}
+over which $D$ is fitted, gives independent estimates whose spread gives
+the error. The \SI{2}{\nano\second} run under CSVR has $D = (3.877 \pm
+0.028)\times10^{-4}$\,\si{\angstrom\squared\per\femto\second} at $(134.81
+\pm 0.22)$\,\si{\kelvin}; the \SI{2}{\nano\second} run at fixed energy has
+$(3.834 \pm 0.034)\times10^{-4}$ at \SI{133.70}{\kelvin}. The two are at
+different temperatures, and runs under CSVR at 130 and \SI{140}{\kelvin}
+give the slope $\dd D/\dd T = (0.0294 \pm 0.0071)\times10^{-4}$\,\si{\angstrom
+\squared\per\femto\second\per\kelvin}
+(\cref{fig:cv-observables}(b)). Moved along it to \SI{134.81}{\kelvin},
+the run at fixed energy gives $(3.867 \pm 0.035)\times10^{-4}$, and the
+ratio of the two is $1.002 \pm 0.011$. Berendsen coupling with
+$\tau_{\mathrm T} = \SI{0.1}{\pico\second}$ at 130 and \SI{140}{\kelvin}
+lies 1.3 and 0.3 errors from the line through the CSVR runs. To about 2\%,
+CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$ and Berendsen coupling
+with $\tau_{\mathrm T} = \SI{0.1}{\pico\second}$ leave diffusion alone.
+Chapter~13 found $1.05 \pm 0.01$ and $1.04 \pm 0.01$ for these two from
+three runs of \SI{100}{\pico\second} each. A block of
+\SI{100}{\pico\second} here fixes $D$ to 3.2\%, so a mean of three such
+runs is uncertain by $3.2/\sqrt3 = 1.8\%$ and a ratio of two such means
+by $1.8\times\sqrt2 = 2.6\%$: the two values lie within about two such
+errors of 1 once their warmth is removed, and the $\pm0.01$ came from the
+spread of only three runs, itself uncertain by half
+(\cref{ex:cv-error-error}). The other couplings of Chapter~13 were not run
+again.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/observables}
+\caption{(a) The error of the mean of $U$, $T$ and $P$ against the length
+of run: the \SI{2}{\nano\second} CSVR run cut into pieces, the error bar
+each piece finds for itself averaged over the pieces (filled) and the
+spread of the pieces' means (open), each divided by the error of the whole
+run, against the inverse square root of the length (dashed). (b) The
+diffusion coefficient against
+the temperature, with errors from blocks of \SI{100}{\pico\second}: CSVR
+(teal), Berendsen coupling with $\tau_{\mathrm T} = \SI{0.1}{\pico\second}$
+(ochre) and fixed energy (grey), with the line through the CSVR runs at
+130 and \SI{140}{\kelvin} (dashed).}
+\label{fig:cv-observables}
+\end{figure}
+
+\subsection*{Questions left open}
+
+Chapter~12 found the light atoms of a mixture at \SI{126}{\kelvin} and
+the heavy at \SI{124}{\kelvin} over the last \SI{10}{\pico\second} of a run,
+and asked whether the gap was real (\cref{sec:sm-equipartition}). Taking
+the difference of the two temperatures at each recorded frame as the
+series, its mean is $(1.30 \pm 2.14)$\,\si{\kelvin}, with $g = 31.4$: 0.6
+errors from zero, and equipartition between the species holds within what
+the run can tell. Chapter~12 also found single runs of \SI{50}{\pico\second}
+at fixed energy to give heat capacities scattered by up to 7.5\% about the
+slope of $E$ against $T$, $2.376\,N\kB$ (\cref{sec:sm-kinetic}); the five
+runs of 256 atoms lie within 5.3\% of it, and the 7.5\% is a run of 864
+atoms. A heat capacity comes from a variance, whose error the rule for a
+mean does not give; it is found by resampling, which \cref{sec:cv-ensemble}
+sets out. It gives the five runs of 256 atoms errors of 2.9 to 3.9\%,
+$(2.292 \pm 0.067)\,N\kB$ near \SI{130}{\kelvin} among them, and all five
+lie within 1.7 of their errors of the slope: their scatter was the noise
+of the runs.
+Chapter~14 quoted the pressure of the liquid as \SI{0.0877}{\giga\pascal}
+(\cref{sec:pr-periodic}), from 50 frames \SI{2}{\pico\second} apart,
+farther apart than $2\tau_{\mathrm{int}} = \SI{1.9}{\pico\second}$, so
+nearly independent: its error is
+$0.0133/\sqrt{50} = \SI{0.0019}{\giga\pascal}$. The \SI{2}{\nano\second}
+run gives $(0.0849 \pm 0.0004)$\,\si{\giga\pascal}, 1.4 combined errors
+away.
+
+\begin{keyidea}
+A run of length $t_{\mathrm f}$ fixes a mean to
+$\sigma_A\sqrt{2\tau_{\mathrm{int}}/t_{\mathrm f}}$, so a target error
+$\sigma^\ast$ needs $t_{\mathrm f} \ge 2\tau_{\mathrm{int}}
+\sigma_A^2/\sigma^{\ast2}$. Each quantity has its own $\sigma_A$ and
+$\tau_{\mathrm{int}}$, and a thermostat lengthens the memory of everything
+tied to the energy. With error bars, the diffusion coefficient is the same
+under CSVR with $\tau_{\mathrm T} = \SI{1}{\pico\second}$, Berendsen
+coupling with $\tau_{\mathrm T} = \SI{0.1}{\pico\second}$ and fixed
+energy to about 2\%.
+\end{keyidea}
+
+\notebook{15}{find the run each quantity of the liquid needs}
+
+\begin{selfcheck}
+A quantity has $\sigma_A = 2$ and $\tau_{\mathrm{int}} = \SI{5}{\pico
+\second}$. How long a run fixes its mean to $\pm0.1$?
+\end{selfcheck}

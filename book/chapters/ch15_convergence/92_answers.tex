@@ -1,0 +1,46 @@
+%=============================================================================!
+% 15.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:cv-answers}
+
+\answerto{sec:cv-mean}The error falls as $1/\sqrt n$, so a fifth of it
+needs $5^2 = 25$ times as many samples: 2500.
+
+\answerto{sec:cv-correlation}$g = (1 + 0.5)/(1 - 0.5) = 3$, and 1000
+samples are worth $1000/3 = 333$ independent ones.
+
+\answerto{sec:cv-blocks}Blocks of $5g = 500$ samples miss about 5\% of
+the error, and the run holds $20\,000/500 = 40$ of them, which give the
+error to $1/\sqrt{2\times39} = 0.11$.
+
+\answerto{sec:cv-equilibration}About $\delta A_0\,\tau_{\mathrm r}/t_{\mathrm f} = 2\times
+1/100 = \SI{0.02}{\kelvin}$.
+
+\answerto{sec:cv-drift}It is 1.5 errors from zero, so the run shows no drift
+it can detect. A run four times as long has an error $4^{3/2} = 8$ times
+smaller, 0.25, and if the true slope is 3 the longer run would put it 12
+errors from zero: a drift.
+
+\answerto{sec:cv-observables}$t_{\mathrm f} \ge 2\times\SI{5}{\pico\second}\times2^2/
+0.1^2 = \SI{4000}{\pico\second}$, \SI{4}{\nano\second}.
+
+\answerto{sec:cv-size}At the same density $L$ grows as $N^{1/3}$, so $L$
+doubles from \SI{29.07}{\angstrom} to \SI{58.14}{\angstrom}, and $D$ rises
+by $12.88\times(1/29.07 - 1/58.14) = 0.221$ in units of
+\SI{e-4}{\angstrom\squared\per\femto\second}.
+
+\answerto{sec:cv-ensemble}$\Omega(E)$ is the same at both temperatures and
+cancels in the ratio. A run at \SI{132}{\kelvin} labelled \SI{130}{\kelvin}
+has the slope $\beta_{132} - \beta_{140} = \SI{5.024}{\per\electronvolt}$,
+0.79 of the $\SI{6.376}{\per\electronvolt}$ required, which an error of
+about 0.4 shows as some three errors.
+
+\answerto{sec:cv-protocol}The run holds $50\,000/300 = 167$ independent
+samples, so it passes the second check, provided the start found leaves at
+least $100\times300 = 30\,000$ samples after it.
+
+\answerto{sec:cv-trajectory}No. The bar is the statistical error of $D$ in
+that box. A box of 256 atoms gives a $D$ some 13\% below that of an
+infinite one (\cref{sec:cv-size}), a bias many times larger than the bar,
+which the error bar of a single box cannot show.

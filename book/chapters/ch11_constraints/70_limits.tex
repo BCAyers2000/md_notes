@@ -1,0 +1,84 @@
+%=============================================================================!
+% 11.7  HOW FAR THESE METHODS GO                                              !
+%=============================================================================!
+\section{How far these methods go}
+\label{sec:cs-limits}
+
+\Cref{tab:cs-steps} collects the steps measured in this chapter on the
+same 64 molecules of water, each at the energy fluctuation of 1\% of the
+kinetic energy's that \cref{sec:cs-water} took as the level. The cost of
+a run is set by the calls of the costly forces between molecules, one per
+step, or per outer step for RESPA.
+
+\begin{table}[htb]
+\centering
+\caption{The step at which the energy fluctuation of 64 water molecules
+reaches 1\% of the kinetic energy's, with each method of this chapter;
+the gain over flexible water by velocity Verlet; and the calls of the
+forces between molecules per picosecond, from the unrounded steps. Heavy H: hydrogen three times as
+heavy, at the oxygen's expense.}
+\label{tab:cs-steps}
+\begin{tabular}{llccc}
+\toprule
+model and method & fastest motion left & step / fs & gain & calls per ps\\
+\midrule
+flexible, velocity Verlet & O--H stretch & 0.41 & 1 & 2430\\
+flexible, RESPA & O--H stretch & 0.72 & 1.8 & 1380\\
+O--H held & bend & 0.97 & 2.4 & 1030\\
+O--H held, heavy H & bend, slower & 1.31 & 3.2 & 765\\
+rigid & turning & 1.98 & 4.8 & 505\\
+rigid, heavy H & turning, slower & 3.38 & 8.2 & 296\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each method removes the fastest motion or slows it, and the next fastest
+then sets the step. Holding the O--H bonds leaves the bend; holding the
+angle too leaves the turning of whole molecules; heavier hydrogens slow
+whatever is left. RESPA keeps every motion; at the 1\% level its outer
+step is \SI{0.72}{\femto\second}, and resonance holds it below about a
+quarter of the fastest period, \SI{1.8}{\femto\second}, whatever level is
+accepted (\cref{sec:cs-resonance}). The factors are of a few each, and they
+combine: rigid water with heavier hydrogens takes steps 8.2 times as long
+as the flexible model, but it is no longer the same model. For a
+simulation that keeps every motion, the gain here is the 1.8 of RESPA.
+
+A factor of thirty, which TrajCast reaches on quartz, would need steps of
+\SI{12}{\femto\second} for the flexible model, longer than the period of its fastest vibration,
+\SI{7.33}{\femto\second}. Such steps lie outside the range of the methods developed here.
+Velocity Verlet becomes unstable beyond $2/\omega$
+(\cref{sec:in-stability}), \SI{2.33}{\femto\second} here, and every
+method of this chapter must still follow, with steps short compared with
+its period, the fastest motion it keeps. The authors of TrajCast make the
+same point about methods with multiple time steps, which are
+`fundamentally limited by the need for small time steps in parts of the
+system'\cite{Thiemann2026}. TrajCast itself, run on 64 molecules of
+flexible water in a box of nearly the same size as this chapter's, though
+with a different model of water, takes strides of $\Dt =
+\SI{5}{\femto\second}$, ten times the \SI{0.5}{\femto\second} step of the
+simulations it learned from, and on quartz strides of
+\SI{30}{\femto\second}, thirty times the \SI{1}{\femto\second} step of its
+simulations\cite{Thiemann2026}. A stride of \SI{5}{\femto\second} already
+exceeds the stability limit of velocity Verlet for the faster O--H stretch
+of real water, of period \SI{8.88}{\femto\second}, which is
+\SI{2.83}{\femto\second} (\cref{sec:in-stability}), as well as the
+\SI{2.33}{\femto\second} of this chapter's model. A learned map that predicts
+the state a whole stride ahead is not bound by that limit, because it does
+not step through the vibrations in between; what it must get right
+instead, and how it can be trusted, is the subject of the planned Part~VI.
+
+\begin{keyidea}
+Constraints, heavier hydrogens and multiple time steps each lengthen the
+step by a factor of a few, by removing or slowing the fastest motion,
+until the next fastest sets the limit. For velocity Verlet, stability requires a step below $2/\omega$ for the
+fastest vibration retained; this is a limit of that integrator, not of
+every possible numerical method. A learned propagator is not bound by
+the same limit, but its accuracy and sampled distribution still need
+independent tests.
+\end{keyidea}
+
+\begin{selfcheck}
+From \cref{tab:cs-steps}, how many calls of the forces between molecules
+does a nanosecond of rigid water with heavier hydrogens take, and how
+many does flexible water by velocity Verlet take?
+\end{selfcheck}

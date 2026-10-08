@@ -1,0 +1,260 @@
+%=============================================================================!
+% 16.3  BONDS AND MOLECULES                                                   !
+%=============================================================================!
+\section{Bonds and molecules}
+\label{sec:ob-bonds}
+
+To follow a reaction, we must first decide which atoms form each
+molecule. We assign bonds to pairs, then collect atoms joined through
+those bonds into molecules. A distance cutoff gives a first rule, but
+thermal vibrations can carry a pair across it repeatedly without a
+chemical change. This section introduces a bond criterion that retains
+that distinction, then uses the resulting graph to identify molecules
+and species.
+
+\subsection*{A bond from a distance}
+
+The forces of most models say nothing about bonds: they are functions of
+the positions. A bond is therefore assigned from the distance between
+two atoms, and a common yardstick is the sum of their covalent radii,
+$R_i + R_j$, from a table of radii for each element such as the one ASE
+carries\cite{Larsen2017}: two carbon atoms ($R = \SI{0.76}{\angstrom}$
+each) are bonded within some multiple of \SI{1.52}{\angstrom}. Read
+literally, such a rule makes a bond flicker. A bonded pair vibrates, and
+if the far end of its vibration lies near the cutoff, each vibration
+carries it out and back across it, two events per period with nothing
+chemical happening.
+
+The cure is a band of hysteresis, as in a thermostat that switches the
+heating on below one temperature and off above a higher one. A pair not
+yet bonded becomes bonded when it comes closer than $r_{\mathrm{on}}$; a
+bonded pair stays bonded until it parts beyond $r_{\mathrm{off}} >
+r_{\mathrm{on}}$. A vibration whose whole swing, from its near end to its
+far end, is narrower than the band cannot carry the pair across both
+distances, so it cannot make a bond flicker, while a real dissociation,
+which carries the atoms apart for good, crosses both. \texttt{mdlab.bonds.BondTracker} takes
+$r_{\mathrm{on}}$ and $r_{\mathrm{off}}$ as 1.2 and 1.4 times the sum of
+the covalent radii unless told otherwise, factors that bracket the first
+minimum of $g(r)$ for carbon (\cref{sec:ob-reactions}); for a model, or
+for any pair of elements, the two distances can be given directly.
+
+To measure the effect we use a model gas built to react. Two kinds of
+atom, A and B, of nitrogen's mass, attract each other through the Morse
+well of \cref{sec:pe-pairs} with depth $D_{\mathrm M} = \SI{1}{\electronvolt}$,
+width $a_{\mathrm M} = \SI{2}{\per\angstrom}$ and $r_0 = \SI{1.2}{\angstrom}$, the $D$
+and $a$ of that section marked here to keep them apart from the
+diffusion coefficient and the lattice spacing of later sections; two atoms of
+the same kind only repel, as $D_{\mathrm M}\mathrm{e}^{-2a_{\mathrm M}(r - 2.6\,\text{\AA})}$, which
+weakens a second partner's hold: a line B-A-B with both bonds at
+\SI{1.48}{\angstrom} lies only \SI{0.40}{\electronvolt} below AB and a free
+B, so such complexes form but soon part. The constants are chosen for
+illustration and are not fitted to any real pair of atoms. 250 molecules
+AB in a cubic cell of side \SI{63}{\angstrom} are held at 1500, 1750,
+2000, 2250 and \SI{2500}{\kelvin} by Langevin friction of \SI{1}{\per\pico\second}, which
+stands for a buffer gas that supplies and removes energy, for
+\SI{100}{\pico\second} each. A bond forms where the pair's energy falls
+below $-D_{\mathrm M}/2$, at $r_{\mathrm{on}} = \SI{1.814}{\angstrom}$, and breaks
+where it rises above $-D_{\mathrm M}/8$, at $r_{\mathrm{off}} = \SI{2.570}{\angstrom}$.
+A molecule's small vibrations have the period $2\pi\sqrt{m_{\mathrm r}/2D_{\mathrm M}a_{\mathrm M}^2}
+= \SI{59.8}{\femto\second}$ (\cref{sec:os-small,sec:os-bodies}), with
+$m_{\mathrm r} = \SI{7.0035}{\amu}$ the reduced mass and $2D_{\mathrm M}a_{\mathrm M}^2 =
+\SI{8}{\electronvolt\per\angstrom\squared}$ the stiffness of the well.
+
+At \SI{2000}{\kelvin} a single cutoff at $r_{\mathrm{on}}$ records 53\,265
+bonds formed or broken in \SI{100}{\pico\second}; the band records 16\,442,
+3.2 times fewer (\cref{fig:ob-bonds}a). Many of the remaining events are
+not flicker either: an A and a B that meet with too much energy to stay
+together pass through each other's well and part again within a
+vibration or two. Requiring that a bond last a set time before its
+forming and breaking count, and likewise that a pair which parts stay
+apart that long, and dropping both events of any bond or gap shorter than
+that (\texttt{bonds.persistent}), removes these passing encounters and the
+flicker the band leaves. For a least lifetime of \SI{0.5}{\pico\second}
+the counts fall to \num{5501} with the single cutoff and \num{6548} with
+the band, which then keeps a fifth more. The remaining events fall
+more slowly as the least lifetime grows, by 40\% and 36\% from 0.5 to
+\SI{2}{\pico\second}, against a fall by 9.7 and 2.5 times from no least
+lifetime to \SI{0.5}{\pico\second}: they are the molecules that form and
+break.
+
+\subsection*{Keys and set differences}
+
+Each bond is stored as one whole number, its key $iN + j$ for the
+atoms $i < j$. Different pairs have different keys, since $j < N$, and
+the atoms are recovered as the quotient and the remainder of the key
+divided by $N$. A computer stores such numbers in 64 binary digits, bits,
+reaching $2^{63} \approx \num{9.2e18}$ with one bit for the sign, so keys
+fit for $N$ up to about $3\times10^9$, and about $2\times10^9$ once the
+tracker doubles each key (below). The
+bonds formed between two frames are the keys in the new set and not in
+the old, and those broken the keys in the old and not in the new.
+
+\begin{toolbox}[Set differences of sorted lists]
+Two lists of whole numbers, each sorted and without repeats, can be
+compared in one pass. A pointer starts at the head of each. If the two
+numbers under the pointers are equal, the number is in both lists, and
+both pointers move on; otherwise the smaller is in its own list only,
+and only its pointer moves. When one list is used up, the rest of the
+other is in that list only. Each step moves at least one pointer, so for
+lists of lengths $n_1$ and $n_2$ the pass takes at most $n_1 + n_2$
+steps, against $n_1n_2$ for testing every pair. \texttt{BondTracker.update} merges this way
+the sorted keys within $r_{\mathrm{off}}$ of the new frame with the
+sorted bonds of the last one: a key in both is kept, a key only in the new
+list is a new bond if it lies within $r_{\mathrm{on}}$, and a key only in
+the old list is a bond broken.
+\end{toolbox}
+
+The candidates are the pairs that the force evaluation has already
+found, which the model of \texttt{md.PairModel} keeps with their
+distances after each call, so the tracker measures no distance of its
+own; this serves as long as the cutoff of the forces reaches the largest
+$r_{\mathrm{off}}$. Most candidates lie beyond the largest
+$r_{\mathrm{off}}$ and are passed over at once; the rest are sorted, each
+stored as twice its key plus 1 if the pair is within $r_{\mathrm{on}}$, so
+that one sort orders the keys, and halving, the remainder dropped,
+recovers each key, the remainder its flag; then they are merged:
+
+\begin{code}
+    def update(
+        self, i: ArrayLike, j: ArrayLike, dist: ArrayLike
+    ) -> tuple[NDArray, NDArray]:
+        # the keys within r_off, each carrying its "closer than r_on" flag
+        # in an extra lowest bit, so that one sort orders both
+        packed = np.sort(_jit(_held_keys)(
+            np.asarray(i, dtype=np.int64), np.asarray(j, dtype=np.int64),
+            np.asarray(dist, dtype=float), self.kind, self.r_on, self.r_off,
+            self._reach, self.n))
+        self.keys, formed, broken = _jit(_merge)(
+            packed >> 1, (packed & 1).astype(np.bool_), self.keys)
+        return formed, broken
+\end{code}
+
+\noindent The two helpers are plain loops, the filter and the merge of the
+toolbox, compiled by Numba as in \cref{sec:md-speed}.
+
+\subsection*{Molecules}
+
+A molecule is a set of atoms joined to one another through chains of
+bonds.
+
+\begin{toolbox}[Graphs and their connected components]
+A graph is a set of nodes and a set of edges, each edge joining two
+nodes. Here the atoms are the nodes and the bonds the edges. A graph of
+$N$ nodes can be stored as its adjacency matrix, $N\times N$, with 1 in
+row $i$ and column $j$ when $i$ and $j$ are joined and 0 otherwise. For
+atoms nearly every entry is 0, since each atom has a few bonds, so only
+the positions of the ones are stored, a sparse matrix whose storage grows
+as the number of bonds, not as $N^2$. A connected component is a largest
+set of nodes any two of which are joined by a path of edges. It is found
+by a search, which starts from any node not yet assigned, adds its
+neighbours, then their neighbours, and so on until no new node is
+reached; those nodes are one component, and the search starts again from
+a node not yet assigned. Each edge is followed at most twice, so the work grows
+as the number of nodes plus edges.
+\end{toolbox}
+
+\noindent \texttt{mdlab.bonds.molecules} builds the sparse matrix of the
+bonds and labels each atom with its component through
+\texttt{scipy.sparse.csgraph}:
+
+\begin{code}
+def molecules(n_atoms: int, keys: ArrayLike) -> NDArray:
+    i, j = np.divmod(np.asarray(keys, dtype=np.int64), n_atoms)
+    graph = coo_matrix((np.ones(len(i)), (i, j)), shape=(n_atoms, n_atoms))
+    return connected_components(graph, directed=False)[1]
+\end{code}
+
+\subsection*{Species}
+
+Two molecules belong to the same species if they have the same atoms
+bonded in the same way, whatever the numbers the atoms carry in the run.
+The formula is the first part of the name: the number of atoms of each
+element, written in the Hill order: in a molecule with carbon, carbon
+first, then hydrogen, then the others alphabetically, and in one without,
+all of them alphabetically, so that a molecule of two A and one B is
+A$_2$B.
+The formula does not tell isomers apart, molecules of the same atoms
+bonded differently, such as a ring of six carbon atoms and a chain of
+six.
+
+\begin{toolbox}[Hashing and canonical labels]
+A hash is a function that turns data of any size into a number of fixed
+size, such that equal data give equal numbers and different data give
+different numbers with high probability: a fingerprint. Two molecules
+should get the same number if one can be renumbered into the other. A
+label that does not change under renumbering is called canonical; sums
+over the atoms are canonical, since the order of the terms does not
+change a sum. \texttt{mdlab.bonds.graph\_hash} builds one in rounds, after
+Weisfeiler and Lehman. Each atom starts with a number for its element,
+scrambled by a fixed function that spreads nearby numbers far apart. In
+each round it replaces its number by the scrambled combination of its own
+number and the sum of its neighbours' scrambled numbers, so that after
+$m$ rounds the number describes the atom's surroundings $m$ bonds deep,
+and the molecule's number is the sum over its atoms. In a ring of six
+every atom has two neighbours with two neighbours each, all round; at the
+ends of a chain an atom has one, and its number differs from the first
+round on. The scheme is not perfect. Graphs in which every atom has the
+same number of neighbours of the same kinds, such as a triangular prism of
+six atoms and a hexagon of six whose opposite atoms are also joined, look
+alike to every round and get the same number, so two species can, rarely,
+share a hash.
+\end{toolbox}
+
+\noindent The scrambling is the finishing step of the generator
+splitmix64, a few multiplications and shifts of 64-bit whole numbers whose
+sums are kept to their lowest 64 bits, dropping whatever passes
+$2^{64}$; four rounds are used. \texttt{ReactionLog}
+names each species by its formula, and a further isomer of a formula
+already seen by the formula with a prime, A$_2$B$'$, in order of
+appearance.
+
+\subsection*{Checks}
+
+The tracker's first frame, with no hysteresis yet, must find the pairs
+closer than the sum of their radii, as ASE's \texttt{neighbor\_list} does
+with its \texttt{natural\_cutoffs}. On 80 atoms of carbon and hydrogen at
+random in a periodic cell, with $r_{\mathrm{on}}$ the sum of the radii,
+the two lists are identical,
+and both equal the list from testing every pair. Over 40 frames of atoms
+moving at random, the tracker's bonds equal, frame by frame, those of a
+direct transcription of the rule. On invented trajectories whose events
+are known, it finds them all: of two molecules N$_2$, one pulled apart gives N$_2$
+$\to$ N + N; one of the freed atoms brought to the other molecule gives N
++ N$_2$ $\to$ N$_3$; a ring of six carbon atoms, one of whose bonds is
+stretched beyond $r_{\mathrm{off}}$, becomes a chain whose hash differs,
+C$_6$ $\to$ C$_6'$. Each is a test of \texttt{mdlab}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/bonds}
+\caption{The A-B gas: 250 molecules in a cell of side \SI{63}{\angstrom}
+under Langevin friction of \SI{1}{\per\pico\second} for
+\SI{100}{\pico\second}. (a) Bonds formed or broken per picosecond at
+\SI{2000}{\kelvin}, counted with a single cutoff at $r_{\mathrm{on}}$ and
+with the band from $r_{\mathrm{on}}$ to $r_{\mathrm{off}}$, against the
+least lifetime an event must have to count. (b) The numbers of molecules
+AB, of free A and of larger complexes at \SI{2000}{\kelvin} against time.
+(c) The equilibrium constant $n_{\mathrm{AB}}V/n_{\mathrm A}n_{\mathrm B}$
+over the last \SI{90}{\pico\second} with the band (circles) and with the
+single cutoff (squares), with the standard error of nine blocks, against
+$\int_0^{r_{\mathrm{on}}}4\pi r^2\mathrm{e}^{-\beta\varphi}\,\dd r$
+(dashed).}
+\label{fig:ob-bonds}
+\end{figure}
+
+\begin{keyidea}
+A bond is assigned from the distance, with a band of hysteresis, forming
+below $r_{\mathrm{on}}$ and breaking above $r_{\mathrm{off}}$, and events
+are counted only for bonds and gaps that last a least time. Bonds are whole-number
+keys, and those formed and broken are differences of sorted lists.
+Molecules are the connected components of the graph of bonds, and a
+species is named by its formula and a hash of its graph that does not
+depend on the numbering.
+\end{keyidea}
+
+\notebook{16}{watch bonds flicker with one cutoff and settle with a band}
+
+\begin{selfcheck}
+In a run of 1000 atoms, the bond between atoms 17 and 342 has the key
+17\,342. Which bond has the key 342\,017?
+\end{selfcheck}

@@ -1,0 +1,120 @@
+%=============================================================================!
+% 8.6  MANY-BODY POTENTIALS                                                   !
+%=============================================================================!
+\section{Many-body potentials for metals and carbon}
+\label{sec:pe-manybody}
+
+In a pair potential every bond has the same strength whatever else its
+atoms are bonded to. That fails for two materials used for the negative
+electrodes of lithium batteries, lithium metal and graphite. In
+both, the strength of a bond depends on how many other bonds its atoms
+have. This section builds a model with that property, the simplest
+many-body potential, and describes the forms used for metals and carbon.
+
+\subsection*{Bonds that weaken as they multiply}
+
+In a metal the outer electrons are shared by all the atoms, and an atom
+with more neighbours spreads its share of them over more bonds, each
+weaker. A model that captures this writes the energy of atom $i$ with a
+square root,
+\begin{equation}
+   U = \sum_i\Bigl[\sum_{j\ne i}A\,\mathrm{e}^{-\eta(r_{ij}/r_0 - 1)}
+   - \sqrt{\rho_i}\,\Bigr] ,
+   \qquad
+   \rho_i = \sum_{j\ne i}\xi^2\,\mathrm{e}^{-2\zeta(r_{ij}/r_0 - 1)} ,
+   \label{eq:pe-second-moment}
+\end{equation}
+with a pair repulsion of strength $A$ and range set by $\eta$, and a bond
+energy $-\sqrt{\rho_i}$ built from a sum $\rho_i$ over the neighbours,
+each contributing $\xi^2$ at the distance $r_0$ and less farther away.
+Finnis and Sinclair proposed this square root for metals such as iron
+and tungsten\cite{FinnisSinclair1984}, and the exponential forms used here are
+those of Cleri and Rosato\cite{CleriRosato1993}; it is called the
+second-moment model.
+
+For an atom with $z$ neighbours, all at $r_0$, $\rho_i = z\xi^2$ and its
+bond energy is $-\xi\sqrt{z}$: it grows only as the square root of the
+number of bonds, so each bond is worth $-\xi/\sqrt{z}$, weaker the more
+there are. In a pair potential the bond energy is $z$ times that of one
+bond. In a close-packed crystal, its atoms stacked like oranges on a market
+stall, each atom touches 12 others; in the body-centred cubic structure of
+lithium each sits at the centre of a cube of 8; and in a simple cubic
+crystal each has 6, along the three axes. \Cref{fig:pe-manybody} compares
+the two models, scaled to agree for close-packed metals, $z = 12$. A single bond of the second-moment model
+is worth $1/\sqrt{12} = 0.289$ of a lone bond ($z = 1$) when the atom has
+12 neighbours,
+and $1/\sqrt{8} = 0.354$ in body-centred cubic lithium, with 8. One
+consequence is that an atom at a surface, with fewer neighbours, holds
+those it has more tightly, and \cref{ex:pe-vacancy} shows that, counting
+only the bond energy, making a vacancy, by moving an atom from inside a
+close-packed crystal to its surface, costs about half the energy that
+holds an atom in the crystal, where a pair potential makes the two
+equal.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics{ch08_potentials/manybody}
+\caption{The bond energy of an atom with $z$ neighbours, as a fraction of
+its value at $z = 12$: proportional to $z$ for a pair potential
+(dashed), and to $\sqrt{z}$ for the second-moment model (teal), at a pair
+of atoms (1), a chain (2), a graphite layer (3), diamond (4), simple
+cubic (6), body-centred cubic lithium (8) and close-packed metals (12).}
+\label{fig:pe-manybody}
+\end{figure}
+
+The forces follow from the chain rule. The square root couples every
+neighbour of $i$: moving atom $k$ changes $\rho_i$ through the term
+$r_{ik}$, and $\sqrt{\rho_i}$ changes by $\frac12\rho_i^{-1/2}$ times that.
+The force on an atom therefore depends on the neighbours of its
+neighbours, and is no longer a sum of forces along pairs with fixed
+strengths. The forces still add to zero and exert no total torque, because $U$
+depends only
+on distances and so does not change when all the atoms are moved or
+turned together (\cref{sec:ha-noether}); the function
+\texttt{second\_moment} of \texttt{mdlab} computes it, and its test
+checks it against central differences.
+
+The embedded-atom method generalises \cref{eq:pe-second-moment}: the
+energy of atom $i$ is $\mathcal{F}(\bar\rho_i) + \frac12\sum_j\varphi
+(r_{ij})$, with
+$\bar\rho_i$ the density of the electrons, their charge per unit volume,
+that its neighbours produce where it sits and $\mathcal{F}$, the embedding energy, a function fitted to measurements or
+to calculations\cite{DawBaskes1984}. The second-moment model is the case
+$\mathcal{F}(\bar\rho) = -\sqrt{\bar\rho}$, with $\bar\rho_i = \rho_i$ and
+$\varphi(r) = 2A\,\mathrm{e}^{-\eta(r/r_0 - 1)}$, the 2 making up for the
+$\frac12$.
+
+\subsection*{Carbon and the order of a bond}
+
+Carbon forms directional bonds, three to a layer in graphite and four in
+diamond, and its bonds too weaken as they multiply. Tersoff's potential
+writes the energy as a sum over bonds, $\frac12\sum_i\sum_{j\ne i}f_{\mathrm
+c}(r_{ij})\bigl[f_{\mathrm R}(r_{ij}) - b_{ij}f_{\mathrm A}(r_{ij})
+\bigr]$, with a repulsion $f_{\mathrm R}$, an attraction $f_{\mathrm A}$,
+a smooth cutoff $f_{\mathrm c}$, and a bond order $b_{ij}$ that falls as
+atom $i$ gains other neighbours, depending also on the angles between its
+bonds\cite{Tersoff1988,Tersoff1988carbon}. The reactive bond-order potential of Brenner and
+co-workers extends this to hydrocarbons and describes the strong bonds
+within a graphite layer\cite{Brenner2002}. It has no interaction between
+the layers, which are held together by the weak attraction between
+neutral atoms; a version adds a Lennard-Jones term for
+it\cite{Stuart2000}. Lithium between the layers of graphite needs, in
+addition, lithium-carbon and lithium-lithium interactions, and models
+fitted for this are among the machine-learned potentials planned for the
+continuation of Part~V.
+
+\begin{keyidea}
+In metals and in carbon the strength of a bond falls as an atom's bonds
+multiply. The second-moment model, with bond energy $-\sqrt{\rho_i}$,
+makes the bond energy grow as $\sqrt{z}$; the embedded-atom method and
+bond-order potentials refine the same idea. Their forces couple the
+neighbours of neighbours but still add to zero and exert no total
+torque.
+\end{keyidea}
+
+\notebook{08}{the second-moment model: bonds against neighbours}
+
+\begin{selfcheck}
+In the second-moment model, by what factor is one bond of an atom in a
+chain ($z = 2$) stronger than one bond in close-packed metal?
+\end{selfcheck}

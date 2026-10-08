@@ -1,0 +1,97 @@
+%=============================================================================!
+% 7.6  RUNNING THE MOTION BACKWARDS                                           !
+%=============================================================================!
+\section{Running the motion backwards}
+\label{sec:ha-reversal}
+
+A film of a swinging pendulum looks as natural when it is run
+backwards; a film of a book sliding to rest across a table does not,
+because books are never seen to gather speed from a table that has cooled
+a little. This section shows that the difference lies in the drag, and
+that motion under a time-independent Hamiltonian can be reversed when
+reversing every momentum leaves that Hamiltonian unchanged.
+
+\subsection*{The reversed motion}
+
+Let $q(t)$ and $p(t)$ be a motion. The reversed motion visits the same
+positions in the opposite order, with every momentum reversed:
+\begin{equation*}
+   Q(t) = q(-t) , \qquad P(t) = -p(-t) .
+\end{equation*}
+Suppose that $H$ does not contain $t$ and that $H(q, -p) = H(q, p)$, as
+it is whenever $K$ depends on the momenta through their squares. Differentiating this identity with respect
+to $p$, by the chain rule on the left, gives $-(\partial H/\partial p)(q,
+-p) = (\partial H/\partial p)(q, p)$, so reversing the momentum reverses
+the sign of $\partial H/\partial p$; differentiating it with respect to
+$q$ gives $(\partial H/\partial q)(q, -p) = (\partial H/\partial q)(q,
+p)$, so reversing the momentum leaves $\partial H/\partial q$ unchanged.
+Then, by the chain rule with the inner function $-t$, whose rate is $-1$,
+and Hamilton's equations for the original motion at the time $-t$,
+\begin{align*}
+   \frac{\dd Q}{\dd t} &= -\dot{q}(-t)
+   = -\frac{\partial H}{\partial p}\bigl(q(-t), p(-t)\bigr)
+   = \frac{\partial H}{\partial p}(Q, P) ,\\
+   \frac{\dd P}{\dd t} &= \dot{p}(-t)
+   = -\frac{\partial H}{\partial q}\bigl(q(-t), p(-t)\bigr)
+   = -\frac{\partial H}{\partial q}(Q, P) ,
+\end{align*}
+where the last step of each line uses $Q = q(-t)$, $P = -p(-t)$ and the two
+results just found. The reversed motion obeys Hamilton's equations too.
+Since $H$ does not contain $t$, shifting the time changes nothing in these
+equations, so $q(\tau - t)$, $-p(\tau - t)$ obeys them as well. It starts
+at $\bigl(q(\tau), -p(\tau)\bigr)$, and a state fixes the motion that
+follows it (\cref{sec:ne-equations}), so if a motion is stopped at a time
+$\tau$, every momentum is reversed, and the motion is followed for another time $\tau$, the system retraces
+its path and arrives where it started, with its starting momenta
+reversed.
+
+\Cref{fig:ha-reversal}(a) shows this for a puck of \SI{0.2}{\kilogram}
+on smooth ice, held near a point by springs that are stiffer north--south
+(\SI{5}{\newton\per\metre}) than east--west (\SI{2}{\newton\per\metre}),
+so that it traces a looping path. Followed for \SI{4}{\second}, reversed
+and followed for another \SI{4}{\second}, it returns to within $3\times
+10^{-14}$~\si{\metre} of its start, with the momentum
+$(-0.02, -0.10)$~\si{\kilogram\metre\per\second}, the reverse of the one it
+started with.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch07_hamilton/reversal}
+\caption{A puck of \SI{0.2}{\kilogram} on springs of 2 (east--west) and
+\SI{5}{\newton\per\metre} (north--south), started at A with the velocity
+$(0.1, 0.5)$~\si{\metre\per\second}, followed for \SI{4}{\second} to B
+(teal), then with every momentum reversed for another \SI{4}{\second}
+(ochre, dashed), ending at the square. (a) Without drag it retraces its
+path to A. (b) With drag at $\gamma = \SI{0.3}{\per\second}$ it does
+not.}
+\label{fig:ha-reversal}
+\end{figure}
+
+\subsection*{Drag breaks the symmetry}
+
+With drag, $\dot{p} = -\partial H/\partial q - \gamma p$. Repeating the
+second line above, the reversed motion has $\dd P/\dd t = \dot{p}(-t) =
+-\partial H/\partial q - \gamma p(-t) = -\partial H/\partial q + \gamma P$:
+it would need a force that pushes the puck along its motion, in place of
+one that resists it, and the dragged equations do not supply one.
+\Cref{fig:ha-reversal}(b) shows the result: after the reversal the puck
+keeps losing energy and ends \SI{0.21}{\metre} from its start. Sliding friction,
+like drag, always opposes the motion, so the reversed slide would need it
+to push instead; it is what makes the book's slide irreversible, and the
+motion of atoms under forces from a potential has no such term.
+
+Chapter~9 asks the same of a method of computing motion: one step
+forwards, a reversal of the momenta and one more step should bring the
+system back to where it began, as the exact motion does.
+
+\begin{keyidea}
+When $H$ is time-independent and unchanged by reversing the momenta, the reversed motion $q(-t)$,
+$-p(-t)$ obeys Hamilton's equations, so reversing every momentum makes a
+system retrace its path. Drag breaks this.
+\end{keyidea}
+
+\begin{selfcheck}
+A ball thrown straight up at \SI{12}{\metre\per\second} reaches its highest
+point after \SI{1.224}{\second}. Using time reversal, and without solving
+any equation, say when and how fast it comes back to the hand.
+\end{selfcheck}

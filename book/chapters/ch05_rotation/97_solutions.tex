@@ -1,0 +1,238 @@
+%=============================================================================!
+% 5.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:rotation}: Rotation and angular momentum}
+\label{sec:ro-solutions}
+
+\solutionto{ex:ro-door}The torque is the distance from the hinge times the
+part of the force across the door, $G = rF_\theta$, so the same push turns
+the door more the further from the hinge it acts. At \ang{30} to the face
+of the door, the push splits, as the weight on the ramp of
+\cref{sec:en-friction}, into the part $10\cos\ang{30}$ along the door,
+which points at the hinge and turns nothing, and the part $10\sin\ang{30}
+= \SI{5}{\newton}$ across it, so $G = 0.8\times5 = \SI{4}{\newton\metre}$,
+half the torque of the push at right angles.
+
+\solutionto{ex:ro-pull}$L = \SI{0.12}{\kilogram\metre\squared\per\second}$
+is conserved, so at \SI{0.1}{\metre} the puck goes round at $v_\theta =
+0.12/(0.2\times0.1) = \SI{6}{\metre\per\second}$. Its kinetic energy is
+$\frac12\times0.2\times6^2 = \SI{3.6}{\joule}$, and since it started with
+$\frac12\times0.2\times1.2^2 = \SI{0.144}{\joule}$, the hand has done the
+work $3.6 - 0.144 = \SI{3.456}{\joule}$ (\cref{sec:en-kinetic}).
+
+\solutionto{ex:ro-straight}With no force, $\vb{r} = \vb{r}_0 + \vb{v}t$
+with $\vb{v}$ constant. About the point $\vb{a}$, putting in $\vb{r}$,
+\begin{equation*}
+   m\,(\vb{r} - \vb{a})\times\vb{v}
+   = m\,(\vb{r}_0 - \vb{a})\times\vb{v} + mt\,\vb{v}\times\vb{v}
+   = m\,(\vb{r}_0 - \vb{a})\times\vb{v} ,
+\end{equation*}
+a sum splitting and $\vb{v}\times\vb{v} = \vb{0}$: the angular momentum is
+constant. In equal times the body covers equal lengths $\lvert\vb{v}\rvert
+\,\Delta t$ of its line, and the triangles with these as bases and $\vb{a}$
+as the third corner all have the same height, the distance from $\vb{a}$ to
+the line, so they have equal areas, half base times height.
+
+\solutionto{ex:ro-product}By the components,
+\begin{equation*}
+   (2, 0, 1)\times(1, 3, -1) = \bigl(0\times(-1) - 1\times3,\
+   1\times1 - 2\times(-1),\ 2\times3 - 0\times1\bigr) = (-3, 3, 6) .
+\end{equation*}
+Its scalar products with the two vectors are $-6 + 0 + 6 = 0$ and $-3 + 9 -
+6 = 0$. The area is its length, $\sqrt{9 + 9 + 36} = \sqrt{54} = 7.348$, and
+also, by the second toolbox of \cref{sec:ro-cross}, with $\vb{a} = (2, 0,
+1)$ and $\vb{b} = (1, 3, -1)$, so that $\lvert\vb{a}\rvert^2 = 4 + 0 + 1 =
+5$, $\lvert\vb{b}\rvert^2 = 1 + 9 + 1 = 11$ and $\vb{a}\cdot\vb{b} = 2 + 0
+- 1 = 1$, $\sqrt{\lvert\vb{a}\rvert^2\lvert\vb{b}\rvert^2 - (\vb{a}\cdot
+\vb{b})^2} = \sqrt{5\times11 - 1^2} = \sqrt{54}$.
+
+\solutionto{ex:ro-plane}$\vb{L} = m\,\vb{r}\times\vb{v}$ is at right angles
+to $\vb{r}$ at every instant, so $\vb{r}\cdot\vb{L} = 0$ always. With
+$\vb{L}$ a fixed vector that is not zero, the points $\vb{r}$ with $\vb{r}
+\cdot\vb{L} = 0$ form the plane through the origin at right angles to
+$\vb{L}$, and the body never leaves it.
+
+\solutionto{ex:ro-origin}The sum splits, and the constant $\vb{a}$ comes
+outside it:
+\begin{equation*}
+   \sum_i(\vb{r}_i - \vb{a})\times\vb{p}_i
+   = \sum_i\vb{r}_i\times\vb{p}_i - \vb{a}\times\sum_i\vb{p}_i
+   = \vb{L} - \vb{a}\times\vb{P} .
+\end{equation*}
+It is the same about every point when, and only when, $\vb{P} = \vb{0}$:
+if $\vb{P} \neq \vb{0}$, any $\vb{a}$ not along $\vb{P}$ gives $\vb{a}
+\times\vb{P}$ the length $\lvert\vb{a}\rvert\lvert\vb{P}\rvert\sin\theta
+\neq 0$.
+
+\solutionto{ex:ro-rod}Put the rod along the $x$ axis from $-\ell/2$ to
+$\ell/2$. A short piece $\dd x$ has the mass $(M/\ell)\,\dd x$ at the
+distance $\lvert x\rvert$ from the axis, so
+\begin{equation*}
+   I = \int_{-\ell/2}^{\ell/2} x^2\,\frac{M}{\ell}\,\dd x
+   = \frac{M}{\ell}\Bigl[\frac{x^3}{3}\Bigr]_{-\ell/2}^{\ell/2}
+   = \frac{M}{\ell}\Bigl(\frac{(\ell/2)^3}{3} - \frac{(-\ell/2)^3}{3}\Bigr)
+   = \frac{M}{\ell}\Bigl(\frac{\ell^3}{24} + \frac{\ell^3}{24}\Bigr)
+   = \frac{M\ell^2}{12} .
+\end{equation*}
+About one end the rod runs from 0 to $\ell$, and $I = (M/\ell)[x^3/3]_0^\ell
+= M\ell^2/3$.
+
+\solutionto{ex:ro-parallel}Put the origin at the centre of mass, take the
+axis through it along $z$, and the parallel axis through $(s_x, s_y)$, with $s^2 = s_x^2 +
+s_y^2$. Then, expanding the squares and writing $\sum_i m_i = M$,
+\begin{align*}
+   I &= \sum_i m_i\bigl[(x_i - s_x)^2 + (y_i - s_y)^2\bigr]\\
+   &= \sum_i m_i(x_i^2 + y_i^2) - 2s_x\sum_i m_ix_i - 2s_y\sum_i m_iy_i
+      + Ms^2\\
+   &= I_{\mathrm{cm}} + Ms^2 ,
+\end{align*}
+since $\sum_i m_ix_i = \sum_i m_iy_i = 0$, the positions being measured
+from the centre of mass. For the rod, $s =
+\ell/2$ and $M\ell^2/12 + M\ell^2/4 = M\ell^2/3$, as in \cref{ex:ro-rod}.
+
+\solutionto{ex:ro-stool}$I = 2 + 2\times3\times0.7^2 =
+\SI{4.94}{\kilogram\metre\squared}$ before and $2 + 2\times3\times0.3^2 =
+\SI{2.54}{\kilogram\metre\squared}$ after. Conserving $L_z = I\omega = 4.94\times1.5 =
+\SI{7.41}{\kilogram\metre\squared\per\second}$, $\omega = 7.41/2.54 =
+\SI{2.917}{\radian\per\second}$. The kinetic energy rises from
+$\frac12\times4.94\times1.5^2 = \SI{5.5575}{\joule}$ to $\frac12 I\omega^2
+= L_z^2/(2I) = 7.41^2/(2\times2.54) = \SI{10.8087}{\joule}$, putting in
+$\omega = L_z/I$, so the arms do $10.8087 - 5.5575 = \SI{5.251}{\joule}$ of
+work.
+
+\solutionto{ex:ro-sphere}With $\kappa = \frac25$, $1 + \kappa = 1.4$ and $V =
+\sqrt{2\times9.80665\times1/1.4} = \SI{3.743}{\metre\per\second}$. On the
+slope, with $\sin\ang{30} = 0.5$, $\dot V = 9.80665\times0.5/1.4 = \SI{3.502}{\metre\per\second
+\squared}$, and from $s = \frac12\dot{V}t^2$ the \SI{2}{\metre} take
+$\sqrt{2\times2/3.502} = \SI{1.069}{\second}$. The ball comes second,
+after the sliding block (\SI{0.903}{\second}) and before the disc and the
+hoop: the smaller $\kappa$, the less energy goes into turning.
+
+\solutionto{ex:ro-friction}Along the slope the weight pulls down with $Mg
+\sin\alpha$, split as on the ramp of \cref{sec:en-friction}, and the friction $f$ pushes up, so $M\dot{V} = Mg\sin\alpha -
+f$. With $\dot V = g\sin\alpha/(1 + \kappa)$ from \cref{sec:ro-rigid},
+\begin{equation*}
+   f = Mg\sin\alpha - \frac{Mg\sin\alpha}{1 + \kappa}
+   = \frac{(1 + \kappa)Mg\sin\alpha - Mg\sin\alpha}{1 + \kappa}
+   = \frac{\kappa\,Mg\sin\alpha}{1 + \kappa} ,
+\end{equation*}
+putting the two terms over the common denominator $1 + \kappa$. For the
+disc, $\kappa = \frac12$, $f = \frac13 Mg\sin\alpha = \frac13\times1\times
+9.80665\times0.5 = \SI{1.634}{\newton}$. A sliding block, $\kappa = 0$,
+needs none.
+
+\solutionto{ex:ro-square}With every mass 1 and $z = 0$ for every atom, $I_{xx} = \sum(y^2 +
+z^2) = 4\times1 = 4$, $I_{yy} = 4$ likewise, and $I_{zz} = \sum(x^2 + y^2)
+= 4\times2 = 8$, in \si{\amu\angstrom\squared}; $I_{xy} = -\sum xy =
+-(1 - 1 - 1 + 1) = 0$, and $I_{xz} = I_{yz} = 0$. The tensor is diagonal,
+with principal moments 4, 4 and 8. Any vector $(a, b, 0)$ in the plane
+gives $\mathsf{I}(a, b, 0) = (4a, 4b, 0) = 4\,(a, b, 0)$, so it is an
+eigenvector: every axis in the plane is a principal axis, because the two
+moments in the plane are equal.
+
+\solutionto{ex:ro-flat}With $z_i = 0$, $I_{xx} = \sum m_iy_i^2$, $I_{yy} =
+\sum m_ix_i^2$ and $I_{zz} = \sum m_i(x_i^2 + y_i^2) = I_{xx} + I_{yy}$,
+while $I_{xz} = -\sum m_ix_iz_i = 0$ and $I_{yz} = 0$. Then $\mathsf{I}
+\vb{e}_z = (I_{xz}, I_{yz}, I_{zz}) = I_{zz}\vb{e}_z$, so $\vb{e}_z$ is an
+eigenvector, a principal axis. For water, $0.8188 + 0.9538 = 1.7726$ from
+the entries of \cref{sec:ro-tensor}.
+
+\solutionto{ex:ro-diatomic}With the centre of mass at the origin, the atoms
+are at $(0, 0, -d_1)$ and $(0, 0, d_2)$, with $d_1$ and $d_2$ as in
+\cref{eq:ro-dumbbell}. Every $x_i$ and $y_i$ is zero, so $I_{zz} = 0$ and
+every entry off the diagonal, each containing $x_i$ or $y_i$, is zero,
+while $I_{xx} = I_{yy} = m_1d_1^2 + m_2d_2^2 = m_{\mathrm r}d^2$ by
+\cref{eq:ro-dumbbell}.
+
+\solutionto{ex:ro-solve}The first equation gives $\omega_y = 6 -
+4\omega_x$ and the third $\omega_z = (14 - \omega_y)/4$. Putting this
+$\omega_z$ into the middle equation and multiplying by 4, $4\omega_x +
+16\omega_y + 14 - \omega_y = 48$, or $4\omega_x + 15\omega_y = 34$; then
+putting in $\omega_y = 6 - 4\omega_x$, $4\omega_x + 90 - 60\omega_x = 34$,
+that is $90 - 56\omega_x = 34$, so $56\omega_x = 90 - 34 = 56$ and
+$\omega_x = 1$. Hence $\omega_y = 2$ and
+$\omega_z = (14 - 2)/4 = 3$.
+
+\solutionto{ex:ro-left}The masses are equal, so $\vb{V}$ is the average
+velocity, $\frac12\bigl((0.01, 0.01, 0) + (-0.01, 0.03, 0)\bigr) = (0,
+0.02, 0)$, leaving $\vb{v}_1' = (0.01, -0.01, 0)$ and
+$\vb{v}_2' = (-0.01, 0.01, 0)$. Then
+\begin{align*}
+   \vb{L}' &= (-1, 0, 0)\times(0.01, -0.01, 0)
+      + (1, 0, 0)\times(-0.01, 0.01, 0)\\
+   &= (0, 0, 0.01) + (0, 0, 0.01) = (0, 0, 0.02) .
+\end{align*}
+The atoms lie on the $x$ axis, about their centre of mass at the origin, so
+$I_{xx} = \sum(y^2 + z^2) = 0$, $I_{yy} = I_{zz} = 1\times1^2 + 1\times1^2
+= 2$, and every entry off the diagonal is zero. Then $\mathsf{I}
+\boldsymbol{\omega} = (0, 2\omega_y, 2\omega_z) = (0, 0, 0.02)$ gives
+$\omega_y = 0$ and $\omega_z = \SI{0.01}{\radian\per\femto\second}$, and,
+the pair lying on a line, we take $\omega_x = 0$ (\cref{sec:ro-remove}).
+The turning velocity of atom 1 is $(0, 0, 0.01)\times(-1, 0, 0) = (0,
+-0.01, 0)$, so $\vb{u}_1 = (0.01, 0, 0)$, and likewise $\vb{u}_2 = (-0.01,
+0, 0)$: the atoms approach each other along the line joining them, so what
+remains is the vibration of the pair, caught as the bond shortens. In \si{\amu\angstrom\squared\per\femto\second
+\squared}, the kinetic energy is $\frac12(0.01^2 + 0.01^2 + 0.01^2 +
+0.03^2) = 0.0006$; the drift has $\frac12\times2\times0.02^2 = 0.0004$, the
+turning $\frac12\times2\times0.01^2 = 0.0001$ and the rest $\frac12(0.01^2
++ 0.01^2) = 0.0001$, which add up to 0.0006. Multiplying by
+\num{103.6427} (\cref{sec:en-atoms}), the kinetic energy is
+\SI{0.0622}{\electronvolt}.
+
+\solutionto{ex:ro-count}Each has 4 atoms and is not linear, so $12 - 6 =
+6$ internal degrees of freedom.
+
+\solutionto{ex:ro-null}With $\vb{e} = (0, 0, d)/d = (0, 0, 1)$, the blocks
+$\pm k\,e_ae_b$ have a single non-zero entry, $\pm k$, in the $zz$ place.
+Ordering the coordinates $x_1, y_1, z_1, x_2, y_2, z_2$,
+\begin{equation*}
+   \boldsymbol{\Phi} = \begin{pmatrix}
+      0 & 0 & 0 & 0 & 0 & 0\\
+      0 & 0 & 0 & 0 & 0 & 0\\
+      0 & 0 & k & 0 & 0 & -k\\
+      0 & 0 & 0 & 0 & 0 & 0\\
+      0 & 0 & 0 & 0 & 0 & 0\\
+      0 & 0 & -k & 0 & 0 & k
+   \end{pmatrix} .
+\end{equation*}
+A small turning about the $x$ axis moves atom 1, at the origin,
+by $\theta\,\vb{e}_x\times\vb{0} = \vb{0}$ and atom 2 by
+$\theta\,\vb{e}_x\times(0, 0, d) = \theta\,(0, -d, 0)$. The
+displacement $(0, 0, 0, 0, -\theta d, 0)$ has zero third and sixth
+entries, the only ones the Hessian uses, so the Hessian turns it into zero.
+A turning about the $z$ axis moves neither atom, since $\vb{e}_z\times\vb{r}
+= \vb{0}$ for both: it is not a motion of the molecule, which is why a
+linear molecule has only two turnings.
+
+\solutionto{ex:ro-stretch}With $\vb{F}$ the force of the bond on the
+second atom and $-\vb{F}$ that on the first, dividing each second law by
+its mass and subtracting, as in \cref{sec:os-bodies}, the separation
+$\vb{r} = \vb{r}_2 - \vb{r}_1$ has $\ddot{\vb{r}} = \vb{F}/m_2 + \vb{F}/m_1
+= \vb{F}/m_{\mathrm r}$, so $m_{\mathrm r}\ddot{\vb{r}} = \vb{F}$. Going round a
+circle of radius $r$ at $\omega$ needs the inward pull $m_{\mathrm
+r}\omega^2r$ (\cref{sec:mo-circle}), so $k(r - d) = m_{\mathrm r}
+\omega^2r$ and
+\begin{equation*}
+   r - d = \frac{m_{\mathrm r}\omega^2}{k}\,r
+   = \Bigl(\frac{\omega}{\omega_0}\Bigr)^2 r
+   \approx d\,\Bigl(\frac{\omega}{\omega_0}\Bigr)^2 ,
+\end{equation*}
+replacing $r$ by $d$ on the right, which changes it only by $(r -
+d)(\omega/\omega_0)^2$, the small stretch times the small
+ratio. With $\omega = \SI{0.006335}{\radian\per\femto
+\second}$ from \cref{sec:ro-molecules}, and
+$\omega_0 = 2\pi/36.64 = \SI{0.17148}{\radian\per\femto\second}$,
+the ratio squared is \num{1.365e-3}, and the stretch is
+$1.5639\times1.365\times10^{-3} = \SI{0.00213}{\angstrom}$.
+
+\solutionto{ex:ro-hot}$\omega = \sqrt{2K/I}$ grows as the square root of
+the energy, so the period $2\pi/\omega$ shrinks as one over that square
+root:
+$992\times\sqrt{0.025852/0.08617} = \SI{543}{\femto\second}$. Directly,
+with $K$ in \si{\amu\angstrom\squared\per\femto\second\squared},
+\begin{align*}
+   K &= 0.08617\times9.648533\times10^{-3} = \num{8.314e-4} ,\\
+   \omega &= \sqrt{\frac{2\times8.314\times10^{-4}}{12.432}}
+   = \SI{0.01157}{\radian\per\femto\second} ,
+\end{align*}
+and $2\pi/\omega = \SI{543}{\femto\second}$.

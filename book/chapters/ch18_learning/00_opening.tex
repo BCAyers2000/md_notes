@@ -1,0 +1,30 @@
+%=============================================================================!
+% 18.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+A spring balance in a shop is calibrated by hanging known weights on it
+and marking where the pointer stops. Each reading carries a small error,
+from the pointer's width and the eye that reads it, so no single weight
+fixes the scale; the marks are drawn so that they miss the readings as
+little as possible, taken together. A learned interatomic potential is
+made the same way. Its readings are energies and forces from a
+first-principles calculation, its marks are the numbers inside the model,
+and drawing them is a search for the numbers that miss the readings
+least. Chapter~17 ran such a model, MACE-MP-0, as a black box; this
+chapter begins to open the box; the planned chapters that follow develop
+the network models themselves.
+
+We begin with a loss, a number that measures how far a model misses its
+readings. A least-squares fit first determines one weight, the stiffness
+of a bond, then several weights in a curve through noisy readings of
+argon's pair energy. This exposes a difficulty: enough adjustable
+weights can fit the noise as well as the underlying curve. A penalty on
+large weights controls that freedom, and its interpretation as a prior
+leads to Gaussian processes and their uncertainty estimates.
+
+When a fit cannot be obtained in one calculation, we lower the loss by
+gradient descent. Its step has a stability limit like an integrator's;
+mini-batches, momentum and Adam change the cost and progress of that
+search. The final sections separate the readings used to train a model
+from those used to judge it, showing why consecutive trajectory frames
+must not be split at random. Planned Chapter~19 builds neural networks
+and trains them with these optimisers.

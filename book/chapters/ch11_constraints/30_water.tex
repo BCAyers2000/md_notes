@@ -1,0 +1,152 @@
+%=============================================================================!
+% 11.3  RIGID WATER                                                           !
+%=============================================================================!
+\section{Rigid water}
+\label{sec:cs-water}
+
+Holding bonds fixed is meant to lengthen the step, and how much it
+lengthens it is a question of measurement. This section builds a small
+box of liquid water, runs it flexible, with only its O--H bonds held, and
+rigid, and compares the energy fluctuation of the three at a range of
+steps by the test of \cref{sec:in-stability}.
+
+\subsection*{A model of water}
+
+The TIP3P model of Jorgensen and co-workers\cite{Jorgensen1983}, in the
+form ASE implements it\cite{Larsen2017}, places a charge of $-0.834e$ on
+each oxygen atom and $+0.417e$ on each hydrogen, gives the oxygen atoms a
+Lennard-Jones energy between one another with $\sigma =
+\SI{3.15061}{\angstrom}$ and $\varepsilon = \SI{6.596}{\milli\electronvolt}$
+(which ASE stores as 0.1521 kilocalories per mole, a chemists' unit that
+\texttt{mdlab.units} converts), and fixes the shape of the
+molecule, with O--H \SI{0.9572}{\angstrom} and the H--O--H angle
+\ang{104.52}, so that H--H is \SI{1.5139}{\angstrom}; ASE's own tests run
+it with all three distances held by \texttt{FixBondLengths}. The charges
+describe how one molecule pulls on another; the Coulomb energy of the
+pairs within a molecule is left out, since the bonds stand in for it, and
+would otherwise draw each hydrogen onto its own oxygen with an energy of
+$k_{\mathrm e}q_{\mathrm O}q_{\mathrm H}/r = \SI{-5.2}{\electronvolt}$ at
+\SI{0.9572}{\angstrom}.
+
+The class \texttt{WaterModel} of \texttt{mdlab.water} computes the
+Lennard-Jones energy between oxygen atoms, switched off smoothly between
+5 and \SI{6}{\angstrom} (\cref{sec:pe-cutoffs}), and the Coulomb energy
+of all the charges and their copies by the Ewald sum of
+\cref{sec:md-ewald}, less the Coulomb energy of each molecule's own three
+pairs. For the flexible model it adds the three springs of the spring
+model of \cref{sec:ro-freedom}, $k_{\mathrm{OH}} =
+\SI{48.48}{\electronvolt\per\angstrom\squared}$ along each O--H and
+$k_{\mathrm{HH}} = \SI{17.66}{\electronvolt\per\angstrom\squared}$
+between the hydrogens, at rest at the TIP3P shape, whose fastest
+vibration, the symmetric stretch of the model, has $\omega =
+\SI{0.857}{\radian\per\femto\second}$ and a period of
+\SI{7.33}{\femto\second}. Its tests check the forces against differences
+of the energy, for the rigid and the flexible model, and its parameters
+against ASE's.
+
+Sixty-four molecules, turned at random, are placed on a $4\times4\times4$
+grid in a cube of side \SI{12.43}{\angstrom}, which gives the density of
+liquid water at \SI{298.15}{\kelvin} and \SI{0.1}{\mega\pascal},
+\SI{0.997}{\gram\per\centi\metre\cubed}\cite{NISTWebBook}; half the side,
+\SI{6.21}{\angstrom}, exceeds the cutoff, as \cref{sec:md-image}
+requires. A grid is a poor arrangement for a liquid, and the molecules
+release energy as they leave it, which heats the box. The script that
+prepares it therefore follows the rigid molecules for ten rounds of
+\SI{1}{\pico\second} with $\dt = \SI{2}{\femto\second}$, each round
+starting from new random velocities of the kind of \cref{sec:md-start},
+which discard the heat the last round released,
+with no drift, no part along a held bond, and a kinetic energy of
+\SI{12.93}{\milli\electronvolt} for each freedom; Chapter~12 shows that
+this is the share of each freedom at \SI{300}{\kelvin}. The potential
+energy falls from \SI{-2.37}{\electronvolt} on the grid to
+\SI{-25.70}{\electronvolt} after the tenth round, by
+\SI{0.12}{\electronvolt} in that last round, a slow change whose end
+Chapter~15 learns to detect; the runs below start from that state. The
+flexible molecules start from the same positions, with velocities drawn
+for all nine freedoms of each molecule, and are prepared for two rounds
+of \SI{0.5}{\pico\second} with $\dt = \SI{0.25}{\femto\second}$.
+
+\subsection*{The step each model allows}
+
+\Cref{fig:cs-step}(a) runs the three models at a range of steps, flexible
+water by velocity Verlet and the other two by RATTLE, and divides the
+standard deviation of the total energy, the square root of the mean of its
+squared differences from its mean, by that of the kinetic energy, the
+yardstick of \cref{sec:in-stability}. All three ratios grow as $\dt^2$ at
+short steps, with fitted slopes of 2.05 (flexible), 2.10 (O--H held) and
+2.01 (rigid) over their three shortest steps. At equal steps they differ
+greatly: at \SI{1}{\femto\second} the ratio is 6.7\% for flexible water,
+1.1\% with the O--H bonds held and 0.23\% for rigid water.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/step}
+\caption{The step each model of water allows: 64 molecules, flexible (by
+velocity Verlet), with the O--H bonds held, and rigid (both by RATTLE);
+open markers for the last two with hydrogen made three times heavier
+(\cref{sec:cs-mass}). (a) The standard deviation of the total energy over
+that of the kinetic energy, against the step, over \SI{1}{\pico\second}
+(flexible, O--H held) or \SI{2}{\pico\second} (rigid); dotted, the 1\%
+level. (b) The total energy less its starting value for rigid water at 2
+and \SI{7}{\femto\second} and flexible water at
+\SI{0.5}{\femto\second}.}
+\label{fig:cs-step}
+\end{figure}
+
+How small the ratio must be is a judgement, depending on what is to be
+measured (\cref{sec:in-stability}). Taking 1\% as the level, and reading
+where each curve crosses it between measured points, the flexible model
+allows \SI{0.41}{\femto\second}, the model with its O--H bonds held
+\SI{0.97}{\femto\second}, and the rigid model \SI{1.98}{\femto\second}:
+holding the O--H bonds buys a factor of 2.4, and holding the angle too a
+factor of 4.8. With the O--H bonds held, the fastest motion left is the
+bend, with a period of \SI{17.0}{\femto\second} in this model, shorter
+than the \SI{20.9}{\femto\second} of the free spring model, whose bonds
+stretch as it bends; with all three distances held, the molecule cannot
+vibrate at all, and the fastest motions left are the molecules' turning
+back and forth in the cage of their neighbours. These steps are read from
+single runs of 1 or \SI{2}{\pico\second}: the rigid run at
+\SI{2}{\femto\second} gives 1.02\% over \SI{2}{\pico\second} and 0.93\%
+over \SI{10}{\pico\second} (\cref{sec:cs-trajectory}), and since the
+ratio grows as $\dt^2$ a difference of 10\% in it moves the step at 1\% by
+about 5\%, a spread that Chapter~15 turns into an error bar. \Cref{fig:cs-step}(b) shows that even at
+\SI{7}{\femto\second}, where the ratio is 13\%, the energy of rigid water
+stays in a band over \SI{2}{\pico\second}, its mean moving by
+\SI{0.007}{\electronvolt\per\pico\second}, as a symplectic method's
+should; at \SI{2}{\femto\second} the band is \SI{0.017}{\electronvolt}
+wide for the whole box, \SI{0.26}{\milli\electronvolt} per molecule.
+
+The rigid model is a different model, however long its step. Water held
+rigid cannot stretch or bend, and any property that depends on those
+motions, such as its spectrum at high frequencies, is lost; the
+properties of liquid water that depend on how molecules move as wholes
+are what a rigid model is built to give. A rigid model is therefore a
+choice of model as much as a means of lengthening the step, and the
+planned comparisons with learned propagators in Part~VI use the flexible
+model as the reference when those vibrations are retained.
+
+\begin{practice}
+The tolerance of the constraints matters. The step test above holds the
+bonds to $10^{-10}$; a tolerance of $10^{-3}$ leaves errors of
+\SI{1.5e-3}{\angstrom} and an energy that drifts
+(\cref{sec:cs-trajectory}). A tolerance may be stated as a relative or an
+absolute error of the length or of its square, so the numbers to check in
+a run are the largest error of a held distance, which \texttt{mdlab}
+records as \texttt{bond\_error}, and whether a tighter tolerance changes
+the energy.
+\end{practice}
+
+\begin{keyidea}
+Measured on 64 molecules of TIP3P water, at an energy fluctuation of 1\%
+of the kinetic energy's, holding the O--H bonds lengthens the step from
+0.41 to \SI{0.97}{\femto\second}, and holding all three distances to
+\SI{1.98}{\femto\second}: factors of 2.4 and 4.8, bought by removing the
+fastest vibrations, and with them the motions that depended on them.
+\end{keyidea}
+
+\notebook{11}{compare the three models' energy at any step}
+
+\begin{selfcheck}
+How many steps of \SI{0.41}{\femto\second} and of
+\SI{1.98}{\femto\second} cover a nanosecond?
+\end{selfcheck}

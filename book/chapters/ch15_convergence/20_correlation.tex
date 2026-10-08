@@ -1,0 +1,272 @@
+%=============================================================================!
+% 15.2  SAMPLES THAT REMEMBER                                                 !
+%=============================================================================!
+\section{Samples that remember}
+\label{sec:cv-correlation}
+
+The samples of a run are not independent. In one step of
+\SI{10}{\femto\second} an atom moves a small fraction of its distance to a
+neighbour, so the potential energy, the kinetic energy and the pressure
+change little from one step to the next, and a sample says much about the
+one after it. This section measures that memory, finds how it enlarges the
+error of a mean, and estimates it from a single run.
+
+\subsection*{A series with memory}
+
+A grain of dust in still air is pushed about by the molecules that strike
+it, and its velocity changes over a time set by the friction of the air.
+\Cref{sec:th-langevin} found the exact law of one component of such a
+velocity over a step: the Ornstein-Uhlenbeck process of \cref{eq:th-ou}.
+Measured in units of its own standard deviation, so that its variance is
+1, it reads
+\begin{equation}
+   x_{k+1} = c\,x_k + \sqrt{1 - c^2}\;z_k , \qquad 0 \le c < 1 ,
+   \label{eq:cv-ou}
+\end{equation}
+with $z_k$ a fresh Gaussian number of mean 0 and variance 1 at each step
+(the $g$ of \cref{eq:th-ou}, renamed because $g$ is needed below).
+The old value keeps the fraction $c$ of itself, and the noise supplies the
+variance that this loses, $1 - c^2$. With $c = 0$ each sample is new; with
+$c$ close to 1 the series wanders slowly. \Cref{fig:cv-ou}(a) draws 400
+samples with $c = 0.95$, read as samples \SI{10}{\femto\second} apart,
+against 400 independent ones: the first stays on one side of zero for up
+to \SI{0.98}{\pico\second} at a time, while the second changes sign on
+average every other sample.
+
+\subsection*{The autocorrelation function}
+
+The memory is measured by the covariance of two quantities,
+\begin{equation*}
+   \operatorname{cov}(x, y) = \ens{(x - \ens{x})(y - \ens{y})}
+   = \ens{xy} - \ens{x}\ens{y} ,
+\end{equation*}
+the bracket of \cref{sec:sm-probability} that vanished for independent
+quantities, which by the same expansion makes $\operatorname{var}(x + y) =
+\operatorname{var}(x) + \operatorname{var}(y) + 2\operatorname{cov}(x, y)$.
+A run that has settled has the same statistics wherever in it they are
+measured, so the covariance of the samples $A_i$ and $A_{i+k}$ depends on
+their separation $k$ alone. Divided by the variance, it is the
+autocorrelation function
+\begin{equation*}
+   \operatorname{corr}(k) = \frac{\operatorname{cov}(A_i,
+   A_{i+k})}{\operatorname{var}(A)} ,
+\end{equation*}
+equal to 1 at $k = 0$ and falling towards 0 as the series forgets. For the
+series of \cref{eq:cv-ou}, multiplying both sides by $x_0$ and averaging
+gives
+\begin{equation*}
+   \ens{x_{k+1}x_0} = c\ens{x_kx_0} + \sqrt{1 - c^2}\,\ens{z_kx_0}
+   = c\ens{x_kx_0} ,
+\end{equation*}
+since $z_k$ is drawn after $x_0$ and independently of it, with mean zero.
+Applying this $k$ times from $\ens{x_0x_0} = 1$ gives $\ens{x_kx_0} = c^k$,
+and with the means zero and the variance 1 this is $\operatorname{corr}(k)
+= c^k$, which falls by the factor $c$ each step. Here $\dt$ is the time
+between samples, one integration step in this chapter's runs, and $c^k =
+\mathrm{e}^{-k\dt/\tau_{\mathrm c}}$ with the correlation time $\tau_{\mathrm
+c} = -\dt/\ln c$, which is $1/\gamma$ for Langevin's $c =
+\mathrm{e}^{-\gamma\dt}$. For $c = 0.95$ and $\dt = \SI{10}{\femto
+\second}$, $\tau_{\mathrm c} = \SI{195.0}{\femto\second}$.
+
+\subsection*{The variance of a correlated mean}
+
+The mean $\bar A$ of $n$ samples has the variance of their sum divided by
+$n^2$. The square of a sum of deviations $\delta A_i = A_i - \ens{A}$ is
+the sum of all their products, $(\sum_i\delta A_i)^2 =
+\sum_i\sum_j\delta A_i\,\delta A_j$, so
+\begin{equation*}
+   \operatorname{var}(\bar A) = \frac{1}{n^2}\sum_{i=1}^n\sum_{j=1}^n
+   \operatorname{cov}(A_i, A_j)
+   = \frac{\sigma_A^2}{n^2}\sum_{i=1}^n\sum_{j=1}^n
+   \operatorname{corr}(\lvert i - j\rvert) ,
+\end{equation*}
+the second form using the autocorrelation function at the lag $\lvert i -
+j\rvert$, since $\operatorname{cov}(A_i, A_j) = \operatorname{cov}(A_j,
+A_i)$. The pairs with $i = j$ number $n$, each contributing 1; those $k$ apart,
+with $k$ from 1 to $n - 1$, number $n - k$ with $j$ after $i$ and as many
+with $j$ before. Collecting them,
+\begin{equation}
+   \operatorname{var}(\bar A)
+   = \frac{\sigma_A^2}{n^2}\Bigl[n + 2\sum_{k=1}^{n-1}(n - k)
+   \operatorname{corr}(k)\Bigr]
+   = \frac{\sigma_A^2}{n}\Bigl[1 + 2\sum_{k=1}^{n-1}\Bigl(1 - \frac kn\Bigr)
+   \operatorname{corr}(k)\Bigr] .
+   \label{eq:cv-var}
+\end{equation}
+For independent samples the bracket is 1 and this is \cref{eq:cv-mean}. A
+run is normally far longer than its memory, so $k/n$ is negligible
+wherever $\operatorname{corr}(k)$ is not, and the bracket settles to the
+statistical inefficiency\cite{Chodera2007}
+\begin{equation*}
+   g = 1 + 2\sum_{k=1}^{\infty}\operatorname{corr}(k) , \qquad
+   \operatorname{var}(\bar A) = \frac{g\,\sigma_A^2}{n} .
+\end{equation*}
+Correlated samples spread the mean $\sqrt g$ times as widely as the same
+number of independent ones: $n$ of them are worth $n_{\mathrm{eff}} = n/g$
+independent samples. For the series of \cref{eq:cv-ou} the sum is
+geometric: the series of \cref{sec:th-langevin} gives $\sum_{k=0}^{m-1}c^k
+= (1 - c^m)/(1 - c)$, which tends to $1/(1 - c)$ as $c^m$ vanishes, and
+without its first term, 1, $\sum_{k\ge1}c^k = c/(1 - c)$, so
+\begin{equation*}
+   g = 1 + \frac{2c}{1 - c} = \frac{1 + c}{1 - c} ,
+\end{equation*}
+which is 39.0 for $c = 0.95$: a run of 10\,000 such samples is worth 256
+independent ones. Writing the run's length as $t_{\mathrm f} = n\dt$ and
+\begin{equation*}
+   \tau_{\mathrm{int}} = \tfrac12g\,\dt , \qquad
+   \operatorname{var}(\bar A) = \frac{\sigma_A^2}{t_{\mathrm f}/
+   (2\tau_{\mathrm{int}})} ,
+\end{equation*}
+puts the result in times: a run holds one independent sample for every
+two integrated correlation times $\tau_{\mathrm{int}}$, however often it
+is sampled, provided the samples lie much closer together than
+$\tau_{\mathrm{int}}$. For the series above $\tau_{\mathrm{int}} =
+\SI{195.0}{\femto\second}$, its $\tau_{\mathrm c}$ to the four figures
+shown: $\tau_{\mathrm{int}} = (\frac12 + \sum_{k\ge1}c^k)\dt$ is the area
+under $\mathrm{e}^{-t/\tau_{\mathrm c}}$ counted in trapezia of width
+$\dt$, whose exact area is $\tau_{\mathrm c}$.
+\Cref{fig:cv-ou}(c) measures the spread of the mean, 4000 series over: for
+$n = 1000$ it is 0.1903, against 0.1956 from \cref{eq:cv-var} and $1/\sqrt
+n = 0.0316$ for independent samples. For runs not many times longer than
+the memory the bracket of \cref{eq:cv-var} has not yet reached $g$: 8.5 at $n = 10$, 31.4
+at $n = 100$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/ou}
+\caption{Samples that remember: the series of \cref{eq:cv-ou} with $c =
+0.95$, samples \SI{10}{\femto\second} apart. (a) 400 samples (teal)
+against 400 independent ones (grey). (b) Its autocorrelation function
+estimated from 10\,000 samples, against the exact $c^k$ (dashed); the
+estimate first reaches zero at the dotted line. (c) The spread of the mean
+of $n$ samples, 4000 series over, against $1/\sqrt n$ for independent
+samples (dotted) and the square root of \cref{eq:cv-var} (dashed).}
+\label{fig:cv-ou}
+\end{figure}
+
+\subsection*{Estimating $g$ from one run}
+
+A run does not know its autocorrelation function and must estimate it.
+With the deviations now taken from the run's own mean, $\delta A_i = A_i -
+\bar A$ in place of $A_i - \ens{A}$, which the run does not know, and
+$s'^2 = \frac1n\sum_i\delta A_i^2$, the estimate at the lag $k$ averages the
+$n - k$ products available,
+\begin{equation*}
+   \widehat{\operatorname{corr}}(k)
+   = \frac{1}{(n - k)\,s'^2}\sum_{i=1}^{n-k}\delta A_i\,\delta A_{i+k} ,
+\end{equation*}
+the hat marking an estimate. Each value carries noise, and beyond the
+decay the estimates scatter about zero (\cref{fig:cv-ou}(b)): by 0.044
+over the lags 300 to 1000 of 10\,000 samples of the series above, more
+than $1/\sqrt n = 0.010$ because the products are themselves correlated.
+Summed over every lag with the weights $1 - k/n$, the estimates give zero
+in place of $g$, whatever the series. Multiplying out,
+$(1 - k/n)\,\widehat{\operatorname{corr}}(k) = \sum_i\delta A_i\,\delta
+A_{i+k}/(n s'^2)$, so
+\begin{equation*}
+   1 + 2\sum_{k=1}^{n-1}\Bigl(1 - \frac kn\Bigr)
+   \widehat{\operatorname{corr}}(k)
+   = \frac{\sum_i\delta A_i^2 + 2\sum_{k\ge1}\sum_i\delta A_i\,\delta
+   A_{i+k}}{n s'^2}
+   = \frac{\bigl(\sum_i\delta A_i\bigr)^2}{n s'^2} = 0 ,
+\end{equation*}
+the middle numerator being the square of the sum written out, and the
+deviations from the run's own mean adding to zero. The sum must therefore
+stop where the signal ends. The rule of Chodera and
+co-workers\cite{Chodera2007} stops it where the estimate first reaches
+zero; pymbar, and the listing below, look for that zero only beyond the
+third lag. For the series of
+\cref{fig:cv-ou}(b) that is the lag 119, \SI{1190}{\femto\second}, and $g$
+comes out at 48.0 against the exact 39.0; over 200 such series the
+estimate averages 41.6 and spreads by 8.7. From a run worth a few hundred
+independent samples $g$ is uncertain by about a fifth, and the error bar,
+which goes as $\sqrt g$, by about a tenth, since a small relative change
+in $g$ changes $\sqrt g$ by half as much. The function
+\texttt{statistical\_inefficiency} of \texttt{mdlab.analysis.stats}
+applies the rule, with the autocorrelation function computed by the fast
+Fourier transform for speed (a tool Chapter~16 explains); in it
+\texttt{c} holds the estimates $\widehat{\operatorname{corr}}(k)$ at the
+lags \texttt{k}:
+
+\begin{code}
+def statistical_inefficiency(series: ArrayLike, mintime: int = 3) -> float:
+    a = np.asarray(series, dtype=float)
+    n = len(a)
+    if np.all(a == a[0]):
+        raise ValueError("a constant series has no fluctuations")
+    c = autocorrelation(a)[1 : n - 1]
+    k = np.arange(1, n - 1)
+    stop = np.nonzero((c <= 0) & (k > mintime))[0]
+    end = stop[0] if len(stop) else len(c)
+    g = 1 + 2 * np.sum(c[:end] * (1 - k[:end] / n))
+    return float(max(g, 1.0))
+\end{code}
+
+\noindent It agrees with the same estimate in the \texttt{timeseries}
+module of the pymbar package to nine figures (\texttt{test\_stats.py}).
+
+\subsection*{The liquid}
+
+The liquid of Chapter~13, followed for \SI{2}{\nano\second} under CSVR
+with $\tau_{\mathrm T} = \SI{1}{\pico\second}$ and sampled every step,
+shows two kinds of memory (\cref{fig:cv-acf}(a)). The potential energy,
+the kinetic energy and the pressure lose part of their correlation within
+\SI{0.1}{\pico\second}, as the atoms rattle against their neighbours:
+$\operatorname{corr}$ is then 0.46, 0.63 and 0.66. The rest fades over
+picoseconds, and sets $g$: 146 for $U$, 211 for $K$ and 188 for $P$, or
+$\tau_{\mathrm{int}}$ of 0.73, 1.05 and \SI{0.94}{\pico\second}. The slow
+part comes from the thermostat. At fixed energy, from the same liquid
+(\cref{fig:cv-acf}(b)), $U$ and $K$, whose sum cannot change, have the
+same function and $\tau_{\mathrm{int}} = \SI{77}{\femto\second}$, and $P$
+has \SI{123}{\femto\second}. Under CSVR the total energy, which only the
+thermostat changes, has $\tau_{\mathrm{int}} = \SI{1.71}{\pico\second}$,
+close to the time $\tau_{\mathrm T}C_V/C_K = \SI{1.59}{\pico\second}$ over
+which \cref{sec:th-berendsen} found a weak coupling to move the energy,
+while the shear component $\mathsf{P}_{xy}$ of the pressure tensor, which
+is not tied to the total energy, has \SI{0.18}{\pico\second} in both runs. The
+length of run an average needs therefore depends on the thermostat as
+well as on the liquid: a gentle coupling lets the energy wander slowly,
+and every quantity tied to the energy inherits that slowness.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/acf}
+\caption{The memory of liquid argon at \SI{135}{\kelvin}, from runs of
+\SI{2}{\nano\second} sampled every \SI{10}{\femto\second}. (a) Under CSVR
+with $\tau_{\mathrm T} = \SI{1}{\pico\second}$: the autocorrelation
+functions of $U$, $K$, $P$ and the shear component $\mathsf{P}_{xy}$. (b)
+The same at fixed energy, where $U$ and $K$ have the same function. (c)
+The estimate of $g$ for $U$ summed up to each lag, under CSVR (teal) and
+at fixed energy (ochre), with the lags at which the rule of this section
+stops each sum (dotted).}
+\label{fig:cv-acf}
+\end{figure}
+
+\Cref{fig:cv-acf}(c) shows the rule at work: under CSVR the running sum
+for $U$ climbs until the estimate first reaches zero at \SI{6.16}{\pico
+\second}, and at fixed energy it levels off before the sum stops at
+\SI{0.70}{\pico\second}. Over the whole run under CSVR, the potential
+energy of the 256 atoms is $U = (-12.8236 \pm
+0.0047)$\,\si{\electronvolt}, $T = (134.81 \pm 0.22)$\,\si{\kelvin} and $P =
+(0.0849 \pm 0.0004)$\,\si{\giga\pascal}. The error bars that leave out
+$\sqrt g$, $s/\sqrt n$ over the 200\,001 samples, would be 12.1, 14.5 and
+13.7 times smaller, and would claim a precision that the run does not
+have.
+
+\begin{keyidea}
+Successive samples of a run are correlated, and $n$ of them spread the
+mean as widely as $n/g$ independent ones, with the statistical
+inefficiency $g = 1 + 2\sum_k\operatorname{corr}(k)$; a run of length
+$t_{\mathrm f}$ holds $t_{\mathrm f}/(2\tau_{\mathrm{int}})$ independent
+samples, $\tau_{\mathrm{int}} = g\dt/2$. The error of the mean is $\sqrt{g\,s^2/n}$, with $g$ estimated
+from the run by summing its autocorrelation function until the estimate
+first reaches zero.
+\end{keyidea}
+
+\notebook{15}{set the memory of a series and compare the naive and the
+correct error bars}
+
+\begin{selfcheck}
+A series has $\operatorname{corr}(k) = 0.5^k$. What is $g$, and how many
+independent samples are 1000 of its samples worth?
+\end{selfcheck}

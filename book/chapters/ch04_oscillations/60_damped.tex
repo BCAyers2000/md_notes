@@ -1,0 +1,148 @@
+%=============================================================================!
+% 4.6  DAMPING                                                                !
+%=============================================================================!
+\section{Damping}
+\label{sec:os-damped}
+
+A block on a spring in air swings for a long time; the same block in
+honey creeps back to its resting place without swinging at all. This
+section adds the drag of \cref{sec:ne-drag} to the spring and solves the
+motion exactly, with one substitution that removes the drag from the
+equation.
+
+\subsection*{The equation and a substitution}
+
+With the drag force $-bv$ of \cref{sec:ne-drag} added to the spring's
+$-kx$, the second law reads $m\ddot{x} = -kx - b\dot{x}$, and dividing by
+$m$,
+\begin{equation}
+   \ddot{x} = -\omega_0^2\,x - \gamma\,\dot{x} ,
+   \qquad \omega_0 = \sqrt{\frac{k}{m}} , \quad \gamma = \frac{b}{m} ,
+   \label{eq:os-damped}
+\end{equation}
+where $\omega_0$ is the angular frequency the block would have without
+drag and $\gamma$ is the drag rate. The drag removes energy, so we expect
+the swing to shrink, and we write
+\begin{equation*}
+   x(t) = \mathrm{e}^{-\gamma t/2}\,y(t) ,
+\end{equation*}
+which separates a shrinking factor from a new unknown $y$. The factor
+$\frac12\gamma$ is chosen because it makes the drag term disappear, as we
+now show. By the product rule and the chain rule, with $\dd\mathrm{e}^{
+-\gamma t/2}/\dd t = -\frac12\gamma\,\mathrm{e}^{-\gamma t/2}$ by the
+exponential toolbox of \cref{sec:ne-drag}, and for $\ddot{x}$ the product
+rule applied to $\dot{x}$, the last step multiplying out the second
+bracket and collecting the two terms in $\dot{y}$,
+\begin{align*}
+   \dot{x} &= \mathrm{e}^{-\gamma t/2}\bigl(\dot{y} - \tfrac12\gamma y\bigr) ,\\
+   \ddot{x} &= \mathrm{e}^{-\gamma t/2}\bigl(\ddot{y} - \tfrac12\gamma\dot{y}\bigr)
+      - \tfrac12\gamma\,\mathrm{e}^{-\gamma t/2}\bigl(\dot{y}
+      - \tfrac12\gamma y\bigr)
+   = \mathrm{e}^{-\gamma t/2}\bigl(\ddot{y} - \gamma\dot{y}
+      + \tfrac14\gamma^2 y\bigr) .
+\end{align*}
+Putting these into \cref{eq:os-damped}, dividing by $\mathrm{e}^{-\gamma
+t/2}$, which is never zero, and multiplying out the bracket on the right,
+\begin{align*}
+   \ddot{y} - \gamma\dot{y} + \tfrac14\gamma^2 y
+   &= -\omega_0^2 y - \gamma\dot{y} + \tfrac12\gamma^2 y\\
+   \ddot{y} &= -\omega_0^2 y + \tfrac12\gamma^2 y - \tfrac14\gamma^2 y
+      && \text{adding $\gamma\dot{y} - \tfrac14\gamma^2 y$ to both sides}\\
+   &= -\bigl(\omega_0^2 - \tfrac14\gamma^2\bigr)\,y .
+\end{align*}
+The terms in $\dot{y}$ have cancelled: $y$ obeys an equation without drag,
+whose solution depends on the sign of $\omega_0^2 - \frac14\gamma^2$.
+
+\subsection*{Three kinds of motion}
+
+\emph{Light drag}, $\frac12\gamma < \omega_0$. Then $\omega_0^2 -
+\frac14\gamma^2$ is positive, and $y$ is a spring with angular frequency
+\begin{equation*}
+   \omega_{\mathrm d} = \sqrt{\omega_0^2 - \tfrac14\gamma^2} ,
+\end{equation*}
+so $y = c_1\cos\omega_{\mathrm d}t + c_2\sin\omega_{\mathrm d}t$, as in
+\cref{sec:ne-spring}, and
+\begin{equation*}
+   x(t) = \mathrm{e}^{-\gamma t/2}\bigl(c_1\cos\omega_{\mathrm d}t
+   + c_2\sin\omega_{\mathrm d}t\bigr) :
+\end{equation*}
+an oscillation whose swing shrinks by the factor $\mathrm{e}^{-\gamma
+t/2}$. Setting $t = 0$ gives $c_1 = x_0$, and the formula for $\dot{x}$
+above gives $v_0 = \dot{y}(0) - \frac12\gamma x_0 = c_2\omega_{\mathrm d} -
+\frac12\gamma x_0$, so $c_2 = (v_0 + \frac12\gamma x_0)/\omega_{\mathrm d}$.
+The block of \cref{sec:os-circle}, with $\omega_0 =
+\SI{10}{\radian\per\second}$, in a liquid with $\gamma =
+\SI{4}{\per\second}$, swings with $\omega_{\mathrm d} = \sqrt{100 - 4} =
+\SI{9.798}{\radian\per\second}$, a period of $2\pi/9.798 =
+\SI{0.641}{\second}$, a little longer than the $2\pi/10 =
+\SI{0.628}{\second}$ without drag. Its swing halves when $\mathrm{e}^{
+-\gamma t/2} = 0.5$; taking the natural logarithm of both sides,
+$-\frac12\gamma t = \ln 0.5 = -0.693$, so the swing halves every
+$0.693/(\frac12\gamma) = \SI{0.347}{\second}$. This case is called under-damped.
+
+\emph{Heavy drag}, $\frac12\gamma > \omega_0$. Then $\ddot{y} = \kappa^2
+y$ with $\kappa = \sqrt{\frac14\gamma^2 - \omega_0^2}$. By the exponential
+toolbox, $\mathrm{e}^{\kappa t}$ has second derivative $\kappa^2\mathrm{e}^{
+\kappa t}$, and so has $\mathrm{e}^{-\kappa t}$, so $y = c_1\mathrm{e}^{
+\kappa t} + c_2\mathrm{e}^{-\kappa t}$ and
+\begin{equation*}
+   x(t) = c_1\,\mathrm{e}^{-(\gamma/2 - \kappa)t}
+   + c_2\,\mathrm{e}^{-(\gamma/2 + \kappa)t} .
+\end{equation*}
+Since $\kappa^2 = \frac14\gamma^2 - \omega_0^2$ is less than
+$\frac14\gamma^2$, $\kappa < \frac12\gamma$, so both exponents are
+negative and both terms die away. Multiplying $x = 0$ by $\mathrm{e}^{
+(\gamma/2 + \kappa)t}$ gives $c_1\mathrm{e}^{2\kappa t} = -c_2$, which
+holds at one instant at most, since $\mathrm{e}^{2\kappa t}$ never takes a
+value twice: the block passes its resting place at most once and never
+swings to and fro, but creeps back. This case is called
+over-damped. With $\gamma = \SI{40}{\per\second}$, $\kappa = \sqrt{400 -
+100} = \SI{17.32}{\per\second}$, and the slower term decays at only
+$20 - 17.32 = \SI{2.68}{\per\second}$, so the creep is slow.
+
+\emph{Critical drag}, $\frac12\gamma = \omega_0$. Then $\ddot{y} = 0$, so
+$y = c_1 + c_2 t$ by two integrations, and $x = (c_1 + c_2t)\,\mathrm{e}^{
+-\gamma t/2}$. Since $c_1 + c_2t$ is zero at one instant at most, this
+critically damped motion passes the resting place at most once, and not
+at all when released from rest, where $c_1 = x_0$ and, by the formula
+for $\dot{x}$, $c_2 = \frac12\gamma x_0$, of the same sign.
+
+For the block released from rest at $x_0 = \SI{0.04}{\metre}$, critical
+drag, $\gamma = \SI{20}{\per\second}$, gives $c_2 = 10\times0.04 =
+\SI{0.4}{\metre\per\second}$, and half a second after release the block
+is $(0.04 + 0.4\times0.5)\,\mathrm{e}^{-5} = \SI{0.16}{\centi\metre}$ out.
+With $\gamma = \SI{40}{\per\second}$, $y(0) = c_1 + c_2 = 0.04$ and, since
+$\dot{x}(0) = \dot{y}(0) - \frac12\gamma x_0 = 0$, $\dot{y}(0) =
+\kappa(c_1 - c_2) = \frac12\gamma x_0 = 0.8$; these give $c_1 =
+\SI{0.0431}{\metre}$ and $c_2 = \SI{-0.0031}{\metre}$, and at half a
+second $x = 0.0431\,\mathrm{e}^{-2.68\times0.5} = \SI{1.13}{\centi
+\metre}$, the second term being negligible. The critically damped block
+returns sooner (\cref{fig:os-damped}).
+
+In each case two constants match any starting position and velocity, so by
+the uniqueness of solutions (\cref{sec:ne-equations}) these formulas are
+the motion. The energy falls throughout, at the rate $-bv^2$ of
+\cref{sec:en-friction}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/damped}
+\caption{The block of \cref{sec:os-circle}, with $\omega_0 =
+\SI{10}{\radian\per\second}$, released from rest \SI{4}{\centi\metre} out
+in liquids with three drag rates. The under-damped block turns back on
+the dotted curves $\pm\SI{4}{\centi\metre}\times\mathrm{e}^{-\gamma t/2}$;
+the critically damped one returns without swinging past zero; the
+over-damped one creeps back more slowly.}
+\label{fig:os-damped}
+\end{figure}
+
+Chapter~13 adds this drag to the motion of atoms, together with
+random kicks that make up for the energy it removes, to hold a simulation
+at a chosen temperature; the drag rate $\gamma$ there plays the same role
+as here.
+
+\begin{selfcheck}
+For the block with $\omega_0 = \SI{10}{\radian\per\second}$, what drag rate
+makes the motion critically damped? With $\gamma = \SI{8}{\per\second}$,
+what is the period of the swing?
+\end{selfcheck}

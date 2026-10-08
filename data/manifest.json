@@ -1,0 +1,2238 @@
+{
+  "version": 1,
+  "release_tag": "data-v1",
+  "files": [
+    {
+      "path": "ch08_potentials/cutoff_runs.npz",
+      "chapter": "ch08_potentials",
+      "size": 35450,
+      "sha256": "e2c327947de52ff5dbd3e15ccea3cfd001e7fc57b00bad0ebaa9a0b53b8b3a7b",
+      "storage": "git"
+    },
+    {
+      "path": "ch09_integrators/long_runs.npz",
+      "chapter": "ch09_integrators",
+      "size": 131078,
+      "sha256": "5d6437e4677dc93917b43324067d07bccd6c4d56fc0824cf7de57ecc15b9edd9",
+      "storage": "git"
+    },
+    {
+      "path": "ch10_code/runs.npz",
+      "chapter": "ch10_code",
+      "size": 31756,
+      "sha256": "76206dc0651397a2e04fea6d910205306beb184d89decd95dd2e9bad0ed4e528",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/frames.gif",
+      "chapter": "ch11_constraints",
+      "size": 3457478,
+      "sha256": "dc94e6e694dc3476c551dcf79c84f7b97a839826e7e580c839bb1f9b98d0fbb2",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_0.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 132004,
+      "sha256": "0b1095ce4db81e32874993f295cdaa25bd0d2ca19ddb18f1ee7af7d55b99bd1b",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_1.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 107404,
+      "sha256": "32ecaf6d094f112689555ae5667ce2f60119a271d909ddc531d3ae915df69f7c",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 113644,
+      "sha256": "3699d09ee03d595069939301e932e5e5da1b8188e63da4b0be60601852e6c3a9",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_2.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 102354,
+      "sha256": "7866a27171af615f26ff03684dfbfb5a17d71fb9aeb0d9b547e12a7f2fe66a29",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 104173,
+      "sha256": "b324fac6203feef68b83d007acb1fbb9dc6f5359d89d3a00a2cb5f80dc9f65c2",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_3.npz",
+      "chapter": "ch11_constraints",
+      "size": 96639,
+      "sha256": "528f813e5c7bbf6cbfb1c4e0d34d6a209be64219d23e89b65ebd8e1f0d0bf738",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_4.npz",
+      "chapter": "ch11_constraints",
+      "size": 99410,
+      "sha256": "5bbc970cc62c101c3d07ea362b325f6335c46b1f61266caf12ea4dabe88de1fd",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_hmr_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 113512,
+      "sha256": "fb548987adb977e54a136c1fa5e7f2e5419ebe19510558547d1081a082b7d3fa",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_hmr_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 103990,
+      "sha256": "de482fad38f921d1e1305742af8c2cbb5ee211830974c4436cf301bffd59cb3e",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_hmr_3.npz",
+      "chapter": "ch11_constraints",
+      "size": 96665,
+      "sha256": "b6ba9014b675b6f8d2bcce1fe2be3d52cc0acf6cb8191292e4a9040bae6d5ba9",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_hmr_4.npz",
+      "chapter": "ch11_constraints",
+      "size": 99337,
+      "sha256": "a6bd97052435c3d8a29e8527a65af33bdce41d0cf24f59236f1d58715c4a06eb",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/bonds_hmr_5.npz",
+      "chapter": "ch11_constraints",
+      "size": 98525,
+      "sha256": "f5e7df923c0f6b7cf4886918feb2f2c2e251a7de9de368c528d08126e1a4e800",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_cutoff.npz",
+      "chapter": "ch11_constraints",
+      "size": 206498,
+      "sha256": "9722aeb9cbdea77d8baedc3a3e0889a131bcc5d14801883d54756caf1c72e643",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_drift.npz",
+      "chapter": "ch11_constraints",
+      "size": 205895,
+      "sha256": "d31d7cb4ed54e4cfee0289d819001f6c298a92fb4ace730315bac0d34728220b",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_overlap.npz",
+      "chapter": "ch11_constraints",
+      "size": 10467,
+      "sha256": "7879395a48f6be7df04de4e627c7d1f6176e1fba6fee6acf07665a74d7cee685",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_step.npz",
+      "chapter": "ch11_constraints",
+      "size": 198181,
+      "sha256": "617d4f374b732fb9175980c731024a9ff5fb88354f72e03a9e6066992bc61fa0",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_tolerance.npz",
+      "chapter": "ch11_constraints",
+      "size": 209092,
+      "sha256": "2bbbdde37b1abcbe7235c694efbe3720d5c84cb9d594cc1967b25bbe3ba76248",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_units.npz",
+      "chapter": "ch11_constraints",
+      "size": 206019,
+      "sha256": "249dce4fa62352e6457829ee2983616778104557bfa7261732b223308b93a7b7",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/fault_wrapped.npz",
+      "chapter": "ch11_constraints",
+      "size": 5875,
+      "sha256": "295ed0dba5aa1612baf553d04aa60ed31fe28da8500b354e3cf1f1eed5d58bfa",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_0.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 157497,
+      "sha256": "09caf8af6a245b235585ddbf83053fc03044f480d2978832b4e290038642c336",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_0.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 125624,
+      "sha256": "d8857196cc3c4cfe6e6cb1a9ec6cde5290349f4bf9f1ffc9a7b51211589f3ef0",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_0.75.npz",
+      "chapter": "ch11_constraints",
+      "size": 111030,
+      "sha256": "1b1c0392d84d3267f3b7053fe5a8dabcd8e8b1b5aeccdbc3de571e9875e409e8",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_1.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 106985,
+      "sha256": "8586a83a7a7260726efbc2859ea71a5d8ad75ffe03f8c68d3840a6fc22537f2f",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_1.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 104813,
+      "sha256": "85488ffb416ad24fba6744af4e2ca351d3a5183533f7e64c10fcd5e706e00d18",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 109891,
+      "sha256": "55459dcf6fd8f0af7c57de41052edf31710cc5b76a9d1a5c7f1d5e89591e4ba1",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/flexible_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 101985,
+      "sha256": "f0446ce8963f3c79fa8623b43c28d01a2df10cccd664caa96da77ae5d7f22920",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_0.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 157833,
+      "sha256": "f6f8e6af272d0701c225e2bc06cbd15c9508cbd794f8bdb013dd81ca39b69d02",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_0.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 126071,
+      "sha256": "fec2535bb61f348b2d13949a6e413c0f11f4893000cbcd4564defba101dfe48f",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_0.75.npz",
+      "chapter": "ch11_constraints",
+      "size": 111406,
+      "sha256": "56a337f7b4ae065554fbc27da0532dfea2d2f7cb1c78fb6cdbbaae53048dc1ce",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_1.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 107405,
+      "sha256": "c39a5b8c9977987b3d714d8edeb3de01bbd7825745290951048bc1b7783bf08e",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_1.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 105252,
+      "sha256": "237d9ae80af8229592910e075c13689877dc24eb01305aaa05b7290298e92923",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_1.75.npz",
+      "chapter": "ch11_constraints",
+      "size": 99362,
+      "sha256": "175777a571222432d48812181461bbff2454b0e2adfed7c14008f9bc1f0a2ce1",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 110222,
+      "sha256": "e3c4a461cf068b6a6e2d9c09d2bd72b006af63deb325d6fba1f7e0c140321dc6",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_2.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 101740,
+      "sha256": "678e5b4a72531241fba0960b71c1d142f9799b336119927d869c0ec050ad6dbb",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_2.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 100986,
+      "sha256": "49fd8e05f62ae1ad7ad29d588f09d7fd29e61301bde0ccff6b300e20a772d258",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_2.75.npz",
+      "chapter": "ch11_constraints",
+      "size": 100428,
+      "sha256": "501ef95609139434afd580f6615da0488391e510fa126fcbd8ca5c4a11beb623",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 102411,
+      "sha256": "c29de2ff6c5d45d1e13843b4c6b401735241df001c8e467e9063a031f29d7bf8",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_2_inner0.125.npz",
+      "chapter": "ch11_constraints",
+      "size": 102394,
+      "sha256": "53de6fb4868bc34a1915363d350974e55f76adf7b3781a10ccfd729bf2c20c0a",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_3.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 99565,
+      "sha256": "4273baa4bed414281c6fbb819b74eb29d452ee9d7bcc07580237840fb702acc3",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_3.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 99175,
+      "sha256": "cefc2578b30219ae04bfbb0ccde35fd08a10c1770ced4f81139571c660b9ea0b",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_3.75.npz",
+      "chapter": "ch11_constraints",
+      "size": 98936,
+      "sha256": "f126a5aa63e5bea10deca3e2305e0e5b0ab32c9e4b605129f803d6dd1eb128e4",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_3.npz",
+      "chapter": "ch11_constraints",
+      "size": 95459,
+      "sha256": "8efc47010f6e74787bfedc77327badb3b712fb729c3bbeb968c3d98be5271196",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_4.25.npz",
+      "chapter": "ch11_constraints",
+      "size": 94002,
+      "sha256": "b00394b16289bc9940357b67054a4d3ef76c47c6401d80eef3f8dab55a4383e5",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_4.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 98294,
+      "sha256": "97e617f423fe6a752d21718bd708c6742fdfcd0a027c043b12c614475d724cd4",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/respa_4.npz",
+      "chapter": "ch11_constraints",
+      "size": 98481,
+      "sha256": "4f953d2bf73c54b1bc62aa48524a1f464365cd152737755843314afe88c0c0e4",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_0.5.npz",
+      "chapter": "ch11_constraints",
+      "size": 256570,
+      "sha256": "c15d90ea8f36e7e36a7fde71478ba881c66c64597e3fb9a54aeec8b3cf2e4645",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 219772,
+      "sha256": "bcd563cf119f11affd647b1a7d033292e63648d24543bb32c858657b1d490394",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 201403,
+      "sha256": "0ca40147afc777fed0f345825c85dc9292a65233a953170ab7c383bc7581fa76",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_3.npz",
+      "chapter": "ch11_constraints",
+      "size": 191137,
+      "sha256": "3dad788c6225338a87afd0c2abc519a3f982fb3a2de3817cc283d6f6ed8567db",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_4.npz",
+      "chapter": "ch11_constraints",
+      "size": 196628,
+      "sha256": "569a98c3da1d6c925f9252907872399d530109731db152905fabaa0bf8ecaaa4",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_5.npz",
+      "chapter": "ch11_constraints",
+      "size": 190630,
+      "sha256": "bb80740f236199f3e5f5f3ddcf40778ffac85049a47d351f254fa7d1b92938e6",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_6.npz",
+      "chapter": "ch11_constraints",
+      "size": 193723,
+      "sha256": "1a322a76079e70196339e0752e634507f3babc061880275f184ac4efa0467d8b",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_7.npz",
+      "chapter": "ch11_constraints",
+      "size": 188521,
+      "sha256": "31b8945dffa470d67c9219921d1145f914e65d6cd4e06672494f4eb434c07d4b",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_healthy.npz",
+      "chapter": "ch11_constraints",
+      "size": 983763,
+      "sha256": "747ff52275b2f37eeda483c1746ae2cf9428236af03ac6e0e78ccc1059039fe9",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_1.npz",
+      "chapter": "ch11_constraints",
+      "size": 219647,
+      "sha256": "230edff5feb8cb6d54169a51ea3149fff3945673981d6f4f349a7e3cc98cfd7e",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_2.npz",
+      "chapter": "ch11_constraints",
+      "size": 201410,
+      "sha256": "22dcac170afd9f570731da14bc3843aae7751b5947fdab11233928305fc135db",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_3.npz",
+      "chapter": "ch11_constraints",
+      "size": 191020,
+      "sha256": "8a1339f1bd79f625c48f8c79b9c9576f1fbbeff3143eacbc62196fa4b9805b0a",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_4.npz",
+      "chapter": "ch11_constraints",
+      "size": 196598,
+      "sha256": "5a7780a85c231a4ad3f77aafb7438750c5a8675dd4467e1825c1842fda1783e4",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_5.npz",
+      "chapter": "ch11_constraints",
+      "size": 190530,
+      "sha256": "014b6d5da455184263bd897fc82e7d698ca593064c36980387e7c0b9a632ef9a",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_6.npz",
+      "chapter": "ch11_constraints",
+      "size": 193631,
+      "sha256": "ed825cebd785ed76637164242b0210346ad930c77ce59b0d12b971ebc8ecdd4f",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_7.npz",
+      "chapter": "ch11_constraints",
+      "size": 188452,
+      "sha256": "13071756358b5bcbc67b1a4a2a34ef1fa036b47e7c50e6b559bdf0353023a0fb",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/runs/rigid_hmr_8.npz",
+      "chapter": "ch11_constraints",
+      "size": 191978,
+      "sha256": "400593a0e28a5f93077f245ee9749f9ab89fd94f0bfbafb3e126b413ce5ae41a",
+      "storage": "git"
+    },
+    {
+      "path": "ch11_constraints/water_start.npz",
+      "chapter": "ch11_constraints",
+      "size": 21586,
+      "sha256": "5ac15f157cfd0880e1236c23c21dfe65b6c0b79f41ce84724bbdcc1b400895d0",
+      "storage": "git"
+    },
+    {
+      "path": "ch12_ensembles/exchange.gif",
+      "chapter": "ch12_ensembles",
+      "size": 881174,
+      "sha256": "c2b521a827f8ca4fa1008812e0620fad6e86a5c16bd342c82230a4651d7dcb65",
+      "storage": "git"
+    },
+    {
+      "path": "ch12_ensembles/runs/drift.npz",
+      "chapter": "ch12_ensembles",
+      "size": 4726841,
+      "sha256": "d1492dd2aa2575847e8958cb3a1fac6a074ca01b6e25dff4d6518b5c8ff5435c",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/heat_100.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11859419,
+      "sha256": "800d94bf435692ab585155b8922f7a543f636813957dccd3de4f64409422d0c8",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/heat_115.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11861320,
+      "sha256": "3fb939219b1d71097652c41a6ee1dc973d875ab636dfb88e41cc25b6ffd43cb9",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/heat_130.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11862597,
+      "sha256": "d481e2be81c9aa8b152569c64eb25d34bae647593c98664bbae2ecf4c2eaaa38",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/heat_145.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11864614,
+      "sha256": "ecc9d126b8e34c229081cd01dce0f0384cbff96edc923ba48af64f9040d24f86",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/heat_160.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11865268,
+      "sha256": "e046b183196fc0e044e8ca4d380c5d576c2905ae5ff576c514131e86088cbcff",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/lattice.npz",
+      "chapter": "ch12_ensembles",
+      "size": 4709974,
+      "sha256": "e627c073c0d3934d17e97fbd8a9204607f7f1763b429869e6d4ab1014a18f251",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/liquid.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11863198,
+      "sha256": "45801c96802f97f482e3112e80bccf6c0910d78acd4e059d848a93874224a5c5",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/mixture_masses.npz",
+      "chapter": "ch12_ensembles",
+      "size": 23569711,
+      "sha256": "431739a11a83f003b526a04e7dedc3841c8b826408029a29281be5dcac5cec32",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/mixture_massless.npz",
+      "chapter": "ch12_ensembles",
+      "size": 23565776,
+      "sha256": "2f827bbb80ae36c8527b7df347b830b0818283773a340e9f6834fe626bdfa9b8",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/size_108.npz",
+      "chapter": "ch12_ensembles",
+      "size": 5062303,
+      "sha256": "4d9c31427ecd16ec3a6b0c25b9c89cc108425ebdb5d39421027902313f94cadd",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/size_256.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11863415,
+      "sha256": "2dbc1fd54c3df8c6400e3865e1d9d593668b653901680657d180e7ac74d54738",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/size_500.npz",
+      "chapter": "ch12_ensembles",
+      "size": 23057662,
+      "sha256": "2dfc88b73aeacc98cae9cf398f3e42fd420b76113999ab0bc8349ab9b9b27ba0",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/size_864.npz",
+      "chapter": "ch12_ensembles",
+      "size": 39717204,
+      "sha256": "08e32a5de9083dc188040662a75f3d0d26c7add580b16a79739cd591ffaa156a",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch12_ensembles/runs/uniform.npz",
+      "chapter": "ch12_ensembles",
+      "size": 11788792,
+      "sha256": "d76d829d5f4f22f53d5a2e3d2f047ac4e19e56285b8372ac99dbea6f7040cfe5",
+      "archive": "mdbook-data-ch12_ensembles-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_0.1_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2389407,
+      "sha256": "91b0592d2caddc875d603ec0cdfacbda37c744faee7bffdd5c86a3f178aa595d",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_0.1_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2393378,
+      "sha256": "e4143fbe8e219c3091484b2423e7fe4eaa53fcd3f01097bc03c8f9daa2aeff55",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_0.1_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392774,
+      "sha256": "d7651ffb920233ea180c5137746813c9510d3abbb566c902bb1e98184dac8a6c",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_10_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390833,
+      "sha256": "1bd1040a51c99500d40315395ce0fa41e5bf1b8de06b00773b3caa5a782bf6d1",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_10_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390354,
+      "sha256": "a3ca5b33e0a40a794f1bbee480d2150c7e9c5a7a44e44e1583854ca10eade43a",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_10_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2388178,
+      "sha256": "db10c49bddd2fe9d2325484ecd751f031c3f3fe02bc76dea92a41e9e8baf2d86",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_1_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392183,
+      "sha256": "8b7a9d0e07ab07af90a460ee5335f369ccc049c0ecab266abee4e55b9aafe068",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_1_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390746,
+      "sha256": "822c35e4f3389539e3d31aa89ef0ed9526961534c8c092c8a67ff47a058e3f43",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/andersen_1_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390752,
+      "sha256": "c9124c4d2a24871eabb52321f5d667f123c3a24d87d8f015949833b6c161763b",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_1000_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392138,
+      "sha256": "e6e13c0182988155e1929d2988105af7aaed7bf9fe00b3ccd573775109c159de",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_1000_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391301,
+      "sha256": "336206c13a245726c10bae5d3bb4879e55818fa65316d2ebcc9e0b5a16383c8a",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_1000_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390894,
+      "sha256": "5c4bfd8efc5ac3a6e7a358756bda0042ead44a1dd72a3ffbe84647923976fdd4",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_100_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392790,
+      "sha256": "03e8ee541796aa6456a3b4030eac1bb555e7be69731b492d580be8b0e0a07caf",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_100_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391756,
+      "sha256": "8b13a7f424842009f608fa39883ea5d551666cb8ccc4abcf8dd3ecaf86daa875",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/berendsen_100_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391551,
+      "sha256": "c6b462fdf00419292c99ee48e686c4b5f417d6803eb0dde225fcc84646edc909",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_1000_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392652,
+      "sha256": "11e70ee8ac575c1e3569ae7c70316888800a878fd586604d8544178a7ea885c5",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_1000_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392348,
+      "sha256": "d456c2d4073b23373e20acaf52f1ce6001c7572835556aa4bd194a6e031e16c9",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_1000_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391286,
+      "sha256": "5155a55537e5b726ea30107f95b956f31c241b5ec2bfbae0cd5d957ff18cd4c7",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_100_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392737,
+      "sha256": "e8971f9a720c48be58fb7eef32fcca2d754377aa2eb9e25b9d48a25ae5af6475",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_100_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392673,
+      "sha256": "7b6917ccf1d677ac800fb5fea32697e3607cc429a1d5560c4794ca74ff335973",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_100_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391444,
+      "sha256": "b92dad17cba3c8792df8d9f5e947e5e2c495d6526a057f13240210f89a4e5c87",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_stride_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392422,
+      "sha256": "07ade7d4c0b0dafd4e51edd8532c5b3503218842b6cafaab0de943b0ab297864",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/csvr_wrong_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392117,
+      "sha256": "0c210da4ea3c62b8841bbc9352a0c78b4b2bb4d711e84e7a062a4b09c49efcaf",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/hot_berendsen.npz",
+      "chapter": "ch13_thermostats",
+      "size": 489432,
+      "sha256": "dc641b7311a6397a2c774f03fdfcc641dd6d80b130f7e2d5429d616e70552982",
+      "storage": "git"
+    },
+    {
+      "path": "ch13_thermostats/runs/hot_csvr.npz",
+      "chapter": "ch13_thermostats",
+      "size": 489438,
+      "sha256": "8d6fde8740406d5a47e1d8158190e3104606c4ce60d71647395681e87ee7ce17",
+      "storage": "git"
+    },
+    {
+      "path": "ch13_thermostats/runs/hot_langevin.npz",
+      "chapter": "ch13_thermostats",
+      "size": 489330,
+      "sha256": "f7566ab457f3f70812cbefb22e3686a50558466451a6a834bd143a8be0a01785",
+      "storage": "git"
+    },
+    {
+      "path": "ch13_thermostats/runs/hot_nhc.npz",
+      "chapter": "ch13_thermostats",
+      "size": 489391,
+      "sha256": "fc7cf2cd209bfd90b876f86f6049a79c4321327fa8d47227c7bd18a9e4afb743",
+      "storage": "git"
+    },
+    {
+      "path": "ch13_thermostats/runs/ice_berendsen.npz",
+      "chapter": "ch13_thermostats",
+      "size": 4728568,
+      "sha256": "3201fde768f1e35c7df9ee8f883a001faeee4dd868edd8a18a1f58361d65c424",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/ice_csvr.npz",
+      "chapter": "ch13_thermostats",
+      "size": 4731380,
+      "sha256": "26e6e5bc8c3bf5c727c15c368187b9a378a2b08d07be63fd6e028a632c008591",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/ice_rescale.npz",
+      "chapter": "ch13_thermostats",
+      "size": 4729405,
+      "sha256": "2eb91d79db69fac22afa3df4240cf58f713c335bb43947d59bc64f9cc32a2747",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_0.1_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2393257,
+      "sha256": "41d153bd08912669181dc97c032c9074e804054b8c48a8b09607a7acc1cca31b",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_0.1_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2389378,
+      "sha256": "f7c0077346e514dee6a04c263aad51a64ec180e54af2e7d5f84108445afce5d8",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_0.1_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2387259,
+      "sha256": "f1006c38fbbb401592580919075d85a4bc23db4f6b4f8e6164262120743f41dd",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_10_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392033,
+      "sha256": "34345178714789ee0d4973355cd4dfd8d565943f947843649c2717985aa79b3f",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_10_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391505,
+      "sha256": "7a9842b526bf3a876973191a80fb095d08a379c868ec0693a485815da451499f",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_10_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2389909,
+      "sha256": "7eecdb9ca2b42657227d586dbe66acef5b452af2c1cc8feaffd8e79567813c78",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_1_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2393230,
+      "sha256": "3797f6f932dce3f39dd6ee49d8d4e4e8f35423109da79c0c8752c1544d7bbafa",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_1_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2390903,
+      "sha256": "e9a85db5c5e0231076d36d848757497a6fbf11238682d35013f0d42cc70c1f61",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/langevin_1_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2389950,
+      "sha256": "fc996a0b3a3e3865c1663897680c975d07ca72abd54178b5664fc3d8d9c3ea60",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_andersen.npz",
+      "chapter": "ch13_thermostats",
+      "size": 313196048,
+      "sha256": "4f2411d9620e8988a8f0b7d52075211f592b2ccb29c8ac99e5c79de65a194596",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_berendsen.npz",
+      "chapter": "ch13_thermostats",
+      "size": 359622536,
+      "sha256": "d024ced49bd33f4a1b41a414a18d92cfcc6552a4872527b50fea90980122ff94",
+      "archive": "mdbook-data-ch13_thermostats-01.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_csvr.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381580309,
+      "sha256": "8e816e0dba46308ec680588d5a29f2c235d2a45e002f62b31aa0c28bd626646a",
+      "archive": "mdbook-data-ch13_thermostats-02.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_0.0001.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382459967,
+      "sha256": "217c639c3b81c4ff95d8736e3e21715b9fb25fd552b49c414a707ec34b89bb9e",
+      "archive": "mdbook-data-ch13_thermostats-02.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_0.0003.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381883140,
+      "sha256": "862fd89e256d869b82f9c9a2d6ad5b48b2a39280a4e21b07f0d4cc7193fc25e7",
+      "archive": "mdbook-data-ch13_thermostats-03.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_0.001.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381536419,
+      "sha256": "4e6ff1efeb8e1fe8fb04f5d0087c9062726ad2d70e9695ecab29e379250b36ca",
+      "archive": "mdbook-data-ch13_thermostats-03.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_0.003.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381567319,
+      "sha256": "a786aa2cafb0a0349d2b0ee6253e9982aec99e7a09f4f685de35e3c91ddb9b76",
+      "archive": "mdbook-data-ch13_thermostats-04.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_1e-05.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381729342,
+      "sha256": "7e6119ba6fe03723654be4b81933a3037a084bcc5a6c4348a10993589b57d2f1",
+      "archive": "mdbook-data-ch13_thermostats-04.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_hollow_3e-05.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382373423,
+      "sha256": "1026e26c3791bc96140aa84ff405b1cb430196196ab81eed9752a97616c42d5d",
+      "archive": "mdbook-data-ch13_thermostats-05.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.0001.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382720113,
+      "sha256": "f874d80fd5e8160f1abb070b6462a3ee12aad59a8d55e95190ed76bc8c739d18",
+      "archive": "mdbook-data-ch13_thermostats-05.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.0003.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382065266,
+      "sha256": "cb47803425f3de9fafcc86ac3eee66094e4c77fd69ab340666e3fbd6cfce6b59",
+      "archive": "mdbook-data-ch13_thermostats-06.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.001.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381735603,
+      "sha256": "28f4f821f2bd65b288abdb624aa34ca2c06a0c9264743fbaef8277c434189c41",
+      "archive": "mdbook-data-ch13_thermostats-06.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.003.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381785342,
+      "sha256": "15252c574b724776b640148f56718ea0c1d8d9053c94390bf6fa96617d1db1ce",
+      "archive": "mdbook-data-ch13_thermostats-07.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.01.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382014729,
+      "sha256": "059b1163d3adced1fb165fdc725a4fb6e63ab581dc893e0734f7d48d1e5a612b",
+      "archive": "mdbook-data-ch13_thermostats-07.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.03.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382275402,
+      "sha256": "c0024541311c23d24298cf2cb7e03680e8e69fc541812370845cad6e69028673",
+      "archive": "mdbook-data-ch13_thermostats-08.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382551837,
+      "sha256": "f68507a2f4a02c7237d635325d15b04bfae83a5f4fdcb8cced765a07f7da851e",
+      "archive": "mdbook-data-ch13_thermostats-08.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.3.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382796858,
+      "sha256": "3666f1a21ca96523a29eae92355e7c5a799baf0d6d95c819f984fc58f5ddbc9f",
+      "archive": "mdbook-data-ch13_thermostats-09.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 305799873,
+      "sha256": "de0009309787d2d4b960e2bc3a912bcd4bfd464fa922962da154eb42f811290f",
+      "archive": "mdbook-data-ch13_thermostats-09.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_1e-05.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382957132,
+      "sha256": "bee2bd0ab07929b1cb924f8a28d54b498f9430778be36778174ef4570f8cb219",
+      "archive": "mdbook-data-ch13_thermostats-10.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_langevin_3e-05.npz",
+      "chapter": "ch13_thermostats",
+      "size": 383027415,
+      "sha256": "f090caa067c5231e230e22aa70adc36345712c818f81543ea5b0cf92b36a0677",
+      "archive": "mdbook-data-ch13_thermostats-10.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_nh.npz",
+      "chapter": "ch13_thermostats",
+      "size": 382992675,
+      "sha256": "34a0a7f91aa7193cf06f53fc3c734da338066a41aa3f1da9c1e3e2ac215ca58c",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/li_nhc.npz",
+      "chapter": "ch13_thermostats",
+      "size": 381686888,
+      "sha256": "ec1e1793e30c09192d832f27e128a234a03ff531e7d193ae586ea50ab69f8267",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_1000_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392497,
+      "sha256": "0eef09b1046ecebcdd191846866750eea94df0885c192345a939a58956abd357",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_1000_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392108,
+      "sha256": "fb9000f29484df07453fc522f885cfcb78480b12f784e1a23ebc58c92d98e1fb",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_1000_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391067,
+      "sha256": "d0fc6644187d36534c56fdb03d85cfbf35934e1102468236b9c8da600cc3142b",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_100_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392477,
+      "sha256": "de188460e7b62126d7869b1410179931410cf409976014d61baf384850f7797b",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_100_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391649,
+      "sha256": "123d3d962168b17ea56c61c10896ac3c0f1144a0bdcea41acf68b0bc8fd21045",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nh_100_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391559,
+      "sha256": "5e30047fc16adf79bf73d78be6426afaac4f8da2ddaf3bbdd1a29a653fdfa3b8",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_1000_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392293,
+      "sha256": "b5d35647f0e2637545759c6007216180a5a84991fb416a2675eb5cb99f0f47b1",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_1000_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392205,
+      "sha256": "d65a93b1f415f0746077611e5180c6df62d7d27fc7a49228891735bd02f07aa4",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_1000_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391032,
+      "sha256": "62044ba6958a2b8ba031033fa273739b540f5f79135c934c79388dca022dbf23",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_100_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392365,
+      "sha256": "f9c527daa34de2ff4e9da6954795df8603f84547c1640cf7e3ebef3bbf678525",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_100_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392210,
+      "sha256": "2eb8dd4236cf42cb7917b08121b4bd7441c689cb65527fa0345c6eea243adef9",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nhc_100_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2391100,
+      "sha256": "f8ba1cc5b2fc76caf74f3dfa8110fd9c5942765e5da44e41d24e87ff7f926bd7",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nve_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2384582,
+      "sha256": "f749aaab94b87aafffbc6017636e4194d3aeac42b1ce3b02866c2255973c776d",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nve_s1.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2384893,
+      "sha256": "cce87875c134c5aaa9e9200d1548956c7050b1b449209aed7dcddeb896b94f1a",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/nve_s2.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2383601,
+      "sha256": "04aba6b609d7646c34068c27fffcef1063ca9b6f67a5dbd6a9b6f70a35f1cc8e",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch13_thermostats/runs/rescale_s0.npz",
+      "chapter": "ch13_thermostats",
+      "size": 2392355,
+      "sha256": "04e502e22e07dbb9a221144f37e0177c71cfc9bb2be94d9b5dba63dc176e7320",
+      "archive": "mdbook-data-ch13_thermostats-11.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/fault_kappa_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 692374,
+      "sha256": "2c06a6e84f7d89d047f4d876446b37b118ec8dceb1d186aed08235a45a5fba49",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/fault_kinetic_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 697536,
+      "sha256": "a87c5de9b57f6ee12346883636a6cfc42358786497816c81eb73bc105568c972",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/ideal_berendsen.npz",
+      "chapter": "ch14_pressure",
+      "size": 338150,
+      "sha256": "61591f923d088e35639bdc0b5b8604580724d7ca710478d15f55b9d2e329d280",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/ideal_mtk.npz",
+      "chapter": "ch14_pressure",
+      "size": 340697,
+      "sha256": "825b1ce0a8f1b995f156ac58c5577430012bef6c68db9ede4f37213019a20955",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/ideal_scr.npz",
+      "chapter": "ch14_pressure",
+      "size": 340769,
+      "sha256": "5db950ca175d525ba40e3bd10931c91a197fd343367719d88edc14bf36fddd14",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/layered_anisotropic.npz",
+      "chapter": "ch14_pressure",
+      "size": 19923,
+      "sha256": "937406085dc3df5d69d6ded9c3c62184ce3e65754342ac1df876660d4272e9ff",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/layered_isotropic.npz",
+      "chapter": "ch14_pressure",
+      "size": 19829,
+      "sha256": "d44cf3625add35ae5e8fecc865ed2778b571c5dc054227588e4c2af80d589f57",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/layered_relaxed.npz",
+      "chapter": "ch14_pressure",
+      "size": 25532,
+      "sha256": "919e67e1930e237a79304584b942aa922fa6623f7993bb8c2316860336f0eeef",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/layered_semi-isotropic.npz",
+      "chapter": "ch14_pressure",
+      "size": 19932,
+      "sha256": "b989c79cd50c5a1ed7de21fa0afe4397ee342698b41891a361e614fe4fce12dd",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_berendsen_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076217,
+      "sha256": "240c52411190f8da10ba9e083eeb7396521a642d61b261d3f00992d06b828c10",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_berendsen_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076898,
+      "sha256": "eaa06314a69f1709d22fe0d66216666603eeec7b906142f669c4bfbe8ba65b73",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_berendsen_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076486,
+      "sha256": "2b4ccd2d7e4921e53f369ff9565bbe6739ae895175fc07c8d19c254db245c29c",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_pd0.3_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 821916,
+      "sha256": "4d3c639e46ed0d41c8b773155b29bea3024f1eb1203df26db8476d4d06a1fae8",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_pd10_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 642102,
+      "sha256": "73a85bb7e1d9ccbbcd1904a14cf3dc761e16c349d4a31116f9e19abd82d4875b",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_pd3_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 642426,
+      "sha256": "1da41b756bd8f79e9e152fb1a92b7e2052a6da1c91f88479846b860a4f257abe",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 1912092,
+      "sha256": "77eafff9dd9d7ebe13faf011c05ead61ab026f503a235239048d7498129bf95b",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 1911987,
+      "sha256": "fcf02452b5c4e1de9321caf10519d7b7888819e263224b92fc4ddf0234ba9e04",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_mtk_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 1912090,
+      "sha256": "89cb532937bc4c102f8e4fcaef05fd9a0ee2dae6ddbe1b83ba98f4e3db4cc858",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_scr_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076883,
+      "sha256": "9fecfd62a3df2a1382ba57283dbaf501858d823948d5a884a6cefd661735adde",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_scr_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076482,
+      "sha256": "85c2eade6c9451535cd88d58663fca64090e51fdf2869907473ccd2de62633b2",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/npt_scr_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 2076557,
+      "sha256": "33fde89233a631b7943371dfbb5a4371432c62c80a63fb64dff49aa5b6f13016",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.963_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 25089,
+      "sha256": "d57f6ca4ad1c3fc7ffa7d374b1c92f107256d2621b815427510921f11b65cf17",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.963_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 25069,
+      "sha256": "c155ef7a8dad47624c36f888d081473317045997ad712e8f0d1a02ec837c8b32",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.963_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 25077,
+      "sha256": "aa216648ef018bc460f396256c517c8a5e4b73d0580ed96046120906d651c8cb",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.978_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 25087,
+      "sha256": "3ad9a49ab7a1a1c15ab8194738b9dd37fb11ba79095d4f93cb984bb856384114",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.978_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 25082,
+      "sha256": "c299918625122a296405b71e928bbef28aa5f43c9593be474e2023eb462dee41",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.978_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 25101,
+      "sha256": "a65050e185875cc170a9eb2ba3009007efa09198e9dd5850696b71ab9bd07ce1",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.992_s0.npz",
+      "chapter": "ch14_pressure",
+      "size": 25098,
+      "sha256": "d12cd61d66f6cae298a15f2cd32b239d7dc7cef79b1bfdaf7b1471f25ac092aa",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.992_s1.npz",
+      "chapter": "ch14_pressure",
+      "size": 25087,
+      "sha256": "7abcabac1a67251d5d979be05ba83c1f7300728c3ca875694a10bbff6087bd5c",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/nvt_v0.992_s2.npz",
+      "chapter": "ch14_pressure",
+      "size": 25071,
+      "sha256": "29011dbfdd7d40a74f5f1ee6737ebe9d4de1d2ce74c5452bb8485297e3cc1c21",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/wall_ideal.npz",
+      "chapter": "ch14_pressure",
+      "size": 491042,
+      "sha256": "acbf1842cd3182d2fd6c80087d3b0703eaaa9c28afd31bdbc169f02b8f0aa8ba",
+      "storage": "git"
+    },
+    {
+      "path": "ch14_pressure/runs/wall_lj.npz",
+      "chapter": "ch14_pressure",
+      "size": 1059153,
+      "sha256": "4cd7433e65d7952c2399c278653b1a8e5a8bd21755559d78f920af652cf3b5a5",
+      "archive": "mdbook-data-ch14_pressure-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/ase_bussi.npz",
+      "chapter": "ch15_convergence",
+      "size": 29470,
+      "sha256": "37d2cbe0723dd2142af3bb5c3e818543cbd4d7ce257cdc74541c39b1e771f5a2",
+      "storage": "git"
+    },
+    {
+      "path": "ch15_convergence/runs/ensemble_berendsen_130.npz",
+      "chapter": "ch15_convergence",
+      "size": 11044270,
+      "sha256": "d26e9d4275c0f5620d693557e4986b55a2776a372794a2fa9b7b666a3b127643",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/ensemble_berendsen_140.npz",
+      "chapter": "ch15_convergence",
+      "size": 11052477,
+      "sha256": "fb2ff9104453520c737459a1457fdda1affd2a02088227c4fefc59ce65240a04",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/ensemble_csvr_130.npz",
+      "chapter": "ch15_convergence",
+      "size": 11085036,
+      "sha256": "f1fad5db6f227bd8e4ae95ca1180848def397891503d57b48ff589d59fd85b46",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/ensemble_csvr_140.npz",
+      "chapter": "ch15_convergence",
+      "size": 11083445,
+      "sha256": "5ab3ce885e24a05488bc48ca8ae3ce48bb7e932f800c5470851024a8b5cb0bdd",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/long_csvr.npz",
+      "chapter": "ch15_convergence",
+      "size": 22176174,
+      "sha256": "b3e21909800a7d4d0fcefaa9648426d80ca34a951b44edf670aa26a705321fc7",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/long_nve.npz",
+      "chapter": "ch15_convergence",
+      "size": 20662890,
+      "sha256": "3dca0b651d1ea43979a0368a2e18753d0e65bd88fe01ec4296ff4583965bba80",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s0.npz",
+      "chapter": "ch15_convergence",
+      "size": 1109192,
+      "sha256": "00e51f82c77fcca13b1d6c9c9a2a00705006aa57febb2f631005f99e3baa1439",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s1.npz",
+      "chapter": "ch15_convergence",
+      "size": 1109043,
+      "sha256": "cfd101e82bfe56429798f77f5f937d7fab234e9ad3d83f0648fe30d3e132301a",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s2.npz",
+      "chapter": "ch15_convergence",
+      "size": 1108888,
+      "sha256": "d58d5027e0775166af2eff096b3f0d099322fb9e5c9b5f4fa495ea3521eb8f6a",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s3.npz",
+      "chapter": "ch15_convergence",
+      "size": 1108363,
+      "sha256": "ffacba9d0cba38e03d21009df9ceb3cff154c134b04587654dbfc9f683e3f39e",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s4.npz",
+      "chapter": "ch15_convergence",
+      "size": 1109509,
+      "sha256": "4611691e385f2fac96ea93715a9de80492c1be39f22f5aa2469feea187024df2",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s5.npz",
+      "chapter": "ch15_convergence",
+      "size": 1108986,
+      "sha256": "cdcb64d0e51c99b07b9c29e9dd8a54c5901ea3f679f2f771485e3814748bf222",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s6.npz",
+      "chapter": "ch15_convergence",
+      "size": 1108408,
+      "sha256": "012b9fe9d6b8e71fdfc804be115fa43f5cc59c2dec46992bb9e49adc097814af",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/melt_s7.npz",
+      "chapter": "ch15_convergence",
+      "size": 1108647,
+      "sha256": "d2e984e505e2421471782988594e07f0376f83550d8ab8ec21b880a9eac6c72c",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/protocol.npz",
+      "chapter": "ch15_convergence",
+      "size": 12361464,
+      "sha256": "7940607279b0d0dc45b0738d5595d0104ae223f4ea17f9cdc9ea15ac03edfaa1",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_1372.npz",
+      "chapter": "ch15_convergence",
+      "size": 20507096,
+      "sha256": "893a8f34fe2d99e59e7943a3d3d59d63a0acf2851a2aa6d0a8c81cd6f887d829",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_1372_b.npz",
+      "chapter": "ch15_convergence",
+      "size": 20502761,
+      "sha256": "a3f2436204e9e944c691f051870ffd439a23dc972fcbd6bff526914c07bf6984",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_2048.npz",
+      "chapter": "ch15_convergence",
+      "size": 27915081,
+      "sha256": "32da0753f275b21482ca823644bc5507246bf3821e577289ac8000f901f74723",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_2048_b.npz",
+      "chapter": "ch15_convergence",
+      "size": 27916381,
+      "sha256": "262738153ca30f17fe36f802cecdce49b5d00d11ed6a283ea4bd269d34bd29d4",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_256.npz",
+      "chapter": "ch15_convergence",
+      "size": 8241455,
+      "sha256": "b5b1b9807f94afb841fb4f88d4fc375b5e2921635f61250d9439aaa8a7e5bfec",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_256_b.npz",
+      "chapter": "ch15_convergence",
+      "size": 8243419,
+      "sha256": "88c348c5707549b337c9cdf93a145dc0ec791ea3031fb200089ee5b33c168fa1",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_500.npz",
+      "chapter": "ch15_convergence",
+      "size": 10925431,
+      "sha256": "adc8f20becc91b9c8c3f05c637e89916d93cc4394f4847a722011b0bdce95492",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_500_b.npz",
+      "chapter": "ch15_convergence",
+      "size": 10921742,
+      "sha256": "4e3c42459a076df7b7d718688009c891a72faa7f647a762de7c06e2270a27dac",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_864.npz",
+      "chapter": "ch15_convergence",
+      "size": 14930664,
+      "sha256": "dff6eb50d29abc68a8fe4a6cdb663c75ce6ae10c21af0fef786609efcebae02e",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/size_864_b.npz",
+      "chapter": "ch15_convergence",
+      "size": 14933950,
+      "sha256": "de6e5921c728d4dbe05079feb286de53b4eee0bfecb58337cc1419f8a30206bf",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_10.npz",
+      "chapter": "ch15_convergence",
+      "size": 7482893,
+      "sha256": "fa70afd2c1071ef5d4e2c9b4600bfa16e41ad826409639636f06ad740f453418",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_20.npz",
+      "chapter": "ch15_convergence",
+      "size": 5171593,
+      "sha256": "f1fe5315dde4e8a45936cdd95646f7a73a4921dc1297757110e393cbe303c69d",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_30.npz",
+      "chapter": "ch15_convergence",
+      "size": 4388768,
+      "sha256": "021c99348d4b2216c6c5fda3f22fdbbf11dfa22fa18d10a0b03af64f4789fc17",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_35.npz",
+      "chapter": "ch15_convergence",
+      "size": 4208663,
+      "sha256": "bc2117907e16eaf3a2a4bde6c834c8b9638c24a877e434cc7b755de8e633650b",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_40.npz",
+      "chapter": "ch15_convergence",
+      "size": 2252921,
+      "sha256": "583fc527cbe341283764160642dffa5057b5e4d0422bbe49bdcc0748493c70ed",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch15_convergence/runs/step_5.npz",
+      "chapter": "ch15_convergence",
+      "size": 12110253,
+      "sha256": "dce37654738c79d3d5e16037bbb3d80824f12b42da9bdc2b70c894cba9933934",
+      "archive": "mdbook-data-ch15_convergence-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/argon_langevin.npz",
+      "chapter": "ch16_observables",
+      "size": 29265949,
+      "sha256": "98c86418a460f537946e579a5c89c1300e992ff5747c5ebaee10ac874de5a0b1",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/argon_nve.npz",
+      "chapter": "ch16_observables",
+      "size": 29262148,
+      "sha256": "f1bf2a974b1e1293ec2b2e1a6172ba47971c333fac1a3322802a19b9567a85ca",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/carbon_fast.npz",
+      "chapter": "ch16_observables",
+      "size": 3326716,
+      "sha256": "1baa0b83ac7396638b45b43b913d10350b97370c9caff6c4f52ac48eeebf7de3",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/carbon_slow.npz",
+      "chapter": "ch16_observables",
+      "size": 10475563,
+      "sha256": "ce4d44ad531a5a2aa1d109d5422dee6dbff402fa082390798294d477481714cd",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/chain_200.npz",
+      "chapter": "ch16_observables",
+      "size": 13863368,
+      "sha256": "2157ebd54b03d99786a8521d83b1a621eee4376ac806a3423495811b9451afae",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/chain_300.npz",
+      "chapter": "ch16_observables",
+      "size": 14216015,
+      "sha256": "4bdc9f27693cae6861a071144e2f79b82128b6e5e11550f170d5f61a92c47205",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/chain_dense.npz",
+      "chapter": "ch16_observables",
+      "size": 23801412,
+      "sha256": "5b8a78d760e2f43f26b308d86281ba6005cb1f9ef374aa72ad3672b246bb97ed",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/crystal_langevin.npz",
+      "chapter": "ch16_observables",
+      "size": 15685838,
+      "sha256": "e12ebda7322c09314c4c3bc45f0be16c498ef0e28470909b1ea6b244f2f65a85",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/crystal_nve.npz",
+      "chapter": "ch16_observables",
+      "size": 15675266,
+      "sha256": "da51d56d6402c639229aa1b017655ad3ad692a232af38d0e4abcab629ed3bc0e",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/gas_1500.npz",
+      "chapter": "ch16_observables",
+      "size": 3174493,
+      "sha256": "d18c6cccb451c689201f253c6e0ee2ed22104b89fcee038f6977688d105988ee",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/gas_1750.npz",
+      "chapter": "ch16_observables",
+      "size": 3275364,
+      "sha256": "248482705bd132604316a7f21c9c859210d133d33f79c3c817491b1f5ded40a6",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/gas_2000.npz",
+      "chapter": "ch16_observables",
+      "size": 3373035,
+      "sha256": "93fd34afa1931bd4951d1d5cc582874c8ba14b3ddad0c94b7f7775eaef2302b9",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/gas_2250.npz",
+      "chapter": "ch16_observables",
+      "size": 3418287,
+      "sha256": "0202709c1cfde3faa5054624eb2b8bbb94fd43ca849e88981208da83d71a4e3e",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/gas_2500.npz",
+      "chapter": "ch16_observables",
+      "size": 3459651,
+      "sha256": "67604ac7c0bfc2ca030ef6eefed6ec4fc82ff5c1456225c7390d2135022adb56",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/layered_150.npz",
+      "chapter": "ch16_observables",
+      "size": 5867788,
+      "sha256": "2631caf1b2fb756f4eb0ea497c2e1f14bef4b4a014e9ced82634efe4f7909592",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s0.npz",
+      "chapter": "ch16_observables",
+      "size": 44396466,
+      "sha256": "0180f412950be09a4d038d1ba794196367bff51e138372f4adcc694cfc56ba69",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s1.npz",
+      "chapter": "ch16_observables",
+      "size": 37567183,
+      "sha256": "acaac346caf83494e59a7ab40dac4d96ae3360c95a0ff72152be16233a08f86e",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s2.npz",
+      "chapter": "ch16_observables",
+      "size": 37426605,
+      "sha256": "a93063d57a5b0232ccd02d8dffc4d20d3acc835c9cc5081d42ab9192b5c9a747",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s3.npz",
+      "chapter": "ch16_observables",
+      "size": 37295667,
+      "sha256": "3cdf80ed18d0a70a2702b9de1fce9ed1a524c7388b6f25646fddde12510ec99d",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s4.npz",
+      "chapter": "ch16_observables",
+      "size": 37454983,
+      "sha256": "af6b6c2d9e3782e65c6dc88e6d9cfbb09dc47b739bed37f22dbe8467467e68c0",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s5.npz",
+      "chapter": "ch16_observables",
+      "size": 37327979,
+      "sha256": "3f0cd1daf2ac567268d1807f91909b74e2dae33cebb1b1345fe9eae82a4372a6",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s6.npz",
+      "chapter": "ch16_observables",
+      "size": 37485976,
+      "sha256": "8e1f3cb09e6a220810ea9c17d003f56d0f303971ed64b5a4d17bd2b653a0c440",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/salt_s7.npz",
+      "chapter": "ch16_observables",
+      "size": 37373550,
+      "sha256": "117c0548fa0e2c1e8d3bf0c80bc881e99a08a5e7a75e5e230fc15b9934911426",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/surface_1000.npz",
+      "chapter": "ch16_observables",
+      "size": 35673496,
+      "sha256": "ee1f89926982385327aeecb0f24211c546d48c50b88326e9862bc46558106c70",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/surface_1000_g10.npz",
+      "chapter": "ch16_observables",
+      "size": 35638753,
+      "sha256": "c9f848fab093bda7359458c71ffcff497b0efee84d7cd256067710b2bea0df07",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/surface_1000_g3.npz",
+      "chapter": "ch16_observables",
+      "size": 35653825,
+      "sha256": "496f8a2fb4b1bf2d8eb88af01e2f88291d497c2cb2fb4bf0f900aed3c3b34c33",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/surface_1000_g30.npz",
+      "chapter": "ch16_observables",
+      "size": 35603667,
+      "sha256": "d82028dd417cefe86cd4ad6e1b1305d34f023bbb6efe9087ea05c33fa926f539",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch16_observables/runs/surface_600.npz",
+      "chapter": "ch16_observables",
+      "size": 35888126,
+      "sha256": "909057ed3e0f04aaac3eb7d3775693b4d8c0a4ffca27835138eddef084351605",
+      "archive": "mdbook-data-ch16_observables-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/aims_frames.extxyz",
+      "chapter": "ch17_practice",
+      "size": 63840,
+      "sha256": "ea4a7f3c8634d72e3fcdb20242d14347e734927f1b274beea1297cb2677bc1c3",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/aims_frames.npz",
+      "chapter": "ch17_practice",
+      "size": 417,
+      "sha256": "301dd3cd74f99d25217cd42737de0dc1ef697cc8e360c82fd54e03a49fa9a914",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/aims_kgrid_2.npz",
+      "chapter": "ch17_practice",
+      "size": 1661,
+      "sha256": "8df65e3b20095100d0abc96b7a99569a8c985fe62c8794b1254cfb59b17162be",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/aims_kgrid_3.npz",
+      "chapter": "ch17_practice",
+      "size": 1663,
+      "sha256": "b8432c6d1568c450208ca7f74ee64e435b0eab24a058739445640cadb9aef5dd",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/aims_kgrid_4.npz",
+      "chapter": "ch17_practice",
+      "size": 1667,
+      "sha256": "edbac81dc1e352f88fae97dc309546e45446c2c450f4e3aa1e575927b77fce07",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/argon_ase_csvr.npz",
+      "chapter": "ch17_practice",
+      "size": 11822592,
+      "sha256": "92860235d04afd59dbe6c434080c89bce13cc50ac5d36f5c5b1fd001e7acdac3",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_ase_langevin.npz",
+      "chapter": "ch17_practice",
+      "size": 11822381,
+      "sha256": "8746cf248ae2755a6c7af939bc99a80b18c05fae3cf7267699e783c983db6af5",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_ase_nhc.npz",
+      "chapter": "ch17_practice",
+      "size": 11821987,
+      "sha256": "9182e916992384a66731ac9231f63bc8e6c0e9615366b8e1947342b4135090ea",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_ase_nve.npz",
+      "chapter": "ch17_practice",
+      "size": 2955351,
+      "sha256": "bf8552671090c527a4b7518166d68f84553edf73c32b682e17b60ac16a9cc317",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_csvr.npz",
+      "chapter": "ch17_practice",
+      "size": 11812199,
+      "sha256": "3c7258c744b56c5f89a0a58b53b4c650d9068a8ee2538caee4705afbf97aa4fc",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_langevin.npz",
+      "chapter": "ch17_practice",
+      "size": 11799227,
+      "sha256": "0df3797d6c899d1c29bdfc5f53df401ef663637b36b95849be38d00b9c7eb525",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_langevin_long.npz",
+      "chapter": "ch17_practice",
+      "size": 59041933,
+      "sha256": "c08f18aab728afb738ac7d8dcafe0ae527ad2ff79e44923e8cbdf84b81117613",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_langevin_zero.npz",
+      "chapter": "ch17_practice",
+      "size": 59086706,
+      "sha256": "696e59c4acf6a4756cefa51e42270b5e2a481b8480df56ba78d58af755c75eee",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_nhc.npz",
+      "chapter": "ch17_practice",
+      "size": 11817343,
+      "sha256": "e2cf2248fdee1f475ecff3157cda344880225c213b63d66d410085d16adc8780",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_lammps_nve.npz",
+      "chapter": "ch17_practice",
+      "size": 2953143,
+      "sha256": "cf7fccde3685b636e57a82d01fa9bffb2bc0bd76a8f0196b633dda50159a016d",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_mdlab_csvr.npz",
+      "chapter": "ch17_practice",
+      "size": 11810057,
+      "sha256": "cad62d0b71cc1e82bf38e9e3ae8eb40808628344bbd80727137b8945d6b97fd4",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_mdlab_langevin.npz",
+      "chapter": "ch17_practice",
+      "size": 11812646,
+      "sha256": "221f8d7548b6e7602ec836b386a48c6e9d5f516a9822c2ed14662e50d549d697",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_mdlab_langevin_long.npz",
+      "chapter": "ch17_practice",
+      "size": 59082485,
+      "sha256": "aae329666a128e191ec42f6a2e81325f5b3fa2815c9b9b5f0641c71567d0410c",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_mdlab_nhc.npz",
+      "chapter": "ch17_practice",
+      "size": 11814609,
+      "sha256": "c0d186c359175de9e0a8743768b09668e74e37e3835f6977e9d79ed123e55793",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/argon_mdlab_nve.npz",
+      "chapter": "ch17_practice",
+      "size": 2955167,
+      "sha256": "f03fecaf173d86532fe2b89317cb673b94e4203841fea9d3e2783fa31d1db9cd",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_300.npz",
+      "chapter": "ch17_practice",
+      "size": 380103,
+      "sha256": "f61ba334ea3799ded8d9c2cc323aed2dd19e62cc21c763813dc3fd70f8b80dfe",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_300_last.extxyz",
+      "chapter": "ch17_practice",
+      "size": 10649,
+      "sha256": "100943d4e926a86cff803182ba17a99f79d0ac4b10928c115ecb58e48340d59d",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_450.npz",
+      "chapter": "ch17_practice",
+      "size": 380352,
+      "sha256": "df29b4fe8598c8cb33a865f3f6109a51e1bc9ff161f4031fa2a30be205475914",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_450_last.extxyz",
+      "chapter": "ch17_practice",
+      "size": 10643,
+      "sha256": "0146702ef1f1062805f3f24b64ab5c1edacf7f58aff63aadb9c0a5ca5df72f1e",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_600.npz",
+      "chapter": "ch17_practice",
+      "size": 380363,
+      "sha256": "90f88120cbada3d0388c5b2d5bee02ed6780c75c0b2daabbd36805a083655237",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/dilute_600_last.extxyz",
+      "chapter": "ch17_practice",
+      "size": 10644,
+      "sha256": "36b3c94a476d5fa852f995d38884bce5ce347efbe2fb345bb444b1e2b596bfd8",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/gallery_lammps.npz",
+      "chapter": "ch17_practice",
+      "size": 32788,
+      "sha256": "372cc89a07ca7261497bc82a73482b60cb33fd9d68df3a6a36b3eadc68ce0383",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/li_map.npz",
+      "chapter": "ch17_practice",
+      "size": 3158,
+      "sha256": "7f68bedadee081dfa1f9be8ba3c98bade3af2649aa51c790123d43e00d919db6",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/li_scan.npz",
+      "chapter": "ch17_practice",
+      "size": 2198,
+      "sha256": "3ad825c840f5670393372201a5e00c08ba847001d3fb4d794428040b9a10c7d1",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/mace_timing.npz",
+      "chapter": "ch17_practice",
+      "size": 2486,
+      "sha256": "17f6c4dadbefffac475774b78ebbae74f0b3425fc5de97ca0f62cc367919e4d4",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/npt_aniso.npz",
+      "chapter": "ch17_practice",
+      "size": 460011,
+      "sha256": "5c67d15a65eca7a0cc0c7d14c321a10a7d3e5961336cd0e9bebc4dcf2601d74c",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/npt_aniso_last.extxyz",
+      "chapter": "ch17_practice",
+      "size": 10320,
+      "sha256": "95313073e68b6714664441d7196f4da462f502eaff10ab9caf1638752b29caac",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/npt_iso.npz",
+      "chapter": "ch17_practice",
+      "size": 219634,
+      "sha256": "4ca35c8bcbb57b1ee76c355df9a05e34e57dc3e1cd856b5d3b6d066cc106045e",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_0.5_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 63960,
+      "sha256": "4b55253a4e7150dd506711b5dba99bd390a72328db6125c40a7b36352a090321",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_1_float32.npz",
+      "chapter": "ch17_practice",
+      "size": 32605,
+      "sha256": "3fecbf27a806cb02aec69a141b2982f3677739c18508ba0a0c4f53502c62a492",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_1_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 32592,
+      "sha256": "865f03c7303aef821fd3f7589b3ea04d7fe2b95c8b7d3b734923b53b991182f8",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_2_float32.npz",
+      "chapter": "ch17_practice",
+      "size": 17013,
+      "sha256": "1c96846e3edf338e536615adfb7605adf3ba9ca2be0c9b9e4bf4faa83bc2ce1a",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_2_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 17019,
+      "sha256": "2406ee11ed1d0e95882aec70e4a7e6c54e68c4dfa51d433ee1c1c72ab8d662c8",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_3_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 11954,
+      "sha256": "6a3f11bbb7a1e360bf93abe73e09f61e66e0d690dc356f47600dcabd5a542a14",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_600_1_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 32775,
+      "sha256": "bf9bf8687ab0a8c758453db06c71c91911f3c7460bb63e4304c8c31dbaeb6a32",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/nve_600_2_float64.npz",
+      "chapter": "ch17_practice",
+      "size": 17080,
+      "sha256": "f0aba49cc9cd6239854a9aecd775d692f15e56ea91a6b7078cc0606c1f46f79b",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/stress_npt_aniso.npz",
+      "chapter": "ch17_practice",
+      "size": 2912,
+      "sha256": "3bd84864422480569677ffe415417f6644049d1e44bbca902ddcc4397306d364",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/stress_npt_iso.npz",
+      "chapter": "ch17_practice",
+      "size": 1312,
+      "sha256": "e4f2790523f35535ed55df073a5b34561d220c9f72ac77e57b028b2a8f2d07f8",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/train_dilute.npz",
+      "chapter": "ch17_practice",
+      "size": 9305,
+      "sha256": "f4713c67b905d91e8a8e3f47688a6d40b241c0fbfcb3e6beca5c234cc9ea11d4",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/runs/train_lic6.npz",
+      "chapter": "ch17_practice",
+      "size": 9259,
+      "sha256": "575d6b679ba11bb1a22bf627cdfa18539617b9b9d0e1e2ef4ecd7ce830f4c120",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/structures/dilute.extxyz",
+      "chapter": "ch17_practice",
+      "size": 7322,
+      "sha256": "41f0e0403f68ada4033db8d18044780a93e08f127b290e66e4cef9fc293dbd66",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/structures/graphite.extxyz",
+      "chapter": "ch17_practice",
+      "size": 909,
+      "sha256": "2148791edfefc328518a972943718fa4f77b798e7d027ecc081f0e3ee6fd2fc5",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/structures/lic6.extxyz",
+      "chapter": "ch17_practice",
+      "size": 1233,
+      "sha256": "f0a951d162b4e795ab3f80581997bd8a6d910bb60ff57f27f730d33c13b64992",
+      "storage": "git"
+    },
+    {
+      "path": "ch17_practice/training/dilute_nve.extxyz",
+      "chapter": "ch17_practice",
+      "size": 5227879,
+      "sha256": "4e7f8da54aa403d3ab2394a2d91c62215d1753ebebe41d9f019d11a30b5f0c03",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch17_practice/training/lic6_nve.extxyz",
+      "chapter": "ch17_practice",
+      "size": 5067559,
+      "sha256": "f97510e4e2ab9cd91ad4e0bd5cab78513983092fd61e2c3195b765e9e35a389c",
+      "archive": "mdbook-data-ch17_practice-01.zip"
+    },
+    {
+      "path": "ch18_learning/argon_dense_a.npz",
+      "chapter": "ch18_learning",
+      "size": 17669905,
+      "sha256": "dc463b4253d511bc0dc0646d4a858b01b86c4726eab5816ba61bbadfb52b5cb6",
+      "archive": "mdbook-data-ch18_learning-01.zip"
+    },
+    {
+      "path": "ch18_learning/argon_dense_b.npz",
+      "chapter": "ch18_learning",
+      "size": 17678013,
+      "sha256": "cf2eda51e9e93dec47a0bbe4482e697928a3cb365e1dfc8009a65625afccf8c9",
+      "archive": "mdbook-data-ch18_learning-01.zip"
+    }
+  ],
+  "archives": [
+    {
+      "name": "mdbook-data-ch12_ensembles-01.zip",
+      "chapter": "ch12_ensembles",
+      "size": 219240230,
+      "sha256": "ffbe94e0791ee8239fd87d8cee5c118f519627e2662165e72ae4d7784cbf2925"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-01.zip",
+      "chapter": "ch13_thermostats",
+      "size": 763537837,
+      "sha256": "96e353b05b1dbf84ec85cdc0763ab1474ebee3f78e37391fb6593fc2c149509d"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-02.zip",
+      "chapter": "ch13_thermostats",
+      "size": 764040600,
+      "sha256": "74b2479e7e256e973ad2dcf897cef18d9f681fd6181fc46b375ebab23dcf7a91"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-03.zip",
+      "chapter": "ch13_thermostats",
+      "size": 763419899,
+      "sha256": "9510d2476e0c1f4221c9cf63b38d71d7c7ad3074335b0b2ea0661437ed6f4d47"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-04.zip",
+      "chapter": "ch13_thermostats",
+      "size": 763296999,
+      "sha256": "43438303a7ff6dd2e207bc591464b668ac9621957adb87b31fc837922e7235c3"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-05.zip",
+      "chapter": "ch13_thermostats",
+      "size": 765093880,
+      "sha256": "d271c11d962e01800cd696a9b26fd1dc52653cd93358f9a21fa74afa1a4b289f"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-06.zip",
+      "chapter": "ch13_thermostats",
+      "size": 763801217,
+      "sha256": "1166b8e073b1aa34d570845406d37670dd6c88d76752f0d6b08228aeaf5c754e"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-07.zip",
+      "chapter": "ch13_thermostats",
+      "size": 763800415,
+      "sha256": "c582810126697c6612cfaaaf178fc1970379823494e96d9b2b8f20ed46e1c2a5"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-08.zip",
+      "chapter": "ch13_thermostats",
+      "size": 764827579,
+      "sha256": "1a7ef0879edda42f497fd481798fe2caa7f2e3074252788c0d77c14f4b23562d"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-09.zip",
+      "chapter": "ch13_thermostats",
+      "size": 688597065,
+      "sha256": "5b6fd3976cf846dd91761f50e5c7ca63c273bfa404852a6cf6f1f096f3a4bc9d"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-10.zip",
+      "chapter": "ch13_thermostats",
+      "size": 765984893,
+      "sha256": "f6eb89500d697333be4549ad7f3ba1968e5725272f1adb1774b18451c58fb4f8"
+    },
+    {
+      "name": "mdbook-data-ch13_thermostats-11.zip",
+      "chapter": "ch13_thermostats",
+      "size": 802930200,
+      "sha256": "8a3c55858c85886b636f54aac98d6d2b4db8f13d1ad347b2b5ce8d7904981f00"
+    },
+    {
+      "name": "mdbook-data-ch14_pressure-01.zip",
+      "chapter": "ch14_pressure",
+      "size": 19256317,
+      "sha256": "6a1f7a45562d2a9ec46c3943a453512dddf7fab9468afd298e252bf717668d74"
+    },
+    {
+      "name": "mdbook-data-ch15_convergence-01.zip",
+      "chapter": "ch15_convergence",
+      "size": 308994441,
+      "sha256": "01b28c84c775a414eef161d0a577682fb0b02a6112485dd27b813458f87a8823"
+    },
+    {
+      "name": "mdbook-data-ch16_observables-01.zip",
+      "chapter": "ch16_observables",
+      "size": 662931331,
+      "sha256": "1bb69c66db3d23a19184e32502fde67f99408b0afd1ac75b4fc70a032c686fa1"
+    },
+    {
+      "name": "mdbook-data-ch17_practice-01.zip",
+      "chapter": "ch17_practice",
+      "size": 302705966,
+      "sha256": "cca2637c4c9cc7a6d41fa6b842851c074e34dcd605d2c6ec16e9254fcfb193da"
+    },
+    {
+      "name": "mdbook-data-ch18_learning-01.zip",
+      "chapter": "ch18_learning",
+      "size": 35348216,
+      "sha256": "38f0c6b4cabc96be0764b062f981b5837072ae20e2d253b29fdfb16bace55a4f"
+    }
+  ]
+}

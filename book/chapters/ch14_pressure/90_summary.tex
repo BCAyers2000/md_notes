@@ -1,0 +1,44 @@
+%=============================================================================!
+% 14.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+The pressure of a gas is the momentum its atoms deliver to the walls per
+unit time and area, $N\kB T/V$ for atoms that do not interact.
+Equipartition applied to the positions adds the virial's share, $PV =
+N\kB T + \frac13\ens{\mathcal{W}}$, and the free energy's response to a
+change of volume gives the same formula in a periodic box, with the virial
+summed over pairs from their separations to the nearest copy; the sum
+$\sum_i\vb{r}_i\cdot\vb{F}_i$ from wrapped positions changes with the
+origin.
+
+Its response to a strain gives the pressure tensor,
+$(\sum_im_iv_{i\alpha}v_{i\beta} + \mathcal{W}_{\alpha\beta})/V$, isotropic for
+a liquid, uneven for a strained solid; ASE and many libraries report the
+stress, its negative.
+
+A barostat must sample $\mathcal{P}(V) \propto
+\mathrm{e}^{-\beta P_0V}Z(N, V, T)$, which for an ideal gas is
+$V^N\mathrm{e}^{-\beta P_0V}$ and for a liquid has the variance $\kB
+T\ens{V}\kappa_T$.
+
+Berendsen's barostat holds the mean pressure but squeezes the
+volume's fluctuations, which then give less than half the liquid's
+compressibility; stochastic cell
+rescaling adds to $\ln V$ the noise the fluctuation-dissipation relation
+demands and samples the volume correctly; the MTK piston gives the volume
+a mass, swings with the period $2\pi\tau_{\mathrm P}\sqrt{(N + 1)\kB T
+\kappa_T/3V}$, and with chains samples correctly too.
+
+A solid that wants to
+change shape needs semi-isotropic or anisotropic coupling: isotropic
+coupling of a layered solid with guests between its sheets leaves it
+pulled along the sheets and squeezed across them while its mean pressure
+reads the target.
+
+A healthy run shows a widely scattered instantaneous
+pressure whose running mean settles at $P_0$, a volume that spreads by
+$\sqrt{\kB T\ens{V}\kappa_T}$, and an effective energy that holds still.
+
+Chapter~15 asks how long a run must be before such averages, and the
+error bars on them, can be trusted.

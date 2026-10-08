@@ -1,0 +1,216 @@
+%=============================================================================!
+% 12.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:ensembles}: Ensembles}
+\label{sec:sm-solutions}
+
+\solutionto{ex:sm-die}The mean is $(1 + 2 + \dotsb + 6)/6 = 21/6 = 3.5$
+and $\ens{x^2} = (1 + 4 + 9 + 16 + 25 + 36)/6 = 91/6$, so the variance is
+$91/6 - 3.5^2 = (182 - 147)/12 = 35/12 = 2.9167$. Two independent dice
+have twice that, $35/6 = 5.8333$.
+
+\solutionto{ex:sm-mean}Multiplying a quantity by $c$ multiplies its
+deviation from its mean by $c$ and its variance by $c^2$. The sum of $n$
+independent values has the variance $n\sigma_x^2$, since variances of
+independent quantities add and the values can be added one at a time,
+each independent of the sum of those before it, so the mean, the sum times $1/n$, has
+$n\sigma_x^2/n^2 = \sigma_x^2/n$. For a die, $(35/12)/n = 0.01^2$ gives $n
+= \num{29167}$ throws, rounding up.
+
+\solutionto{ex:sm-chain}$\omega_k = 2\sin(k\pi/8)$ gives 0.7654, 1.4142
+and 1.8478, with squares $2 - \sqrt2$, 2 and $2 + \sqrt2$. The force on
+atom $j$ is $q_{j-1} - 2q_j + q_{j+1}$, minus the $j$th entry of the
+matrix times $\vb{q}$, so a mode needs the matrix times its pattern
+$\vb{u}$ to be $\omega^2\vb{u}$. The patterns $u_j = \sin(jk\pi/4)$ are,
+up to a factor, $(1, \sqrt2, 1)$, $(1, 0, -1)$ and $(1, -\sqrt2, 1)$, and
+multiplying each by the matrix,
+\begin{align*}
+   (2 - \sqrt2,\ 2\sqrt2 - 2,\ 2 - \sqrt2) &= (2 - \sqrt2)\,(1, \sqrt2, 1) ,\\
+   (2,\ 0,\ -2) &= 2\,(1, 0, -1) ,\\
+   (2 + \sqrt2,\ -2\sqrt2 - 2,\ 2 + \sqrt2) &= (2 + \sqrt2)\,(1, -\sqrt2, 1) ,
+\end{align*}
+so $2 - \sqrt2$, 2 and $2 + \sqrt2$ are eigenvalues of the matrix, one for
+each of the chain's three modes.
+
+\solutionto{ex:sm-additive}Every microstate of the first combines with
+every microstate of the second, so together they have $\Omega_1\Omega_2$,
+and $\kB\ln(\Omega_1\Omega_2) = \kB\ln\Omega_1 + \kB\ln\Omega_2 = S_1 +
+S_2$.
+
+\solutionto{ex:sm-bath}The bath holds $E = \frac32N\kB T = 1.5\times10^4
+\times0.025852 = \SI{387.8}{\electronvolt}$, and the ratio is
+$E_s/2E = 0.1/775.6 = \num{1.29e-4}$.
+
+\solutionto{ex:sm-two-level}$Z = 1 + \mathrm{e}^{-\beta E_{\mathrm g}}$.
+Writing $x = \beta E_{\mathrm g}$,
+\begin{align*}
+   \ens{E} &= -\frac{\dd\ln Z}{\dd\beta}
+   = \frac{E_{\mathrm g}\,\mathrm{e}^{-x}}{1 + \mathrm{e}^{-x}}
+   = \frac{E_{\mathrm g}}{\mathrm{e}^x + 1} ,\\
+   C_V &= \frac{\dd\ens{E}}{\dd T}
+   = -\frac{E_{\mathrm g}\,\mathrm{e}^x}{(\mathrm{e}^x + 1)^2}\,
+   \frac{\dd x}{\dd T}
+   = \kB\frac{x^2\mathrm{e}^x}{(\mathrm{e}^x + 1)^2} ,
+\end{align*}
+by the chain rule, with $\dd x/\dd T = -E_{\mathrm g}/\kB T^2$.
+At \SI{300}{\kelvin}, $x = 0.1/0.025852 = 3.868$: $\ens{E} =
+\SI{0.00205}{\electronvolt}$ and $C_V = 0.300\,\kB$. Maximising
+$x^2\mathrm{e}^x/(\mathrm{e}^x + 1)^2$ numerically gives $x = 2.399$, so
+$C_V$ is largest, $0.439\,\kB$, at $\kB T = 0.4168\,E_{\mathrm g}$, which
+is \SI{484}{\kelvin} for $E_{\mathrm g} = \SI{0.1}{\electronvolt}$.
+
+\solutionto{ex:sm-free}With $\mathcal{P}_s = \mathrm{e}^{-\beta
+E_s}/Z$, $\ln\mathcal{P}_s = -\beta E_s - \ln Z$, so
+\begin{equation*}
+   S = -\kB\sum_s\mathcal{P}_s(-\beta E_s - \ln Z)
+   = \frac{\ens{E}}{T} + \kB\ln Z = \frac{\ens{E} - F}{T} ,
+\end{equation*}
+using $\sum_s\mathcal{P}_s = 1$; so $F = \ens{E} - TS$. With
+$\mathcal{P}_s = 1/\Omega$ for each of $\Omega$ states,
+\begin{equation*}
+   S = -\kB\,\Omega\times\frac1\Omega\ln\frac1\Omega = \kB\ln\Omega .
+\end{equation*}
+
+\solutionto{ex:sm-spring}$\ln Z = -\ln\beta + \ln(2\pi/\omega)$, so
+\begin{equation*}
+   -\frac{\dd\ln Z}{\dd\beta} = \frac1\beta = \kB T , \qquad
+   \frac{\dd^2\ln Z}{\dd\beta^2} = \frac{1}{\beta^2} = (\kB T)^2 .
+\end{equation*}
+With $C_V = \dd(\kB T)/\dd T = \kB$, \cref{eq:sm-fluctuation} gives $\kB
+T^2\times\kB = (\kB T)^2$, the same.
+
+\solutionto{ex:sm-odds}$0.3/\kB T = \ln1000 = 6.908$ gives $\kB T =
+\SI{0.04343}{\electronvolt}$, $T = \SI{504}{\kelvin}$. At
+\SI{300}{\kelvin}, $\mathrm{e}^{-0.5/0.025852} = \mathrm{e}^{-19.34} =
+\num{4.0e-9}$.
+
+\solutionto{ex:sm-speeds}The density is a constant times $v^2\mathrm{e}^
+{-v^2/2\sigma_v^2}$, whose derivative $(2v - v^3/\sigma_v^2)\mathrm{e}^{
+-v^2/2\sigma_v^2}$ vanishes at $v = \sqrt2\,\sigma_v$. The mean needs
+$\int_0^\infty v^3\mathrm{e}^{-v^2/2\sigma_v^2}\dd v$. With $w =
+v^2/2\sigma_v^2$ and $\dd w = v\,\dd v/\sigma_v^2$,
+\begin{equation*}
+   v^3\,\dd v = v^2\times v\,\dd v = 2\sigma_v^2w\times\sigma_v^2\,\dd w ,
+   \qquad
+   \int_0^\infty2\sigma_v^4w\,\mathrm{e}^{-w}\,\dd w = 2\sigma_v^4 ,
+\end{equation*}
+since $\int_0^\infty w\,\mathrm{e}^{-w}\dd w = 1$ by parts. With $(m/2\pi\kB
+T)^{3/2} = (2\pi\sigma_v^2)^{-3/2}$,
+\begin{equation*}
+   \ens{v} = \frac{4\pi\times2\sigma_v^4}{(2\pi)^{3/2}\sigma_v^3}
+   = \frac{4\sigma_v}{\sqrt{2\pi}} = \sqrt{\frac8\pi}\,\sigma_v .
+\end{equation*}
+For lithium at \SI{300}{\kelvin}, $\sigma_v =
+\SI{0.005995}{\angstrom\per\femto\second}$: the most probable speed is
+\SI{0.00848}{\angstrom\per\femto\second} and the mean
+\SI{0.00957}{\angstrom\per\femto\second}.
+
+\solutionto{ex:sm-fourth}With $u = x$ and $s = \sigma_x$, as in
+\cref{sec:sm-probability}, and by parts, with $u^3$ and
+$u\,\mathrm{e}^{-u^2/2s^2}$, whose integral is $-s^2\mathrm{e}^{-u^2/2s^2}$,
+\begin{equation*}
+   \int u^4\mathrm{e}^{-u^2/2s^2}\dd u
+   = \Bigl[-s^2u^3\mathrm{e}^{-u^2/2s^2}\Bigr]_{-\infty}^{\infty}
+   + 3s^2\int u^2\mathrm{e}^{-u^2/2s^2}\dd u = 3s^2\times s^2\times
+   s\sqrt{2\pi} ,
+\end{equation*}
+using the integral of \cref{sec:sm-probability}; dividing by
+$s\sqrt{2\pi}$, $\ens{x^4} = 3\sigma_x^4$. For an even spread over $-c$ to
+$c$, with the density $1/2c$, $\ens{x^2} = \int_{-c}^cx^2\,\dd x/2c = c^2/3$ and $\ens{x^4} =
+c^4/5$, so $\ens{x^4}/\ens{x^2}^2 = 9/5$ and the excess kurtosis is $9/5 -
+3 = -1.2$.
+
+\solutionto{ex:sm-species}$\sigma_v = \sqrt{\kB T/m}$ with $m$ times
+\texttt{MV2\_TO\_EV}: \SI{0.00600}{\angstrom\per\femto\second} for
+lithium and \SI{0.00456}{\angstrom\per\femto\second} for carbon, in the
+ratio $\sqrt{12.011/6.94} = 1.316$. Their mean kinetic energies are equal,
+$\frac32\kB T$ each, by equipartition; in real graphite the stiff carbon
+vibrations are quantum at \SI{300}{\kelvin} (\cref{sec:pe-classical}),
+and carbon's mean kinetic energy exceeds $\frac32\kB T$.
+
+\solutionto{ex:sm-rotor}$p_\theta = \partial\Lag/\partial\dot\theta =
+I\dot\theta$ and $p_\phi = \partial\Lag/\partial\dot\phi =
+I\sin^2\theta\,\dot\phi$, so $\dot\theta = p_\theta/I$ and $\dot\phi =
+p_\phi/(I\sin^2\theta)$, and
+\begin{equation*}
+   H = p_\theta\dot\theta + p_\phi\dot\phi - \Lag
+   = \frac{p_\theta^2}{I} + \frac{p_\phi^2}{I\sin^2\theta}
+   - \frac12\Bigl(\frac{p_\theta^2}{I} + \frac{p_\phi^2}{I\sin^2\theta}
+   \Bigr) = \frac{p_\theta^2}{2I} + \frac{p_\phi^2}{2I\sin^2\theta} .
+\end{equation*}
+\Cref{eq:sm-equipartition} with $x = p_\theta$ gives $\ens{p_\theta^2/I}
+= \kB T$, and with $x = p_\phi$, at each $\theta$, $\ens{p_\phi^2/(I
+\sin^2\theta)} = \kB T$; each term of $H$ is half of these, so $\ens{H} =
+\kB T$.
+
+\solutionto{ex:sm-freedoms}(a) $3\times3 = 9$, less 3 for the drift and 2
+for the turning of a linear molecule: 4. (b) $3\times108 - 3 = 321$; ASE
+divides the same kinetic energy by 324, so its temperature is $321/324 =
+0.9907$ of \texttt{mdlab}'s.
+
+\solutionto{ex:sm-scatter}$\sqrt{2/N_{\mathrm f}} = 0.01$ needs
+$N_{\mathrm f} = \num{20000}$, and $3N - 3 \ge \num{20000}$ needs $N \ge
+6667.7$: 6668 atoms.
+
+\solutionto{ex:sm-mode}$\ln\mathcal{P} = (a - 1)\ln K - K/\kB T$ with $a =
+\frac12N_{\mathrm f}$, whose derivative $(a - 1)/K - 1/\kB T$ vanishes at
+$K = (a - 1)\kB T$. For one atom, $a = \frac32$ and the peak is at
+$\frac12\kB T$; the mean is $\frac32\kB T$ because the density has a long
+tail of high energies, which pulls the mean above the peak.
+
+\solutionto{ex:sm-harmonic}Above its minimum the potential energy of a
+harmonic crystal is a sum of squares of its normal coordinates, one for
+each of the $N_{\mathrm f}$ freedoms (the three drifts carry none), so by
+equipartition $\ens{U} = \frac12N_{\mathrm f}\kB T = \ens{K}$ and $C_U =
+C_K$. Then $C_V = 2C_K = N_{\mathrm f}\kB$ and the bracket of
+\cref{eq:sm-lpv} is $1 - \frac12 = \frac12$: the variance is half the
+canonical one, and the standard deviation $1/\sqrt2$ of the canonical
+one.
+
+\solutionto{ex:sm-heat}$N_{\mathrm f} = 1497$, and $\ens{K} =
+\frac12N_{\mathrm f}\kB T$ gives $\kB T = 2\ens{K}/N_{\mathrm f}$. With
+$\ens{\delta K^2}_E = (0.025\ens{K})^2$,
+\begin{equation*}
+   \frac{2\ens{\delta K^2}_E}{N_{\mathrm f}(\kB T)^2}
+   = \frac{2\times0.025^2\ens{K}^2}{4\ens{K}^2/N_{\mathrm f}}
+   = \frac{0.025^2N_{\mathrm f}}{2} = 0.4678 .
+\end{equation*}
+Then $C_V = 748.5\,\kB/(1 - 0.4678) = 1406\,\kB$, or $2.81\,\kB$ per
+atom.
+
+\solutionto{ex:sm-volume}$\partial\ln Z_{NPT}/\partial P = Z_{NPT}^{-1}
+\int(-\beta V)\mathrm{e}^{-\beta PV}Z\,\dd V = -\beta\ens{V}$, which is
+the first result. Differentiating again, by the product rule as in
+\cref{sec:sm-canonical}, $\partial^2\ln Z_{NPT}/\partial P^2 =
+\beta^2(\ens{V^2} - \ens{V}^2)$, and $\dd\ens{V}/\dd P = -\kB T\,
+\partial^2\ln Z_{NPT}/\partial P^2 = -\beta(\ens{V^2} - \ens{V}^2)$, so
+the variance is $-\kB T\,\dd\ens{V}/\dd P$.
+
+\solutionto{ex:sm-legendre}$\dd F = -S\,\dd T - P\,\dd V + \mu\,\dd N$,
+so $\dd(F + PV) = \dd F + P\,\dd V + V\,\dd P = -S\,\dd T + V\,\dd P +
+\mu\,\dd N$, and $\dd(F - \mu N) = \dd F - \mu\,\dd N - N\,\dd\mu = -S\,\dd
+T - P\,\dd V - N\,\dd\mu$.
+
+\solutionto{ex:sm-fermi}$f(\mu + x) = 1/(\mathrm{e}^{\beta x} + 1)$ and
+$1 - f(\mu - x) = 1 - 1/(\mathrm{e}^{-\beta x} + 1) = \mathrm{e}^{-\beta
+x}/(\mathrm{e}^{-\beta x} + 1) = 1/(1 + \mathrm{e}^{\beta x})$, the same.
+The slope is $-\beta\mathrm{e}^{\beta(\varepsilon_{\mathrm o} - \mu)}/(\mathrm{e}^{
+\beta(\varepsilon_{\mathrm o} - \mu)} + 1)^2$, which at $\varepsilon_{\mathrm o} = \mu$ is
+$-\beta/4 = -1/(4\kB T)$. At \SI{0.1}{\electronvolt} above $\mu$, $f =
+0.02047$, and $-[f\ln f + (1 - f)\ln(1 - f)] = 0.0999$: the entropy is
+$0.0999\,\kB$, against $\ln2 = 0.693$ for a half-filled orbital.
+
+\solutionto{ex:sm-diagnose}A steady excess in one direction suggests a
+drift of the centre of mass along $z$, fault (c) of
+\cref{sec:sm-trajectory}; the total momentum, or
+\texttt{centre\_of\_mass\_path}, confirms it. With $N$ atoms of mass $m$,
+$T_z = \sum mv_z^2/(N\kB)$. Writing each $v_z = u_z + v_{\mathrm d}$ with
+$\sum mu_z = 0$,
+\begin{equation*}
+   \sum mv_z^2 = \sum mu_z^2 + 2v_{\mathrm d}\sum mu_z + Nmv_{\mathrm d}^2
+   = \sum mu_z^2 + Nmv_{\mathrm d}^2 ,
+\end{equation*}
+so $T_z$ gains $mv_{\mathrm d}^2/\kB$ over the \SI{295}{\kelvin} of the
+relative motion. For \SI{15}{\kelvin}, with $m$ in amu and the factor
+103.6427 of \cref{eq:en-mv2}, $v_{\mathrm d} = \sqrt{\num{1.293e-3}/
+(39.948\times103.6427)} = \SI{5.6e-4}{\angstrom\per\femto\second}$.

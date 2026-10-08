@@ -1,0 +1,44 @@
+# Thesis figure stylesheet. Load with plt.style.use('thesis.mplstyle')
+# before every figure. Widths: full = 5.77 in (146.5 mm text block),
+# half = 2.83 in. Fonts land at caption size (~9 pt) at final width.
+
+figure.figsize: 5.77, 2.6
+figure.dpi: 150
+savefig.bbox: tight
+savefig.pad_inches: 0.02
+
+font.family: serif
+# The PGF backend sends every label through the same LaTeX font stack as the
+# thesis while retaining searchable Unicode maps in the finished PDF.
+pgf.texsystem: pdflatex
+pgf.rcfonts: False
+# Oldstyle figures remain a prose convention; plot ticks and measured values
+# use lining figures.
+pgf.preamble: \usepackage[T1]{fontenc}\usepackage[sc]{mathpazo}
+# Figures are saved at their final physical width, so these are final sizes.
+font.size: 10
+axes.labelsize: 10
+axes.titlesize: 9
+xtick.labelsize: 9
+ytick.labelsize: 9
+legend.fontsize: 9
+
+axes.spines.top: False
+axes.spines.right: False
+axes.linewidth: 0.6
+axes.grid: False
+axes.prop_cycle: cycler('color', ['00546D', 'C28E0E', '7C2529', '5B7553', '6E7275'])
+
+xtick.major.width: 0.6
+ytick.major.width: 0.6
+xtick.direction: out
+ytick.direction: out
+
+lines.linewidth: 1.4
+lines.markersize: 4.5
+
+legend.frameon: False
+legend.handlelength: 1.6
+
+pdf.fonttype: 42
+ps.fonttype: 42

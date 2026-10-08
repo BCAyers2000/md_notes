@@ -1,0 +1,19 @@
+%=============================================================================!
+% 14.0  CHAPTER OPENING                                                       !
+%=============================================================================!
+A graphite electrode swells as it charges: the carbon sheets separate
+from 3.34 to \SI{3.70}{\angstrom} when lithium fills the spaces between
+them\cite{Hazrati2014}. Holding a simulation at the volume of the bare
+graphite would compress the lithiated solid across its sheets. To study
+its response at a prescribed pressure, we must allow the cell's volume
+and shape to change.
+
+We first obtain pressure from the force of atoms on a wall, then use the
+virial to calculate it in a periodic cell without walls. The pressure
+tensor distinguishes the forces on different faces, allowing us to
+describe a layered solid whose response differs within and across its
+sheets. We then develop barostats and test both the mean pressure and the
+volume fluctuations they produce, following the approach to thermostats
+in Chapter~13. Their effects on motion and their characteristic faults
+prepare the question of Chapter~15: how long must a run be before its
+averages can be trusted?

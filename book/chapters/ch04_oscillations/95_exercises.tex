@@ -1,0 +1,157 @@
+%=============================================================================!
+% 4.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:os-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:os-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~04 checks every numerical answer.
+
+\begin{exercise}[a phase of $\pi$]
+\label{ex:os-phase-pi}
+An oscillating block has phase $\omega t + \phi = \pi$. Where is the point
+$P$ on its reference circle, where is the block, and what is it about to
+do?
+\end{exercise}
+
+\begin{exercise}[a stiff spring's energy]
+\label{ex:os-energy}
+A block of \SI{0.2}{\kilogram} on a spring of \SI{80}{\newton\per\metre}
+oscillates with an amplitude of \SI{3}{\centi\metre}. Find its energy, its
+largest speed, and its speed at $x = \SI{1.5}{\centi\metre}$.
+\end{exercise}
+
+\begin{exercise}[the average of a sine squared]
+\label{ex:os-average}
+Show that the average of $\sin^2\omega t$ over one period is $\frac12$,
+directly from $\cos 2\theta = 1 - 2\sin^2\theta$.
+\end{exercise}
+
+\begin{exercise}[a state on the ellipse]
+\label{ex:os-ellipse}
+The block of \cref{sec:os-circle} ($m = \SI{0.5}{\kilogram}$, $k =
+\SI{50}{\newton\per\metre}$) is at $x = \SI{3}{\centi\metre}$ moving at
+$v = \SI{-0.4}{\metre\per\second}$. Find its energy and the semi-axes of
+its ellipse in the phase plane, and say whether $x$ is about to grow or
+shrink.
+\end{exercise}
+
+\begin{exercise}[a pendulum for a clock]
+\label{ex:os-clock}
+How long must a pendulum be for its small swings to have a period of
+\SI{2}{\second}?
+\end{exercise}
+
+\begin{exercise}[a time from the arcsine]
+\label{ex:os-arcsine}
+Show, from \cref{eq:os-period} and the toolbox `The derivative of an
+inverse function' of \cref{sec:os-anharmonic}, that a harmonic
+oscillator takes $\pi/(6\omega)$ to move from its centre to half its
+amplitude, and evaluate this for $\omega = \SI{10}{\radian\per\second}$.
+\end{exercise}
+
+\begin{exercise}[the bottom of a double well]
+\label{ex:os-double}
+For the double well $U = U_0[(x/a)^2 - 1]^2$ of \cref{ex:en-double}, show
+that small oscillations about $x = \pm a$ have $\omega_0 = \sqrt{8U_0/(m
+a^2)}$.
+\end{exercise}
+
+\begin{exercise}[a round hollow]
+\label{ex:os-isotropic}
+On the model surface, show that along the line $x = 0$ the potential
+energy is $U(0, y) = \frac14 U_{\mathrm b}[3 - 2\cos(\frac12\lvert\vb{g}
+\rvert y) - \cos(\lvert\vb{g}\rvert y)]$, and that its second derivative at
+the hollow, $\frac38 U_{\mathrm b}\lvert\vb{g}\rvert^2$, equals the
+$2\pi^2U_{\mathrm b}/a^2$ found along $x$ in \cref{sec:os-small}.
+\end{exercise}
+
+\begin{exercise}[the steepest attraction]
+\label{ex:os-lj}
+At what distance is the attractive force of the Lennard-Jones well
+strongest? (It is where the slope of $U_{\mathrm{LJ}}$ is greatest, so
+where its second derivative is zero.)
+\end{exercise}
+
+\begin{exercise}[the curvature of the Morse well]
+\label{ex:os-morse}
+Show that $\dd^2 U_{\mathrm M}/\dd r^2 = 2Da^2$ at $r = r_0$ by
+differentiating twice, without the series.
+\end{exercise}
+
+\begin{exercise}[a swing in a liquid]
+\label{ex:os-liquid}
+The block with $\omega_0 = \SI{10}{\radian\per\second}$ swings in a
+liquid with $\gamma = \SI{12}{\per\second}$. Find the period of its swing
+and how long its swing takes to shrink to a tenth.
+\end{exercise}
+
+\begin{exercise}[critical damping]
+\label{ex:os-critical}
+Show by substituting into \cref{eq:os-damped} that $x = (c_1 + c_2 t)\,
+\mathrm{e}^{-\omega_0 t}$ is a motion when $\gamma = 2\omega_0$.
+\end{exercise}
+
+\begin{exercise}[off resonance]
+\label{ex:os-off}
+The block with $\omega_0 = \SI{10}{\radian\per\second}$, $\gamma =
+\SI{2}{\per\second}$ and $f = \SI{1}{\metre\per\second\squared}$ is
+pushed at $\omega = 5$ and at $\SI{15}{\radian\per\second}$. Find the
+amplitude and the lag in each case.
+\end{exercise}
+
+\begin{exercise}[adding motions]
+\label{ex:os-linear}
+Show that if $x_1(t)$ and $x_2(t)$ are motions of the damped oscillator,
+\cref{eq:os-damped}, then so is $c_1x_1 + c_2x_2$ for any numbers $c_1$
+and $c_2$.
+\end{exercise}
+
+\begin{exercise}[heavy hydrogen]
+\label{ex:os-isotope}
+Deuterium is hydrogen with a mass of \SI{2.014}{\amu}. If an O--H bond and
+an O--D bond have the same stiffness, what is the ratio of the angular
+frequency of the O--D vibration to that of the O--H vibration, and by what
+factor is the O--D period longer?
+\end{exercise}
+
+\begin{exercise}[a different middle spring]
+\label{ex:os-coupling}
+The two carts of \cref{sec:os-modes} are joined by a middle spring of
+stiffness $k'$, the outer springs keeping $k$. Show that the normal modes
+are still $(1, 1)$ and $(1, -1)$, with $\omega^2 = k/m$ and $(k +
+2k')/m$.
+\end{exercise}
+
+\begin{exercise}[the antisymmetric stretch]
+\label{ex:os-triatomic}
+For the O--C--O chain of \cref{sec:os-modes}, show that $\vb{u} = (1,
+-2m_{\mathrm O}/m_{\mathrm C}, 1)$ satisfies $\boldsymbol{\Phi}\vb{u} =
+\omega^2\vb{M}\vb{u}$ with $\omega^2 = (k/m_{\mathrm O})(1 + 2m_{\mathrm
+O}/m_{\mathrm C})$.
+\end{exercise}
+
+\begin{exercise}[a free pair]
+\label{ex:os-pair}
+Two masses $m_1$ and $m_2$ on a line are joined by one spring of stiffness
+$k$, so that the Hessian has rows $k(1, -1)$ and $k(-1, 1)$. Show that
+the mass-weighted Hessian has eigenvalues $0$ and $k/m_{\mathrm r}$, with $m_{\mathrm r}$
+the reduced mass, and interpret both.
+\end{exercise}
+
+\begin{exercise}[the stiffness of an O--H bond]
+\label{ex:os-stiffness}
+Treating the symmetric stretch of water, \SI{3657}{\per\centi\metre}, as an
+O--H bond vibrating with the reduced mass of \cref{sec:os-bodies}, find
+its angular frequency in \si{\radian\per\femto\second} and the stiffness of
+the bond in \si{\electronvolt\per\angstrom\squared}.
+\end{exercise}
+
+\begin{exercise}[a step of a tenth]
+\label{ex:os-step}
+If a simulation had to take steps no longer than a tenth of the shortest
+period present, what would be the longest step for water, and how many
+steps would a picosecond of simulated time take?
+\end{exercise}

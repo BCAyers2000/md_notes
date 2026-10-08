@@ -1,0 +1,240 @@
+%=============================================================================!
+% 16.1  HOW ATOMS ARRANGE THEMSELVES                                          !
+%=============================================================================!
+\section{How atoms arrange themselves}
+\label{sec:ob-rdf}
+
+An orchard and a wood can hold the same number of trees on the same area
+and still look different. Standing at one tree of an orchard planted on a
+square grid, a walker finds the nearest trees at one spacing, the next at
+$\sqrt2$ spacings, then at 2, each at a fixed distance and in a fixed
+number. In a wood no two trees grow closer than their trunks allow, the
+nearest neighbours lie at roughly one distance without fixed directions,
+and farther out the trees thin into an even scatter. Counting the trees in
+rings of equal width around one tree, and comparing each count with what
+an even scatter would give, tells the two apart without a map. Atoms in a
+crystal and in a liquid differ in the same way, and the count in rings is
+the radial distribution function.
+
+\subsection*{The radial distribution function}
+
+Around an atom, the number of others whose centres lie between the
+distances $r$ and $r + \dd r$ would be the number density $\rho = N/V$
+times the volume of that thin shell, $4\pi r^2\,\dd r$, if the atoms were
+scattered evenly and independently. The radial distribution function
+$g(r)$ is the factor by which the actual mean number differs:
+\begin{equation}
+   \text{mean number of partners between $r$ and $r + \dd r$}
+   = \rho\,g(r)\,4\pi r^2\,\dd r .
+   \label{eq:ob-rdf}
+\end{equation}
+Where $g(r) > 1$ partners crowd; where $g(r) < 1$ they are scarce; and
+$g(r) = 0$ inside the distance at which two atoms repel too strongly to
+meet. The mean is over every atom as the centre and over every frame of
+the run, so $g(r)$ describes the whole liquid or crystal.
+Summing \cref{eq:ob-rdf} out to a distance $r$ counts the partners within
+$r$ of an atom, the running coordination number
+\begin{equation*}
+   n_{\mathrm c}(r) = \rho\int_0^r g(s)\,4\pi s^2\,\dd s ,
+\end{equation*}
+whose value at the end of the first shell of neighbours is the atom's
+number of nearest neighbours.
+
+A run gives $g(r)$ as a histogram (\cref{sec:sm-probability}). The
+distances are cut into bins of width $\delta r$; in each frame, every pair
+closer than the last edge adds one to its bin for each of its two atoms,
+since each is the other's partner; and the total over $n$ frames is
+divided by the count an even scatter would give, $nN\rho$ times the volume
+of the shell between the edges $r_k$ and $r_{k+1}$,
+\begin{equation*}
+   \tfrac43\pi\bigl(r_{k+1}^3 - r_k^3\bigr)
+   = 4\pi r_k^2\,\delta r + 4\pi r_k\,\delta r^2
+   + \tfrac43\pi\,\delta r^3 ,
+\end{equation*}
+by expanding the cube of $r_k + \delta r$. The exact difference of
+spheres is used rather than its first term $4\pi r_k^2\,\delta r$, which
+misses the shell's volume by a fraction of about $\delta r/r_k$, large near
+the origin and the whole of it in the first bin, where $r_k = 0$. In a
+periodic cell the separations are reduced to their nearest image
+(\cref{sec:md-image}). That finds every pair once only out to half the
+cell's smallest width; beyond it a sphere around an atom would hold more
+than one copy of some partners while the nearest image counts one, so the
+histogram stops there. A partial function $g_{\mathrm{AB}}(r)$, the
+partners of kind B around atoms of kind A, takes A atoms as the centres,
+B atoms as the partners and $\rho_{\mathrm B} = N_{\mathrm B}/V$ as the
+density.
+
+The function \texttt{rdf} of \texttt{mdlab.analysis.structure} does this,
+finding the pairs through the cell list of \cref{sec:md-neighbours}:
+
+\begin{code}
+def rdf(
+    positions: ArrayLike,
+    cell: ArrayLike,
+    r_max: float,
+    n_bins: int,
+    centres: ArrayLike | None = None,
+    partners: ArrayLike | None = None,
+    per_frame: bool = False,
+) -> tuple[NDArray, NDArray]:
+    frames = _frames(positions)
+    h = np.asarray(cell, dtype=float)
+    in_a = _chosen(frames.shape[1], centres)
+    in_b = _chosen(frames.shape[1], partners)
+    edges = np.linspace(0.0, r_max, n_bins + 1)
+    ideal = in_a.sum() * in_b.sum() / cell_volume(h) * shell_volumes(edges)
+    out = np.empty((len(frames), n_bins))
+    for k, r in enumerate(frames):
+        i, j, _, dist = cell_list_pairs(r, h, r_max)
+        # a pair counts once for each end that is a centre whose partner
+        # is the other end
+        weight = (in_a[i] & in_b[j]).astype(float) + (in_a[j] & in_b[i])
+        out[k] = np.histogram(dist, edges, weights=weight)[0] / ideal
+    middle = 0.5 * (edges[1:] + edges[:-1])
+    return middle, (out if per_frame else out.mean(axis=0))
+\end{code}
+
+\noindent It divides by $N\rho = N^2/V$, as ASE's \texttt{get\_rdf}
+does\cite{Larsen2017}, and agrees with it to \num{3e-14} on 50 frames of
+liquid argon. One consequence of that choice shows far from any atom.
+For atoms placed independently at random, an atom's partners are the
+other $N - 1$, spread evenly over the volume $V$, while the divisor
+assumes $N$, so $g(r)$ tends to $(N - 1)/N = 1 - 1/N$. For 256 atoms
+placed at random in the liquid's cell, 400 times over, $g(r)$ averages
+$0.9961 \pm 0.0005$ beyond \SI{2}{\angstrom}, against $1 - 1/256 = 0.9961$
+(\cref{fig:ob-rdf}a). A liquid falls short of 1 by less. Each atom clears
+a hole around itself that holds fewer partners than an even scatter, and
+\cref{sec:ob-sq} shows that the hole takes $1 - S(0)$ of the one partner
+missing from $\rho V$, with $S(0)$ about 0.06 here, leaving only $S(0)$
+missing from the rest of the cell; $g(r)$ then tends to $1 - S(0)/N$, once
+the cell is large enough for the liquid's order to die away within it.
+Beyond the sphere of radius $L/2$, in the corners of the 2048-atom cell
+of Chapter~15, the partners lie at $0.999967 \pm 0.000005$ of $\rho$,
+against $1 - 1/2048 = 0.999512$. In the 256-atom cell, where $g(r)$ still
+ripples by a few hundredths at $L/2$, no far value is reached.
+
+\subsection*{A crystal and a liquid}
+
+The fcc crystal of the model argon of Chapters~10 to 15, at its own
+lattice constant of \SI{5.26714}{\angstrom} and \SI{21}{\kelvin}, has
+$g(r)$ in sharp peaks at the distances of its shells of neighbours,
+$(a/\sqrt2)\sqrt m$, for $m = 1$ to 5: \num{3.724}, \num{5.267},
+\num{6.451}, \num{7.449} and \SI{8.328}{\angstrom}
+(\cref{fig:ob-rdf}b). Between the peaks $g(r)$ is zero, and $n_{\mathrm c}(r)$
+climbs in steps of 12, 6, 24 and 12, the numbers of atoms in the first
+four shells of the fcc lattice, to 12, 18, 42 and 54 at the gaps between
+them (\cref{fig:ob-rdf}c). The peaks have width because the atoms vibrate,
+each wandering from its mean position by \SI{0.094}{\angstrom} along each
+axis (root mean square), and the first rises to 9.30.
+
+The liquid at \SI{135}{\kelvin} and $\rho = \SI{0.02035}{\per\angstrom
+\cubed}$ (Chapter~15's run of \SI{2}{\nano\second}, every
+\SI{2}{\pico\second}) has none of this order beyond a few neighbours.
+$g(r)$ is zero inside \SI{3}{\angstrom}, rises to a first peak of 2.578 at
+\SI{3.684}{\angstrom}, falls to a first minimum of 0.663 at
+\SI{5.238}{\angstrom}, and then oscillates about 1 with peaks that weaken
+shell by shell. Out to its first minimum the liquid holds 12.00
+neighbours on average, as many as the crystal's first shell, though
+spread over a wider range of distances, at no fixed directions, and at a
+density of \SI{0.02035}{\per\angstrom\cubed} against the crystal's
+\SI{0.02737}{\per\angstrom\cubed}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/rdf}
+\caption{(a) The radial distribution function of liquid argon at
+\SI{135}{\kelvin} (Chapter~15's run of \SI{2}{\nano\second}, every
+\SI{2}{\pico\second}) against 256 atoms at random in the same cell
+(dashed, from \SI{1.5}{\angstrom}, where its bins hold enough pairs).
+(b) The fcc crystal at \SI{21}{\kelvin}, with the distances of its first
+five shells (dotted). (c) The running coordination number of the liquid
+and the crystal, with the liquid's first minimum (dotted).}
+\label{fig:ob-rdf}
+\end{figure}
+
+\subsection*{Energy and pressure from the arrangement}
+
+For a pair potential, $g(r)$ holds all that the potential energy and the
+virial need. The potential energy is the sum of $\varphi(r_{ij})$ over pairs.
+Around one atom, \cref{eq:ob-rdf} puts $\rho g(r)4\pi r^2\dd r$ partners
+at the distance $r$, each contributing $\varphi(r)$; summing over the $N$
+atoms counts each pair from both ends, so
+\begin{equation*}
+   \ens{U} = \frac N2\,\rho\int_0^\infty\varphi(r)\,g(r)\,4\pi r^2\,\dd r .
+\end{equation*}
+The virial of \cref{sec:pr-periodic}, $\mathcal{W} = -\sum_{\text{pairs}}
+r_{ij}\varphi'(r_{ij})$, follows by the same count,
+\begin{equation*}
+   \ens{\mathcal{W}} = -\frac N2\,\rho\int_0^\infty r\varphi'(r)\,g(r)\,
+   4\pi r^2\,\dd r ,
+\end{equation*}
+and with it and the run's mean kinetic energy the pressure $\ens{P} =
+(2\ens{K} + \ens{\mathcal{W}})/3V$ of \cref{eq:pr-virial}. On bins of
+\SI{0.01}{\angstrom} and the 1000 frames, these give $U/N =
+\SI{-50.102}{\milli\electronvolt}$ against the run's average of $(-50.092
+\pm 0.018)$\,\si{\milli\electronvolt}, 0.6 errors away, and $P =
+\SI{0.0848}{\giga\pascal}$ against $(0.0849 \pm 0.0004)$\,\si{\giga
+\pascal}, 0.2 errors away. The bins must be fine: on bins of
+\SI{0.05}{\angstrom} the energy misses by 1.9 errors, because $\varphi$
+changes steeply across a bin near the core. Agreement here is a check of
+the normalisation of $g(r)$, of its histogram and of the run's energy
+together.
+
+\subsection*{How long the arrangement takes}
+
+Chapter~15 deferred the convergence of $g(r)$ to this chapter. One frame
+already averages over 256 centres, so in bins of \SI{0.05}{\angstrom} its
+$g(r)$ at the first peak spreads by only 0.33 from frame to frame, and
+frames \SI{500}{\femto\second} apart are nearly independent, their
+statistical inefficiency (\cref{sec:cv-correlation}) being 1.04, so
+$\tau_{\mathrm{int}} = \SI{259}{\femto\second}$. With the run's length $t_{\mathrm f}$ in \cref{eq:cv-length},
+the error of the peak's height is 0.076 after \SI{10}{\pico\second}
+(\num{2.9}\% of it), 0.024 after \SI{100}{\pico\second} (0.9\%) and 0.005
+after \SI{2}{\nano\second}, and a run of \SI{573}{\pico\second} gives
+it to 0.01. Pieces of the run of 5 to \SI{200}{\pico\second} scatter by
+0.102 to 0.020 against the predicted 0.107 to 0.017, within the scatter
+expected of so few pieces, about a quarter for the 10 pieces of
+\SI{200}{\pico\second}, so these error bars can be trusted
+(\cref{fig:ob-rdf-error}b). Over the whole curve, the
+first \SI{10}{\pico\second} lie within two of their errors of the
+\SI{2}{\nano\second} result in 0.95 of the bins (\cref{fig:ob-rdf-error}a).
+The first peak of $g(r)$ is fixed to 0.9\% by \SI{100}{\pico\second},
+where the pressure and the diffusion coefficient need \SI{1}{\nano\second}
+for 0.7\% and 1.0\% (\cref{sec:cv-observables}). Its memory is short:
+$\tau_{\mathrm{int}}$ is \SI{0.26}{\pico\second}, against
+\SI{0.94}{\pico\second} for the pressure under the same thermostat.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/rdf_error}
+\caption{(a) The radial distribution function of liquid argon from the
+first \SI{10}{\pico\second} of Chapter~15's run, less that from all
+\SI{2}{\nano\second}, with twice its standard error from the 20 frames
+\SI{500}{\femto\second} apart (band). (b) The standard error of $g$ at its
+first peak, in bins of \SI{0.05}{\angstrom}, against the length of run
+used: predicted from one frame's
+spread and the statistical inefficiency (dashed), and measured as the
+scatter of independent pieces (points).}
+\label{fig:ob-rdf-error}
+\end{figure}
+
+\begin{keyidea}
+The radial distribution function $g(r)$ counts the partners at the
+distance $r$ from an atom against an even scatter. It is a histogram of
+pair distances divided by $N\rho$ times the volume of each shell, out to
+half the cell, and tends far away to $1 - 1/N$ for atoms placed at random
+and to $1 - S(0)/N$, nearly 1, in a liquid in a large enough cell. Its
+peaks give the shells of neighbours, its integral the coordination
+number, and with the pair potential the energy and the pressure. Its
+memory is short, so it converges several times sooner than the
+pressure.
+\end{keyidea}
+
+\notebook{16}{grow shells around an atom and watch the histogram become g(r)}
+
+\begin{selfcheck}
+A gas of 500 atoms placed independently at random in a fixed cell is
+analysed with ASE's
+normalisation. What value should $g(r)$ approach far from any atom, and
+why does a larger cell bring it closer to 1?
+\end{selfcheck}

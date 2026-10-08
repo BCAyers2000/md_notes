@@ -1,0 +1,41 @@
+%=============================================================================!
+% 7.S  WHAT WE NOW HAVE                                                       !
+%=============================================================================!
+\unnumbered{What we now have}
+
+The Legendre transform of the Lagrangian in the velocities is the
+Hamiltonian $H(q, p) = \sum_k p_k\dot{q}_k - \Lag$, which for a kinetic
+energy quadratic in the velocities is the energy $K + U$ written in terms
+of the coordinates and their momenta. Hamilton's equations, $\dot{q} =
+\partial H/\partial p$ and $\dot{p} = -\partial H/\partial q$, move every
+state of phase space along a flow that runs on the contours of $H$; for
+the pendulum the contours show the swinging and the circulating motions
+and the separatrix between them, along which the bob creeps towards the
+top as $\mathrm{e}^{-\omega_0t}$. Any quantity changes at the rate $\pb{A}
+{H} = \Liou A$, and the
+Taylor series in the Liouville operator gives the motion from the
+starting state, at every time for the ball and the spring and over a
+short time in general.
+
+The flow has no divergence, so it keeps
+the area of every region of phase space, and its Jacobian determinant is
+1 (Liouville's theorem); drag shrinks areas as $\mathrm{e}^{-\gamma t}$.
+
+Every symmetry of the Lagrangian under a change that can be made as small
+as we like, and the passing of time, gives a conserved quantity
+(Noether's theorem): the energy from
+the passing of time, the momentum from moving everything, the angular
+momentum from turning everything, with no assumption about pairs of
+forces; in a periodic box the momentum survives and the angular momentum
+does not. For a time-independent Hamiltonian that is even in the momenta,
+reversing every momentum makes the system retrace its path. Drag breaks
+this reversal symmetry.
+
+A method of computing motion is a step map:
+the forward Euler method inflates the areas and the energy of a spring by
+$1 + \omega^2\dt^2$ at every step, while the symplectic Euler method, a kick
+followed by a drift, keeps area and holds the energy within a band.
+
+Chapter~8 asks where the potential energy $U$ of atoms comes from, and
+Chapter~9 returns to step maps and builds the methods with which
+molecular dynamics is done.

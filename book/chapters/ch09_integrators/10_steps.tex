@@ -1,0 +1,96 @@
+%=============================================================================!
+% 9.1  STEPS AND THEIR ERRORS                                                 !
+%=============================================================================!
+\section{Steps and their errors}
+\label{sec:in-steps}
+
+A method of computing motion is a step map (\cref{sec:ha-symplectic}): it
+takes the positions and velocities at a time $t$ and returns them at $t
++ \dt$. Applied over and over it produces the motion at the times $\dt$,
+$2\dt$, $3\dt$, \dots, and the question is how far that computed motion
+strays from the true one. This section measures it for the simplest
+method and defines the order of a method, the number that says how fast
+its error shrinks as the step is shortened.
+
+\subsection*{The forward Euler method again}
+
+\Cref{sec:ne-equations} advanced a motion by holding the velocity and the
+acceleration at their values at the start of each step:
+\begin{equation*}
+   x_{n+1} = x_n + \dt\,v_n , \qquad v_{n+1} = v_n + \dt\,a(x_n) ,
+\end{equation*}
+where $x_n$ and $v_n$ are the computed position and velocity after $n$
+steps, at the time $t_n = n\dt$. The Taylor series of the true position
+over one step (\cref{sec:mo-taylor}), and the same series for the
+velocity, whose derivatives are $\dot{v} = a$ and $\ddot{v} = \dot{a}$, the
+rate of change of the acceleration,
+\begin{align*}
+   x(t + \dt) &= x(t) + v(t)\,\dt + \tfrac12 a(t)\,\dt^2 + \order{\dt^3} ,\\
+   v(t + \dt) &= v(t) + a(t)\,\dt + \tfrac12\dot{a}(t)\,\dt^2
+   + \order{\dt^3} ,
+\end{align*}
+show what one step misses: started from the true state, the computed
+position is wrong by $\frac12 a\dt^2$ and the computed velocity by
+$\frac12\dot{a}\dt^2$, each plus smaller terms. The error made in one step
+from a correct start is called the local error; for the forward Euler
+method it is of order $\dt^2$.
+
+\subsection*{From one step to a whole run}
+
+To follow the motion for a fixed time $t_{\mathrm f}$ needs $t_{\mathrm
+f}/\dt$ steps. Each makes a local error of order $\dt^2$, and each error is
+carried forward by the later steps. For a smooth force, an error carried
+through one step grows by a factor of at most $1 + c\,\dt$, with $c$ a
+bound on how fast the rates of change depend on the state, so through all
+the later steps by at most
+\begin{equation*}
+   (1 + c\,\dt)^{t_{\mathrm f}/\dt} \le \bigl(\mathrm{e}^{c\,\dt}
+   \bigr)^{t_{\mathrm f}/\dt} = \mathrm{e}^{ct_{\mathrm f}} ,
+\end{equation*}
+since $1 + y \le 1 + y + \frac12y^2 + \dotsb = \mathrm{e}^y$ for $y \ge
+0$. This factor depends on $t_{\mathrm f}$ and on the force but not on
+$\dt$, and the error at $t_{\mathrm f}$ is at most it times the sum of the
+local errors\cite{LeimkuhlerMatthews2015}: $(t_{\mathrm f}/\dt)
+\times\order{\dt^2} = \order{\dt}$. A method whose error over a fixed
+time, its global error, is of order $\dt$ is said to be of order 1, one
+whose global error is of order $\dt^2$ of order 2, and so on. For a method
+that computes each state from the one before it alone, as the forward
+Euler method does, the local error is one power of $\dt$ higher than the
+global error. The forward Euler method is of order 1: halving the step
+halves the error at a given time, as \cref{sec:ne-equations} found.
+
+\Cref{fig:in-orders} measures this for the pendulum of Chapter~7, $H =
+p^2/(2mL^2) + mgL(1 - \cos\theta)$, with energies in units of $mgL$ and
+times in units of $\sqrt{L/g}$, which amounts to setting $m = L = g = 1$,
+as the reduced units of \cref{sec:pe-pairs} do for atoms. Writing $q$ for
+the angle, $H = p^2/2 + 1 - \cos q$ and $\ddot{q} = -\sin q$. Started at
+the angle $q = 1$ with the momentum $p = 0.5$, the error of the angle
+after a time of 4 falls with the step along a line of slope 1.03 on
+logarithmic axes (\cref{sec:mo-taylor}), and its error after a single
+step along a line of slope 2.01. The figure also shows
+the two methods of the next sections, whose errors fall much faster.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch09_integrators/orders}
+\caption{The errors of three methods for the pendulum $H = p^2/2 + 1 -
+\cos q$ in reduced units, started at $q = 1$, $p = 0.5$, against the step
+$\dt$, on logarithmic axes. (a) The error of the angle after a time of 4,
+with lines of slope 1, 2 and 4 (dashed). (b) The error of the angle after
+one step from the same start, with lines of slope 2, 3 and 5.}
+\label{fig:in-orders}
+\end{figure}
+
+\begin{keyidea}
+A method's local error is the error of one step from a correct start.
+For a method that steps from the present state alone, the errors of the
+$t_{\mathrm f}/\dt$ steps add up over a fixed time to a global error with
+one power of $\dt$ fewer, and that power is the order of the method: the
+forward Euler method, with local and global errors of order $\dt^2$ and
+$\dt$, is of order 1.
+\end{keyidea}
+
+\begin{selfcheck}
+Halving the step of a method divides its error at a given time by 4.
+What is its order, and how does its local error depend on $\dt$?
+\end{selfcheck}

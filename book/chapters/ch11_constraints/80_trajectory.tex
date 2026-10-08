@@ -1,0 +1,256 @@
+%=============================================================================!
+% 11.8  WHAT THE TRAJECTORY LOOKS LIKE                                        !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:cs-trajectory}
+
+A run produces a record: energies at every step, positions and
+velocities every so often. Before any of it is used, the record should be
+read for signs that the run went wrong, and many faults show in it
+clearly when the reader knows where to look. This section shows a
+healthy run of rigid water and the same run broken in eight ways, each
+caught by a check of \texttt{mdlab.diagnostics} or of the record itself. Later chapters add the
+checks of temperature, pressure and thermostats, and Chapter~17 collects
+them all.
+
+\subsection*{A healthy run}
+
+\Cref{fig:cs-healthy} follows the 64 rigid molecules for
+\SI{10}{\pico\second}, 5000 steps of \SI{2}{\femto\second} by RATTLE. The
+kinetic and potential energies swing by up to about
+\SI{13}{\milli\electronvolt} per molecule over the first
+\SI{2}{\pico\second}, in opposite directions, so that their sum, the total
+energy, stays in a band \SI{0.31}{\milli\electronvolt} wide per molecule
+over the whole run, \SI{0.020}{\electronvolt} for the box: the mirror image
+of $K$ and $U$ is the first sign of a healthy run without a thermostat.
+The standard deviation of the total energy is 0.93\% of the kinetic
+energy's, just inside the 1\% level chosen in \cref{sec:cs-water}. The
+mean total energy over the second half of the run, less that over the
+first, is \SI{1.1e-5}{\electronvolt}, and divided by the
+\SI{5}{\pico\second} between the centres of the halves it gives a drift of
+\SI{2.2e-6}{\electronvolt\per\pico\second}, far below the fluctuation;
+this is what \texttt{energy\_drift} computes. Every held distance stays
+within \SI{1.5e-10}{\angstrom} of its length, the tolerance of $10^{-10}$
+times the H--H length, and the centre of mass moves
+\SI{1.8e-10}{\angstrom} in \SI{10}{\pico\second}, the rounding of the
+arithmetic. The root-mean-square displacement of the oxygen atoms, the
+square root of the mean over them of the squared distance each has moved
+from its start, grows steadily, \num{1.41}, 4.14 and
+\SI{5.76}{\angstrom} after 1, 5 and \SI{10}{\pico\second}, the wandering
+of molecules in a liquid that Chapter~16 turns into a diffusion
+coefficient. Over the run the kinetic energy averages
+\SI{4.99}{\electronvolt}, \SI{13.10}{\milli\electronvolt} per freedom,
+with a standard deviation of \SI{0.29}{\electronvolt}; the potential
+energy averages \SI{-0.403}{\electronvolt} per molecule. These are
+averages over one run of \SI{10}{\pico\second}, given with their spread;
+how far such averages can be trusted, their error bars, is the subject of
+Chapter~15. \Cref{fig:cs-frames} shows three
+frames, with three molecules marked to follow them.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/healthy}
+\caption{A healthy run: 64 rigid water molecules followed by RATTLE for
+\SI{10}{\pico\second} with $\dt = \SI{2}{\femto\second}$. (a) The changes
+of the kinetic, potential and total energies from their starting values,
+per molecule, over the first \SI{2}{\pico\second}. (b) The largest error
+of a held distance and the distance the centre of mass has moved, on a
+logarithmic axis. (c) The root-mean-square distance the oxygen atoms have
+moved from their starts.}
+\label{fig:cs-healthy}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/frames}
+\caption{Frames of the healthy run at 0, 5 and \SI{10}{\pico\second},
+each molecule moved whole into the cell by its oxygen and drawn with its
+two O--H bonds (oxygen red, hydrogen white). Three molecules have their
+oxygen drawn in teal so that their motion can be followed. All frames are
+seen from the same direction at the same scale.}
+\label{fig:cs-frames}
+\end{figure}
+
+\subsection*{The same run, broken}
+
+\Cref{fig:cs-faults} breaks the run in eight ways, each a mistake that is
+easy to make, and \cref{tab:cs-faults} lists the check that catches each,
+with its value in the healthy and the broken run.
+
+\begin{figure}[p]
+\centering
+\includegraphics{ch11_constraints/faults}
+\caption{The run of \cref{fig:cs-healthy} broken in eight ways (teal),
+beside the healthy run (grey dashed), each through the quantity that
+catches the fault. (a) Flexible water at \SI{2}{\femto\second} against
+\SI{0.5}{\femto\second}. (b) The Coulomb energy cut off atom by atom at
+\SI{6}{\angstrom} against the Ewald sum. (c) Velocities in
+\si{\angstrom\per\femto\second} read as \aa ngstr\"oms per ASE time unit:
+the kinetic energy per freedom against the value asked for (dotted).
+(d) Positions wrapped into the cell at every step while the bonds are
+measured without their nearest copies: the largest bond error. (e) One
+molecule placed with its oxygen \SI{1}{\angstrom} from another's: the
+forces at the start, largest first. (f) Constraints held to $10^{-3}$
+against $10^{-10}$. (g) Starting velocities with their total momentum
+left in. (h) RESPA with outer steps of \SI{4}{\femto\second} against
+\SI{1}{\femto\second}.}
+\label{fig:cs-faults}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\caption{The faults of \cref{fig:cs-faults}, the check of
+\texttt{mdlab.diagnostics} or of the record that catches each, and its
+value in the healthy run and in the broken one; runs of
+\SI{2}{\pico\second}, except the flexible run at \SI{0.5}{\femto\second}
+and both RESPA runs, of \SI{1}{\pico\second}, and runs that failed
+sooner.}
+\label{tab:cs-faults}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+fault & check & healthy & broken\\
+\midrule
+(a) step too long & \texttt{energy\_fluctuation} & 1.5\% & 47\%\\
+(b) jumping cutoff & \texttt{energy\_fluctuation} & 1.0\% & 2100\%\\
+(c) wrong units & $K(0)$ per freedom &
+   \SI{12.9}{\milli\electronvolt} & \SI{0.125}{\milli\electronvolt}\\
+(d) wrapped wrongly & \texttt{bond\_error} &
+   \SI{1.5e-10}{\angstrom} & \SI{15.8}{\angstrom}\\
+(e) overlap & \texttt{largest\_force} &
+   \SI{2.9}{\electronvolt\per\angstrom} &
+   \SI{3.0e5}{\electronvolt\per\angstrom}\\
+(f) loose constraints & \texttt{energy\_drift} &
+   \SI{4e-4}{\electronvolt\per\pico\second} &
+   \SI{-0.011}{\electronvolt\per\pico\second}\\
+(g) drift kept & \texttt{centre\_of\_mass\_path} &
+   \SI{8e-12}{\angstrom} & \SI{0.99}{\angstrom}\\
+(h) resonance & \texttt{energy\_drift} &
+   \SI{2e-4}{\electronvolt\per\pico\second} &
+   \SI{2.2}{\electronvolt\per\pico\second}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{(a) Too long a step.} Flexible water run at \SI{2}{\femto\second},
+the step that suits rigid water, has an energy band 47\% of the kinetic
+energy's spread, against 1.5\% at \SI{0.5}{\femto\second}, and a mean that
+moves by \SI{0.016}{\electronvolt\per\pico\second}. The check is the
+energy fluctuation, and the step test of \cref{sec:in-stability} confirms
+the cause: halving the step should cut the fluctuation by about four, but
+from 2 to \SI{1}{\femto\second} it cuts it by 7.5, so
+\SI{2}{\femto\second} lies beyond the range where it grows as $\dt^2$.
+
+\emph{(b) A cutoff that jumps.} Replacing the Ewald sum by the Coulomb
+energy of pairs closer than \SI{6}{\angstrom}, cut off atom by atom, makes
+the energy jump whenever a pair crosses the cutoff: an oxygen and a
+hydrogen of different molecules have
+$k_{\mathrm e}q_{\mathrm O}q_{\mathrm H}/r = \SI{-0.835}{\electronvolt}$
+there. The total energy leaps by \SI{48}{\electronvolt} in the first
+\SI{18}{\femto\second} and then wanders over some \SI{130}{\electronvolt},
+its standard deviation 21 times the kinetic energy's, while its mean moves
+by \SI{-8.2}{\electronvolt\per\pico\second}: the fault of
+\cref{sec:pe-cutoffs} at its worst. A band or a drift that does not shrink
+as the step is shortened points to forces that are not the slopes of a
+smooth energy.
+
+\emph{(c) Wrong units.} ASE measures time in its own unit,
+\aa ngstr\"oms times $\sqrt{\mathrm{amu}/\mathrm{eV}}$, which is
+$1/\sqrt{\texttt{FORCE\_TO\_ACCEL}} = \SI{10.18}{\femto\second}$ with the
+factor of \cref{sec:ne-atoms}. Velocities written in
+\si{\angstrom\per\femto\second} and read by a program that takes them in
+that unit are 10.18 times too small, and the kinetic energy $10.18^2 =
+104$ times too small: \SI{0.125}{\milli\electronvolt} per freedom at the
+start against the \SI{12.93}{\milli\electronvolt} asked for. Nothing else
+looks wrong: the energy is conserved as well as in the healthy run, with a
+fluctuation of 0.6\%, and the kinetic energy rises within a tenth of a
+picosecond as the warm arrangement gives up energy, settling near
+\SI{8.2}{\milli\electronvolt} per freedom. Conservation shows only that a
+run is consistent with itself; whether it is the run asked for is shown by
+comparing the kinetic energy at the start with the value requested.
+
+\emph{(d) Wrapped where it must not be.} Wrapping each atom into the cell
+at every step is harmless for the forces, which take nearest copies, but
+not for a code that measures a bond as $\vb{r}_j - \vb{r}_i$ directly: a
+molecule that lies across a face of the cell then seems to have a bond as
+long as the cell, or longer if it lies across an edge. Here the prepared
+positions spread over 2.2 cell widths, so the first wrap splits
+molecules, the largest bond error jumps from $\num{1.5e-10}$ to
+\SI{15.8}{\angstrom} at the first step, and the run fails at its third.
+The opposite fault, positions left outside the cell where a code needs
+them inside it, is why the Ewald sum of \cref{sec:md-ewald} wraps them
+first. Displacements, by contrast, must be measured from positions that
+have not been wrapped: \texttt{largest\_jump} reports the largest move
+between saved frames as a fraction of the cell's width, 0.16 in the
+unwrapped record of the healthy run, and near 1 when an atom has been
+wrapped between them.
+
+\emph{(e) Overlapping atoms at the start.} One molecule placed with its
+oxygen \SI{1}{\angstrom} from another's brings two atoms
+\SI{0.886}{\angstrom} apart, against \SI{1.52}{\angstrom} for the closest
+atoms of different molecules in the healthy start, a potential energy of
+\SI{+25\,192}{\electronvolt} and a largest force of
+\SI{3.0e5}{\electronvolt\per\angstrom} against \SI{2.9}{\electronvolt
+\per\angstrom}. The first step fails. The checks belong before the run:
+\texttt{closest\_approach}, leaving out bonded pairs, and
+\texttt{largest\_force} on the starting frame.
+
+\emph{(f) Constraints drifting.} Stopping SHAKE and RATTLE at a tolerance
+of $10^{-3}$ leaves bond errors of \SI{1.5e-3}{\angstrom}; the energy falls
+by \SI{0.093}{\electronvolt} in the first step, as every molecule is
+distorted a little, and then drifts by
+\SI{-0.011}{\electronvolt\per\pico\second}, against
+\SI{4e-4}{\electronvolt\per\pico\second} in the healthy run over the same
+\SI{2}{\pico\second}. The energy gives the alarm, and the largest bond
+error, \SI{1.5e-3}{\angstrom} against \SI{1.5e-10}{\angstrom}, the cause: a
+bond error at the tolerance asked for is healthy only if a tighter
+tolerance leaves the energy unchanged.
+
+\emph{(g) Drift of the centre of mass.} Starting velocities drawn without
+removing their total momentum (\cref{sec:md-start}) leave the whole box
+moving: here $\vb{P} = (0.28, 0.29, 0.40)$\,amu\,\AA/fs, so the centre of
+mass moves at $\lvert\vb{P}\rvert/M = \SI{0.50}{\angstrom\per\pico\second}$
+and has gone \SI{0.99}{\angstrom} in \SI{2}{\pico\second}, against
+\SI{8e-12}{\angstrom} in the healthy run. The energy gives no sign, since
+momentum is conserved and its kinetic energy, \SI{0.015}{\electronvolt},
+never changes; that kinetic energy belongs to no motion of the molecules
+relative to one another. \texttt{centre\_of\_mass\_path} catches it.
+
+\emph{(h) Resonance.} RESPA with outer steps of \SI{4}{\femto\second},
+near half the period of the model's stretches, gains
+\SI{2.2}{\electronvolt\per\pico\second}, against
+\SI{2e-4}{\electronvolt\per\pico\second} with outer steps of
+\SI{1}{\femto\second}, and its band is 2.5 times the kinetic energy's
+spread (\cref{sec:cs-resonance}).
+
+\begin{practice}
+A run is read in three passes. Before it starts: the closest approach and
+the largest force on the starting frame, the kinetic energy against the
+value asked for, and the total momentum. While it runs: the total energy,
+whose fluctuation should be small against the kinetic energy's and fall
+by about four when the step is halved, and whose mean should not move;
+the bond errors, at a tolerance tight enough that tightening it leaves
+the energy unchanged; and the centre of mass, still. After it: the
+positions used for displacements must be continuous, with every move
+between frames a small fraction of the cell. These checks find faults;
+whether the run samples what it should is the subject of Chapters~12
+to~15.
+\end{practice}
+
+\begin{keyidea}
+In a healthy run without a thermostat, $K$ and $U$ mirror each other and
+their sum stays in a narrow band with no drift, held distances stay at
+the tolerance and the centre of mass stays still. Each common fault leaves
+its own mark: a wide band (too long a step, a jumping cutoff, resonance),
+a drift (loose constraints, resonance), a burst (wrapping, overlapping
+atoms), a still band with the wrong kinetic energy (units), or a moving
+centre of mass (drift kept).
+\end{keyidea}
+
+\notebook{11}{watch the healthy run, then break it in each of the eight ways}
+
+\begin{selfcheck}
+A run's kinetic energy at the start is 0.97\% of the value asked for, and
+its energy is conserved well. What is the likely fault, and what factor
+was missed?
+\end{selfcheck}

@@ -1,0 +1,188 @@
+%=============================================================================!
+% 6.6  CONSTRAINTS AND LAGRANGE MULTIPLIERS                                   !
+%=============================================================================!
+\section{Constraints and Lagrange multipliers}
+\label{sec:la-multipliers}
+
+Choosing coordinates that obey a constraint makes its force disappear,
+which is what we want when only the motion matters. Sometimes the force
+itself is wanted, such as the tension of a pendulum's rod, and sometimes no
+convenient coordinates exist, as for the bonds of a large molecule held at
+fixed lengths. Then we keep the Cartesian coordinates and let the
+constraint enter through a new unknown, a Lagrange multiplier. This
+section introduces the tool, uses it on the pendulum, and compares the
+result with Newton's laws.
+
+\begin{toolbox}[Lagrange multipliers]
+Suppose we want the largest or smallest value of $f(x, y)$ among the
+points on the curve $\chi(x, y) = 0$, written with the Greek chi since $g$
+is the acceleration of free fall. Move along the curve, in the direction
+of a short arrow $\vb{u}$ along it. By the chain rule along a path
+(\cref{sec:en-gradient}), $f$ changes at the rate $\grad f\cdot\vb{u}$,
+and $\chi$ at the rate $\grad\chi\cdot\vb{u} = 0$, since $\chi$ stays zero
+on the curve. At a largest or smallest value of $f$ on the curve its rate
+of change along the curve is zero too, $\grad f\cdot\vb{u} = 0$. In the
+plane there is only one direction at right angles to $\vb{u}$, so $\grad
+f$ and $\grad\chi$, the latter not zero, point along the same line there:
+\begin{equation*}
+   \grad f = \lambda\,\grad\chi , \qquad \chi = 0 ,
+\end{equation*}
+for some number $\lambda$, called the Lagrange multiplier: three equations
+for the three unknowns $x$, $y$ and $\lambda$. For example, the rectangle
+of largest area $f = xy$ with a perimeter of \SI{4}{\metre}, $\chi = 2x +
+2y - 4 = 0$, has $(y, x) = \lambda\,(2, 2)$, so $x = y$, and the perimeter
+gives $x = y = \SI{1}{\metre}$: a square. With more variables the same
+argument, applied to every arrow $\vb{u}$ along the surface $\chi = 0$,
+again puts $\grad f$ along $\grad\chi$; with several constraints $\chi_c =
+0$, one multiplier $\lambda_c$ each, it becomes $\grad f =
+\sum_c\lambda_c\grad\chi_c$, which we take on trust.
+\end{toolbox}
+
+Here $\lambda$ is a multiplier, not the eigenvalue of \cref{sec:os-modes}.
+
+\subsection*{The pendulum in $x$ and $y$}
+
+Describe the bob by its Cartesian position $\vb{r} = (x, y)$, with the
+pivot at the origin and $y$ up, and impose the rod as the constraint $\chi
+= \frac12(x^2 + y^2 - L^2) = 0$. Its gradient is $\grad\chi = (x, y) =
+\vb{r}$, along the rod and at right angles to the circle $\chi = 0$, as a
+gradient is to its contour (\cref{sec:en-gradient}). The rod does no work
+(\cref{sec:la-coordinates}), so its force too is at right angles to the
+circle, along $\grad\chi$: it is $\lambda\,\grad\chi = \lambda\vb{r}$ for
+some multiplier $\lambda$ that may change with time, and Newton's second
+law reads
+\begin{equation*}
+   m\ddot{\vb{r}} = m\vb{g} + \lambda\vb{r} ,
+\end{equation*}
+with $\vb{g} = (0, -g)$ the acceleration of free fall.
+
+Hamilton's principle gives the same equation, and shows where the
+multiplier comes from. Here $\Lag = \frac12 m(\dot{x}^2 + \dot{y}^2) -
+mgy$. Changing the path by $\zeta\boldsymbol{\eta}(t)$, with
+$\boldsymbol{\eta} = (\eta_x, \eta_y)$ zero at both ends, the steps of
+\cref{sec:la-euler}, once for $x$ and once for $y$, change the action by
+$\zeta\int\vb{B}\cdot\boldsymbol{\eta}\,\dd t$ plus terms of order
+$\zeta^2$, where
+\begin{equation*}
+   \vb{B} = \Bigl(\frac{\partial\Lag}{\partial x}
+   - \frac{\dd}{\dd t}\frac{\partial\Lag}{\partial\dot{x}},\
+   \frac{\partial\Lag}{\partial y}
+   - \frac{\dd}{\dd t}\frac{\partial\Lag}{\partial\dot{y}}\Bigr)
+   = \bigl(-m\ddot{x},\ -mg - m\ddot{y}\bigr)
+   = m\vb{g} - m\ddot{\vb{r}} .
+\end{equation*}
+Among all paths this would give $\vb{B} = \vb{0}$, the bob falling freely.
+Only paths that keep the bob on its circle are allowed, so at each instant
+$\boldsymbol{\eta}$ must point along the circle, $\boldsymbol{\eta} =
+\eta(t)\,\vb{e}_\theta$ with $\vb{e}_\theta$ the arrow of length one along
+the circle at the bob (\cref{eq:ro-polar}); such a change alters the length only by terms in $\zeta^2$, which
+do not touch the term in $\zeta$. The change of action is then
+$\zeta\int(\vb{B}\cdot\vb{e}_\theta)\,\eta\,\dd t$, and the bump argument
+of \cref{sec:la-euler} gives $\vb{B}\cdot\vb{e}_\theta = 0$ at every
+instant:
+$\vb{B}$ has no part along the circle. In the plane only the direction of
+$\vb{r}$ is left, as in the toolbox, so $\vb{B} = -\lambda\vb{r}$ for some
+number $\lambda$ at each instant, the minus sign only a choice of name,
+and $m\vb{g} - m\ddot{\vb{r}} = -\lambda\vb{r}$ is the second law above.
+The constraint leaves the principle silent about one force, along
+$\grad\chi$, and that force is the rod's. Equivalently, these are the
+Euler--Lagrange equations of $\Lag + \lambda\chi$ in $x$ and $y$ treated
+as free, the usual way of writing a multiplier, with one $\lambda$ for
+each instant.
+
+The multiplier is fixed by the constraint itself. Differentiating
+$\vb{r}\cdot\vb{r} = x^2 + y^2 = L^2$ twice with respect to time, by the
+product rule on each component as in \cref{sec:mo-circle},
+\begin{align*}
+   2\,\vb{r}\cdot\dot{\vb{r}} &= 0 ,\\
+   \dot{\vb{r}}\cdot\dot{\vb{r}} + \vb{r}\cdot\ddot{\vb{r}} &= 0
+   && \text{differentiating again and halving,}\\
+   \lvert\vb{v}\rvert^2 + \vb{r}\cdot\vb{g} + \frac{\lambda}{m}\,L^2 &= 0
+   && \text{putting in $\ddot{\vb{r}} = \vb{g} + (\lambda/m)\vb{r}$ and
+      $\vb{r}\cdot\vb{r} = L^2$,}
+\end{align*}
+so
+\begin{equation}
+   \lambda = -\frac{m\,\bigl(\lvert\vb{v}\rvert^2 + \vb{r}\cdot\vb{g}
+   \bigr)}{L^2} .
+   \label{eq:la-multiplier}
+\end{equation}
+The function \texttt{rod\_multiplier} of \texttt{mdlab} evaluates it. The
+rod's force $\lambda\vb{r}$ is $-\lambda L$ times $-\vb{r}/L$, the arrow of
+length one from the bob to the pivot, so the rod pulls the bob towards the
+pivot with the force $F_{\mathrm{rod}} = -\lambda L$, which is negative
+when the rod pushes. With the bob at the angle $\theta$ from the vertical,
+$\vb{r} = L(\sin\theta, -\cos\theta)$, so $\vb{r}\cdot\vb{g} =
+gL\cos\theta$, and $\lvert\vb{v}\rvert = L\lvert\dot\theta\rvert$
+(\cref{sec:la-coordinates}). Then
+\begin{equation*}
+   F_{\mathrm{rod}} = -\lambda L
+   = \frac{m\,\bigl(L^2\dot\theta^2 + gL\cos\theta\bigr)}{L}
+   = m\,\bigl(g\cos\theta + L\dot\theta^2\bigr) :
+\end{equation*}
+the part of the weight along the rod plus the inward pull $mL\dot\theta^2$
+that going round a circle needs (\cref{sec:mo-circle}).
+
+Released from rest at the angle $\theta_0$, the bob keeps its energy $K +
+U$ of \cref{sec:la-coordinates} at its starting value $mgL(1 -
+\cos\theta_0)$, so $\frac12 mL^2\dot\theta^2 = mgL(1 - \cos\theta_0) -
+mgL(1 - \cos\theta) = mgL(\cos\theta - \cos\theta_0)$; multiplying by
+$2/(mL)$, $L\dot\theta^2 = 2g(\cos\theta - \cos\theta_0)$ and
+\begin{equation*}
+   F_{\mathrm{rod}} = mg\,(3\cos\theta - 2\cos\theta_0) .
+\end{equation*}
+\Cref{fig:la-tension} follows a bob of \SI{0.5}{\kilogram} on a rod of
+\SI{1.2}{\metre} released from \ang{120}, computed in $x$ and $y$ with the
+multiplier: the length stays \SI{1.2}{\metre} to within \SI{1e-11}{\metre},
+and the force agrees with the formula at every angle: at the bottom it is
+$mg\,(3 - 2\cos\ang{120}) = mg\,(3 + 1) = 4mg = 4\times0.5\times9.80665 =
+\SI{19.613}{\newton}$. It is negative where $3\cos\theta < 2\cos\theta_0$,
+beyond $\cos\theta = \frac23\cos\theta_0 = -\frac13$, here beyond
+\ang{109.47}: the rod pushes the bob outwards. A string, which can only
+pull, could not follow this swing at all: at the release point the force
+needed is $mg\cos\ang{120} = -\frac12 mg$, a push, so a string is slack
+from the start. \Cref{ex:la-slack} shows that a string stays taut only for
+swings of at most \ang{90}, the limit of \cref{sec:os-anharmonic}. The
+angle \ang{109.47} belongs to this swing of \ang{120}: between \ang{90} and
+\ang{109.47} the bob, though above the pivot, moves fast enough that the
+rod still pulls.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch06_lagrange/tension}
+\caption{The force of the rod on a pendulum's bob of \SI{0.5}{\kilogram}
+on a rod of \SI{1.2}{\metre}, released from rest at \ang{120}, divided by
+the bob's weight, against the angle over one swing: from the Lagrange
+multiplier of the constraint (solid) and from energy, $3\cos\theta - 2\cos
+\theta_0$ (dashed), which the solid line hides. Below the dotted line the
+rod pushes.}
+\label{fig:la-tension}
+\end{figure}
+
+\subsection*{Bonds of fixed length}
+
+A bond held at the length $d$ between atoms $i$ and $j$ is the constraint
+$\chi = \frac12(\lvert\vb{r}_j - \vb{r}_i\rvert^2 - d^2) = 0$. Its gradient
+with respect to $\vb{r}_j$ is $\vb{r}_j - \vb{r}_i$, and with respect to
+$\vb{r}_i$ it is $-(\vb{r}_j - \vb{r}_i)$ (\cref{ex:la-bond}), so the
+multiplier gives the two atoms equal and opposite forces along the bond, as
+the third law requires. Freezing the fastest bonds of a molecule this
+way, those to hydrogen, whose periods of \SI{9}{\femto\second} for O--H and
+\SI{11}{\femto\second} for C--H limit the step of a simulation (\cref{sec:os-molecules}), lets the steps grow;
+Chapter~11 finds the multipliers at every step with the method called
+SHAKE.
+
+\begin{keyidea}
+To find the largest or smallest value of $f$ subject to $\chi = 0$, solve
+$\grad f = \lambda\grad\chi$ with $\chi = 0$. In mechanics a constraint $\chi = 0$
+that does no work enters as the force $\lambda\grad\chi$, and $\lambda$,
+fixed by differentiating the constraint twice, measures the force needed
+to keep it: for a pendulum it gives the force of the rod, $-\lambda L$.
+\end{keyidea}
+
+\notebook{06}{the pendulum in $x$ and $y$ with its multiplier}
+
+\begin{selfcheck}
+A pendulum is released from rest at \ang{90}. What force does the rod
+exert at the bottom of the swing, in units of the bob's weight?
+\end{selfcheck}

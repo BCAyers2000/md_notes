@@ -1,0 +1,399 @@
+%=============================================================================!
+% 10.3  CHARGES IN A PERIODIC BOX: THE EWALD SUM                              !
+%=============================================================================!
+\section{Charges in a periodic box: the Ewald sum}
+\label{sec:md-ewald}
+
+The electrostatic energy of charges $q_i$ in a periodic box is
+\begin{equation}
+   U = \frac12\sum_{i,j}\sideset{}{'}\sum_{\vb{n}}
+   \frac{k_{\mathrm e}q_iq_j}{\lvert\vb{r}_j - \vb{r}_i + \vb{h}\vb{n}\rvert} ,
+   \label{eq:md-coulomb}
+\end{equation}
+summed over every pair and every copy, the prime leaving out an atom with
+itself, $i = j$ at $\vb{n} = \vb{0}$. \Cref{sec:pe-coulomb} found that sums
+of this kind converge so slowly that their value depends on the order of
+the terms. Ewald's method\cite{Ewald1921} splits each $1/r$ into a part
+that dies away quickly, summed over the near copies, and a smooth part,
+summed as a series of waves. This section derives it with two new tools.
+
+\subsection*{Two tools}
+
+\begin{toolbox}[Gaussian integrals]
+A Gaussian is the bell-shaped curve $\mathrm{e}^{-ax^2}$, with $a > 0$.
+An integral to infinity is the limit of the integral to $X$ as $X$ grows.
+For $I = \int_{-\infty}^{\infty}\mathrm{e}^{-x^2}\dd x$, the square $I^2$
+is the limit of $\int_{-X}^{X}\mathrm{e}^{-x^2}\dd x\int_{-X}^{X}
+\mathrm{e}^{-y^2}\dd y$. Written as sums of values times short steps, the
+product of the two is a sum over small rectangles of $\mathrm{e}^{-x^2}
+\mathrm{e}^{-y^2} = \mathrm{e}^{-(x^2 + y^2)}$ times their areas $\dd x\,
+\dd y$, so $I^2$ is the integral of $\mathrm{e}^{-(x^2 + y^2)}$ over the
+whole plane (\cref{sec:en-curl}); the square of side $2X$ lies between the
+discs of radius $X$ and $\sqrt2\,X$, and the integrand is positive, so
+discs give the same limit. Likewise an integral over a volume, written
+$\int\dots\dd^3r$, is the limit of a sum of values times the volumes
+$\dd^3r$ of small boxes, and over all space the integral of a product
+$f_1(x)f_2(y)f_3(z)$ is the product of three ordinary integrals. The
+integrand $\mathrm{e}^{-(x^2 + y^2)}$ depends only on the distance $r =
+\sqrt{x^2 + y^2}$ from the origin, so we cut the plane into rings of
+radius $r$ and width $\dd r$, of area $2\pi r\,\dd r$:
+\begin{equation*}
+   I^2 = \int_0^{\infty}\mathrm{e}^{-r^2}\,2\pi r\,\dd r
+   = \Bigl[-\pi\mathrm{e}^{-r^2}\Bigr]_0^{\infty} = \pi ,
+   \qquad I = \sqrt\pi .
+\end{equation*}
+\emph{Changing the variable.} If $u = g(x)$ and $F' = f$, the chain rule
+(\cref{sec:mo-acceleration}) gives $\frac{\dd}{\dd x}F(g(x)) =
+f(g(x))\,g'(x)$, so by the fundamental theorem of calculus
+(\cref{sec:mo-integrating}) both $\int_{x_1}^{x_2}f(g(x))\,g'(x)\,\dd x$
+and $\int_{g(x_1)}^{g(x_2)}f(u)\,\dd u$ equal $F(g(x_2)) - F(g(x_1))$: an
+integral in $u$ becomes one in $x$ on writing $\dd u = g'(x)\,\dd x$ and
+moving the limits to match. With $u = \sqrt a\,x$, for $a > 0$,
+\begin{equation*}
+   \int_{-\infty}^{\infty}\mathrm{e}^{-ax^2}\dd x
+   = \frac1{\sqrt a}\int_{-\infty}^{\infty}\mathrm{e}^{-u^2}\dd u
+   = \sqrt{\frac{\pi}{a}} .
+\end{equation*}
+\emph{The error function} is $\operatorname{erf}(x) = (2/\sqrt\pi)
+\int_0^x\mathrm{e}^{-u^2}\dd u$, which rises from 0 at $x = 0$ to 1 as $x$
+grows, since $\mathrm{e}^{-u^2}$ takes the same value at $u$ and $-u$, so
+that its integral from 0 to infinity is half of $I$, $\frac12\sqrt\pi$;
+its complement is $\operatorname{erfc}(x) = 1 - \operatorname{erf}(x) =
+(2/\sqrt\pi)\int_x^{\infty}\mathrm{e}^{-u^2}\dd u$. For small $x$ the
+integrand is close to 1, so $\operatorname{erf}(x) \approx 2x/\sqrt\pi$.
+For large $x$, since $u^2 \ge x^2 + 2x(u - x)$, $\int_x^{\infty}
+\mathrm{e}^{-u^2}\dd u \le \mathrm{e}^{-x^2}\int_x^{\infty}\mathrm{e}^{-2x(u
+- x)}\dd u = \mathrm{e}^{-x^2}/(2x)$, so $\operatorname{erfc}(x) \le
+\mathrm{e}^{-x^2}/(\sqrt\pi\,x)$: it falls roughly as $\mathrm{e}^{-x^2}$.
+\end{toolbox}
+
+\begin{toolbox}[Fourier series on a periodic cell]
+A smooth function $f(x)$ that repeats with period $L$ can be written as a
+sum of waves that repeat with it, $\cos(2\pi mx/L)$ and $\sin(2\pi mx/L)$
+for $m = 0, 1, 2, \dots$, each with its own coefficient; we take this on
+trust. The coefficients are found by averaging. Adding the two cosine
+formulae of \cref{eq:mo-addition} gives $\cos A\cos B = \frac12[\cos(A -
+B) + \cos(A + B)]$, and adding the two sine formulae gives $\sin A\cos B =
+\frac12[\sin(A + B) + \sin(A - B)]$. A cosine or a sine averages to zero
+over whole periods, so the average over one period of $\cos(2\pi mx/L)
+\cos(2\pi m'x/L)$ is $\frac12$ if $m = m' \neq 0$ and zero if $m \neq m'$,
+and that of $\sin(2\pi mx/L)\cos(2\pi m'x/L)$ is zero: multiplying the
+series by one cosine and averaging leaves half that wave's coefficient
+(the whole of it for $m = 0$).
+
+In three dimensions the waves are $\cos(\vb{G}\cdot\vb{r})$ and
+$\sin(\vb{G}\cdot\vb{r})$, and they repeat with the cell when
+$\vb{G}\cdot\vb{h}\vb{n}$ is a multiple of $2\pi$ for every $\vb{n}$. This
+holds for $\vb{G} = m_1\vb{a}^* + m_2\vb{b}^* + m_3\vb{c}^*$, with whole
+numbers $m_1$, $m_2$ and $m_3$ and reciprocal vectors $\vb{a}^*$,
+$\vb{b}^*$ and $\vb{c}^*$ chosen so that $\vb{a}\cdot\vb{a}^* =
+\vb{b}\cdot\vb{b}^* = \vb{c}\cdot\vb{c}^* = 2\pi$ and every other such
+product, such as $\vb{a}\cdot\vb{b}^*$, is zero, since then
+$\vb{G}\cdot\vb{h}\vb{n} = \vb{G}\cdot(n_1\vb{a} + n_2\vb{b} + n_3\vb{c})
+= 2\pi(m_1n_1 + m_2n_2 + m_3n_3)$. Since $\vb{h}^{-1}\vb{h}$ is the
+identity, row $j$ of $\vb{h}^{-1}$ times column $i$ of $\vb{h}$ is 1 for
+$i = j$ and 0 otherwise, so the reciprocal vectors are $2\pi$ times the
+rows of $\vb{h}^{-1}$; and as $s_j$ is row $j$ of $\vb{h}^{-1}$ times
+$\vb{r}$, $\vb{G}\cdot\vb{r} = 2\pi(m_1s_1 + m_2s_2 + m_3s_3) =
+2\pi\,\vb{m}\cdot\vb{s}$, with $\vb{m} = (m_1, m_2, m_3)$. For a cubic
+cell of side $L$ the reciprocal vectors have length $2\pi/L$ along the
+axes. The vectors $\vb{G}$ are said to lie in reciprocal space.
+
+The average of a wave over the cell is zero unless $\vb{G} = \vb{0}$. In
+fractional coordinates the cell is the unit cube, whose image under $\vb{r}
+= \vb{h}\vb{s}$ has volume $V$, so each small box of volume $\dd^3s$
+becomes one of volume $V\,\dd^3s$ and the average is $\int\cos(2\pi\,
+\vb{m}\cdot\vb{s})\,\dd^3s$ over the unit cube. Taking $m_1 \neq 0$
+(otherwise any other $m_j$ that is not zero serves), the integral over
+$s_1$ alone, with $s_2$ and $s_3$ held fixed, is $[\sin(2\pi\vb{m}\cdot
+\vb{s})/(2\pi m_1)]$ between $s_1 = 0$ and 1, which is zero because the
+sine repeats. For a function with $f(-\vb{r}) = f(\vb{r})$ only cosines
+are needed, since $f(\vb{r}) = \frac12[f(\vb{r}) + f(-\vb{r})]$ and every
+sine cancels between the two series; summing over all $\vb{G}$ with
+$c_{-\vb{G}} = c_{\vb{G}}$,
+\begin{equation*}
+   f(\vb{r}) = \sum_{\vb{G}}c_{\vb{G}}\cos(\vb{G}\cdot\vb{r}) ,
+   \qquad
+   c_{\vb{G}} = \frac1V\int_{\text{cell}}f(\vb{r})\cos(\vb{G}\cdot\vb{r})
+   \,\dd^3r ,
+\end{equation*}
+because the cell average of $\cos(\vb{G}\cdot\vb{r})\cos(\vb{G}'\cdot
+\vb{r})$, by the product formula, is $\frac12$ for $\vb{G}' = \vb{G}$,
+$\frac12$ for $\vb{G}' = -\vb{G}$, and zero otherwise (both halves at once
+when $\vb{G} = \vb{0}$), so that the cell average of $f(\vb{r})\cos(\vb{G}
+\cdot\vb{r})$ is $\frac12c_{\vb{G}} + \frac12c_{-\vb{G}} = c_{\vb{G}}$.
+\end{toolbox}
+
+The cosine integral of a Gaussian follows from these. Let $F(G) =
+\int_{-\infty}^{\infty}\mathrm{e}^{-ax^2}\cos(Gx)\,\dd x$ for a number $G$,
+so that $F(0) = \sqrt{\pi/a}$. The integral is a limit of sums, and the
+derivative of a sum is the sum of the derivatives, so $F'(G)$ is the
+integral of the derivative of $\mathrm{e}^{-ax^2}\cos(Gx)$ with respect to
+$G$, $-x\,\mathrm{e}^{-ax^2}\sin(Gx)$ by the chain rule. Integrating by
+parts (\cref{sec:la-euler}) with $\sin(Gx)$ and $x\mathrm{e}^{-ax^2} =
+\frac{\dd}{\dd x}\bigl(-\mathrm{e}^{-ax^2}/(2a)\bigr)$, whose product
+vanishes at both ends,
+\begin{equation*}
+   F'(G) = -\int x\,\mathrm{e}^{-ax^2}\sin(Gx)\,\dd x
+   = -\frac{G}{2a}\int\mathrm{e}^{-ax^2}\cos(Gx)\,\dd x
+   = -\frac{G}{2a}\,F(G) .
+\end{equation*}
+By the product rule (\cref{sec:ne-drag}) and the chain rule,
+\begin{equation*}
+   \frac{\dd}{\dd G}\Bigl[\mathrm{e}^{G^2/(4a)}F(G)\Bigr]
+   = \mathrm{e}^{G^2/(4a)}\Bigl[\frac{G}{2a}F(G) + F'(G)\Bigr] = 0 ,
+\end{equation*}
+so $\mathrm{e}^{G^2/(4a)}F(G)$ keeps its value $F(0)$ at $G = 0$:
+\begin{equation}
+   \int_{-\infty}^{\infty}\mathrm{e}^{-ax^2}\cos(Gx)\,\dd x
+   = \sqrt{\frac{\pi}{a}}\;\mathrm{e}^{-G^2/(4a)} .
+   \label{eq:md-gauss-cos}
+\end{equation}
+A narrow Gaussian, large $a$, has a wide spread of waves, and a wide one a
+narrow spread.
+
+\subsection*{Splitting the Coulomb energy}
+
+With $u = rt$, the first Gaussian integral gives
+\begin{equation*}
+   \frac{2}{\sqrt\pi}\int_0^{\infty}\mathrm{e}^{-r^2t^2}\dd t
+   = \frac{2}{\sqrt\pi}\,\frac1r\int_0^{\infty}\mathrm{e}^{-u^2}\dd u
+   = \frac1r ,
+\end{equation*}
+and splitting the range of $t$ at a chosen $\alpha$ splits $1/r$ in two,
+\begin{equation}
+   \frac1r = \frac{\operatorname{erfc}(\alpha r)}{r}
+   + \frac{\operatorname{erf}(\alpha r)}{r} ,
+   \label{eq:md-split}
+\end{equation}
+the first from $t > \alpha$ and the second from $t < \alpha$, by the same
+change of variable. By the bound in the toolbox, the first part falls
+roughly as $\mathrm{e}^{-\alpha^2r^2}$, so its sum over the copies
+converges quickly and in any order:
+\begin{equation*}
+   U_{\mathrm{real}} = \frac12\sum_{i,j}\sideset{}{'}\sum_{\vb{n}}k_{\mathrm e}
+   q_iq_j\,\frac{\operatorname{erfc}(\alpha r_{ij\vb{n}})}{r_{ij\vb{n}}} ,
+   \qquad r_{ij\vb{n}} = \lvert\vb{r}_j - \vb{r}_i + \vb{h}\vb{n}\rvert ,
+\end{equation*}
+taken over the copies closer than a cutoff at which $\operatorname{erfc}$
+has fallen to nothing that matters. The second part of \cref{eq:md-split}
+tends to the finite value $2\alpha/\sqrt\pi$ as $r \to 0$, by the
+small-$x$ form of $\operatorname{erf}$, and falls only as $1/r$: it
+carries the long range, and it is smooth.
+
+\subsection*{The smooth part as waves}
+
+Summed over the copies, the second part is, by its integral over $t$,
+\begin{equation*}
+   \Phi_{\mathrm s}(\vb{d}) = \sum_{\vb{n}}\frac{\operatorname{erf}(\alpha
+   \lvert\vb{d} + \vb{h}\vb{n}\rvert)}{\lvert\vb{d} + \vb{h}\vb{n}\rvert}
+   = \frac{2}{\sqrt\pi}\int_0^{\alpha}g_t(\vb{d})\,\dd t ,
+   \qquad g_t(\vb{d}) = \sum_{\vb{n}}\mathrm{e}^{-\lvert\vb{d} + \vb{h}\vb{n}
+   \rvert^2t^2} .
+\end{equation*}
+Neither side is finite as it stands, since the terms fall only as
+$1/\lvert\vb{d} + \vb{h}\vb{n}\rvert$ (\cref{sec:pe-coulomb}); the trouble
+sits in a single wave, found below. The function $g_t$, a Gaussian placed
+at every copy of the origin, repeats with the cell and is unchanged by
+$\vb{d} \to -\vb{d}$. Its Fourier coefficients are
+\begin{equation*}
+   c_{\vb{G}} = \frac1V\int_{\text{cell}}\sum_{\vb{n}}\mathrm{e}^{-\lvert
+   \vb{r} + \vb{h}\vb{n}\rvert^2t^2}\cos(\vb{G}\cdot\vb{r})\,\dd^3r
+   = \frac1V\int_{\text{all space}}\mathrm{e}^{-\lvert\vb{r}\rvert^2t^2}
+   \cos(\vb{G}\cdot\vb{r})\,\dd^3r ,
+\end{equation*}
+because, writing $\vb{r}' = \vb{r} + \vb{h}\vb{n}$, the term of copy
+$\vb{n}$ is the integral of $\mathrm{e}^{-\lvert\vb{r}'\rvert^2t^2}
+\cos(\vb{G}\cdot\vb{r}')$ over the cell shifted by $\vb{h}\vb{n}$, as
+$\cos(\vb{G}\cdot\vb{r}' - \vb{G}\cdot\vb{h}\vb{n}) =
+\cos(\vb{G}\cdot\vb{r}')$, and the shifted cells, one for every $\vb{n}$,
+fill space once. The Gaussian depends only on $\lvert\vb{r}\rvert$, so
+turning the axes changes nothing, and with the $x$ axis along $\vb{G}$ the
+integral is a product of three, one by \cref{eq:md-gauss-cos} with $a =
+t^2$ and $G = \lvert\vb{G}\rvert$, and two plain Gaussian integrals:
+\begin{equation*}
+   c_{\vb{G}} = \frac1V\,\frac{\sqrt\pi}{t}\,\mathrm{e}^{-G^2/(4t^2)}
+   \times\frac{\sqrt\pi}{t}\times\frac{\sqrt\pi}{t}
+   = \frac{\pi^{3/2}}{Vt^3}\,\mathrm{e}^{-G^2/(4t^2)} .
+\end{equation*}
+Integrating over $t$ from 0 to $\alpha$, with $u = G^2/(4t^2)$, so that
+$\dd u = -G^2\,\dd t/(2t^3)$ and the limits $t = 0$ and $\alpha$ become $u
+= \infty$ and $G^2/(4\alpha^2)$, whose exchange cancels the minus sign,
+gives for $\vb{G} \neq \vb{0}$
+\begin{equation*}
+   \frac{2}{\sqrt\pi}\,\frac{\pi^{3/2}}{V}\int_0^{\alpha}\frac{\mathrm{e}^{
+   -G^2/(4t^2)}}{t^3}\,\dd t
+   = \frac{2\pi}{V}\,\frac{2}{G^2}\int_{G^2/(4\alpha^2)}^{\infty}
+   \mathrm{e}^{-u}\,\dd u
+   = \frac{4\pi}{VG^2}\,\mathrm{e}^{-G^2/(4\alpha^2)} ,
+\end{equation*}
+so that
+\begin{equation*}
+   \Phi_{\mathrm s}(\vb{d}) = \frac{4\pi}{V}\sum_{\vb{G}\neq\vb{0}}
+   \frac{\mathrm{e}^{-G^2/(4\alpha^2)}}{G^2}\cos(\vb{G}\cdot\vb{d})
+   + (\text{the }\vb{G} = \vb{0}\text{ term}) .
+\end{equation*}
+The terms die away as $\mathrm{e}^{-G^2/(4\alpha^2)}$: a smooth function
+needs only a few waves. For $\vb{G} = \vb{0}$ the coefficient is
+$\pi^{3/2}/(Vt^3)$, whose integral over $t$ grows without limit as $t \to
+0$. Starting the integral at a small $t_0$ in place of 0 gives
+$(2/\sqrt\pi)\int_{t_0}^{\alpha}\pi^{3/2}/(Vt^3)\,\dd t = \pi/(Vt_0^2) -
+\pi/(V\alpha^2)$, a constant that does not depend on $\vb{d}$; in the
+energy it is multiplied by $\sum_{i,j}q_iq_j = (\sum_iq_i)^2$, which for a
+neutral cell is zero whatever $t_0$, and the term is dropped. What is
+dropped is the part of the sum that depended on its order: dropping it
+gives the energy of the periodic sample surrounded by a conductor, a
+material in which charge moves freely, and other surroundings add a term
+in the cell's dipole moment $\sum_iq_i\vb{r}_i$, which measures how far
+its positive and negative charges sit apart\cite{deLeeuw1980}.
+
+\subsection*{The energy}
+
+The smooth parts of all pairs give $\frac12k_{\mathrm e}\sum_{i,j}q_iq_j
+\,\Phi_{\mathrm s}(\vb{r}_j - \vb{r}_i)$, with every pair taken twice and
+each atom with itself. By the addition formula, $\cos(\vb{G}\cdot\vb{r}_j
+- \vb{G}\cdot\vb{r}_i) = \cos(\vb{G}\cdot\vb{r}_j)\cos(\vb{G}\cdot
+\vb{r}_i) + \sin(\vb{G}\cdot\vb{r}_j)\sin(\vb{G}\cdot\vb{r}_i)$, and the
+double sum separates into squares of single sums,
+\begin{align*}
+   \sum_{i,j}q_iq_j\cos(\vb{G}\cdot\vb{r}_j - \vb{G}\cdot\vb{r}_i)
+   &= \mathcal{C}(\vb{G})^2 + \mathcal{S}(\vb{G})^2 ,\\
+   \mathcal{C}(\vb{G}) = \sum_iq_i\cos(\vb{G}\cdot\vb{r}_i) ,
+   &\qquad \mathcal{S}(\vb{G}) = \sum_iq_i\sin(\vb{G}\cdot\vb{r}_i) ,
+\end{align*}
+the structure factor, which costs $N$ operations for each $\vb{G}$. The
+smooth part of each atom with itself at $\vb{n} = \vb{0}$ is not in
+\cref{eq:md-coulomb} and must be taken out: it is $\frac12k_{\mathrm e}
+q_i^2$ times the limit $2\alpha/\sqrt\pi$. Altogether,
+\begin{equation}
+   U = U_{\mathrm{real}}
+   + \frac{2\pi k_{\mathrm e}}{V}\sum_{\vb{G}\neq\vb{0}}
+   \frac{\mathrm{e}^{-G^2/(4\alpha^2)}}{G^2}\bigl(\mathcal{C}(\vb{G})^2
+   + \mathcal{S}(\vb{G})^2\bigr)
+   - k_{\mathrm e}\frac{\alpha}{\sqrt\pi}\sum_iq_i^2 ,
+   \label{eq:md-ewald}
+\end{equation}
+the real-space sum, over copies; the reciprocal-space sum, over the
+waves; and the self term. The forces are the slopes of each part of
+\cref{eq:md-ewald} (\cref{ex:md-forces}). The function
+\texttt{ewald\_energy\_forces} of \texttt{mdlab.ewald} computes them; its
+reciprocal sum is
+
+\begin{code}
+    weight = np.exp(-g2 / (4 * alpha**2)) / g2
+    phase = r @ g.T
+    cos, sin = np.cos(phase), np.sin(phase)
+    c_sum, s_sum = q @ cos, q @ sin
+    e_rec = 2 * np.pi / volume * np.sum(weight * (c_sum**2 + s_sum**2))
+\end{code}
+
+\noindent with \texttt{g} the vectors $\vb{G}$ kept, one per row,
+\texttt{g2} their squared lengths, and $k_{\mathrm e}$ left out: the
+function multiplies every part by it at the end. It also wraps the
+positions into the cell first, since its search over copies in real space
+starts from there.
+
+A cell that is not neutral, with total charge $Q = \sum_iq_i$, has no
+finite energy in a periodic box: the $\vb{G} = \vb{0}$ term,
+$\frac12k_{\mathrm e}Q^2[\pi/(Vt_0^2) - \pi/(V\alpha^2)]$, grows without
+limit as $t_0 \to 0$. It is made neutral by a uniform background of charge
+$-Q$ spread over the cell. The background has only the $\vb{G} = \vb{0}$
+wave and meets the charges and itself through the whole of $1/r$, the
+integral over $t$ from $t_0$ to infinity, $\pi/(Vt_0^2)$; its energy with
+the charges, $-k_{\mathrm e}Q^2\pi/(Vt_0^2)$, and with itself,
+$\frac12k_{\mathrm e}Q^2\pi/(Vt_0^2)$, cancel the growing part and leave
+$-\pi k_{\mathrm e}Q^2/(2V\alpha^2)$. With it, the energy of five charges
+adding to 1.7 in a cubic cell of side \SI{6}{\angstrom} is
+$\SI{-11.1048563570}{\electronvolt}$ at $\alpha = 0.5$, 0.8 and
+\SI{1.2}{\per\angstrom}, to \SI{3e-10}{\electronvolt}; without it, it moves
+by \SI{1.0}{\electronvolt} over the same range.
+
+\subsection*{Choosing \texorpdfstring{$\alpha$}{alpha} and the cutoffs}
+
+The total does not depend on $\alpha$, which only moves work between the
+two sums. \Cref{fig:md-ewald}(a) shows this for rock salt in its cubic
+cell of side $2d$: as $\alpha$ goes from $0.6/d$ to $5/d$ the real-space
+part changes by about 1, the reciprocal-space part by about 4 and the
+self part by about 5, in units of $k_{\mathrm e}/d$, and their sum stays
+at $-1.7475646\,k_{\mathrm e}/d$ per ion pair, $-\mathcal{M}k_{\mathrm
+e}/d$ with Chapter~8's Madelung constant\cite{Evjen1932}, to
+$\num{2e-12}\,k_{\mathrm e}/d$. Each sum is cut where its terms have
+fallen to about a chosen size $\epsilon_{\mathrm E}$, the real-space terms
+falling roughly as $\mathrm{e}^{-\alpha^2r^2}$: $\mathrm{e}^{-\alpha^2
+r_{\mathrm c}^2} = \epsilon_{\mathrm E}$ in real space and
+$\mathrm{e}^{-G_{\mathrm c}^2/(4\alpha^2)} = \epsilon_{\mathrm E}$ in
+reciprocal space, so
+\begin{equation*}
+   r_{\mathrm c} = \frac{\sqrt{-\ln\epsilon_{\mathrm E}}}{\alpha} ,
+   \qquad
+   G_{\mathrm c} = 2\alpha\sqrt{-\ln\epsilon_{\mathrm E}} ,
+\end{equation*}
+and the error of the energy follows $\epsilon_{\mathrm E}$
+(\cref{fig:md-ewald}b), in steps because the copies and the waves come in
+shells. Careful estimates of these errors are due to Kolafa and
+Perram\cite{KolafaPerram1992}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch10_code/ewald}
+\caption{The Ewald sum of rock salt in its cubic cell of side $2d$, with
+$k_{\mathrm e} = 1$. (a) The real-space, reciprocal-space and self parts
+of the energy per ion pair against $\alpha$, and their sum, $-1.7475646$
+at every $\alpha$. (b) The error of the sum against the size of the terms
+left out, at $\alpha = 2/d$, with a line of slope 1 (dashed).}
+\label{fig:md-ewald}
+\end{figure}
+
+Three further checks pass. The same Madelung constant comes from a
+supercell of $2\times2\times2$ cubic cells and from the skewed cell of two
+ions spanned by $(0, 1, 1)d$, $(1, 0, 1)d$ and $(1, 1, 0)d$, 1.747564595
+in each to ten figures; in a skewed cell of six charges the forces agree
+with central differences of the energy (\cref{sec:pe-forces}) to
+$\num{7.4e-10}$\,eV/\AA, against forces of up to
+\SI{15}{\electronvolt\per\angstrom}, and add to zero to
+$\num{1.2e-14}$\,eV/\AA.
+
+The cost of the method grows faster than $N$: at a fixed density, with
+$\alpha$ chosen to balance the two sums, it grows as $N^{3/2}$
+(\cref{ex:md-cost}), provided the real-space sum finds its pairs through a
+cell list (\cref{sec:md-neighbours}). \texttt{mdlab} chooses $\alpha$ this
+way by default but tests every pair against every nearby copy, so its own
+cost grows as $N^2$, which is fine for the small cells of this chapter. Particle mesh Ewald methods spread the
+charges onto a grid and sum the waves with the fast Fourier transform of
+Chapter~16, at a cost that grows as $N\ln N$\cite{Darden1993,Essmann1995},
+and are what large simulations of charged systems use.
+
+\Needspace{12\baselineskip}
+\begin{bridge}
+Many electronic-structure calculations in periodic cells, those that
+expand in plane waves among them, find the electrostatic (Hartree)
+potential of the electron density with the same Fourier series, one
+coefficient $4\pi\rho_{\vb{G}}/G^2$ per wave of the density $\rho$ in
+atomic units, find the energy of the nuclei with one another by an Ewald
+sum, and leave out the $\vb{G} = \vb{0}$ terms, which for a charged cell
+amounts to the uniform neutralising background. The background brings in
+spurious energies of the charge with its copies and with the background,
+which fall only as $1/L$ with the size of the cell and need
+corrections\cite{MakovPayne1995}. A slab with a different charge or
+adsorbate on each face carries a dipole, and because the potential must
+take the same value at both ends of a periodic cell, the step in potential
+across the dipole is undone by an artificial field across the vacuum,
+which a dipole correction removes\cite{NeugebauerScheffler1992,Bengtsson1999}:
+the situation of a charged electrode in a periodic cell.
+\end{bridge}
+
+\begin{keyidea}
+Ewald's method splits $1/r$ into $\operatorname{erfc}(\alpha r)/r$, summed
+over near copies, and $\operatorname{erf}(\alpha r)/r$, smooth, whose sum
+over copies is a Fourier series with coefficients $4\pi\mathrm{e}^{-G^2/
+(4\alpha^2)}/(VG^2)$. With the self term removed and the $\vb{G} =
+\vb{0}$ term dropped for a neutral cell, the energy does not depend on
+$\alpha$, and it reproduces the Madelung constant of rock salt.
+\end{keyidea}
+
+\notebook{10}{move the work between the two Ewald sums with \texorpdfstring{$\alpha$}{alpha}}
+
+\begin{selfcheck}
+For $\epsilon_{\mathrm E} = 10^{-8}$ and $\alpha = \SI{0.3}{\per\angstrom}$,
+what are the real-space cutoff and $G_{\mathrm c}$?
+\end{selfcheck}

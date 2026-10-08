@@ -1,0 +1,178 @@
+%=============================================================================!
+% 6.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:lagrange}: Lagrangian mechanics}
+\label{sec:la-solutions}
+
+\solutionto{ex:la-count}(a) One, the angle of the bead round the hoop.
+(b) Three: two Cartesian coordinates of each atom in the plane, four, less
+one for the fixed distance; for instance the centre of mass in the plane
+and the angle of the bond. (c) Six: nine Cartesian coordinates less three
+fixed distances, which leaves the three coordinates of the centre of mass
+and three angles for the turning (\cref{sec:ro-freedom}).
+
+\solutionto{ex:la-parts}With $f = x$ and $g = \mathrm{e}^x$, so that $g' =
+\mathrm{e}^x$ and $f' = 1$,
+\begin{equation*}
+   \int_0^1 x\,\mathrm{e}^x\,\dd x = \bigl[x\,\mathrm{e}^x\bigr]_0^1
+   - \int_0^1\mathrm{e}^x\,\dd x
+   = (1\times\mathrm{e} - 0\times1) - \bigl[\mathrm{e}^x\bigr]_0^1
+   = \mathrm{e} - (\mathrm{e} - 1) = 1 ,
+\end{equation*}
+using $\mathrm{e}^0 = 1$ and the fundamental theorem of calculus
+(\cref{sec:mo-integrating}), since $\mathrm{e}^x$ is its own derivative
+(\cref{sec:ne-drag}).
+
+\solutionto{ex:la-saddle}With $\Lag = \frac12 m\dot{x}^2 - \frac12 kx^2$
+and the path $x + \zeta\eta$, expanding the squares as in
+\cref{sec:la-action},
+\begin{equation*}
+   \Act(\zeta) = \Act(0) + \zeta\int_0^\tau\bigl(m\dot{x}\dot\eta - kx\eta
+   \bigr)\,\dd t + \zeta^2\Bigl(\tfrac12 m\int_0^\tau\dot\eta^2\,\dd t
+   - \tfrac12 k\int_0^\tau\eta^2\,\dd t\Bigr) .
+\end{equation*}
+The term in $\zeta$ is zero on the true path, by \cref{sec:la-euler}. With $\eta = \sin(n\pi t/\tau)$ and, by the chain rule, $\dot\eta =
+(n\pi/\tau)\cos(n\pi t/\tau)$, the squares are $\frac12 - \frac12\cos(2n\pi
+t/\tau)$ and $\frac12 + \frac12\cos(2n\pi t/\tau)$ (\cref{sec:os-energy},
+with $\sin^2 = 1 - \cos^2$), and $\cos(2n\pi t/\tau)$ makes $n$ whole
+turns from 0 to $\tau$, so it integrates to zero. The two integrals are
+therefore $\tau/2$ and $(n\pi/\tau)^2\,\tau/2$, and the term in $\zeta^2$
+is $\zeta^2\bigl(\frac12 m(n\pi/\tau)^2 - \frac12 k\bigr)\tau/2 =
+\zeta^2(\tau/4)\bigl(m(n\pi/\tau)^2 - k\bigr)$. With $\tau = 0.5$,
+$n\pi/\tau = 2n\pi$: for $n = 1$, $(2\pi)^2 = 39.478$ and $0.125\times(0.5
+\times39.478 - 50) = -3.783$; for $n = 2$, $(4\pi)^2 = 157.91$ and $0.125
+\times(0.5\times157.91 - 50) = +3.620$, in \si{\joule\second\per\metre\squared}.
+
+\solutionto{ex:la-fall}$\partial\Lag/\partial\dot{x} = m\dot{x}$, whose
+rate of change is $m\ddot{x}$, and $\partial\Lag/\partial x = -mg$, so
+$m\ddot{x} = -mg$ and $\ddot{x} = -g$.
+
+\solutionto{ex:la-plane}$\partial\Lag/\partial\dot{x} = m\dot{x}$ and
+$\partial\Lag/\partial x = -\partial U/\partial x$, so $m\ddot{x} =
+-\partial U/\partial x$, the $x$ component of $-\grad U$; the $y$ equation
+is the same with $y$ in place of $x$.
+
+\solutionto{ex:la-valley}By the Taylor series of $h'$ about $x_0$
+(\cref{sec:mo-taylor}), with $h'(x_0) = 0$, $h'(x) = h''(x_0)\,(x - x_0) +
+\order{(x - x_0)^2}$. In a small swing $x - x_0$ and $\dot{x}$ are both
+small, so in the numerator of \cref{eq:la-bead} $h''\dot{x}^2$ is small
+beside $g$, and in the denominator $h'^2$ is small beside 1. Keeping the largest term,
+$\ddot{x} \approx -g\,h''(x_0)\,(x - x_0)$, the equation of a spring with
+$\omega_0^2 = g\,h''(x_0)$ (\cref{sec:ne-spring}), about $x_0$.
+
+\solutionto{ex:la-bowl}With $x = R\sin\theta$, for $\lvert\theta\rvert <
+\ang{90}$, so that $\cos\theta > 0$, the chain rule gives $\dot{x} =
+R\cos\theta\,\dot\theta$, and
+\begin{equation*}
+   h = R - \sqrt{R^2(1 - \sin^2\theta)} = R - \sqrt{R^2\cos^2\theta}
+   = R\,(1 - \cos\theta) .
+\end{equation*}
+The slope follows from the chain rule with $x$ a function of $\theta$,
+$\dd h/\dd\theta = h'\,\dd x/\dd\theta$, that is $R\sin\theta =
+h'\,R\cos\theta$, so $h' = \tan\theta$ and $1 + h'^2 = 1/\cos^2\theta$
+(\cref{sec:la-constrained}). Then
+\begin{equation*}
+   \Lag = \tfrac12 m\,\frac{1}{\cos^2\theta}\,R^2\cos^2\theta\,\dot\theta^2
+   - mgR\,(1 - \cos\theta) = \tfrac12 mR^2\dot\theta^2 - mgR\,(1 - \cos
+   \theta) ,
+\end{equation*}
+the Lagrangian of \cref{sec:la-coordinates} for a pendulum of length $R$.
+
+\solutionto{ex:la-energy}Multiplying $\ddot\theta = -(g/L)\sin\theta$ by
+$\dot\theta$, the left side is $\dd(\frac12\dot\theta^2)/\dd t$ and the
+right side $-(g/L)\sin\theta\,\dot\theta = \dd((g/L)\cos\theta)/\dd t$,
+both by the chain rule. So $\frac12\dot\theta^2 - (g/L)\cos\theta$ does not
+change; multiplying by $mL^2$ and adding the constant $mgL$, neither does
+$\frac12 mL^2\dot\theta^2 + mgL(1 - \cos\theta)$.
+
+\solutionto{ex:la-hamilton}Along the motion $\Lag$ changes, by the chain
+rule along a path (\cref{sec:en-gradient}), at the rate $(\partial\Lag/\partial q)\dot{q} + (\partial\Lag/
+\partial\dot{q})\ddot{q}$, and $\dot{q}\,\partial\Lag/\partial\dot{q}$ by
+the product rule at the rate $\ddot{q}\,\partial\Lag/\partial\dot{q} +
+\dot{q}\,\dd(\partial\Lag/\partial\dot{q})/\dd t$. Subtracting, the terms
+in $\ddot{q}$ cancel and
+\begin{equation*}
+   \frac{\dd}{\dd t}\Bigl(\dot{q}\,\frac{\partial\Lag}{\partial\dot{q}}
+   - \Lag\Bigr) = \dot{q}\,\Bigl(\frac{\dd}{\dd t}\frac{\partial\Lag}
+   {\partial\dot{q}} - \frac{\partial\Lag}{\partial q}\Bigr) = 0
+\end{equation*}
+by \cref{eq:la-euler}. For the bead, $\dot{x}\,\partial\Lag/\partial
+\dot{x} = m(1 + h'^2)\dot{x}^2 = 2K$, so the quantity is $2K - (K - U) = K
++ U$, the energy.
+
+\solutionto{ex:la-carts}With $M = m_1 + m_2$, putting $x_2 = x_1 + r$ into
+$MX = m_1x_1 + m_2x_2$ gives $MX = Mx_1 + m_2r$, so $x_1 = X -
+(m_2/M)\,r$, and then $x_2 = x_1 + r = X + (m_1/M)\,r$, since $1 - m_2/M =
+m_1/M$. Then $\dot{x}_1 = \dot{X} - (m_2/M)\dot{r}$ and $\dot{x}_2 =
+\dot{X} + (m_1/M)\dot{r}$, and expanding the squares,
+\begin{align*}
+   K &= \tfrac12 m_1\dot{x}_1^2 + \tfrac12 m_2\dot{x}_2^2
+   = \tfrac12 M\dot{X}^2 + \dot{X}\dot{r}\,\Bigl(-\frac{m_1m_2}{M}
+     + \frac{m_2m_1}{M}\Bigr)
+     + \tfrac12\,\frac{m_1m_2^2 + m_2m_1^2}{M^2}\,\dot{r}^2\\
+   &= \tfrac12 M\dot{X}^2 + \tfrac12 m_{\mathrm r}\dot{r}^2 ,
+\end{align*}
+since $m_1m_2(m_2 + m_1)/M^2 = m_1m_2/M = m_{\mathrm r}$. So $\Lag =
+\frac12 M\dot{X}^2 + \frac12 m_{\mathrm r}\dot{r}^2 - \frac12 k(r -
+\ell)^2$. It does not contain $X$, so $p_X = M\dot{X} = m_1\dot{x}_1 + m_2\dot{x}_2$, the total momentum,
+is conserved; and the $r$ equation is $m_{\mathrm r}\ddot{r} = -k(r -
+\ell)$, as in \cref{sec:os-bodies}.
+
+\solutionto{ex:la-turning}$L = 0.2\times0.4\times0.3 =
+\SI{0.024}{\kilogram\metre\squared\per\second}$ and $E = \frac12\times
+0.2\times0.3^2 + \frac12\times2\times0.4^2 = 0.009 + 0.16 =
+\SI{0.169}{\joule}$. The turning points solve $\frac12 kr^2 + L^2/(2mr^2)
+= E$; with $\frac12 k = 1$, multiplying by $r^2$ gives $r^4 - 0.169\,r^2 +
+0.00144 = 0$, since $L^2/(2m) = 0.000576/0.4 = 0.00144$. So $r^2 =
+\frac12(0.169 \pm\sqrt{0.028561 - 0.00576}) = \frac12(0.169 \pm 0.151) =
+0.16$ or $0.009$, and the puck swings between \SI{0.0949}{\metre} and
+\SI{0.4}{\metre}.
+
+\solutionto{ex:la-circle}A circle has $r$ constant, so $\ddot{r} = 0$ and
+the $r$ equation of \cref{sec:la-polar} gives $L^2/(mr^3) = U'(r) = kr$,
+that is $r^4 = L^2/(mk)$, the bottom of $U_{\mathrm{eff}}$. Then $r^2 =
+L/\sqrt{mk}$, and $\dot\theta = L/(mr^2) = L\sqrt{mk}/(mL) = \sqrt{mk}/\sqrt{m^2} =
+\sqrt{k/m}$.
+For $L = 0.05$, $r^4 = 0.0025/(0.2\times2) = 0.00625$ and $r =
+\SI{0.2812}{\metre}$.
+
+\solutionto{ex:la-unit}With $f = xy$ and $\chi = x^2 + y^2 - 1$, $\grad f =
+\lambda\grad\chi$ reads $y = 2\lambda x$ and $x = 2\lambda y$. Putting the
+first into the second, $x = 4\lambda^2x$, so $\lambda = \pm\frac12$ (with
+$x = 0$ the first gives $y = 0$, off the circle). With $\lambda =
+\frac12$, $y = x$, and $x^2 + y^2 = 1$ gives $x = y = \pm1/\sqrt2$, where
+$xy = \frac12$, the largest value; $\lambda = -\frac12$ gives $y = -x$ and
+the smallest, $-\frac12$.
+
+\solutionto{ex:la-swing}The bob is released at $\theta_0 = \ang{60}$,
+where $\cos\theta_0 = \frac12$, so the force of the rod, $F_{\mathrm{rod}}
+= mg(3\cos\theta - 2\cos\theta_0)$, is $mg(3\cos\theta - 1)$, whatever the
+length of the rod. At the bottom it is
+$2mg = 2\times0.5\times9.80665 = \SI{9.807}{\newton}$; at the release
+point, $\cos\ang{60} = \frac12$, it is $\frac12 mg = \SI{2.452}{\newton}$,
+the part of the weight along the rod.
+
+\solutionto{ex:la-slack}During the swing $\lvert\theta\rvert \le
+\theta_0$, so $\cos\theta \ge \cos\theta_0$, and the force
+$mg(3\cos\theta - 2\cos\theta_0)$ is smallest at the turning points, where
+it is $mg\cos\theta_0$. A string can only pull, so it stays taut
+throughout only if $\cos\theta_0 \ge 0$, that is $\theta_0 \le \ang{90}$.
+
+\solutionto{ex:la-bond}By Pythagoras, $\chi = \frac12\sum_a\bigl(
+(\vb{r}_j)_a - (\vb{r}_i)_a\bigr)^2 - \frac12 d^2$, summing over the
+components $a = x$, $y$, $z$. Only the term $a$ of the sum contains
+$(\vb{r}_j)_a$, and $d$ is a constant, so differentiating with respect to
+$(\vb{r}_j)_a$ by the chain rule gives $\frac12\times2\bigl((\vb{r}_j)_a -
+(\vb{r}_i)_a\bigr) = (\vb{r}_j)_a - (\vb{r}_i)_a$; with respect to
+$(\vb{r}_i)_a$ the inner derivative is $-1$, which gives its negative. So
+$\grad_j\chi = \vb{r}_j - \vb{r}_i$ and $\grad_i\chi = -(\vb{r}_j -
+\vb{r}_i)$, and the forces $\lambda\grad_i\chi = -\lambda(\vb{r}_j -
+\vb{r}_i)$ and $\lambda\grad_j\chi = \lambda(\vb{r}_j - \vb{r}_i)$ are
+equal, opposite and along the line of the bond.
+
+\solutionto{ex:la-small-swing}The bead starts at $x = \SI{-2.042}{\metre}$,
+where $h = \SI{0.8}{\metre}$, swings through the deep valley, turns at $x
+= \SI{-0.4765}{\metre}$, the other point at height \SI{0.8}{\metre}
+(\cref{sec:en-diagrams}), since the top of the hill, \SI{1.009}{\metre}
+high, is out of its reach, and is back at its start after
+\SI{2.200}{\second}.

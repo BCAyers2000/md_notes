@@ -1,0 +1,90 @@
+%=============================================================================!
+% 6.1  COORDINATES THAT FIT                                                   !
+%=============================================================================!
+\section{Coordinates that fit the problem}
+\label{sec:la-coordinates}
+
+The bead of \cref{sec:en-track} slides without friction along a wire bent
+into the curve $y = h(x)$. Its position has two coordinates, $x$ and $y$,
+but the wire allows only one of them to be chosen: given $x$, the bead is
+at height $h(x)$. This section describes such motions by the coordinates
+they actually have, and writes their energies in those coordinates.
+
+\subsection*{The bead and the wire}
+
+Newton's second law for the bead needs every force on it, and one of them,
+the push of the wire, is unknown. It is whatever force keeps the bead on
+the wire, at right angles to the wire, and its size depends on the part
+of the weight across the wire as well as on how fast the bead goes and how
+sharply the wire bends. \Cref{sec:en-track}
+sidestepped it with energy: the push does no work, so the speed at each
+height follows from $\frac12 mv^2 + mgh = E$. That gave the speed at every
+point, but not directly when the bead gets there.
+
+The energy is simplest in the one coordinate that the wire leaves free,
+$x$. The bead is at $(x, h(x))$, so by the chain rule its velocity is
+\begin{equation*}
+   \vb{v} = \Bigl(\dot{x},\ \frac{\dd h}{\dd x}\,\dot{x}\Bigr)
+   = \dot{x}\,\bigl(1,\ h'(x)\bigr) ,
+\end{equation*}
+the dot marking the rate of change with time (\cref{sec:mo-acceleration})
+and $h'$ the slope of the wire. The square of its length, the speed
+squared, is $\dot{x}^2 + h'(x)^2\dot{x}^2 = \dot{x}^2\,(1 + h'^2)$ by
+Pythagoras' theorem, so
+\begin{equation*}
+   K = \tfrac12 m\,\bigl(1 + h'(x)^2\bigr)\,\dot{x}^2 ,
+   \qquad U = mg\,h(x) .
+\end{equation*}
+Both energies are now written with $x$ and $\dot{x}$ alone, and the push
+of the wire appears in neither.
+
+\subsection*{The pendulum}
+
+A pendulum's bob on a light rod of length $L$ (\cref{sec:os-small}) is
+fixed by the angle $\theta$ of the rod from the vertical. With the pivot
+at the origin and $y$ up, the bob is at $(L\sin\theta, -L\cos\theta)$.
+Differentiating each component with the chain rule, $\dd\sin\theta/\dd t =
+\cos\theta\,\dot\theta$ and $\dd\cos\theta/\dd t = -\sin\theta\,\dot\theta$
+(\cref{sec:ro-plane}),
+\begin{equation*}
+   \vb{v} = \bigl(L\cos\theta\,\dot\theta,\ L\sin\theta\,\dot\theta\bigr)
+   = L\dot\theta\,(\cos\theta, \sin\theta) ,
+\end{equation*}
+of length $L\lvert\dot\theta\rvert$ by Pythagoras' theorem, since
+$\cos^2\theta + \sin^2\theta = 1$. The bob is $L\cos\theta$ below the
+pivot, so $L - L\cos\theta$ above the bottom of the swing
+(\cref{sec:os-small}), and
+\begin{equation*}
+   K = \tfrac12 mL^2\dot\theta^2 ,
+   \qquad U = mgL\,(1 - \cos\theta) .
+\end{equation*}
+
+\subsection*{Generalised coordinates}
+
+The fewest numbers that fix the position of every part of a system, once
+its constraints are obeyed, are called its generalised coordinates; each
+is free to change whatever the others do, and we write them $q_1, q_2,
+\dots, q_n$. Their rates of change, $\dot{q}_1,
+\dots, \dot{q}_n$, are the generalised velocities. The bead has one, $x$;
+the pendulum one, $\theta$; the puck of \cref{sec:ro-plane} on its table
+two, $r$ and $\theta$; and $N$ free atoms have $3N$, their Cartesian
+coordinates. The number $n$ is the number of degrees of freedom of
+\cref{sec:ro-freedom}. A constraint that fixes one coordinate in terms of
+the others, as the wire fixes $y = h(x)$ or the rod fixes the distance
+of the bob from the pivot, is called holonomic, and it removes one degree
+of freedom. The wire and the rod do no work, since they push at right
+angles to every motion they allow; all the constraints in this book are
+holonomic and do no work.
+
+\begin{keyidea}
+Generalised coordinates are the fewest numbers that fix the position of
+a system once its constraints are obeyed. In them the kinetic and potential
+energies can be written without the forces of the constraints, which do
+no work.
+\end{keyidea}
+
+\begin{selfcheck}
+How many generalised coordinates does a double pendulum have, one bob hanging
+by a rod from a second bob that hangs by a rod from a fixed pivot, moving
+in a plane, and how many a rigid diatomic molecule free in space?
+\end{selfcheck}

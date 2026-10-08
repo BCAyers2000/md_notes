@@ -1,0 +1,60 @@
+%=============================================================================!
+% 5.A  ANSWERS TO THE CHECKS                                                  !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:ro-answers}
+
+\answerto{sec:ro-plane}The string still pulls only towards the hole, so
+$L = \SI{0.12}{\kilogram\metre\squared\per\second}$ is unchanged, and at
+\SI{1}{\metre} the puck goes round at $v_\theta = L/(mr) = 0.12/(0.2\times1)
+= \SI{0.6}{\metre\per\second}$. Its kinetic energy falls from
+\SI{0.144}{\joule} to $\frac12\times0.2\times0.6^2 = \SI{0.036}{\joule}$,
+so the string does the work $\SI{-0.108}{\joule}$: negative, since it
+pulls inwards while the puck moves outwards.
+
+\answerto{sec:ro-cross}By the components, $\vb{e}_z\times\vb{e}_x = (0
+\times0 - 1\times0,\ 1\times1 - 0\times0,\ 0\times0 - 0\times1) = (0, 1, 0)
+= \vb{e}_y$. Curling the fingers of the right hand clockwise as seen from
+above, the thumb points down: the turntable's angular momentum points
+straight down.
+
+\answerto{sec:ro-system}The total momentum is $1\times(0, -1, 0) +
+1\times(0, 1, 0) = \vb{0}$. About the origin, $(0.5, 0, 0)\times(0, -1, 0)
+= (0, 0, -0.5)$ and $(-0.5, 0, 0)\times(0, 1, 0) = (0, 0, -0.5)$, so
+$\vb{L} = (0, 0, -1)$\,\si{\kilogram\metre\squared\per\second}, a
+clockwise turn seen from above. About $(0, 1, 0)$ the arms are
+$(0.5, -1, 0)$ and $(-0.5, -1, 0)$, and $(0.5, -1, 0)\times(0, -1, 0) = (0,
+0, -0.5)$ and $(-0.5, -1, 0)\times(0, 1, 0) = (0, 0, -0.5)$: the same
+$\vb{L}$, since moving the point changes $\vb{L}$ by a term proportional to
+the total momentum (\cref{ex:ro-origin}), here zero.
+
+\answerto{sec:ro-rigid}The hoop has $K = \frac12 MR^2\omega^2$ and the disc
+$\frac12\times\frac12 MR^2\omega^2$, so the hoop has twice as much: more of
+its mass is far from the axis.
+
+\answerto{sec:ro-tensor}With the atoms at $(0, 0, \pm d/2)$, $I_{xx} =
+\sum m(y^2 + z^2) = 2m(d/2)^2 = \frac12 md^2$, likewise $I_{yy}$, and
+$I_{zz} = \sum m(x^2 + y^2) = 0$; every product such as $-\sum mxz$ is
+zero since $x = y = 0$. The tensor is diagonal, so the principal moments
+are $\frac12 md^2$, $\frac12 md^2$ and 0, the first two equal to $m_{\mathrm
+r}d^2$ with $m_{\mathrm r} = m/2$.
+
+\answerto{sec:ro-remove}$\vb{V} = (0, 0.02, 0)$\,\si{\angstrom\per
+\femto\second}, so $\vb{v}_1' = (0, -0.01, 0)$ and $\vb{v}_2' = (0, 0.01,
+0)$. Then $\vb{L}' = (-1, 0, 0)\times(0, -0.01, 0) + (1, 0, 0)\times(0,
+0.01, 0) = (0, 0, 0.02)$\,\si{\amu\angstrom\squared\per\femto\second}, and
+about the centre of mass the inertia tensor is diagonal with $I_{xx} = 0$,
+both atoms lying on the $x$ axis, and $I_{yy} = I_{zz} = 1\times1^2 +
+1\times1^2 = \SI{2}{\amu\angstrom\squared}$. It has no inverse, so, as in
+\cref{sec:ro-remove}, take $\boldsymbol{\omega}$ with no part along the
+line: $\boldsymbol{\omega} = (0, 0, 0.02/2) = (0, 0,
+0.01)$\,\si{\radian\per\femto\second}. The turning velocity of atom 1 is $(0, 0, 0.01)\times(-1,
+0, 0) = (0, -0.01, 0) = \vb{v}_1'$, and likewise for atom 2, so nothing is
+left: the pair was only drifting and turning.
+
+\answerto{sec:ro-freedom}Ethane has 8 atoms and is not linear: $24 - 6 =
+18$. Acetylene has 4 atoms on a line: $12 - 5 = 7$.
+
+\answerto{sec:ro-molecules}With $I = m_{\mathrm r}d^2$, twice the reduced
+mass doubles $I$, and at the same energy $\omega = \sqrt{2K/I}$ falls by
+$\sqrt2$, so the period of turning is $\sqrt2 = 1.414$ times longer.

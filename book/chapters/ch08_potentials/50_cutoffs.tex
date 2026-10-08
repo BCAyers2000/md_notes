@@ -1,0 +1,134 @@
+%=============================================================================!
+% 8.5  CUTOFFS                                                                !
+%=============================================================================!
+\section{Cutoffs}
+\label{sec:pe-cutoffs}
+
+A pair potential such as the Lennard-Jones energy never reaches zero as
+$r$ grows, but beyond a few $\sigma$ it is very small: at $r_{\mathrm c} = 2.5\sigma$
+it is $-0.0163\varepsilon$, less than 2\% of the depth of the well.
+Ignoring every pair farther apart than such a cutoff distance
+$r_{\mathrm c}$ leaves each atom with a fixed number of partners, on
+average, at a given density, however large the system, and with the neighbour lists of
+Chapter~10 makes the cost grow as $N$ in place of $N^2$. This section
+compares three ways of cutting it off.
+
+\subsection*{Three ways to cut}
+
+The simplest choice, truncation, keeps $\varphi$ unchanged inside
+$r_{\mathrm c}$ and sets it to zero outside. The energy then jumps by
+$\varphi(r_{\mathrm c})$ whenever a pair crosses the cutoff, while the
+force computed from \cref{eq:pe-pair-force}, which uses only $\varphi'$,
+knows nothing of the jump: the force is not the slope of the energy
+reported with it at $r_{\mathrm c}$, and the total energy changes by
+$\mp\varphi(r_{\mathrm c})$ at every crossing, as \cref{sec:en-drift}
+warned.
+
+Truncating and shifting subtracts the constant $\varphi(r_{\mathrm c})$
+inside the cutoff,
+\begin{equation*}
+   \varphi_{\mathrm s}(r) = \begin{cases}
+      \varphi(r) - \varphi(r_{\mathrm c}) , & r < r_{\mathrm c} ,\\
+      0 , & r \ge r_{\mathrm c} ,
+   \end{cases}
+\end{equation*}
+so that the energy is continuous. A constant has no slope, so the forces
+are unchanged, and the force still jumps at $r_{\mathrm c}$, from a
+pull of $\varphi'(r_{\mathrm c}) = 0.039\,\varepsilon/\sigma$ for the
+Lennard-Jones potential to nothing.
+
+Switching multiplies $\varphi$ by a function $S$ that falls smoothly from
+1 to 0 between a switching distance $r_{\mathrm s}$ and $r_{\mathrm c}$.
+With $x = (r - r_{\mathrm s})/(r_{\mathrm c} - r_{\mathrm s})$ running
+from 0 to 1 across that range,
+\begin{equation}
+   S(x) = 1 - 10x^3 + 15x^4 - 6x^5
+   \label{eq:pe-switch}
+\end{equation}
+is 1 at $x = 0$ and 0 at $x = 1$ with its first and second derivatives
+zero at both ends (\cref{ex:pe-switch}); these six conditions fix the six
+coefficients of a polynomial of degree five, and none of lower degree
+meets them all, so the energy and the force both pass smoothly to
+zero. The price is a changed force between $r_{\mathrm s}$ and
+$r_{\mathrm c}$. Since $S$ depends on $r$ through $x$, the chain rule gives
+$\dd S/\dd r = (\dd S/\dd x)/(r_{\mathrm c} - r_{\mathrm s})$, and the
+product rule then gives the force
+\begin{equation*}
+   -\frac{\dd(\varphi S)}{\dd r} = -\varphi'S - \frac{\varphi}{r_{\mathrm
+   c} - r_{\mathrm s}}\,\frac{\dd S}{\dd x} .
+\end{equation*}
+There $\varphi < 0$ and $\dd S/\dd x = -30x^2(1 - x)^2 < 0$, so the second
+term is negative: a pull that the original potential does not have
+(\cref{fig:pe-cutoff}b).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch08_potentials/cutoff}
+\caption{The Lennard-Jones potential cut at $r_{\mathrm c} = 2.5\sigma$ by
+truncation, truncation and shifting, and switching between $2\sigma$ and
+$2.5\sigma$, with the full potential dashed. (a) The energy; the
+truncated energy jumps at $r_{\mathrm c}$. (b) The force, the same for
+truncation and shifting, which jump at $r_{\mathrm c}$. (c) The total
+energy of 32 atoms followed for $20\tau$ by \texttt{solve\_newton} of
+\texttt{mdlab}, an adaptive solver, as its change from the start: truncated
+(oxblood), and without a cutoff, shifted and switched, all on the line
+at zero.}
+\label{fig:pe-cutoff}
+\end{figure}
+
+\subsection*{What each does to the motion}
+
+\Cref{fig:pe-cutoff}(c) follows a cluster of 32 Lennard-Jones atoms for
+$20\tau$ with \texttt{solve\_newton} of \texttt{mdlab}, which steps
+Newton's equations forward with a high-order method and chooses each step
+to hold its error below a set tolerance, once with each potential, and
+records the total energy every $0.025\tau$. Without a cutoff it changes
+by at most $\num{1.3e-10}\,\varepsilon$, the error of the solver. With
+truncation it wanders by up to $0.49\varepsilon$, in jumps of up to
+$0.11\varepsilon$ between successive records, each the net effect of
+several crossings (seven for the largest) of $0.0163\varepsilon$ each. The motion is that of the shifted potential,
+since the forces are the same, but the energy reported with it is not
+conserved. Shifted and switched, the energy is
+conserved to $\num{6e-8}\,\varepsilon$, some 500 times less well than
+without a cutoff: $S$ of \cref{eq:pe-switch} has a third derivative that
+jumps at both ends, so a higher derivative of the force still jumps
+whenever a pair crosses $r_{\mathrm s}$ or $r_{\mathrm c}$.
+
+The shifted potential pays for its jumping force in another way. The
+solver chooses its own steps to keep its error below a set tolerance,
+and to do so it called for the forces 26\,465 times without a cutoff and
+28\,925 times with switching, but 1\,221\,089 times with truncation or
+shifting, 46 times as often. Its error, like that of any method that advances
+the motion step by step, rests on the Taylor series of the motion over a
+step (\cref{sec:mo-taylor}), which assumes that the force changes
+smoothly; a jump in the force breaks that assumption, and the solver can
+only keep its accuracy by taking tiny steps across every jump. The
+fixed-step methods of Chapter~9 cannot do that, and Chapter~9 measures
+what a jump in the force costs them.
+
+Machine-learned potentials face the same choice and make the smooth one.
+Behler and Parrinello multiplied each neighbour's contribution by $\frac12
+[\cos(\pi r/r_{\mathrm c}) + 1]$, which falls to zero with zero slope at
+the cutoff distance\cite{BehlerParrinello2007}, and TrajCast (the planned Chapter~28)
+multiplies by the polynomial envelope of DimeNet\cite{Gasteiger2020}, $1 - \frac12(p + 1)(p + 2)\,x^p +
+p(p + 2)\,x^{p + 1} - \frac12 p(p + 1)\,x^{p + 2}$, with $x = r/r_{\mathrm
+c}$ and $p = 6$, which is zero at the cutoff with its first and second
+derivatives (\cref{ex:pe-envelope}).
+
+\begin{keyidea}
+A cutoff should take both the energy and the force smoothly to zero.
+Truncation makes the energy jump, so the total energy is not conserved.
+Shifting makes the energy continuous but leaves the force jumping, which
+an adaptive solver can follow only with far shorter steps, 46 times as
+many force calls here. Switching, or a smooth envelope as in
+machine-learned potentials, removes both jumps, though a jump left in a
+higher derivative still costs an accurate solver some accuracy.
+\end{keyidea}
+
+\notebook{08}{cut a potential three ways and watch the energy}
+
+\begin{selfcheck}
+For argon ($\varepsilon = \SI{0.01034}{\electronvolt}$), how large is each
+jump of the total energy when a pair crosses a truncated cutoff at
+$2.5\sigma$?
+\end{selfcheck}

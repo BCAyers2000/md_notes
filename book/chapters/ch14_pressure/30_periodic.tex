@@ -1,0 +1,156 @@
+%=============================================================================!
+% 14.3  PRESSURE IN A PERIODIC BOX                                            !
+%=============================================================================!
+\section{Pressure in a periodic box}
+\label{sec:pr-periodic}
+
+A periodic box (\cref{sec:md-periodic}) has no walls for its atoms to push
+on, and \cref{sec:pr-virial} needed walls. This section finds the
+pressure of a periodic box from the free energy, shows that it is
+\cref{eq:pr-virial} again with each pair's separation taken to its
+nearest copy, and shows what goes wrong when the virial is computed from
+the positions instead.
+
+\subsection*{From the free energy}
+
+Chapter~12 found $\dd F = -S\,\dd T - P\,\dd V + \mu\,\dd N$
+(\cref{sec:sm-other}), so at fixed $T$ and $N$ the pressure is the rate
+at which the free energy falls as the box grows,
+\begin{equation*}
+   P = -\frac{\partial F}{\partial V} = \kB T\,\frac{\partial\ln
+   Z}{\partial V} ,
+\end{equation*}
+using $F = -\kB T\ln Z$. For a cubic box of side $L$, $V = L^3$, the
+partition function is a constant $C$ that depends on $T$ (from the
+integral over the momenta) times the integral of $\mathrm{e}^{-\beta U}$
+over the positions of every atom inside the box. Writing each position
+as $\vb{r}_i = L\vb{s}_i$, with $\vb{s}_i$ the fractional coordinates of
+\cref{sec:md-periodic}, each running from 0 to 1, changes the variable of
+each of the $3N$ integrals and multiplies it by $L$ (\cref{sec:md-ewald}):
+\begin{equation*}
+   Z = C\,V^N\int\mathrm{e}^{-\beta U(L\vb{s}_1, \dots, L\vb{s}_N)}\,
+   \dd\vb{s}_1\cdots\dd\vb{s}_N .
+\end{equation*}
+Now the volume appears in two places, $V^N$ and $U$, and the box's
+boundaries no longer depend on it. The logarithm is $\ln Z = \ln C +
+N\ln V + \ln\int\mathrm{e}^{-\beta U}\,\dd\vb{s}$, with $\dd\vb{s}$ short
+for $\dd\vb{s}_1\cdots\dd\vb{s}_N$, and its slope is
+\begin{align*}
+   \frac{\partial\ln Z}{\partial V}
+   &= \frac NV + \frac{\int(-\beta\,\partial U/\partial V)\,
+   \mathrm{e}^{-\beta U}\,\dd\vb{s}}{\int\mathrm{e}^{-\beta U}\,\dd\vb{s}}
+   && \text{the slope of $\ln$, and the chain rule,}\\
+   &= \frac NV - \beta\Bigl\langle\frac{\partial U}{\partial V}\Bigr\rangle
+   && \text{a canonical average,}
+\end{align*}
+with the slope of $U$ taken at fixed fractional coordinates, that is,
+with the whole arrangement stretched evenly. For pairs, $U =
+\sum_{i<j}\varphi(r_{ij})$, and stretching scales every separation with
+the box, $r_{ij} = L\,\lvert\vb{s}_j - \vb{s}_i\rvert$ with the
+fractional separation taken to its nearest copy (\cref{sec:md-image}).
+So $\partial r_{ij}/\partial L = r_{ij}/L$, and with $\dd L/\dd V =
+1/(3L^2)$,
+\begin{equation*}
+   \frac{\partial U}{\partial V} = \sum_{i<j}\varphi'(r_{ij})\,
+   \frac{r_{ij}}{L}\,\frac{1}{3L^2}
+   = \frac{1}{3V}\sum_{i<j}r_{ij}\,\varphi'(r_{ij}) = -\frac{\mathcal{W}}{3V} .
+\end{equation*}
+Then $P = \kB T(N/V - \beta\ens{\partial U/\partial V}) = N\kB T/V +
+\ens{\mathcal{W}}/3V$, \cref{eq:pr-virial} again, with $\mathcal{W}$ written
+with the separations of \cref{eq:pe-virial}, each to the nearest copy of
+the other atom. A periodic run keeps its total momentum at zero, which
+removes three of the $3N$ kinetic freedoms, so that $\ens{2K} = (3N -
+3)\kB T$ (\cref{sec:sm-equipartition}), and holds its centre of mass
+still, so that only $N - 1$ atoms are placed freely and $V^N$ becomes
+$V^{N-1}$. The pressure of such a run is $(N - 1)\kB T/V +
+\ens{\mathcal{W}}/3V$, one part in $N$ less in its first term, and the
+instantaneous $(2K + \mathcal{W})/3V$ averages to it. In
+\texttt{md.PairModel} the virial is summed over the pairs of the
+neighbour list from their separations, as \cref{sec:pr-tensor} shows,
+and \texttt{virial.pressure} adds the kinetic part.
+
+\subsection*{Not from the positions}
+
+The sum $\sum_i\vb{r}_i\cdot\vb{F}_i$ equals \cref{eq:pe-virial} only when,
+for every pair, the difference of the positions held, $\vb{r}_j -
+\vb{r}_i$, is the separation from which their force was found. Positions
+read from the frames of a periodic run are wrapped into the cell
+(\cref{sec:md-periodic}): an atom that leaves through one face comes back
+through the opposite one, its $\vb{r}_i$ jumping by a lattice vector
+while its force does not change. \Cref{sec:pe-forces} showed that moving
+the origin by the same vector for every atom leaves $\mathcal{W}$ alone;
+wrapping moves single atoms, and changes $\sum_i\vb{r}_i\cdot\vb{F}_i$ by
+the scalar product of the lattice vector with that atom's force. Which
+atoms have been wrapped depends on where the cell's faces lie, so the sum
+depends on where the cell's origin sits. For the liquid of Chapter~13 at
+fixed volume, the pressure from the pair separations is
+\SI{0.0877}{\giga\pascal}; with $\sum_i\vb{r}_i\cdot\vb{F}_i$ from the
+wrapped positions it is \SI{0.0324}{\giga\pascal}, and
+\SI{0.0354}{\giga\pascal} with the origin moved, a single frame's value
+changing by up to \SI{0.131}{\giga\pascal}. Both lie near the kinetic part
+alone, \SI{0.0383}{\giga\pascal}: on average the jumps of the wrapped
+atoms cancel the virial's share. Thompson, Plimpton and
+Mattson give the general form of the pressure for many-body potentials in
+periodic cells, built in the same way from separations\cite{Thompson2009}.
+
+\subsection*{A crystal at rest}
+
+A crystal with every atom on its site has $K = 0$ and its pressure is the
+virial's alone. \Cref{fig:pr-crystal}(a) shows it for the face-centred
+cubic crystal of the switched Lennard-Jones argon against the cubic
+spacing $a$. It is zero at $a_0 = \SI{5.26714}{\angstrom} = 1.54916\sigma$,
+the spacing at which \cref{sec:md-start} found the energy least, as it
+must be, since $P = -\dd U/\dd V$ at $T = 0$ and the slope of $U$ vanishes
+at its least value. A crystal squeezed to $a = \SI{5.20}{\angstrom}$
+pushes outwards with \SI{0.128}{\giga\pascal}; one stretched to
+\SI{5.40}{\angstrom} pulls inwards with \SI{0.160}{\giga\pascal}, a
+negative pressure, a tension. The rise of the pressure for each fraction
+by which the volume falls is the bulk modulus,
+\begin{equation*}
+   B = -V\,\frac{\dd P}{\dd V} = -\frac{\dd P}{\dd V/V} ,
+\end{equation*}
+the stiffness of the material against squeezing, \SI{2.856}{\giga\pascal}
+at $a_0$; its inverse, $\kappa_T = 1/B$ at fixed temperature, is the
+compressibility, the fraction by which the volume shrinks for each unit
+of pressure.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/crystal}
+\caption{The pressure of the face-centred cubic crystal at rest, 256
+atoms of the switched Lennard-Jones argon. (a) The pressure (teal) and the
+energy per atom (ochre) against the cubic spacing $a$, the spacing $a_0$
+of zero pressure marked (dotted). (b) The crystal at $a_0$ stretched along
+$x$ by the strain $\epsilon_{xx}$: the components $\mathsf{P}_{xx}$,
+$\mathsf{P}_{yy} = \mathsf{P}_{zz}$ and $\mathsf{P}_{xy}$ (dashed, zero) of the
+pressure tensor of \cref{sec:pr-tensor}.}
+\label{fig:pr-crystal}
+\end{figure}
+
+The liquid of Chapter~13, at \SI{135}{\kelvin} and $0.8\sigma^{-3}$, has
+the pressure \SI{0.0877}{\giga\pascal}, about 880 bar, of which
+\SI{0.0383}{\giga\pascal} is the kinetic part $2K/3V$. Between walls the
+same atoms gave \SI{0.0628}{\giga\pascal} (\cref{sec:pr-virial}): the
+walls change the liquid next to them, and only the periodic box gives the
+pressure of the liquid far from any wall. For the Lennard-Jones argon with
+its energy shifted to zero at \SI{8.5}{\angstrom} in place of the switch,
+\texttt{mdlab} and ASE's \texttt{LennardJones} give the same pressure,
+\SI{-0.058924}{\giga\pascal}, for a strained crystal of 256 atoms, each
+displaced at random by about \SI{0.1}{\angstrom} along each axis.
+
+\begin{keyidea}
+In a periodic box $P = -\partial F/\partial V$ gives \cref{eq:pr-virial}
+again, with the virial summed over pairs from their separations to the
+nearest copy; $\sum_i\vb{r}_i\cdot\vb{F}_i$ from wrapped positions
+changes with the origin and is wrong. A crystal at rest has zero
+pressure at the spacing of least energy, and its bulk modulus $B =
+-V\,\dd P/\dd V$ measures its stiffness against squeezing.
+\end{keyidea}
+
+\notebook{14}{shift the origin of a periodic box and watch which pressure changes}
+
+\begin{selfcheck}
+From \cref{fig:pr-crystal}(a), the pressure falls from +0.128 to
+\SI{-0.160}{\giga\pascal} as $a$ goes from 5.20 to \SI{5.40}{\angstrom}.
+Estimate the bulk modulus near $a_0$ from these two points.
+\end{selfcheck}

@@ -1,0 +1,207 @@
+%=============================================================================!
+% 17.F  SOLUTIONS TO THE EXERCISES                                            !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:practice}: Molecular dynamics in practice}
+\label{sec:ip-solutions}
+
+\solutionto{ex:ip-time-unit}As in \cref{sec:ip-ase}, a force of one
+energy unit per \si{\angstrom} on \SI{1}{\amu} must give one
+\si{\angstrom} per $t^2$, so $t = \si{\angstrom}\sqrt{\si{\amu}/E}$ with
+$E$ the energy unit. One kilocalorie per mole is $4184/\num{6.02214076e23}
+= \SI{6.9477e-21}{\joule}$ for one molecule, so
+\begin{align*}
+   t &= \num{1e-10}\,\si{\metre}\sqrt{\frac{\num{1.66054e-27}\,\si{\kilogram}}
+        {\num{6.9477e-21}\,\si{\kilogram\metre\squared\per\second\squared}}}
+     && \text{in SI units}\\
+     &= \num{1e-10}\times\num{4.8888e-4}\,\si{\second}
+      = \SI{48.888}{\femto\second}
+     && \text{as $\sqrt{\si{\second\squared}/\si{\metre\squared}} =
+        \si{\second\per\metre}$.}
+\end{align*}
+A step of \SI{2}{\femto\second} is $2/48.888 = 0.04091$ of these units.
+
+\solutionto{ex:ip-velocity}ASE's velocity unit is \si{\angstrom} per
+\SI{10.1805}{\femto\second}, so \SI{0.01}{\angstrom\per\femto\second} is
+$0.01\times10.1805 = 0.1018$ of them. LAMMPS's \texttt{metal} unit is
+\si{\angstrom\per\pico\second}, so the number is $0.01\times1000 = 10$.
+
+\solutionto{ex:ip-friction}LAMMPS's damping parameter is the time $1/\gamma
+= \SI{2}{\pico\second}$. ASE's friction is $\gamma$ in reciprocal ASE time
+units, $\SI{0.0005}{\per\femto\second}\times\SI{10.1805}{\femto\second} =
+0.00509$.
+
+\solutionto{ex:ip-chain-mass}$3N/(3N - 3) = 768/765 = 1.00392$, and the
+period differs by its square root, 1.00196: a fifth of a per cent, far
+below anything a run could notice.
+
+\solutionto{ex:ip-table}Let the points be $0$ and $\delta x$, $\tilde
+y(x)$ the straight line through $y$'s values there, and $\Delta(x) = y(x)
+- \tilde y(x)$ its miss, zero at both points. Fix a point $x_0$ between
+them. The parabola $\Delta(x_0)\,x(x - \delta x)/[x_0(x_0 - \delta x)]$
+is zero at both points and equals $\Delta(x_0)$ at $x_0$, so
+\begin{equation*}
+   g(x) = \Delta(x) - \Delta(x_0)\,\frac{x(x - \delta x)}{x_0(x_0 - \delta x)}
+\end{equation*}
+is zero at $0$, at $x_0$ and at $\delta x$. A smooth function that is
+zero at two points has a zero slope somewhere between them (Rolle's
+theorem: to return to zero it must turn). Between $0$ and $x_0$, and
+between $x_0$ and $\delta x$, this gives two points where $g' = 0$, and
+between those a point $x_1$ where $g'' = 0$. Since $\tilde y'' = 0$ for a
+straight line and $x(x - \delta x) = x^2 - \delta x\,x$ has the second
+derivative 2,
+\begin{align*}
+   0 = g''(x_1) &= y''(x_1) - \frac{2\Delta(x_0)}{x_0(x_0 - \delta x)}\\
+   \Delta(x_0) &= \tfrac12 y''(x_1)\,x_0(x_0 - \delta x)
+      && \text{solving for $\Delta(x_0)$.}
+\end{align*}
+$\lvert x_0(x_0 - \delta x)\rvert = x_0(\delta x - x_0)$ is a parabola in
+$x_0$, zero at both ends and so largest midway, $\delta x^2/4$ at $x_0 =
+\delta x/2$; hence $\lvert\Delta\rvert \le \delta x^2\max\lvert y''\rvert/8$.
+
+\solutionto{ex:ip-table-points}The miss goes as the square of the
+spacing, so the spacing must fall by $\sqrt{7.6\times10^{-7}/10^{-9}} =
+27.6$ times, and the \num{20000} intervals become $\num{20000}\times27.6
+\approx \num{5.5e5}$: about \num{5.5e5} entries.
+
+\solutionto{ex:ip-images}The second and third terms are whole multiples
+of 1024 and $i_x + 512$ lies between 0 and 1023, so on division by 1024
+the remainder is $i_x + 512$ and the quotient $(i_y + 512) + 1024(i_z +
+512)$; the same argument on the quotient gives the remainder $i_y + 512$
+and the quotient $i_z + 512$. For \num{540539393}: the remainder is 513,
+so $i_x = 1$; the quotient \num{527870} has the remainder 510, so $i_y =
+-2$, and the quotient 515, so $i_z = 3$.
+
+\solutionto{ex:ip-cost}A call costs $0.25\times1000/126 = \SI{1.98}{\second}$
+for 1000 atoms, and a nanosecond is $10^6$ steps:
+\SI{1.98e6}{\second}, about 23 days. The measured call at 1008 atoms,
+\SI{2.84}{\second} (\cref{fig:ip-learned}a), gives about 33 days, since on
+the GPU the cost per atom grows by 40\% from 252 to 1008 atoms. Runs of
+this length are why the cost of a learned potential matters, and why
+The planned Part~VI turns to learned propagators.
+
+\solutionto{ex:ip-d3}$\kB T$ at \SI{300}{\kelvin} is
+\SI{25.9}{\milli\electronvolt}; per atom, \SI{5.2}{\milli\electronvolt}
+is a fifth of it and \SI{41.2}{\milli\electronvolt} 1.6 times it. But the
+sheets move together: stretching 64 carbon atoms costs $64\times
+\SI{5.2}{\milli\electronvolt} = \SI{0.33}{\electronvolt}$, 13 times $\kB
+T$, so even without D3 the sheets do not come apart. What fails is the
+spacing, 16.5\% too wide under a barostat, and its stiffness: in so
+shallow and broad a well the cell's height swings much further than with
+D3, and lithium sits in a gallery too wide.
+
+\solutionto{ex:ip-step}$0.0067(\dt/\SI{1}{\femto\second})^2 = 0.05$ at
+$\dt = \sqrt{0.05/0.0067} = \SI{2.73}{\femto\second}$. At
+\SI{3}{\femto\second} the estimate is $0.0067\times9 = 0.060$, already over
+the limit, and the run's 0.082 is more again: the spread grows faster than
+$\dt^2$ as the step nears the stability limit of the fastest vibrations
+(\cref{sec:in-stability}), the point where it also drifts. Part of the
+excess is that drift, which a standard deviation counts as spread: with a
+straight line through the energy removed, the run spreads by 0.074, still
+above the estimate.
+
+\solutionto{ex:ip-aimd-cost}$10^4$ steps of \SI{192}{\second} on four cores
+are $10^4\times192\times4/3600 = 2133$ core-hours; on 192 cores, divided
+perfectly, \SI{11.1}{\hour}.
+
+\solutionto{ex:ip-supercell}The two vectors are
+\begin{equation*}
+   2\vb{a} + \vb{b} = a\Bigl(\frac32, \frac{\sqrt3}{2}\Bigr), \qquad
+   -\vb{a} + \vb{b} = a\Bigl(-\frac32, \frac{\sqrt3}{2}\Bigr),
+\end{equation*}
+each of length $a\sqrt{9/4 + 3/4} = \sqrt3\,a$. Their dot product is
+$a^2(-\frac94 + \frac34) = -\frac32a^2$, and dividing by the product of
+their lengths, $3a^2$, gives the cosine of the angle between them,
+$-\frac12$: \ang{120}. The cell they span has the area $3a^2\sin\ang{120}
+= \frac{3\sqrt3}{2}a^2$ and the sheet's own cell $a^2\sin\ang{120} =
+\frac{\sqrt3}{2}a^2$, a ratio of 3, which is also the determinant
+$2\times1 - 1\times(-1)$ of the vectors' coefficients in $\vb{a}$ and
+$\vb{b}$ (\cref{sec:ha-liouville}); the sheet's cell holds two carbon
+atoms, so this one holds six.
+
+\solutionto{ex:ip-isotropic}The mean and its error are
+\begin{equation*}
+   \frac{-1.00 - 1.11 + 1.68}{3} = \SI{-0.14}{\giga\pascal}, \qquad
+   \frac{\sqrt{0.45^2 + 0.36^2 + 0.10^2}}{3} = \SI{0.20}{\giga\pascal},
+\end{equation*}
+zero within its error. An isotropic barostat compares only the mean
+with the target, so a solid strained in opposite senses along different
+directions satisfies it.
+
+\solutionto{ex:ip-rate}A fifth needs 25 hops, which at 2 per picosecond
+take \SI{12.5}{\pico\second}. At a rate $\nu$ the chance of no hop in
+\SI{20}{\pico\second} is $\mathrm{e}^{-\nu\times\SI{20}{\pico\second}}$,
+below 0.05 once $\nu$ exceeds $-\ln0.05/\SI{20}{\pico\second} =
+\SI{0.150}{\per\pico\second}$, so the rate is below this with 95\%
+confidence. 25 hops at that rate need \SI{167}{\pico\second}, the
+shortest run that could resolve it, since the true rate is probably
+lower.
+
+\solutionto{ex:ip-honeycomb}With $\boldsymbol{\ell}_1 = \ell(1, 0)$, the
+other two are turned by \ang{120} and \ang{240}: $\boldsymbol{\ell}_2 =
+\ell(-\frac12, \frac{\sqrt3}{2})$ and $\boldsymbol{\ell}_3 =
+\ell(-\frac12, -\frac{\sqrt3}{2})$, and adding the three gives $\ell(1 -
+\frac12 - \frac12, \frac{\sqrt3}{2} - \frac{\sqrt3}{2}) = \vb{0}$. A hop
+from either family therefore has the mean $\pm(\boldsymbol{\ell}_1 +
+\boldsymbol{\ell}_2 + \boldsymbol{\ell}_3)/3 = \vb{0}$, whatever the hops
+before it, so the mean of its product with any earlier hop is zero: after
+$n$ hops the cross terms of the squared displacement vanish and its mean
+is $n\ell^2$ (\cref{sec:ob-msd}). With $n = k_{\mathrm h}t$, setting
+$k_{\mathrm h}t\ell^2 = 2dDt$ with $d = 2$ gives $D = k_{\mathrm
+h}\ell^2/4$. For lithium, $\ell = 2.4648/\sqrt3 = \SI{1.4231}{\angstrom}$.
+
+\solutionto{ex:ip-chi}$\ens{z^2} = 1$ by definition of the variance, and
+$\operatorname{var}(z^2) = \ens{z^4} - \ens{z^2}^2 = 3 - 1 = 2$. The mean of
+$n$ independent such squares has the variance $2/n$ (\cref{sec:cv-mean}),
+so it scatters about 1 by $\sqrt{2/n}$. In a canonical run each freedom
+contributes $mv^2/\kB T_0 = z^2$ (\cref{sec:sm-maxwell}), so $T/T_0$ is
+the mean of $N_{\mathrm f}$ such squares and scatters by
+$\sqrt{2/N_{\mathrm f}}$.
+
+\solutionto{ex:ip-com}The centre moves by $\frac1N\sum_i\Delta\vb{r}_i$.
+Its square is $\frac{1}{N^2}\sum_i\sum_j\Delta\vb{r}_i\cdot\Delta\vb{r}_j$,
+every product of one atom's move with another's, and the $N$ terms with
+$i = j$ are the squares $\Delta r_i^2$. For $i \ne j$ independent atoms
+give $\ens{\Delta\vb{r}_i\cdot\Delta\vb{r}_j} = \ens{\Delta\vb{r}_i}\cdot
+\ens{\Delta\vb{r}_j} = 0$, since neither has a mean displacement, leaving
+$\frac{1}{N^2}N\ens{\Delta r^2} = \ens{\Delta r^2}/N$. In a run that
+keeps the total momentum the centre does not move at all; under Langevin
+dynamics it moves further, since the forces between the atoms cancel in
+its motion and only the friction slows it (\cref{sec:th-trajectory}).
+
+\solutionto{ex:ip-unwrap}A wrapped position fixes the atom only up to a
+whole number of cell vectors. A move of $\vb{d}$ and one of $\vb{d}$ less a
+cell vector leave the same wrapped positions, and the shorter of the two
+is taken; if a true move can exceed half a width, the shorter is not
+always the true one, and the path is lost. The first check therefore
+asks that the record be continuous already: a wrapped record fails it and
+must be unwrapped, which is safe only if its frames are close enough that
+no true move nears half a width; a record whose atoms jump further, from
+frames too far apart or rows out of order, has lost its paths.
+
+\solutionto{ex:ip-kurtosis}To first order, $1/m_2^2 = (1 +
+\epsilon_2)^{-2} \approx 1 - 2\epsilon_2$, so
+\begin{align*}
+   \frac{m_4}{m_2^2} - 3 &\approx (3 + \epsilon_4)(1 - 2\epsilon_2) - 3
+      && \text{the first order of $(1 + \epsilon_2)^{-2}$}\\
+   &\approx \epsilon_4 - 6\epsilon_2
+      && \text{dropping $\epsilon_4\epsilon_2$, of second order.}
+\end{align*}
+Its variance is $\operatorname{var}(\epsilon_4) -
+12\operatorname{cov}(\epsilon_2, \epsilon_4) + 36\operatorname{var}
+(\epsilon_2)$, and each is that of one number over $n$
+(\cref{sec:cv-mean}): $\operatorname{var}(z^4) = \ens{z^8} - \ens{z^4}^2 =
+105 - 9 = 96$, $\operatorname{cov}(z^2, z^4) = \ens{z^6} -
+\ens{z^2}\ens{z^4} = 15 - 3 = 12$ and $\operatorname{var}(z^2) = 2$. The
+variance is therefore $(96 - 144 + 72)/n = 24/n$, and the scatter
+$\sqrt{24/n}$. For $n = 768$ the limit is $3\sqrt{24/768} = 0.530$.
+Velocities spread evenly, with $-1.2$, lie far outside it and fail.
+
+\solutionto{ex:ip-plan}Check the potential on the new system against a
+converged reference, on frames like those of the run; build and relax the
+starting structure and check its closest approach, largest force and total
+momentum; choose the step by runs at fixed energy; bring the system to
+its temperature and pressure and find the start; measure $D$ with its
+error from blocks in a pilot run, and lengthen the run by the square of
+the ratio of that error to the 5\% asked (\cref{sec:cv-observables});
+run at fixed energy or under CSVR with a long time constant; and plan two
+box sizes for the correction of \cref{sec:cv-size}.

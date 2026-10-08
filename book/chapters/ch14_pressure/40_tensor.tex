@@ -1,0 +1,199 @@
+%=============================================================================!
+% 14.4  THE PRESSURE TENSOR                                                   !
+%=============================================================================!
+\section{The pressure tensor}
+\label{sec:pr-tensor}
+
+A liquid at rest pushes equally on a face whichever way the face points.
+A solid need not: a crystal stretched along $x$ pulls inwards harder on
+the faces normal to $x$ than on the others, and a sheet of graphite is
+stiff along its plane and soft across it. This section generalises the
+pressure to a matrix that gives the push on a face of any orientation.
+
+\subsection*{The push on a face}
+
+The force that the material exerts on a small flat face of area $A$,
+whose outward normal is the unit vector $\vb{n}$, need not point along
+$\vb{n}$, but it is linear in $\vb{n}$. A small wedge of material cut off
+by this face and by three faces normal to the axes, of areas $An_x$,
+$An_y$ and $An_z$, feels forces on its faces that shrink with their area,
+while its mass shrinks faster, with its volume; as the wedge shrinks the
+forces on its four faces must therefore cancel, and the force on the
+slanted face is the sum of $An_x$, $An_y$ and $An_z$ times the forces per
+unit area on faces normal to $x$, $y$ and $z$. A vector linear in $\vb{n}$
+is a matrix times $\vb{n}$ (\cref{sec:os-modes}):
+\begin{equation*}
+   \vb{F} = A\,\mathsf{P}\vb{n} ,
+\end{equation*}
+with $\mathsf{P}$ the pressure tensor, whose component
+$\mathsf{P}_{\alpha\beta}$ is the force per unit area along $\alpha$ on a
+face normal to $\beta$. For a liquid at rest $\mathsf{P} = P\vb{I}$, and
+every face is pushed straight outwards with $P$.
+
+\subsection*{From a strain}
+
+\Cref{sec:pr-periodic} stretched the box evenly; stretching it unevenly
+gives every component. A small strain multiplies every vector, the
+lattice vectors of the cell and the position of every atom alike, by the
+matrix $\vb{I} + \boldsymbol{\epsilon}$, with components
+$\epsilon_{\alpha\beta}$ that are small. For a cubic cell of side $L$ the
+strained lattice vectors are $L$ times the columns $\vb{c}_1$, $\vb{c}_2$
+and $\vb{c}_3$ of $\vb{I} + \boldsymbol{\epsilon}$, so by
+\cref{eq:md-volume} the volume becomes $V$ times the triple product
+$\vb{c}_1\cdot(\vb{c}_2\times\vb{c}_3)$, which is the determinant
+$\det(\vb{I} + \boldsymbol{\epsilon})$, the factor by which the strain
+stretches volumes (\cref{sec:ha-liouville}). Written out as in
+\cref{sec:ro-tensor}, it is six products, each of one component of every
+column, and to first order in $\boldsymbol{\epsilon}$
+\begin{equation*}
+   \det(\vb{I} + \boldsymbol{\epsilon}) = (1 + \epsilon_{xx})(1 +
+   \epsilon_{yy})(1 + \epsilon_{zz}) + \dotsb = 1 + \epsilon_{xx} +
+   \epsilon_{yy} + \epsilon_{zz} + \dotsb ,
+\end{equation*}
+since each of the other five products contains at least two off-diagonal
+components and is of second order or higher (\cref{ex:pr-det}).
+
+The strain $\dd\epsilon_{\alpha\beta}$ carries the face of a cubic box
+normal to $\beta$, at the distance $L$ from the opposite face, a distance
+$L\,\dd\epsilon_{\alpha\beta}$ along $\alpha$ further than that opposite
+face. The material pushes on the face with $L^2\mathsf{P}_{\alpha\beta}$
+along $\alpha$, so it does the work $V\mathsf{P}_{\alpha\beta}\,
+\dd\epsilon_{\alpha\beta}$, which its free energy loses at fixed
+temperature:
+\begin{equation*}
+   \dd F = -V\sum_{\alpha\beta}\mathsf{P}_{\alpha\beta}\,
+   \dd\epsilon_{\alpha\beta} ,
+\end{equation*}
+and so $\mathsf{P}_{\alpha\beta} = -(1/V)\,\partial F/\partial
+\epsilon_{\alpha\beta}$; an even stretch, $\epsilon_{\alpha\beta} =
+e\,\delta_{\alpha\beta}$, changes the volume by $\dd V = 3V\dd e$ and gives
+back $\dd F = -P\,\dd V$ with $P$ the mean of the diagonal. The steps of
+\cref{sec:pr-periodic} carry over. In fractional coordinates the
+partition function carries the factor $\det(\vb{I} +
+\boldsymbol{\epsilon})^N$, whose logarithm, $N\ln(1 + \epsilon_{xx} +
+\epsilon_{yy} + \epsilon_{zz} + \dotsb)$, has the slope
+$N\delta_{\alpha\beta}$ along $\epsilon_{\alpha\beta}$ at zero strain. Each
+pair separation $\vb{d}$, of length $r_{ij}$, becomes $(\vb{I} +
+\boldsymbol{\epsilon})\vb{d}$, with components $d_\alpha +
+\sum_\beta\epsilon_{\alpha\beta}d_\beta$; squaring and adding them, and
+dropping the products of two strains, gives the squared length $r_{ij}^2 +
+2\sum_{\alpha\beta}d_\alpha\epsilon_{\alpha\beta}d_\beta$, and since
+$\sqrt{r^2 + x} \approx r + x/2r$ for small $x$ (\cref{sec:mo-taylor}),
+the length grows by $\sum_{\alpha\beta}d_\alpha\epsilon_{\alpha\beta}
+d_\beta/r_{ij}$. Its slope along $\epsilon_{\alpha\beta}$ is $d_\alpha
+d_\beta/r_{ij}$, and by the chain rule
+\begin{equation*}
+   \frac{\partial U}{\partial\epsilon_{\alpha\beta}}
+   = \sum_{i<j}\varphi'(r_{ij})\,\frac{d_\alpha d_\beta}{r_{ij}}
+   = -\mathcal{W}_{\alpha\beta} ,
+\end{equation*}
+with $\mathcal{W}_{\alpha\beta}$ the virial tensor, whose trace, the sum of
+its diagonal, is $\mathcal{W}$. Then, as in \cref{sec:pr-periodic},
+\begin{equation*}
+   \mathsf{P}_{\alpha\beta} = \frac{\kB T}{V}\,
+   \frac{\partial\ln Z}{\partial\epsilon_{\alpha\beta}}
+   = \frac1V\bigl(N\kB T\,\delta_{\alpha\beta}
+   + \ens{\mathcal{W}_{\alpha\beta}}\bigr) .
+\end{equation*}
+Equipartition gives $\ens{m_iv_{i\alpha}^2} = \kB T$, and in the Maxwell
+distribution (\cref{sec:sm-maxwell}) the components of a velocity are
+independent with mean zero, so $\ens{m_iv_{i\alpha}v_{i\beta}} = \kB T\,
+\delta_{\alpha\beta}$, and the instantaneous
+\begin{equation}
+   \mathsf{P}_{\alpha\beta} = \frac1V\Bigl(\sum_im_iv_{i\alpha}v_{i\beta}
+   + \mathcal{W}_{\alpha\beta}\Bigr)
+   \label{eq:pr-tensor}
+\end{equation}
+averages to the pressure tensor, and the mean of its diagonal is the
+instantaneous pressure of \cref{sec:pr-virial}. \texttt{md.PairModel}
+stores $\mathcal{W}_{\alpha\beta}$ at every call, from the separations
+$\vb{d}$ of the pairs and the forces between them:
+
+\begin{code}
+        r = np.asarray(positions, dtype=float)
+        i, j, d, dist = self.neighbours.pairs(r)
+        phi, dphi = self._pair(i, j, dist)
+        push = (dphi / dist)[:, None] * d  # the force on i from j
+        forces = np.zeros_like(r)
+        np.add.at(forces, i, push)
+        np.add.at(forces, j, -push)
+        self.virial = -np.einsum("pa,pb->ab", d, push)
+        return float(np.sum(phi)), forces
+\end{code}
+
+\noindent \texttt{d} holds $\vb{r}_j - \vb{r}_i$ to the nearest copy and
+\texttt{push} the force on $i$ from $j$, $\varphi'(r_{ij})\,\vb{d}/r_{ij}$
+(\cref{sec:pe-forces}), so \texttt{virial} is $-\sum d_\alpha F_\beta =
+-\sum\varphi'(r_{ij})\,d_\alpha d_\beta/r_{ij}$ over the pairs,
+$\mathcal{W}_{\alpha\beta}$. It agrees with $-\partial U/\partial
+\epsilon_{\alpha\beta}$ for each of the nine strains, taken by finite
+differences, to \SI{2.1e-9}{\electronvolt}, and $-\mathcal{W}_{\alpha\beta}
+/V$ agrees with the stress of ASE's \texttt{LennardJones} to
+\SI{7.5e-16}{\giga\pascal}.
+
+\subsection*{Measured}
+
+The liquid's tensor is isotropic: under the cell rescaling of
+\cref{sec:pr-rescaling} at \SI{0.1}{\giga\pascal} its diagonal averages
+0.1003, 0.0995 and \SI{0.0996}{\giga\pascal} and its off-diagonal
+components $-0.0002$, 0.0000 and \SI{-0.0001}{\giga\pascal}, while an
+instantaneous diagonal component scatters by \SI{0.023}{\giga\pascal} and
+an off-diagonal one by \SI{0.013}{\giga\pascal}. The crystal at $a_0$
+stretched along $x$ is not (\cref{fig:pr-crystal}(b)): at
+$\epsilon_{xx} = +0.02$, $\mathsf{P}_{xx} = \SI{-0.0735}{\giga\pascal}$ while
+$\mathsf{P}_{yy} = \mathsf{P}_{zz} = \SI{-0.0409}{\giga\pascal}$, and the
+off-diagonal components stay at zero. The slopes at zero strain are the
+crystal's elastic stiffnesses, $C_{11} = -\partial\mathsf{P}_{xx}/\partial
+\epsilon_{xx} = \SI{3.920}{\giga\pascal}$ and $C_{12} = -\partial
+\mathsf{P}_{yy}/\partial\epsilon_{xx} = \SI{2.324}{\giga\pascal}$. An even
+squeeze applies all three strains at once; by the cubic symmetry
+$\mathsf{P}_{xx}$ responds to $\epsilon_{yy}$ and $\epsilon_{zz}$ as
+$\mathsf{P}_{yy}$ does to $\epsilon_{xx}$, so each diagonal component
+changes by $-(C_{11} + 2C_{12})e$ while $\dd V/V = 3e$, and the bulk
+modulus is $(C_{11} + 2C_{12})/3 = \SI{2.856}{\giga\pascal}$, the value
+\cref{sec:pr-periodic} found from the slope of $P$.
+
+ASE, like many libraries, reports the stress, which is $-\mathsf{P}$,
+positive when the material is pulled; a program's sign convention is
+worth checking before its numbers are used. ASE's \texttt{get\_stress}
+returns it in \si{\electronvolt\per\angstrom\cubed} as six numbers,
+\begin{equation*}
+   -\mathsf{P}_{xx},\ -\mathsf{P}_{yy},\ -\mathsf{P}_{zz},\
+   -\mathsf{P}_{yz},\ -\mathsf{P}_{xz},\ -\mathsf{P}_{xy} ,
+\end{equation*}
+and leaves out the kinetic part unless
+it is called with \texttt{include\_ideal\_gas=True}; the pressure is then
+minus the mean of the first three.
+
+\begin{bridge}
+In a density-functional calculation the stress is the same derivative of
+the energy with respect to strain, and Nielsen and Martin showed how to
+compute it from the electronic structure directly\cite{Nielsen1985}. A
+basis of plane waves cut off at a fixed energy changes when the cell
+does, so a cell that grows during a calculation is described by a basis
+of different quality from the one it started with, and the stress
+carries a spurious part, the Pulay stress; it is removed by raising the
+cutoff until the stress no longer changes, or by correcting for the
+incomplete basis as Francis and Payne set out\cite{Francis1990}. A basis
+of orbitals centred on the atoms moves with them instead, and its
+derivatives enter the stress as Pulay terms, as they enter the forces
+(\cref{sec:en-atoms}).
+\end{bridge}
+
+\begin{keyidea}
+The pressure tensor gives the force per unit area on a face of any
+orientation, $\vb{F} = A\,\mathsf{P}\vb{n}$; it is $(\sum m v_\alpha v_\beta
++ \mathcal{W}_{\alpha\beta})/V$, from the response of the free energy to a
+strain, and the mean of its diagonal is the pressure. A liquid's is $P$
+times the unit matrix; a strained crystal's is not. Libraries report the
+stress, $-\mathsf{P}$.
+\end{keyidea}
+
+\notebook{14}{stretch the crystal along one axis and read the tensor}
+
+\begin{selfcheck}
+ASE's stress, with the kinetic part included, is
+\SI{0.002}{\electronvolt\per\angstrom\cubed} for each of its first three
+numbers and zero for the others. What is the pressure in GPa, and is the
+material pushing on its cell or pulling on it?
+\end{selfcheck}

@@ -1,0 +1,121 @@
+%=============================================================================!
+% 4.2  ENERGY IN THE OSCILLATOR                                               !
+%=============================================================================!
+\section{Energy in the oscillator}
+\label{sec:os-energy}
+
+An oscillating block has its largest kinetic energy at the centre of the
+swing and none at the ends, and its potential energy does the opposite.
+This section follows the trade and shows that, averaged over a period,
+the energy is shared equally between the two forms, a result that
+returns when Chapter~12 relates kinetic energy to temperature.
+
+\subsection*{The trade}
+
+With $x = A\cos(\omega t + \phi)$ and $v = -A\omega\sin(\omega t + \phi)$
+(\cref{sec:os-circle}), and writing $\theta = \omega t + \phi$ for short,
+the two energies of \cref{sec:en-potential} are
+\begin{align*}
+   K &= \tfrac12 m v^2 = \tfrac12 m A^2\omega^2\sin^2\theta
+      = \tfrac12 k A^2\sin^2\theta
+      && \text{since $\omega^2 = k/m$ gives $m\omega^2 = k$,}\\
+   U &= \tfrac12 k x^2 = \tfrac12 k A^2\cos^2\theta .
+\end{align*}
+Taking out the common factor $\frac12 kA^2$ and using $\sin^2\theta +
+\cos^2\theta = 1$, their sum is $E = \frac12 kA^2(\sin^2\theta +
+\cos^2\theta) = \frac12 kA^2$, constant, as \cref{prop:en-energy-1d} requires. The energy
+therefore fixes the amplitude, $A = \sqrt{2E/k}$: an oscillation with four
+times the energy swings twice as far. For the same block
+released instead from rest \SI{4}{\centi\metre} out, as in
+\cref{fig:ne-spring}, $E =
+\frac12\times50\times0.04^2 = \SI{0.04}{\joule}$. At $x =
+\SI{2}{\centi\metre}$ the potential energy is $\frac12\times50\times0.02^2
+= \SI{0.01}{\joule}$, and the remaining \SI{0.03}{\joule} is kinetic
+(\cref{fig:os-energy}b). As the block swings, $K$ and $U$ rise and fall
+twice in every period. By \cref{eq:mo-addition} with $\cos\pi = -1$ and
+$\sin\pi = 0$, $\sin(\theta + \pi) = -\sin\theta$ and $\cos(\theta + \pi)
+= -\cos\theta$, and squaring removes the minus signs, so $\sin^2\theta$
+and $\cos^2\theta$ repeat when $\theta$ grows by $\pi$, half a turn
+(\cref{fig:os-energy}a).
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/energy}
+\caption{Energy in the oscillator: the block of \cref{sec:os-circle},
+released instead from rest \SI{4}{\centi\metre} out, so that $E =
+\SI{0.04}{\joule}$. (a) Kinetic energy $K$, potential energy $U$ and
+their sum against time over two periods; the dotted line is $E/2$, the
+average of each. (b) The energy diagram, $U = \frac12 kx^2$ with the line
+$E$; at $x = \SI{2}{\centi\metre}$ the energy splits into $U =
+\SI{0.01}{\joule}$ and $K = \SI{0.03}{\joule}$, and the dots mark the
+turning points.}
+\label{fig:os-energy}
+\end{figure}
+
+\Needspace{16\baselineskip}
+\subsection*{Equal shares on average}
+
+\begin{toolbox}[The average of a function]
+The average of $n$ numbers is their sum divided by $n$. To average a
+function $f(t)$ over an interval from $0$ to $t_1$, sample it at $n$ equally
+spaced times $t_k$, a step $\tau = t_1/n$ apart, and average the
+samples:
+\begin{equation*}
+   \frac1n\sum_{k} f(t_k) = \frac{1}{t_1}\sum_k f(t_k)\,\tau
+   \;\longrightarrow\; \frac{1}{t_1}\int_0^{t_1} f(t)\,\dd t
+   \qquad\text{as } n \to \infty ,
+\end{equation*}
+the first step multiplying and dividing by $\tau$ and using $n\tau = t_1$, the second the definition of the integral as a limit of such
+sums (\cref{sec:mo-integrating}). The average of $f$ over the interval is
+therefore $\frac{1}{t_1}\int_0^{t_1} f\,\dd t$, the area under its graph divided by
+the length of the interval. We write it with an overbar, $\overline{f}$.
+\end{toolbox}
+
+To average $\cos^2\theta$ over a period, rewrite it. The addition formula
+of \cref{sec:mo-trig} with both angles equal to $\theta$ gives
+$\cos2\theta = \cos^2\theta - \sin^2\theta$, and
+\begin{align*}
+   \cos 2\theta &= \cos^2\theta - (1 - \cos^2\theta) = 2\cos^2\theta - 1
+      && \text{replacing $\sin^2\theta$,}\\
+   \cos^2\theta &= \tfrac12 + \tfrac12\cos 2\theta
+      && \text{adding 1 to both sides and halving.}
+\end{align*}
+The second term averages to zero over a period, $t_1 = 2\pi/\omega$. With
+$\theta = \omega t + \phi$, so that $2\theta = 2\omega t + 2\phi$, the
+function $\sin(2\omega t + 2\phi)/(2\omega)$ has derivative $\cos(2\omega
+t + 2\phi)$ by the chain rule, so the fundamental theorem of calculus
+(\cref{sec:mo-integrating}) turns the integral into the change in that
+function,
+\begin{equation*}
+   \int_0^{t_1} \cos(2\omega t + 2\phi)\,\dd t
+   = \frac{\sin(2\omega t_1 + 2\phi) - \sin 2\phi}{2\omega} = 0 ,
+\end{equation*}
+because $2\omega t_1 = 4\pi$, two whole turns, after which the sine takes
+its old value. Averaging the two terms of $\cos^2\theta$ separately,
+\begin{align*}
+   \overline{\cos^2\theta}
+   &= \frac{1}{t_1}\int_0^{t_1}\tfrac12\,\dd t
+      + \frac{1}{t_1}\int_0^{t_1}\tfrac12\cos(2\omega t + 2\phi)\,\dd t
+      && \text{the integral of a sum,}\\
+   &= \frac{1}{t_1}\times\frac{t_1}{2} + 0 = \frac12
+      && \text{a rectangle, and the integral above,}
+\end{align*}
+and, since $\sin^2\theta = 1 - \cos^2\theta$, the same steps give
+$\overline{\sin^2\theta} = 1 - \frac12 = \frac12$. The trade above gave
+$K = E\sin^2\theta$ and $U = E\cos^2\theta$, with $E$ a constant that
+comes outside each integral, so
+\begin{equation}
+   \overline{K} = \overline{U} = \tfrac12 E :
+   \label{eq:os-equal-shares}
+\end{equation}
+over a period, a harmonic oscillator holds half its energy as kinetic
+energy and half as potential energy. For the block, each averages
+\SI{0.02}{\joule}, the dotted line of \cref{fig:os-energy}(a).
+
+\notebook{04}{the spring with an animation, energy bars and its phase
+portrait}
+
+\begin{selfcheck}
+At which positions does the block of \cref{fig:os-energy} have equal
+kinetic and potential energy?
+\end{selfcheck}

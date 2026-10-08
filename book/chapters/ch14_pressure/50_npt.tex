@@ -1,0 +1,124 @@
+%=============================================================================!
+% 14.5  WHAT A BAROSTAT MUST DO                                               !
+%=============================================================================!
+\section{What a barostat must do}
+\label{sec:pr-npt}
+
+A barostat lets the volume of the box change so that the run samples the
+ensemble at constant pressure. This section sets out what that ensemble
+requires, finds the exact distribution of the volume for an ideal gas and
+its spread for a liquid, which are the tests every barostat of the
+chapter must pass, and fits a barostat into the loop of Chapter~13.
+
+\subsection*{The ensemble at constant pressure}
+
+A system that exchanges volume with a bath at the pressure $P_0$ has the
+weight $\mathrm{e}^{-\beta(H + P_0V)}$ (\cref{sec:sm-other}). Grouping the
+states by their volume gives the probability of each volume,
+\begin{equation*}
+   \mathcal{P}(V) \propto \mathrm{e}^{-\beta P_0V}\,Z(N, V, T) ,
+\end{equation*}
+the canonical partition function of the box at that volume weighted by
+$\mathrm{e}^{-\beta P_0V}$. A barostat must therefore do two things that a
+thermostat does not: move the volume, and move it so that it takes each
+value with this probability. Its mean pressure should be $P_0$, and the
+spread of its volume should be the one this distribution has.
+
+\subsection*{The ideal gas exactly}
+
+For atoms that do not interact, $U = 0$ and \cref{sec:pr-periodic} gives
+$Z = C\,V^N$, so
+\begin{equation*}
+   \mathcal{P}(V) \propto V^N\mathrm{e}^{-bV} , \qquad b = \frac{P_0}{\kB T} .
+\end{equation*}
+The integrals $\int_0^\infty V^n\mathrm{e}^{-bV}\dd V = n!/b^{n+1}$, found by
+integrating by parts $n$ times (\cref{ex:pr-gamma}), give the mean and the
+variance, each the integral with one or two more powers of $V$ divided by
+the integral with none:
+\begin{align*}
+   \ens{V} &= \frac{(N + 1)!/b^{N+2}}{N!/b^{N+1}} = \frac{N + 1}{b}
+   = \frac{(N + 1)\kB T}{P_0} ,\\
+   \ens{V^2} &= \frac{(N + 2)!/b^{N+3}}{N!/b^{N+1}}
+   = \frac{(N + 2)(N + 1)}{b^2} , \qquad
+   \ens{V^2} - \ens{V}^2 = \frac{N + 1}{b^2} .
+\end{align*}
+The mean is the ideal gas law's with $N + 1$ in place of $N$, a difference
+that vanishes for large $N$, and the relative spread is $1/\sqrt{N + 1}$.
+For 20 atoms at \SI{135}{\kelvin} and $P_0 = \SI{1e-4}{\electronvolt\per
+\angstrom\cubed}$, the mean volume is \SI{2443}{\angstrom\cubed} and its
+spread \SI{533}{\angstrom\cubed}: a small gas whose volume fluctuates by a
+fifth, a severe test (\texttt{virial.ideal\_gas\_volume\_density} gives
+the whole density).
+
+\subsection*{A liquid's volume}
+
+Chapter~12 found that the volume at constant pressure fluctuates with the
+variance $-\kB T\,\dd\ens{V}/\dd P$ (\cref{ex:sm-volume}). With the
+compressibility of \cref{sec:pr-periodic}, $\dd\ens{V}/\dd P =
+-\ens{V}\kappa_T$, so
+\begin{equation}
+   \ens{V^2} - \ens{V}^2 = \kB T\,\ens{V}\,\kappa_T .
+   \label{eq:pr-volume}
+\end{equation}
+A soft material swings its volume more than a stiff one. To test a
+barostat on the liquid this needs $\kappa_T$ found without one. Three
+runs at fixed volume around the volume the liquid takes at
+\SI{0.1}{\giga\pascal}, three starts each of \SI{100}{\pico\second} under
+CSVR at \SI{135}{\kelvin}, give
+\begin{center}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$V$ / \si{\angstrom\cubed} & 12\,112 & 12\,301 & 12\,477\\
+$\ens{P}$ / \si{\giga\pascal} & $0.1109 \pm 0.0004$ & $0.1000 \pm 0.0005$
+   & $0.0904 \pm 0.0013$\\
+\bottomrule
+\end{tabular}
+\end{center}
+with the standard error of the three starts. The parabola through the
+three points has, at \SI{12306}{\angstrom\cubed}, the mean volume of the
+runs at constant pressure of \cref{sec:pr-rescaling,sec:pr-piston}, the
+slope $\dd P/\dd V$ that gives $\kappa_T = -1/(V\,\dd P/\dd V) = (1.46 \pm
+0.11)$\,\si{\per\giga\pascal}, the error found by redrawing the three
+pressures within their standard errors; the liquid's bulk modulus is a
+quarter of the crystal's. \Cref{eq:pr-volume} then predicts a spread of
+\SI{183}{\angstrom\cubed}, 1.5\% of the volume.
+
+\subsection*{The barostat in the loop}
+
+\texttt{barostats.run} is Chapter~13's loop with one addition. At the
+start of each step, after the thermostat has acted, the barostat reads
+the instantaneous pressure tensor, \cref{eq:pr-tensor}, from the
+velocities and the virial the last force call left, and changes the cell,
+scaling the positions with it so that their fractional coordinates are
+kept, and, for some barostats, the velocities; the forces are then
+computed again in the new cell and the step continues as velocity
+Verlet. The neighbour list is kept across such changes while no pair can
+have been missed. If the strain since the list was built stretches or
+shrinks no separation by more than the fraction $e$ of its length (for a
+box scaled by the factor $1 + e$ along every edge, $e$ itself), and no atom
+has moved further than $u$ from where the strain alone would have carried
+it, a pair now within $r_{\mathrm c}$ was within $r_{\mathrm c} + 2u$ after
+the strain alone, and so within $(r_{\mathrm c} + 2u)/(1 - e)$ when the
+list was built. The list of \cref{sec:md-neighbours} therefore holds while
+$(r_{\mathrm c} + 2u)/(1 - e) \le r_{\mathrm c} + r_{\mathrm{skin}}$; with the
+box fixed, $e = 0$ and this is the rule $u \le \frac12r_{\mathrm{skin}}$ of
+that section. The run records the work, the change of
+$K + U + P_0V$ that the barostat makes, beside the heat of the
+thermostat; the effective energy $K + U + P_0V$ less the heat and the work
+changes only through the integration error, as \cref{eq:th-effective} did
+for a thermostat.
+
+\begin{keyidea}
+A barostat must sample $\mathcal{P}(V) \propto \mathrm{e}^{-\beta
+P_0V}Z(N, V, T)$: the mean pressure $P_0$, and the right spread of volume.
+For an ideal gas $\mathcal{P}(V) \propto V^N\mathrm{e}^{-\beta P_0V}$, with
+mean $(N + 1)\kB T/P_0$ and relative spread $1/\sqrt{N + 1}$; for a liquid
+the variance of $V$ is $\kB T\ens{V}\kappa_T$, with $\kappa_T$ measured at
+fixed volumes.
+\end{keyidea}
+
+\begin{selfcheck}
+By what fraction does the volume of 1000 ideal-gas atoms fluctuate at
+constant pressure?
+\end{selfcheck}

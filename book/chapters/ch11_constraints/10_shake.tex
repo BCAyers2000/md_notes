@@ -1,0 +1,300 @@
+%=============================================================================!
+% 11.1  HOLDING A BOND FIXED                                                  !
+%=============================================================================!
+\section{Holding a bond fixed}
+\label{sec:cs-shake}
+
+The fastest motions in most molecules are the stretches of bonds to
+hydrogen (\cref{tab:os-vibrations}), and \cref{sec:pe-classical} found
+them thoroughly quantum: for the O--H stretch of water $\hbar\omega$ is
+17.5 times $\kB T$ at room temperature, so a simulation with classical
+nuclei gets the energy of this vibration wrong whatever its step. Yet the
+same vibration, with its period of \SI{9}{\femto\second}, is what holds
+the step down. Replacing each such bond by a rod of fixed length
+(\cref{sec:la-multipliers}) removes the vibration altogether. The bond
+between atoms $i$ and $j$, held at the length $d$, is the constraint
+\begin{equation*}
+   \chi = \tfrac12\bigl(\lvert\vb{r}_{ij}\rvert^2 - d^2\bigr) = 0 ,
+   \qquad \vb{r}_{ij} = \vb{r}_j - \vb{r}_i ,
+\end{equation*}
+whose force, found in \cref{sec:la-multipliers}, is $\lambda\vb{r}_{ij}$
+on atom $j$ and $-\lambda\vb{r}_{ij}$ on atom $i$: along the bond, equal
+and opposite, with a size set by the multiplier $\lambda$. This section
+finds $\lambda$ at every step.
+
+\subsection*{The constrained step}
+
+The Störmer--Verlet step of \cref{eq:in-stormer}, written for atom $i$
+with its force $\vb{F}_i$ and the constraint force $\vb{F}_i^{\mathrm c}$
+added, is
+\begin{equation*}
+   \vb{r}_i(t + \dt) = 2\vb{r}_i(t) - \vb{r}_i(t - \dt)
+   + \frac{\dt^2}{m_i}\bigl(\vb{F}_i + \vb{F}_i^{\mathrm c}\bigr) .
+\end{equation*}
+Without the constraint the atom would go to the provisional position
+$\tilde{\vb{r}}_i = 2\vb{r}_i(t) - \vb{r}_i(t - \dt) +
+(\dt^2/m_i)\vb{F}_i$, so the constrained step is the provisional one
+corrected, $\vb{r}_i(t + \dt) = \tilde{\vb{r}}_i +
+(\dt^2/m_i)\vb{F}_i^{\mathrm c}$. With one bond, and its force taken at
+time $t$, the two atoms move to
+\begin{align*}
+   \vb{r}_j(t + \dt) &= \tilde{\vb{r}}_j
+      + \frac{\dt^2\lambda}{m_j}\,\vb{r}_{ij} ,\\
+   \vb{r}_i(t + \dt) &= \tilde{\vb{r}}_i
+      - \frac{\dt^2\lambda}{m_i}\,\vb{r}_{ij} ,
+\end{align*}
+with $\vb{r}_{ij}$ the bond at time $t$. Subtracting the second line from
+the first, the bond at $t + \dt$ is
+\begin{align*}
+   \vb{r}_{ij}(t + \dt)
+   &= \tilde{\vb{r}}_{ij} + \dt^2\lambda\Bigl(\frac{1}{m_i}
+      + \frac{1}{m_j}\Bigr)\vb{r}_{ij}\\
+   &= \tilde{\vb{r}}_{ij} + \eta\,\vb{r}_{ij} ,
+   \qquad \eta = \frac{\dt^2\lambda}{m_{\mathrm r}} ,
+   && \text{$\frac1{m_i} + \frac1{m_j} = \frac{m_i + m_j}{m_im_j}
+      = \frac{1}{m_{\mathrm r}}$,}
+\end{align*}
+where $\tilde{\vb{r}}_{ij} = \tilde{\vb{r}}_j - \tilde{\vb{r}}_i$ is the
+provisional bond and $m_{\mathrm r}$ the reduced mass of
+\cref{sec:os-bodies}. The new bond is the provisional one plus a multiple
+of the old, as \cref{fig:cs-shake-geometry} draws. The constraint must
+hold at $t + \dt$, $\lvert\tilde{\vb{r}}_{ij} + \eta\vb{r}_{ij}\rvert^2 =
+d^2$. Expanding the square as $(\vb{a} + \vb{s})\cdot(\vb{a} + \vb{s})$
+was expanded in \cref{sec:ro-freedom} gives $\lvert\tilde{\vb{r}}_{ij}
+\rvert^2 + 2\eta\,\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij} + \eta^2\lvert
+\vb{r}_{ij}\rvert^2 = d^2$, and with $\lvert\vb{r}_{ij}\rvert^2 = d^2$,
+since the bond held at $t$,
+\begin{equation}
+   d^2\eta^2 + 2\,(\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij})\,\eta
+   + \lvert\tilde{\vb{r}}_{ij}\rvert^2 - d^2 = 0 ,
+   \label{eq:cs-quadratic}
+\end{equation}
+a quadratic equation for the one unknown $\eta$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.45,
+   old/.style={circle, draw=black, fill=white, inner sep=1.8pt},
+   trial/.style={circle, draw=black!45, fill=black!20, inner sep=1.8pt},
+   new/.style={circle, fill=black, inner sep=1.8pt},
+   arr/.style={-{Stealth[length=5pt]}, line width=0.8pt}]
+   \draw[arr, black!60] (0,0) -- (3,0)
+      node[midway, below] {$\vb{r}_{ij}$};
+   \draw[black!45, dashed] (0.2,0.9) -- (4.0,1.5)
+      node[pos=0.5, above=2pt, black!60] {$\tilde{\vb{r}}_{ij}$};
+   \draw[line width=1pt] (0.8455,0.9) -- (3.7848,1.5);
+   \draw[arr, accent] (0.2,0.9) -- (0.8455,0.9);
+   \draw[arr, accent] (4.0,1.5) -- (3.7848,1.5);
+   \node[old, label={below:$\vb{r}_i(t)$}] at (0,0) {};
+   \node[old, label={below:$\vb{r}_j(t)$}] at (3,0) {};
+   \node[trial, label={left:$\tilde{\vb{r}}_i$}] at (0.2,0.9) {};
+   \node[trial, label={right:$\tilde{\vb{r}}_j$}] at (4.0,1.5) {};
+   \node[new, label={below:$\vb{r}_i(t + \dt)$}] at (0.8455,0.9) {};
+   \node[new, label={above:$\vb{r}_j(t + \dt)$}] at (3.7848,1.5) {};
+\end{tikzpicture}
+\caption{One step of a bond held at the length $d$, here 3. Atoms $i$
+(mass 1) and $j$ (mass 3) start at the open circles. Without the
+constraint they would reach the grey provisional positions, a bond
+$\tilde{\vb{r}}_{ij}$ too long (dashed); the correction (arrows) moves
+each along the old bond $\vb{r}_{ij}$, the lighter atom three times as
+far, to the black positions, where the bond has length 3 again.}
+\label{fig:cs-shake-geometry}
+\end{figure}
+
+\subsection*{One bond}
+
+Two atoms, $i$ of mass 1 and $j$ of mass 3, joined by a bond of length 1
+along $x$, drift apart to
+1.2 in a step, so $\vb{r}_{ij} = (1, 0, 0)$, $\tilde{\vb{r}}_{ij} = (1.2,
+0, 0)$, $\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij} = 1.2$ and
+$\lvert\tilde{\vb{r}}_{ij}\rvert^2 - d^2 = 0.44$:
+\begin{align*}
+   \eta^2 + 2.4\,\eta + 0.44 &= 0 ,\\
+   \eta &= \frac{-2.4 \pm \sqrt{2.4^2 - 4\times0.44}}{2}
+   = -1.2 \pm 1 ,
+   && \text{the quadratic formula,}
+\end{align*}
+so $\eta = -0.2$ or $-2.2$. The first shortens the bond to $1.2 - 0.2 =
+1$. The second gives $1.2 - 2.2 = -1$, the bond turned round, a solution
+of the equation that no short step can reach: as $\dt$ shrinks,
+$\tilde{\vb{r}}_{ij}$ approaches $\vb{r}_{ij}$ and the correction must
+vanish, which only the root nearer zero does: with $\tilde{\vb{r}}_{ij} =
+\vb{r}_{ij}$, \cref{eq:cs-quadratic} becomes $d^2\eta^2 + 2d^2\eta = 0$,
+with roots 0 and $-2$. With $\eta = -0.2$ and
+$m_{\mathrm r} = 1\times3/(1 + 3) = 0.75$, atom $j$ moves by
+$\dt^2\lambda/m_j = \eta m_{\mathrm r}/m_j = -0.05$ along the bond and atom
+$i$ by $+0.15$: the lighter atom moves three times as far, and the centre
+of mass, $1\times0.15 + 3\times(-0.05) = 0$, does not move at all.
+
+The quadratic has real roots only if the number under the square root of
+the quadratic formula, $4(\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij})^2 -
+4d^2(\lvert\tilde{\vb{r}}_{ij}\rvert^2 - d^2)$, is not negative, that is,
+if $(\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij})^2 \ge d^2(\lvert\tilde{\vb{r}}_{ij}
+\rvert^2 - d^2)$. Writing
+$\phi$ for the angle between the provisional and the old bond, so that
+$\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij} = \lvert\tilde{\vb{r}}_{ij}\rvert
+\,d\cos\phi$, and dividing by $d^2$, the condition reads
+$\lvert\tilde{\vb{r}}_{ij}\rvert^2\cos^2\phi \ge \lvert\tilde{\vb{r}}_{ij}
+\rvert^2 - d^2$, that is, $d^2 \ge \lvert\tilde{\vb{r}}_{ij}\rvert^2(1 -
+\cos^2\phi) = \lvert\tilde{\vb{r}}_{ij}\rvert^2\sin^2\phi$, or, taking
+square roots, $\lvert\tilde{\vb{r}}_{ij}\rvert\sin\phi \le d$. The part of the provisional bond at
+right angles to the old one must be no longer than the bond: a correction
+along the old bond cannot shorten that part. A bond stretched by 50\% and
+turned in one step by more than $\arcsin(1/1.5) = \ang{41.8}$, and less
+than $\ang{180} - \ang{41.8} = \ang{138.2}$, where $\sin\phi$ is again
+$1/1.5$, cannot be corrected at all, a sign of a step far too long.
+
+\subsection*{Many bonds}
+
+The bonds of a molecule share atoms. The three distances held in a rigid
+water molecule join its three atoms in a triangle, and moving two atoms to
+correct one distance changes the other two, so the quadratics of the three
+bonds are coupled. Ryckaert, Ciccotti and Berendsen avoided solving them
+together\cite{Ryckaert1977}: their method, SHAKE, corrects the bonds one
+at a time, each by an approximate solution of its own equation with the
+others' atoms where they are, and sweeps through all the bonds again and
+again until every one holds. The approximation drops the $\eta^2$ of
+\cref{eq:cs-quadratic}, which is small for a short step:
+\begin{equation}
+   \eta \approx \frac{d^2 - \lvert\tilde{\vb{r}}_{ij}\rvert^2}
+   {2\,\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij}} .
+   \label{eq:cs-linear}
+\end{equation}
+For the example this gives $-0.44/2.4 = -0.1833$, and the bond becomes
+1.0167 long. Applied again, with the corrected bond in place of
+$\tilde{\vb{r}}_{ij}$ and $\vb{r}_{ij}$ still the old bond, it gives
+$-0.0165$, and
+the bond is $1.000137$. The repeated step is a method for solving any
+equation.
+
+\begin{toolbox}[Newton's method]
+To solve $f(y) = 0$, we start from a guess $y_n$ and replace the curve
+$f(y)$ near it by its tangent, the first two terms of its Taylor series
+(\cref{sec:mo-taylor}), $f(y_n) + f'(y_n)(y - y_n)$. The tangent is zero at
+\begin{equation*}
+   y_{n+1} = y_n - \frac{f(y_n)}{f'(y_n)} ,
+\end{equation*}
+the next guess. To see how fast the guesses close in, we write the root
+as $y^*$ and the error as $e_n = y_n - y^*$, and expand $f(y^*)$ about
+$y_n$, with $y^* - y_n = -e_n$:
+\begin{align*}
+   0 = f(y^*) &= f(y_n) - e_nf'(y_n) + \tfrac12e_n^2f''(y_n)
+   + \order{e_n^3} ,\\
+   \frac{f(y_n)}{f'(y_n)} &= e_n - \frac{f''(y_n)}{2f'(y_n)}\,e_n^2
+   + \order{e_n^3} ,
+\end{align*}
+the second line by dividing the first by $f'(y_n)$ and rearranging.
+Subtracting $y^*$ from both sides of the rule gives $e_{n+1} = e_n -
+f(y_n)/f'(y_n)$, and so
+\begin{equation*}
+   e_{n+1} = \frac{f''(y_n)}{2f'(y_n)}\,e_n^2 + \order{e_n^3} .
+\end{equation*}
+Each error is about a fixed multiple of the square of the one before, so
+once the error is small the number of correct digits roughly doubles at
+every step. For $f(y) = y^2 - 2$ from $y_0 = 1$, the guesses $1.5$,
+$1.4166667$, $1.4142157$ and $1.4142135624$ have errors of $0.086$,
+$0.0025$, $\num{2.1e-6}$ and $\num{1.6e-12}$ against $\sqrt2$. The method
+needs $f'(y_n) \neq 0$ and a start close enough to the root; far from it,
+the tangent can point anywhere.
+\end{toolbox}
+
+For one bond, $f(\eta) = \lvert\tilde{\vb{r}}_{ij} +
+\eta\vb{r}_{ij}\rvert^2 - d^2$, the left side of \cref{eq:cs-quadratic},
+so $f'(\eta) = 2d^2\eta + 2\,\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij} =
+2\,\vb{r}_{ij}\cdot(\tilde{\vb{r}}_{ij} + \eta\vb{r}_{ij})$,
+which at $\eta = 0$ is $2\,\tilde{\vb{r}}_{ij}\cdot\vb{r}_{ij}$, so
+\cref{eq:cs-linear} is the first step of Newton's method from $\eta = 0$.
+Once the atoms have moved, the corrected bond takes the place of
+$\tilde{\vb{r}}_{ij}$, and the same formula is the next step. Here
+$f''(\eta) = 2d^2$ and, near the root, $f'(\eta)$ is twice the dot product
+of the old bond with the corrected one, $2d^2\cos\theta$ if the two bonds
+are $\theta$ apart, so each error in $\eta$ is $2d^2/(2\times2d^2\cos
+\theta)$ times the square of the one before. An error $e$ in $\eta$ changes
+the length by about $e\,d\cos\theta$, so the relative error of the length
+is $1/(2\cos^2\theta)$ times the square of the one before: about half,
+when the bond has not turned far. \Cref{fig:cs-shake}(a) measures it: a
+bond stretched by 10\% has a relative error of 0.1, then $\num{5.0e-3}$,
+$\num{1.4e-5}$ and $\num{1.1e-10}$, each 0.50 to 0.57 times the square of
+the one before; the corrected bond lies \ang{19.9} off the old one, and
+$1/(2\cos^2\ang{19.9}) = 0.565$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/shake}
+\caption{How SHAKE converges. (a) One bond of length 1 between equal
+masses, stretched by 1\%, 10\% and 30\% in a direction \ang{18} off the
+old bond: the relative error of its length after each sweep, until it
+reaches the rounding of the arithmetic. (b) The 64 rigid water molecules
+of \cref{sec:cs-water} after one step of \SI{2}{\femto\second} without
+constraints: the sweeps needed against the tolerance (circles) and the
+largest error of a held distance that is left (squares, right axis).}
+\label{fig:cs-shake}
+\end{figure}
+
+The function \texttt{shake} of \texttt{mdlab.constraints} carries out the
+sweeps. The bonds are sorted beforehand into groups that share no atom, so
+that every bond of a group can be corrected at once with NumPy. For
+water, whose bonds are listed molecule by molecule, this applies the same
+corrections in the same order as taking the bonds one at a time; for other
+lists two bonds that share an atom can change places within a sweep, which
+changes the path of the sweeps but not the conditions they end on. The
+loop is
+\begin{code}
+    for sweep in range(1, max_sweeps + 1):
+        moved = False
+        for g in groups:
+            i, j = pairs[g, 0], pairs[g, 1]
+            now = r[j] - r[i] + copy[g]
+            eta = 0.5 * (d2[g] - np.sum(now * now, 1)) / np.sum(
+                old[g] * now, 1
+            )
+            eta[np.abs(eta) <= tolerance] = 0.0
+            moved = moved or bool(np.any(eta))
+            push = (m_r[g] * eta)[:, None] * old[g]
+            r[j] += push / m[j, None]
+            r[i] -= push / m[i, None]
+        if not moved:
+            return r, sweep
+\end{code}
+\noindent Here \texttt{old} holds the bonds $\vb{r}_{ij}$ at time $t$,
+\texttt{now} the current ones, \texttt{d2} the squared lengths and
+\texttt{m\_r} the reduced masses; \texttt{push} is $m_{\mathrm r}\eta\,
+\vb{r}_{ij}$, which divided by $m_j$ is atom $j$'s move. The array
+\texttt{copy} holds, for each bond, the multiple of the lattice vectors
+that turns $\vb{r}_j - \vb{r}_i$ into its nearest copy in the provisional
+positions (\cref{sec:md-image}), so a molecule that lies across a face of the cell
+is corrected as one piece. A sweep that leaves every $\lvert\eta\rvert$
+below the tolerance moves nothing, and ends the loop. Since $\eta$ is
+about the fraction by which a bond is too long or too short (a bond $1 +
+s$ times its length along the old one gives, by \cref{eq:cs-linear}, $\eta
+= -s(1 + \frac12s)/(1 + s) \approx -s$), the
+tolerance is a relative error of the lengths: $10^{-10}$ in
+\texttt{mdlab} unless another is asked for.
+
+Several bonds converge more slowly than one. \Cref{fig:cs-shake}(b) takes
+the box of 64 rigid water molecules of \cref{sec:cs-water} through one
+step of \SI{2}{\femto\second} with no constraint, which leaves the
+largest held distance in error by \SI{0.030}{\angstrom}, 3.1\% of an O--H
+bond, and corrects it by SHAKE. A tolerance of $10^{-10}$ needs 39 sweeps.
+Each tenfold reduction of the tolerance costs 4.5 more sweeps, so each
+sweep reduces the error by a steady factor $q$ with $q^{4.5} = 10$, $q =
+10^{1/4.5} = 1.67$, where a
+single bond squared it: correcting one side of a triangle disturbs the
+other two, and the errors are passed round it. The largest error left is
+1.5 times the tolerance in \si{\angstrom}, as it should be for a relative
+error of distances up to the H--H length of \SI{1.51}{\angstrom}.
+
+\begin{keyidea}
+A held bond adds a force along the old bond to the step, so the new bond
+is the provisional one plus $\eta$ times the old. The constraint at the
+end of the step is a quadratic in $\eta$, and its first-order solution is
+a step of Newton's method. SHAKE takes the bonds one at a time with that
+step, and sweeps until every bond holds to a tolerance.
+\end{keyidea}
+
+\notebook{11}{drift a bond and follow SHAKE sweep by sweep}
+
+\begin{selfcheck}
+In the example with masses 1 and 3, the masses are changed to 2 and 2.
+Does $\eta$ change, and how far does each atom move?
+\end{selfcheck}

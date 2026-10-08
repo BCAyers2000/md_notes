@@ -1,0 +1,49 @@
+%=============================================================================!
+% 16.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+The radial distribution function counts the partners at each distance
+against an even scatter, a histogram of pair distances out to half the
+cell that tends far away to $1 - S(0)/N$ in a fixed cell, $1 - 1/N$ for
+atoms placed at random; with the pair potential and the kinetic energy it
+gives the energy and the pressure, and with its short memory it converges
+several times sooner than the pressure. Its transform is the structure factor
+that diffraction measures, computed from the positions on the cell's own
+wave vectors where the cut at half the cell would spoil it, and tending
+to $\rho\kB T\kappa_T$ at long wavelengths.
+Bonds are assigned from
+distances with a band of hysteresis and a least lifetime, stored as
+whole-number keys whose sorted lists give the bonds formed and broken;
+molecules are the connected components of their graph, species their
+formula and a hash of their bonding; reactions are changes of the
+molecules that atoms belong to, and rates are counts over exposures with
+the error $\sqrt n$; the ratio of the rate constants of a reaction and
+its reverse is an equilibrium constant that statistical mechanics
+predicts. Observers do this as the run goes, at about a tenth of the cost
+of a cheap force evaluation.
+The mean squared displacement grows as $2dDt$, from unwrapped
+paths with the centre of mass removed, and equals twice the integral of
+the velocity autocorrelation function weighted by $t - s$, so $D$ is also
+a Green-Kubo integral; the shear viscosity is another, and its value,
+$(1.853 \pm 0.038)\times10^{-4}$\,\si{\pascal\second} for liquid argon,
+lies 1.6 combined errors from the one that Chapter~15 inferred from the
+change of $D$ with the size of the box.
+Independent ions conduct as $\sum_iq_i^2D_i/V\kB T$,
+and the Haven ratio measures how far correlated ions fall short of it;
+in layers, $D$ becomes a tensor; and hops between sites give $D =
+fk_{\mathrm h}a^2/4$, with a correlation factor $f$ that friction brings to 1.
+The Fourier transform, computed in $N_{\mathrm s}\log_2N_{\mathrm s}$
+operations for $N_{\mathrm s}$ samples, turns the velocity
+autocorrelation function into the vibrational density of states, whose
+peaks are the normal modes, whose width grows by $\gamma/2\pi$ under
+friction, whose value at zero holds $D$, and which frames a stride
+$\Delta t$ apart show only up to $1/2\Delta t$.
+A histogram of any
+coordinate gives its free energy, which counts arrangements as well as
+energies, with error bars that must come from independent runs when the
+barriers are crossed rarely.
+
+Chapter~17 runs these analyses on the simulations they are meant for:
+ASE and LAMMPS with a learned potential, lithium in graphite, and the
+trajectory gallery of every fault met so far.

@@ -1,0 +1,130 @@
+%=============================================================================!
+% 8.7  BONDED FORCE FIELDS                                                    !
+%=============================================================================!
+\section{Bonded force fields}
+\label{sec:pe-bonded}
+
+The solvents of a lithium-ion battery's electrolyte are small organic
+molecules, carbonates such as ethylene carbonate, a ring of five atoms,
+and chains such as dimethyl carbonate. While no reaction takes place, each
+atom of a molecule keeps the same bonded partners, and its energy can be
+written as a sum of terms for the bonds, the angles between bonds and the
+twists about them, with the interactions of atoms farther apart, in the
+same molecule or in different ones, added as pairs.
+This section sets out that form, called a force field, and the one new
+piece of geometry it needs, the dihedral angle.
+
+\subsection*{The terms}
+
+In the all-atom form, in which every hydrogen is a site of its own, of
+the force field OPLS (Optimized Potentials for Liquid Simulations) of
+Jorgensen and co-workers\cite{Jorgensen1996},
+\begin{equation}
+   \begin{aligned}
+   U &= \sum_{\text{bonds}}\kappa_r(r - r_{\mathrm{eq}})^2
+   + \sum_{\text{angles}}\kappa_\theta(\theta - \theta_{\mathrm{eq}})^2
+   + \sum_{\text{dihedrals}}\sum_{n=1}^{3}\frac{\kappa_n}{2}\bigl[1 + (-1)^{n+1}
+   \cos n\psi\bigr]\\
+   &\quad + \sum_{i<j}f_{ij}\Bigl[\frac{k_{\mathrm e}q_iq_j}{r_{ij}}
+   + 4\varepsilon_{ij}\Bigl(\frac{\sigma_{ij}^{12}}{r_{ij}^{12}}
+   - \frac{\sigma_{ij}^6}{r_{ij}^6}\Bigr)\Bigr] .
+   \end{aligned}
+   \label{eq:pe-opls}
+\end{equation}
+The first sum holds each bond near its length $r_{\mathrm{eq}}$ by a
+spring; $\kappa_r$ is half the stiffness $k$ of the spring energy $\frac12
+kx^2$ (\cref{sec:en-varying}), since the factor $\frac12$ is absorbed into
+it. The second holds each angle
+$\theta$ between two bonds at an atom near $\theta_{\mathrm{eq}}$, as the
+three atoms of \cref{fig:ha-noether}(a) were held, with $\kappa_\theta$
+half the angular stiffness for the same reason. The third gives the
+energy of a twist $\psi$ about each bond as a short series of cosines,
+written out $\frac12\kappa_1(1 + \cos\psi) + \frac12\kappa_2(1 - \cos2\psi)
++ \frac12\kappa_3(1 + \cos3\psi)$ with constants $\kappa_n$, and
+the last adds the Coulomb energy of charges $q_i$ placed on the atoms
+(\cref{sec:pe-coulomb}) and a Lennard-Jones energy, for every pair. The
+factor $f_{ij}$ is 0 for atoms joined by one bond or two, whose
+interaction the bond and angle terms already describe, $\frac12$ for
+atoms three bonds apart, and 1 for all others, including every pair in
+different molecules. Each constant depends on the kinds of atom involved,
+and a force field is a table of them, fitted to calculations of the
+electrons and to measured properties of liquids.
+
+\subsection*{The dihedral angle}
+
+Four atoms bonded in a chain, $a$--$b$--$c$--$d$, can twist about the
+middle bond $b$--$c$ (\cref{fig:pe-dihedral}). The twist is measured by
+the angle between the plane of $a$, $b$, $c$ and the plane of $b$, $c$,
+$d$, seen along the middle bond. Each plane is fixed by the arrow at right
+angles to it, which the cross product of two arrows in the plane gives
+(\cref{sec:ro-cross}). With $\vb{b}_1 = \vb{r}_b - \vb{r}_a$, $\vb{b}_2 =
+\vb{r}_c - \vb{r}_b$ and $\vb{b}_3 = \vb{r}_d - \vb{r}_c$ along the
+three bonds,
+\begin{equation*}
+   \vb{n}_1 = \vb{b}_1\times\vb{b}_2 , \qquad
+   \vb{n}_2 = \vb{b}_2\times\vb{b}_3
+\end{equation*}
+are at right angles to the first and second planes. Seen along
+$\vb{b}_2$, the two planes appear as lines from the middle bond towards
+$a$ and towards $d$, and $\psi$ is the angle between them. The part of
+$\vb{b}_1$ along $\vb{b}_2$ drops out of $\vb{n}_1$, since $\vb{b}_2\times
+\vb{b}_2 = \vb{0}$, and the part left points from $a$ towards the bond, so
+$\vb{n}_1$ is $\vb{b}_2$ crossed with an arrow from the bond towards $a$;
+likewise $\vb{n}_2$ is $\vb{b}_2$ crossed with an arrow from the bond
+towards $d$. Each is its line turned through a right angle about
+$\vb{b}_2$, the same way for both, so the angle between them is $\psi$,
+and by the dot product
+\begin{equation}
+   \cos\psi = \frac{\vb{n}_1\cdot\vb{n}_2}{\lvert\vb{n}_1\rvert\,
+   \lvert\vb{n}_2\rvert} .
+   \label{eq:pe-dihedral}
+\end{equation}
+The cosine does not tell a twist one way from the same twist the other
+way. The cross product $\vb{n}_1\times\vb{n}_2$ is along $\vb{b}_2$, the
+one direction at right angles to both, pointing along $\vb{b}_2$ or
+against it according to the sense of the twist, so the sign of
+$(\vb{n}_1\times\vb{n}_2)\cdot\vb{b}_2$ gives the sign of $\psi$, which
+then runs from $-\pi$ to $\pi$; $\psi$ is positive when, seen from $b$
+looking towards $c$, the bond to $a$ turns clockwise to reach the bond to
+$d$. For a flat zigzag, $a$ and $d$ on
+opposite sides of the middle bond, $\vb{n}_1$ and $\vb{n}_2$ point in
+opposite directions and $\psi = \ang{180}$, the arrangement called
+trans; with $a$ and $d$ on the same side, $\psi = 0$, called cis. The
+function \texttt{dihedral\_angle} of \texttt{mdlab} computes $\psi$ in
+this way.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.2,
+   atom/.style={circle, fill=black, inner sep=1.6pt},
+   arr/.style={-{Stealth[length=5pt]}, line width=0.8pt, accent}]
+   \draw[line width=1pt] (0,0) -- (90:1.3) node[atom, label={above:$a$}] {};
+   \draw[line width=1pt] (0,0) -- (-30:1.3) node[atom, label={right:$d$}] {};
+   \node[atom, label={left:{$b$ in front of $c$}}] at (0,0) {};
+   \draw[arr] (0,0) -- (0:1.0) node[right] {$\vb{n}_1$};
+   \draw[arr] (0,0) -- (240:1.0) node[below] {$\vb{n}_2$};
+   \draw[black!50] (90:0.5) arc[start angle=90, end angle=-30, radius=0.5];
+   \node at (45:0.72) {$\psi$};
+\end{tikzpicture}
+\caption{Four atoms bonded in a chain, seen along the middle bond with
+$b$ in front of $c$. The planes of $a$, $b$, $c$ and of $b$, $c$, $d$ are
+seen edge-on as the lines towards $a$ and $d$, at the dihedral angle
+$\psi$; $\vb{n}_1$ and $\vb{n}_2$ are those lines turned through a right
+angle the same way, so they meet at the same angle.}
+\label{fig:pe-dihedral}
+\end{figure}
+
+\begin{keyidea}
+A force field writes the energy of molecules as springs for bonds and
+angles, a cosine series for each twist, and Coulomb and Lennard-Jones
+energies between atoms more than two bonds apart. The twist is the
+dihedral angle between the two planes of a chain of four atoms, found
+from two cross products.
+\end{keyidea}
+
+\notebook{08}{twist a chain of four atoms and watch its torsion energy}
+
+\begin{selfcheck}
+In \cref{eq:pe-opls}, which values of $\psi$ make the $\kappa_1$ and the
+$\kappa_3$ terms smallest, when both constants are positive?
+\end{selfcheck}

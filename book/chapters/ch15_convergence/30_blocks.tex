@@ -1,0 +1,169 @@
+%=============================================================================!
+% 15.3  BLOCK AVERAGES                                                        !
+%=============================================================================!
+\section{Block averages}
+\label{sec:cv-blocks}
+
+The estimate of $g$ rests on a rule for where the autocorrelation function
+ends, and a slow tail that the rule cuts off would leave the error bar too
+small. Block averaging finds the error of the mean without estimating the
+autocorrelation function at all, and shows on a plot whether the run was
+long enough to find it\cite{Flyvbjerg1989}.
+
+\subsection*{Blocks of samples}
+
+We cut the $n$ samples of a run into $n_{\mathrm b}$ consecutive blocks of
+$b$ samples each, $n = n_{\mathrm b}b$ (a remainder at the end is dropped),
+and average each block, giving the block means $\bar A_1, \dots, \bar
+A_{n_{\mathrm b}}$, whose own mean is $\bar A$. Each block mean is the mean of
+$b$ correlated samples, so by \cref{eq:cv-var} with $b$ in place of $n$ it
+has the variance $g_b\sigma_A^2/b$, with
+\begin{equation*}
+   g_b = 1 + 2\sum_{k=1}^{b-1}\Bigl(1 - \frac kb\Bigr)
+   \operatorname{corr}(k) .
+\end{equation*}
+Two neighbouring blocks share only the correlation between the samples
+near their common edge, so blocks much longer than the run's memory have
+nearly independent means. The mean of $n_{\mathrm b}$ independent block
+means then has the variance of one divided by $n_{\mathrm b}$
+(\cref{eq:cv-mean}), estimated from their own spread: the error of $\bar
+A$ is $s_{\mathrm b}/\sqrt{n_{\mathrm b}}$, with $s_{\mathrm b}^2$ the sum of
+the squared deviations of the block means from $\bar A$ divided by
+$n_{\mathrm b} - 1$. No autocorrelation function enters.
+
+How long the blocks must be follows from $g_b$. Splitting the sum,
+\begin{equation*}
+   g_b = 1 + 2\sum_{k=1}^{b-1}\operatorname{corr}(k)
+   - \frac2b\sum_{k=1}^{b-1}k\operatorname{corr}(k)
+   \approx g - \frac2b\sum_{k=1}^{\infty}k\operatorname{corr}(k) ,
+\end{equation*}
+since for blocks much longer than the memory both sums have already
+reached their limits. For the exponential $\operatorname{corr}(k) = c^k$
+of \cref{eq:cv-ou}, the second sum is $c/(1 - c)^2$ (\cref{ex:cv-ksum}),
+which is $(g^2 - 1)/4$, since $g^2 - 1 = [(1 + c)^2 - (1 - c)^2]/(1 - c)^2
+= 4c/(1 - c)^2$; for $g$ well above 1 it is close to $g^2/4$, so $g_b
+\approx g - g^2/(2b)$. The blocks estimate the error
+$\sqrt{g_b\sigma_A^2/(n_{\mathrm b}b)} = \sqrt{g_b\sigma_A^2/n}$, against
+the true $\sqrt{g\sigma_A^2/n}$; the part missing is the correlation
+between neighbouring blocks. Their ratio is $\sqrt{1 - x}$ with $x =
+g/(2b)$, and a small relative change changes a square root by half as
+much, so blocks of $b$ samples give an error too small by the fraction
+\begin{equation}
+   1 - \sqrt{g_b/g} \approx \frac{g}{4b} .
+   \label{eq:cv-short}
+\end{equation}
+For the series with $g = 39$ the exact shortfall is 0.102 for $b = 100$
+and 0.051 for $b = 195$, against 0.097 and 0.050 from \cref{eq:cv-short}.
+Blocks of $5g$ samples miss about 5\% of the error when the memory is
+exponential, a factor that the rest of the chapter uses. A memory that
+falls quickly at first and then fades slowly, as the liquid's does
+(\cref{fig:cv-acf}), has a larger $\sum_kk\operatorname{corr}(k)$ for the
+same $g$, 1.7 to 2.0 times $(g/2)^2$ for $U$, $K$ and $P$, and blocks of
+$5g$ samples then miss 0.107, 0.089 and 0.090 of the error, within the
+error of an estimate from twenty blocks.
+
+\subsection*{The plateau}
+
+Flyvbjerg and Petersen double the block length at each stage, from 1
+sample to as many as leave a few blocks, and plot the error against the
+length\cite{Flyvbjerg1989}. Short blocks give the error of independent
+samples, too small by $\sqrt g$; as the blocks grow past the memory the
+estimate rises and levels off at $\sqrt{g\sigma_A^2/n}$. The level part is
+the plateau, and its height is the error of the mean. Its own precision
+is that of an estimate of a standard deviation from $n_{\mathrm b}$
+samples: for nearly Gaussian block means the relative error of $s_{\mathrm
+B}$ is $1/\sqrt{2(n_{\mathrm b} - 1)}$ (\cref{ex:cv-error-error}), 0.24 for
+10 blocks and 0.16 for 20. The longest blocks, few in number, scatter.
+The function \texttt{block\_average} of \texttt{mdlab.analysis.stats}
+returns the error and its own error at each length:
+
+\begin{code}
+def block_average(series: ArrayLike, min_blocks: int = 4) -> dict:
+    a = np.asarray(series, dtype=float)
+    lengths, errors, error_errors, counts = [], [], [], []
+    b = 1
+    while len(a) // b >= min_blocks:
+        n_b = len(a) // b
+        means = a[: n_b * b].reshape(n_b, b).mean(axis=1)
+        se = means.std(ddof=1) / np.sqrt(n_b)
+        lengths.append(b)
+        errors.append(se)
+        error_errors.append(se / np.sqrt(2 * (n_b - 1)))
+        counts.append(n_b)
+        b *= 2
+    return {"length": np.array(lengths), "error": np.array(errors),
+            "error_error": np.array(error_errors),
+            "blocks": np.array(counts)}
+\end{code}
+
+\noindent \Cref{fig:cv-blocks}(a) applies it to the series of
+\cref{sec:cv-correlation}. With $2^{17}$ samples, 3361 independent ones,
+the error rises from 0.0028 for single samples to a plateau of 0.0164 to
+0.0168 for blocks of 256 to 1024 samples, against the exact 0.0172. With
+$2^{10}$ samples, 26 independent ones, it rises to 0.182 for blocks of 64
+and falls back to 0.131 for blocks of 256, of which only four remain,
+while the exact value is 0.193: there is no plateau, and a run that shows
+none is too short for its own error bar to be known. The criterion of
+\cref{sec:cv-protocol} asks for at least 100 independent samples, enough
+for twenty blocks of $5g$ samples and an error known to about a sixth.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/blocks}
+\caption{Block averages. (a) The series of \cref{eq:cv-ou} with $c =
+0.95$: the error of the mean from blocks of $b$ samples, for $2^{17}$
+samples (teal) and $2^{10}$ (ochre), with the error of each estimate,
+against the exact errors (dashed). (b) The liquid under CSVR, \SI{2}{\nano
+\second}: the error of the mean of $U$, $K$ and $P$ from blocks, divided by
+$\sqrt{g s^2/n}$. (c) The same run cut into twenty runs of
+\SI{100}{\pico\second}: the mean of $U$ in each, less that of the whole
+run, with its own error bar from that piece alone.}
+\label{fig:cv-blocks}
+\end{figure}
+
+\subsection*{The liquid, and a test against independent runs}
+
+For the liquid of \cref{fig:cv-acf}, blocks of \SI{20}{\pico\second} give
+1.03, 1.01 and 1.00 times the errors found from $g$ for $U$, $K$ and $P$,
+and blocks of \SI{41}{\pico\second} 0.98, 0.99 and 0.97
+(\cref{fig:cv-blocks}(b)): the rule of \cref{sec:cv-correlation} missed no
+slow tail that blocks known to 7\% could show. The longest blocks,
+\SI{164}{\pico\second} and only twelve of them, give 1.20 to 1.28, about
+one of their own errors, a fifth, above 1.
+
+The sharper test is whether an error bar from one run predicts how far
+other runs fall from it. Cutting the \SI{2}{\nano\second} run into twenty
+pieces of \SI{100}{\pico\second}, whose means are nearly independent
+(successive means have the correlation 0.06), gives twenty runs to set
+against one another (\cref{fig:cv-blocks}(c)). Their means of $U$ scatter
+by \SI{0.0241}{\electronvolt}, while the error bar that each piece finds
+for itself averages \SI{0.0196}{\electronvolt}, from 0.0128 to
+\SI{0.0278}{\electronvolt}; for $K$ the figures are 0.0351 and
+\SI{0.0312}{\electronvolt}, and for $P$ 0.00201 and
+\SI{0.00172}{\giga\pascal}. Eleven of the twenty bars for $U$ hold the mean
+of the whole run, where one standard error should hold it in 68\% of
+runs, 13.7 of twenty on average, a count that itself spreads by 2.1, since
+each piece holds the mean or not, a yes or no of variance $0.68\times0.32$,
+and the twenty variances add. A piece of \SI{100}{\pico\second} holds 68
+independent samples of $U$, and the $g$ it finds for itself ranges from 64
+to 228, on either side of the 146 of the whole run: an error bar from so
+short a run is uncertain by about a fifth (the twenty bars for $U$ spread
+by 0.20 of their mean), and on average a little low.
+
+\begin{keyidea}
+Block means of blocks much longer than the run's memory are nearly
+independent, and their spread gives the error of the mean with no
+autocorrelation function. Plotted against the block length, the error
+rises to a plateau; blocks of $5g$ samples miss about 5\% of it for an
+exponential memory, and the
+plateau's own relative error is $1/\sqrt{2(n_{\mathrm b} - 1)}$. A run
+with no plateau is too short to know its error bar.
+\end{keyidea}
+
+\notebook{15}{cut a series into blocks and find the plateau}
+
+\begin{selfcheck}
+A run of 20\,000 samples has $g = 100$ and an exponential memory. How long
+must its blocks be to miss about 5\% of the error, and how many such
+blocks does the run hold?
+\end{selfcheck}

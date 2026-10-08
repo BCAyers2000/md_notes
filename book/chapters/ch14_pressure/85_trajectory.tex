@@ -1,0 +1,175 @@
+%=============================================================================!
+% 14.9  WHAT THE TRAJECTORY LOOKS LIKE                                        !
+%=============================================================================!
+\section{What the trajectory looks like}
+\label{sec:pr-trajectory}
+
+A run at constant pressure has two more things to read than one at fixed
+volume: the volume itself, and a pressure whose single values mean little.
+This section shows a healthy run of the liquid and six faults that
+pressures and barostats leave, each with the check that catches it.
+
+\subsection*{A healthy run}
+
+\Cref{fig:pr-healthy} follows the liquid for \SI{300}{\pico\second} under
+stochastic cell rescaling at \SI{0.1}{\giga\pascal} with $\tau_{\mathrm P}
+= \SI{1}{\pico\second}$ and CSVR at \SI{135}{\kelvin}, started from the box
+of Chapter~13 at \SI{12577}{\angstrom\cubed}. After the first
+\SI{10}{\pico\second} the volume averages \SI{12312}{\angstrom\cubed}, a
+density of $0.8172\sigma^{-3}$, and spreads by \SI{190}{\angstrom\cubed},
+against the \SI{183}{\angstrom\cubed} of \cref{eq:pr-volume}; it lies within
+the predicted \SI{183}{\angstrom\cubed} of its mean for 0.667 of the time,
+close to the 0.683 of a Gaussian (\cref{sec:sm-probability}). The instantaneous pressure scatters by \SI{0.0175}{\giga\pascal}
+about its mean of \SI{0.0988}{\giga\pascal}: for 256 atoms a single value of
+$P$ says little, and only its average is compared with the target. The
+sum $K + U + P_0V$ wanders over \SI{9.50}{\milli\electronvolt} per atom as
+the thermostat and the barostat exchange energy with the liquid, while the
+effective energy, that sum less the heat and the work, stays within
+\SI{0.027}{\milli\electronvolt} per atom and drifts by
+\SI{-6.4e-6}{\electronvolt\per\pico\second} for the whole liquid. The kinetic temperature
+averages \SI{134.69}{\kelvin}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/healthy}
+\caption{A healthy run at constant pressure: the liquid under stochastic
+cell rescaling at \SI{0.1}{\giga\pascal} and CSVR at \SI{135}{\kelvin}, for
+\SI{300}{\pico\second}. (a) The volume every \SI{100}{\femto\second}, with
+its mean and the spread $\sqrt{\kB T\ens{V}\kappa_T}$ either side (dotted).
+(b) The instantaneous pressure (thin) and its running mean (thick),
+against the target (dotted). (c) $K + U + P_0V$ per atom and the effective
+energy, that less the heat and the barostat's work, from their starting
+values.}
+\label{fig:pr-healthy}
+\end{figure}
+
+\subsection*{Six faults}
+
+\Cref{fig:pr-faults} shows six faults and \cref{tab:pr-faults} the check
+that catches each.
+
+\begin{figure}[p]
+\centering
+\includegraphics{ch14_pressure/faults}
+\caption{Pressure and barostat faults (teal) against healthy runs (grey
+dashed). (a) The pressure of the liquid at fixed volume from
+$\sum_i\vb{r}_i\cdot\vb{F}_i$ with wrapped positions, against the pair
+form. (b) The volume under cell rescaling given the virial's pressure
+without the kinetic part. (c) The density of the volume under
+Berendsen's barostat, against cell rescaling. (d) The volume under a
+piston with $\tau_{\mathrm P} = \SI{10}{\pico\second}$, against
+\SI{1}{\pico\second}. (e) The layered solid with guests: the pressure in
+its plane and across it under isotropic coupling, against
+semi-isotropic coupling (grey, zero). (f) The running mean of the
+pressure under Berendsen's barostat given $\kappa$ in bar$^{-1}$ where
+GPa$^{-1}$ was meant, against the right $\kappa$, with the target
+(dotted).}
+\label{fig:pr-faults}
+\end{figure}
+
+\begin{table}[htb]
+\centering
+\caption{The faults of \cref{fig:pr-faults}, the check that catches each,
+and its value in the healthy and the broken run.}
+\label{tab:pr-faults}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}
+   >{\raggedright\arraybackslash}p{0.33\linewidth}ll@{}}
+\toprule
+fault & check & healthy & broken\\
+\midrule
+(a) virial from wrapped positions & $P$ before and after moving the
+   origin, GPa &
+   0.0877, 0.0877 & 0.0324, 0.0354\\
+(b) kinetic part dropped & $\ens{P}$ with $2K$ included, GPa & 0.0988 &
+   0.1411\\
+(c) volume too narrow & $\kappa_T$ from the fluctuations, GPa$^{-1}$ &
+   1.50 & 0.64\\
+(d) piston too heavy & swings of $V$ in \SI{90}{\pico\second} & 103 & 10\\
+(e) isotropic coupling of layers & $\frac12(\mathsf{P}_{xx} +
+   \mathsf{P}_{yy})$, $\mathsf{P}_{zz}$, GPa & 0.000, 0.000 & $-0.141$,
+   0.282\\
+(f) $\kappa$ in the wrong unit & $\ens{P}$ after the first
+   \SI{50}{\pico\second}, GPa & 0.1001 & 0.0871\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{(a) The virial from wrapped positions.} As \cref{sec:pr-periodic}
+showed, $\sum_i\vb{r}_i\cdot\vb{F}_i$ with wrapped positions gives
+\SI{0.0324}{\giga\pascal} for a liquid whose pressure is
+\SI{0.0877}{\giga\pascal}, and a different value when the origin moves.
+The check is to move the origin: a correct pressure does not change.
+
+\emph{(b) The kinetic part dropped.} A barostat handed only $\mathcal{W}/3V$,
+as happens when ASE's \texttt{get\_stress} is called without
+\texttt{include\_ideal\_gas=True}, holds that part at $P_0$ and lets the
+true pressure rise by $N\kB T/V$, here \SI{0.0408}{\giga\pascal}: the
+liquid shrinks by 4.9\%, to \SI{11706}{\angstrom\cubed} from
+\SI{12312}{\angstrom\cubed}, and its full pressure reads
+\SI{0.1411}{\giga\pascal}. The check is the mean of $(2K +
+\mathcal{W})/3V$ against $P_0$.
+
+\emph{(c) A volume too narrow.} Berendsen's barostat holds the mean
+pressure, so nothing in one run looks wrong; the check is $\kappa_T$ from
+the volume's fluctuations, \cref{eq:pr-volume}, against an independent
+value: \SI{0.64}{\per\giga\pascal} under Berendsen's barostat,
+\SI{1.50}{\per\giga\pascal} under cell rescaling, and
+\SI{1.46}{\per\giga\pascal} from the runs at fixed volume.
+
+\emph{(d) A piston too heavy.} With $\tau_{\mathrm P} =
+\SI{10}{\pico\second}$ the volume swings with a period of
+\SI{8.7}{\pico\second}, 10 times in \SI{90}{\pico\second}, so the run's
+mean volume rests on ten swings; with \SI{1}{\pico\second} it swings 103
+times. The check is the period of the volume against the length of the
+run.
+
+\emph{(e) Isotropic coupling of a layered solid.} The mean pressure reads
+the target while the solid is pulled along its sheets and squeezed across
+them, $-0.141$ and \SI{+0.282}{\giga\pascal}. The check is the diagonal
+of the pressure tensor, component by component.
+
+\emph{(f) The compressibility in the wrong unit.} The barostat's $\kappa$
+for the liquid, \SI{2.5}{\per\giga\pascal}, is $2.5\times10^{-4}$ per bar; entered
+as $2.5\times10^{-4}$ where gigapascals were meant, it makes Berendsen's
+barostat $10^4$ times slower, a relaxation time of
+\SI{5.8}{\nano\second} instead of \SI{0.58}{\pico\second}. The volume
+stays where it started, \SI{12577}{\angstrom\cubed}, and the pressure
+stays at \SI{0.0871}{\giga\pascal} against the target 0.1. The check is
+the running mean of the pressure against the target, and the volume's
+relaxation against $\tau_{\mathrm P}$.
+
+\begin{practice}
+A run at constant pressure is read through the running mean of its
+pressure, computed with the kinetic part and from pair separations, which
+should settle at $P_0$; through the spread of its volume, which should be
+$\sqrt{\kB T\ens{V}\kappa_T}$, with $\kappa_T$ checked at fixed volumes;
+through the diagonal of its pressure tensor, which for a solid should
+match $P_0$ in every component the coupling lets relax; and through the
+period of its volume, or its relaxation time when the barostat has no
+piston, against the length of the run. Berendsen's barostat serves to
+bring a system to its pressure; stochastic cell rescaling or a piston
+with chains then samples it, and $\tau_{\mathrm P} = \SI{1}{\pico\second}$
+sampled the liquid's volume correctly here, with 103 swings of the piston
+in \SI{90}{\pico\second}; a layered solid needs semi-isotropic coupling, or
+anisotropic coupling when the directions of its plane differ.
+\end{practice}
+
+\begin{keyidea}
+In a healthy run at constant pressure the instantaneous pressure
+scatters widely, its running mean settles at the target, the volume
+spreads by $\sqrt{\kB T\ens{V}\kappa_T}$, and the effective energy holds
+still. A virial from wrapped positions, a pressure without its kinetic
+part, Berendsen's narrow volume, a piston too heavy, isotropic coupling of
+a solid that wants to change shape, and a compressibility in the wrong
+unit each leave a mark that a single check catches.
+\end{keyidea}
+
+\notebook{14}{break the run at constant pressure in each of the six ways and read the checks}
+
+\begin{selfcheck}
+For a liquid of 500 atoms at \SI{300}{\kelvin} in
+\SI{20000}{\angstrom\cubed}, minus the mean of the diagonal of ASE's
+\texttt{get\_stress()}, called with its defaults, averages
+\SI{-0.04}{\giga\pascal}. What is the liquid's pressure?
+\end{selfcheck}

@@ -1,0 +1,103 @@
+%=============================================================================!
+% 17.5  LiC6 WITH A FOUNDATION MODEL                                          !
+%=============================================================================!
+\section{\texorpdfstring{LiC$_6$}{LiC6} with a foundation model}
+\label{sec:ip-lic6}
+
+Books pushed between the shelves of a bookcase whose shelves can slide
+force them apart, while the shelves themselves keep their length. Lithium
+does this to graphite. Chapter~14 could only imitate it with a model solid
+(\cref{sec:pr-shape}); with MACE-MP-0 and D3 the real material can be
+run, and this section does so for the fully lithiated compound LiC$_6$ at
+room temperature, the study that Chapters~13 and~14 left for a real
+potential. Its numbers are the model's predictions (\cref{sec:ip-aimd}).
+
+\subsection*{Building the cells}
+
+ASE builds the structures. Graphite's cell holds four atoms, two in each
+of its sheets stacked A, B, with Trucano and Chen's lattice constants as
+the start. In LiC$_6$ the sheets stack A, A and a lithium atom sits over
+every third hexagon, the pattern written
+$\sqrt3\times\sqrt3$\,R30$^\circ$: its cell is the sheet's own cell made
+$\sqrt3$ times longer and turned by \ang{30}, built in ASE as the
+supercell of the two-atom cell of graphene, a single sheet of graphite,
+whose vectors $\vb{a}$ and $\vb{b}$ have length $a$ and lie \ang{120}
+apart, with the vectors $2\vb{a} + \vb{b}$ and $-\vb{a} + \vb{b}$
+(\cref{ex:ip-supercell}), and it holds six carbon atoms and one lithium.
+Relaxed together with its cell at \SI{0}{\kelvin}, to forces below
+\SI{1}{\milli\electronvolt\per\angstrom} and stresses below
+\SI{0.02}{\giga\pascal}, LiC$_6$'s sheets lie \SI{3.616}{\angstrom} apart,
+2.3\% below the measured \SI{3.70}{\angstrom} quoted by Hazrati, de Wijs
+and Brocks\cite{Hazrati2014}, and the sheet's lattice constant $a$, the
+side of its two-atom cell, is \SI{2.4864}{\angstrom}, 0.88\% longer than
+the \SI{2.4647}{\angstrom} of graphite relaxed with the same model: the
+sheets stretch a little, as the electrons that lithium gives them are
+expected to make them do.
+
+\subsection*{Anisotropic and isotropic coupling at \SI{300}{\kelvin}}
+
+A cell of $3\times3\times1$ of these units, 63 atoms, was run at
+\SI{300}{\kelvin} and zero pressure with ASE's \texttt{MaskedMTKNPT}, which
+lets each lattice vector change its length while keeping its direction,
+with $\tau_{\mathrm T} = \SI{100}{\femto\second}$ and $\tau_{\mathrm P} =
+\SI{1}{\pico\second}$, for \SI{20}{\pico\second}; and with
+\texttt{IsotropicMTKNPT}, which scales the three lengths together, for
+\SI{10}{\pico\second} (\cref{fig:ip-lic6}). The isotropic run keeps the
+ratio of the lengths it started from, and the stiff sheets hold the
+in-plane length, and with it the spacing, at their values at
+\SI{0}{\kelvin}: the spacing stays at $(3.6162 \pm
+0.0005)$\,\si{\angstrom}. The diagonal of the pressure tensor, computed
+from the model's stress with the atoms' kinetic part added, on 25 frames
+of the last \SI{5}{\pico\second}, is $(-1.00 \pm 0.45)$, $(-1.11 \pm
+0.36)$ and $(1.68 \pm 0.10)$\,\si{\giga\pascal} along $x$, $y$ and $z$:
+the sheets push apart along $z$ while each sheet pulls in along $x$ and
+$y$, and only the mean is zero. With the lengths coupled apart, all
+three components, from 75 frames of the last \SI{15}{\pico\second}, are
+zero within 1.2 of their errors, $(0.06 \pm 0.28)$, $(-0.21 \pm 0.18)$
+and $(0.01 \pm 0.06)$\,\si{\giga\pascal}, and the spacing opens on
+warming.
+
+\subsection*{How long the spacing takes}
+
+The in-plane length settles at once: over the \SI{20}{\pico\second} the
+lattice constant $a$ is $(2.4836 \pm 0.0004)$\,\si{\angstrom}, its
+quarters agreeing to \SI{0.001}{\angstrom}; \texttt{convergence\_report}
+flags it only because its blocks give a smaller error,
+\SI{0.0002}{\angstrom}, than the one quoted. The spacing does not settle. Its
+means over the four quarters of the run are 3.756, 3.760, 3.766 and
+\SI{3.778}{\angstrom}, still rising, and \texttt{convergence\_report}
+refuses it with 82 independent samples, fewer than the 100 that the
+criterion of \cref{sec:cv-protocol} asks. A layered solid's soft
+direction relaxes slowly. These saved results do not yet establish its
+equilibrium spacing; a longer run is required.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch17_practice/lic6}
+\caption{LiC$_6$, 63 atoms, at \SI{300}{\kelvin} and zero pressure with
+MACE-MP-0 and D3. (a) The spacing of the sheets against time with the
+lattice lengths coupled apart (teal) and together (ochre), with the
+relaxed spacing at \SI{0}{\kelvin} (grey dotted) and the measured
+\SI{3.70}{\angstrom} (red dotted). (b) The running mean of the spacing in
+the initial \SI{20}{\pico\second} from the start that
+\texttt{convergence\_report} finds,
+with twice its error (band). (c) The diagonal of the pressure tensor
+under each coupling, with its standard error.}
+\label{fig:ip-lic6}
+\end{figure}
+
+\begin{keyidea}
+A foundation model with D3 relaxes LiC$_6$ to within a few per cent of
+its measured spacing, and runs it at room temperature. A layered solid
+needs its lattice lengths coupled apart: coupled together, the spacing is
+held and the diagonal of the pressure tensor shows the strain. Its soft
+direction relaxes over tens of picoseconds, and the convergence report
+decides when it has settled.
+\end{keyidea}
+
+\notebook{17}{couple LiC6's lengths together and apart, and watch the spacing}
+
+\begin{selfcheck}
+In LiC$_6$, how many hexagons of a sheet are there for each lithium atom,
+and why does that give six carbon atoms?
+\end{selfcheck}

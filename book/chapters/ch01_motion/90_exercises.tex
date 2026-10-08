@@ -1,0 +1,86 @@
+%=============================================================================!
+% 1.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:mo-exercises}
+
+Full solutions are in \hyperref[sec:mo-solutions]{`Solutions to the
+exercises'} at the end of the book, and Notebook~01 checks every
+numerical answer.
+
+\begin{exercise}[dimensions]
+\label{ex:mo-dimensions}
+Let $x$ be a height, $t$ a time, $v$ and $v_0$ velocities and $g$ an
+acceleration. Which of the following equations balance in dimension?
+(i)~$x = v_0 t^2$; (ii)~$v^2 = v_0^2 - 2gx$; (iii)~$t = \sqrt{2x/g}$;
+(iv)~$x = v_0\,\mathrm{e}^{-gt}$.
+\end{exercise}
+
+\begin{exercise}[a higher throw]
+\label{ex:mo-throw}
+A ball is thrown vertically upwards at \SI{15}{\metre\per\second}. Find the
+time it takes to reach the top, the greatest height it reaches and its
+speed when it returns to the hand.
+\end{exercise}
+
+\begin{exercise}[displacement and distance]
+\label{ex:mo-distance}
+An object moves along a line with velocity $v(t) = 3t^2 - 12$, in metres
+per second for $t$ in seconds. At what time $t \ge 0$ is it at rest, and
+what is its acceleration at that instant? Find its displacement between $t
+= 0$ and $t = \SI{3}{\second}$, and the total distance it travels over the
+same interval, $\int\lvert v\rvert\,\dd t$.
+\end{exercise}
+
+\begin{exercise}[radians]
+\label{ex:mo-radians}
+Express \SI{1.1}{\radian} in degrees and \ang{135} in radians, and find
+the length of the arc cut off by an angle of \ang{135} on a wheel of
+radius \SI{0.35}{\metre}.
+\end{exercise}
+
+\begin{exercise}[an identity]
+\label{ex:mo-identity}
+Starting from the double-angle formula $\cos 2\theta = \cos^2\theta -
+\sin^2\theta$ and $\cos^2\theta + \sin^2\theta = 1$, show that $\sin^2
+\theta = \tfrac12(1 - \cos2\theta)$. Use it to find $\sin(\pi/8)$ exactly,
+and give its value to four decimal places.
+\end{exercise}
+
+\begin{exercise}[a sinusoid]
+\label{ex:mo-sinusoid}
+A coordinate moves as $x(t) = 0.2\sin(5t + \pi/6)$, in metres for $t$ in
+seconds. Find its amplitude, period and frequency, its largest speed and
+largest acceleration, and the first time after $t = 0$ at which $x$ is
+greatest.
+\end{exercise}
+
+\begin{exercise}[range]
+\label{ex:mo-range}
+Show that the range $d = v_0^2\sin2\alpha/g$ is greatest when $\alpha =
+\ang{45}$. For $v_0 = \SI{12}{\metre\per\second}$, find the two launch
+angles that give a range of \SI{10}{\metre}.
+\end{exercise}
+
+\begin{exercise}[an orbit]
+\label{ex:mo-orbit}
+A point moves anticlockwise around a circle of radius \SI{1.0}{\angstrom}
+at a constant speed of \SI{0.02}{\angstrom\per\femto\second}. Find the
+magnitude of its acceleration and its period.
+\end{exercise}
+
+\begin{exercise}[a Taylor estimate]
+\label{ex:mo-taylor}
+Use the series of \cref{eq:mo-sin-series} to approximate $\cos 0.1$ by
+its terms up to $y^2$. Estimate the error from the first term omitted,
+and compare with the exact value.
+\end{exercise}
+
+\begin{exercise}[sampling]
+\label{ex:mo-sampling}
+Show that for $x = A\sin\omega t$ the largest error of the forward
+difference, relative to the largest speed $A\omega$, is approximately
+$\omega\tau/2$ when $\omega\tau$ is small. For a coordinate with a period
+of \SI{20}{\femto\second}, find the largest frame interval $\tau$ for which
+velocities recovered by central differences are within \SI{1}{\percent}.
+\end{exercise}

@@ -1,0 +1,162 @@
+%=============================================================================!
+% 14.8  ISOTROPIC, SEMI-ISOTROPIC AND ANISOTROPIC COUPLING                    !
+%=============================================================================!
+\section{Isotropic, semi-isotropic and anisotropic coupling}
+\label{sec:pr-shape}
+
+Every barostat run so far has scaled the three lengths of the box by one
+factor. That suits a liquid, whose pressure tensor is $P$ times the unit
+matrix, and fails for a solid that wants to grow along one direction
+only. This section takes graphite filling with lithium as its example,
+sets out the ways a barostat can let the shape change, and measures what
+each does to a layered model solid.
+
+\subsection*{Graphite opens along one axis}
+
+Graphite is a stack of sheets of carbon, each a honeycomb of strong
+bonds, held together by a weak attraction between the sheets. When
+lithium enters, it sits between the sheets over the centres of the
+hexagons, and the sheets, stacked A, B, A, B in graphite, each shifted so
+that half its atoms sit over the centres of the hexagons below, line up
+A, A around it, each directly over the last; in the fully lithiated
+LiC$_6$ the sheets open from \SI{3.34}{\angstrom} apart to
+\SI{3.70}{\angstrom}, 10.8\% wider\cite{Hazrati2014}
+(\cref{fig:pr-graphite}). A honeycomb has two carbon atoms for each
+hexagon, since each of a hexagon's six corners is shared by three
+hexagons, so one lithium for six carbons fills every third hexagon. A barostat that scaled the three lengths together could
+open the gaps only by stretching the sheets by as much, and would leave
+the solid strained.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/graphite}
+\caption{Graphite and LiC$_6$, four sheets of carbon each, seen almost
+along the sheets: (a) graphite, stacked A, B, A, B, with the sheets
+\SI{3.34}{\angstrom} apart; (b) LiC$_6$, stacked A, A, with lithium
+(purple) over every third hexagon between the sheets, \SI{3.70}{\angstrom}
+apart (the experimental spacings quoted by Hazrati, de Wijs and
+Brocks\cite{Hazrati2014}; the in-plane spacing is kept at graphite's
+\SI{2.46}{\angstrom}).}
+\label{fig:pr-graphite}
+\end{figure}
+
+\subsection*{Three couplings}
+
+For a box whose lattice vectors lie along $x$, $y$ and $z$, a barostat can
+respond to the pressure tensor in three ways.
+\begin{itemize}
+\item \emph{Isotropic}: one factor for all three lengths, from the mean
+   of the diagonal, $P$.
+\item \emph{Semi-isotropic}: one factor for $x$ and $y$ together, from
+   $\frac12(\mathsf{P}_{xx} + \mathsf{P}_{yy})$, and another for $z$, from
+   $\mathsf{P}_{zz}$. This suits a layered solid or a
+   membrane\cite{Bernetti2020}, whose plane keeps its own symmetry while
+   its thickness changes.
+\item \emph{Anisotropic}: a factor for each length, from its own diagonal
+   component.
+\end{itemize}
+Changing the angles of the cell as well needs every component of
+$\vb{h}$ free, as in Parrinello and Rahman's barostat
+(\cref{sec:pr-piston}). \texttt{barostats.Berendsen} takes each of the
+three couplings, scaling the length along $\alpha$ by $1 - (\kappa\dt/3
+\tau_{\mathrm P})(P_0 - P_\alpha)$ with $P_\alpha$ the pressure that length
+responds to; its anisotropic form follows ASE's
+\texttt{Inhomogeneous\_NPTBerendsen} to \SI{7.9e-8}{\angstrom} over 40
+steps.
+Stochastic cell rescaling has a semi-isotropic form too, with its own
+drift and noise for the logarithm of the area $A$ normal to $z$ and for
+the height $L_z$\cite{Bernetti2020},
+\begin{align*}
+   \dd\ln A &= -\frac{2\kappa}{3\tau_{\mathrm P}}\Bigl(P_0 -
+   \frac{\mathsf{P}_{xx} + \mathsf{P}_{yy}}{2}\Bigr)\dd t + \sqrt{\frac{4\kB T
+   \kappa\,\dd t}{3V\tau_{\mathrm P}}}\;g_A ,\\
+   \dd\ln L_z &= -\frac{\kappa}{3\tau_{\mathrm P}}\bigl(P_0 - \mathsf{P}_{zz}
+   \bigr)\dd t + \sqrt{\frac{2\kB T\kappa\,\dd t}{3V\tau_{\mathrm P}}}\;g_z ,
+\end{align*}
+with $g_A$ and $g_z$ independent normal numbers. Their sum, since $\ln V =
+\ln A + \ln L_z$, is \cref{eq:pr-scr}: the drifts add to
+$-(\kappa/\tau_{\mathrm P})(P_0 - P)\,\dd t$, and the variances of the
+noises, $\frac23$ and $\frac13$ of $2\kB T\kappa\,\dd t/(V\tau_{\mathrm
+P})$, add to the whole of it, since the variances of independent numbers
+add (\cref{sec:sm-probability}). The area carries two of the three
+lengths and the height one, hence the shares $\frac23$ and $\frac13$.
+
+\subsection*{A layered model solid}
+
+Graphite needs a potential that a later chapter will bring; its point
+can be made with Lennard-Jones atoms. The model solid of
+\cref{fig:pr-layered} is nine flat sheets of 48 argon-like atoms each, the
+atoms of a sheet at the corners of equilateral triangles, stacked so that
+each sheet's atoms sit over the hollows of the one below. Atoms within a
+sheet attract with eight times argon's depth and 0.95 of its $\sigma$,
+atoms in different sheets with argon's own, so the sheets are stiff and
+the gaps soft: at 40 K the sheets settle \SI{3.151}{\angstrom} apart, and
+the perfect solid, its atoms on their sites in that cell, has $C_{11} =
+-\partial\mathsf{P}_{xx}/\partial\epsilon_{xx} = \SI{35.81}{\giga\pascal}$
+along the sheets against $C_{33} = -\partial\mathsf{P}_{zz}/\partial
+\epsilon_{zz} = \SI{5.31}{\giga\pascal}$ across them, 6.7 times softer.
+Between each pair of sheets go twelve guest atoms of lithium's mass, one
+for every four sheet atoms, each over a hollow of both sheets, in rows
+\SI{7.25}{\angstrom} apart along $x$ and \SI{6.28}{\angstrom} along $y$. They
+interact with the sheet atoms through a Lennard-Jones potential of twice
+argon's depth, and with each other through one of a fifth of argon's
+depth and 1.2 times its $\sigma$. Their reach, the $\sigma$ of their
+interaction with the sheets, grows from 1.6 to \SI{2.5}{\angstrom} over
+\SI{10}{\pico\second}, pushing the sheets apart through a potential that
+changes with time, as the wall pushed in of \cref{sec:en-drift} did, and
+is then held for \SI{30}{\pico\second} more, under Berendsen's barostat at
+$P_0 = 0$ with each coupling in turn.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/layered}
+\caption{Coupling a layered solid. The layered model at \SI{40}{\kelvin}
+under Berendsen's barostat at $P_0 = 0$, guests between its sheets whose
+reach grows over the first \SI{10}{\pico\second} (dotted) and is then
+held for \SI{30}{\pico\second}. (a) The change of the height $c$ of the cell (solid) and of its
+in-plane width $a$ (dashed) under isotropic, semi-isotropic and
+anisotropic coupling. (b) The pressure in the plane, $\frac12(\mathsf{P}_{xx}
++ \mathsf{P}_{yy})$ (hatched), and across it, $\mathsf{P}_{zz}$ (solid), over the
+last \SI{10}{\pico\second}.}
+\label{fig:pr-layered}
+\end{figure}
+
+Over the last \SI{10}{\pico\second}, under semi-isotropic coupling the
+sheets have opened by 7.84\% and the plane has shrunk by 0.20\%, and the
+mean pressures in the plane and across it are zero. Under anisotropic
+coupling the sheets have opened by 7.42\% and the plane has changed by
+less than 0.1\%. Both have settled, the opening wandering by about
+0.2\% between successive stretches of \SI{5}{\pico\second}. The two differ
+because the rows of guests make the two directions of the plane unequal:
+semi-isotropic coupling, which scales $x$ and $y$ together, leaves
+$\mathsf{P}_{xx}$ and $\mathsf{P}_{yy}$ at $+0.013$ and
+\SI{-0.014}{\giga\pascal}, and anisotropic coupling, which lets each length
+move on its own, brings both to zero. Under isotropic coupling every
+length grows by 0.97\%: the gaps cannot open as far as the guests need
+without the sheets stretching equally, and the solid is left pulled along
+its sheets, \SI{-0.141}{\giga\pascal} in the plane, and squeezed across
+them, \SI{+0.282}{\giga\pascal}, while the mean of the three, the only
+number the isotropic barostat reads, is zero. The early dip of $c$ under
+semi-isotropic and anisotropic coupling in \cref{fig:pr-layered}(a), by
+about 1\%, comes while the guests' reach is short. Each guest is
+\SI{2.60}{\angstrom} from its nearest sheet atoms, which lies beyond the
+minimum $2^{1/6}\sigma$ of their pair energy for every $\sigma$ up to
+\SI{2.3}{\angstrom}, so until then the guests pull the sheets towards
+them.
+
+\begin{keyidea}
+A solid that wants to change shape needs a barostat that lets it:
+semi-isotropic coupling, one factor for the plane and one across it, for
+a layered solid like graphite; anisotropic coupling for each length on its
+own, when the directions of the plane differ too. Isotropic coupling of
+the layered model with guests between its sheets leaves
+\SI{-0.141}{\giga\pascal} along the sheets and \SI{+0.282}{\giga\pascal}
+across them while its mean pressure reads zero.
+\end{keyidea}
+
+\notebook{14}{insert guests between the sheets under each coupling}
+
+\begin{selfcheck}
+A graphite particle opens across its sheets by 10.8\% on lithiation, and
+suppose it keeps its in-plane size. By what fraction does its volume grow?
+\end{selfcheck}

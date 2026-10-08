@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdlab"
+version = "0.0.3"
+description = "A small molecular dynamics and machine-learning code, built one chapter at a time"
+requires-python = ">=3.12"
+dependencies = ["numpy", "scipy", "matplotlib"]
+
+[project.optional-dependencies]
+test = ["pytest", "ase", "sympy", "pymbar", "numba", "scikit-learn", "torch"]
+
+[tool.setuptools.package-data]
+mdlab = ["fortran/*.f90"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# the examples in every docstring are run as tests too
+testpaths = ["tests", "src/mdlab"]
+addopts = "-ra --doctest-modules"
+markers = ["external: checks that need optional simulation tools or compilers"]

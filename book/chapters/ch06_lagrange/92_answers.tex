@@ -1,0 +1,37 @@
+%=============================================================================!
+% 6.A  ANSWERS TO THE CHECKS                                                  !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:la-answers}
+
+\answerto{sec:la-coordinates}The double pendulum in a plane needs the two
+angles of its rods, 2 coordinates. The rigid diatomic molecule needs the
+three coordinates of its centre of mass and two angles for the direction
+of its bond, 5, the $3N - 1$ left when one distance of $N = 2$ atoms is
+fixed.
+
+\answerto{sec:la-action}With $U = 0$ the expansion of the action has only
+the kinetic terms: $\Act(\zeta) = \Act(0) + \zeta\int m\dot{x}\dot\eta\,
+\dd t + \zeta^2\,\frac12 m\int\dot\eta^2\,\dd t$. On the straight path
+$\dot{x}$ is constant, so the middle term is $m\dot{x}\,[\eta]_{t_1}^{t_2}
+= 0$, the bump being zero at both ends. The last term is positive unless
+$\dot\eta = 0$ throughout, which with $\eta$ zero at the ends means no
+change at all. Any other path with the same ends is the straight one plus such a change,
+with $\zeta = 1$ and $\eta$ the difference, and with $U = 0$ the expansion
+is exact, so every other path has more action.
+
+\answerto{sec:la-euler}$\partial\Lag/\partial\dot{x} = m\dot{x}$ and
+$\partial\Lag/\partial x = -kx$, so $m\ddot{x} = -kx$, the equation of
+\cref{sec:ne-spring}.
+
+\answerto{sec:la-constrained}From \SI{0.554}{\second} to
+\SI{1.533}{\second}, that is $1.533 - 0.554 = \SI{0.979}{\second}$.
+
+\answerto{sec:la-polar}$\Lag$ does not contain $x$, only $\dot{x}$, so
+$p_x = \partial\Lag/\partial\dot{x} = m\dot{x}$ is conserved: nothing
+pushes the ball sideways. It does contain $y$, through $mgy$, so $p_y =
+m\dot{y}$ changes, at the rate $\partial\Lag/\partial y = -mg$, the weight.
+
+\answerto{sec:la-multipliers}With $\theta_0 = \ang{90}$, $\cos\theta_0 =
+0$, and at the bottom $\cos\theta = 1$, so $F_{\mathrm{rod}} = mg(3 - 0) =
+3mg$, three times the weight.

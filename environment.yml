@@ -1,0 +1,30 @@
+# The notebooks, including the Chapter 18 comparisons with PyTorch.
+# conda env create -f environment.yml
+# conda activate mdbook
+# python -m pip install -e ./mdlab
+# Optional external calculators are in environment-simulations.yml.
+name: mdbook
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - sympy
+  - pandas
+  - matplotlib
+  - pillow
+  - jupyterlab
+  - ipywidgets
+  - ipympl
+  - nbconvert
+  - nbformat
+  - pytest
+  - ruff
+  - ase
+  - pymbar-core
+  - pytorch
+  - scikit-learn
+  - pip
+  - pip:
+      - numba

@@ -1,0 +1,189 @@
+%=============================================================================!
+% 15.4  WHERE A RUN BEGINS                                                    !
+%=============================================================================!
+\section{Where a run begins}
+\label{sec:cv-equilibration}
+
+A run starts from positions and velocities that the ensemble would rarely
+produce: a lattice for a liquid, a box of the wrong volume, a structure
+just built. Its early part relaxes towards the ensemble, and an average
+that includes it is shifted however long the run. This section finds how
+large that shift is, and how to choose the start of the part to keep.
+
+\subsection*{A cup of coffee}
+
+Hot coffee left on a table cools at a rate proportional to how much
+warmer than the room it is: $\dd T/\dd t = -(T - T_{\mathrm{room}})/\tau_{\mathrm r}$,
+with $\tau_{\mathrm r}$ set by the cup and the air. This is the decay
+equation of \cref{sec:ne-drag} for $T - T_{\mathrm{room}}$, with
+$1/\tau_{\mathrm r}$ in place of $\gamma$, so
+\begin{equation*}
+   T(t) = T_{\mathrm{room}} + \bigl(T(0) - T_{\mathrm{room}}\bigr)
+   \mathrm{e}^{-t/\tau_{\mathrm r}} .
+\end{equation*}
+A thermometer in the cup, read from the moment the coffee is poured and
+averaged, gives a temperature above the room's. A run behaves the same
+way: a quantity $A$ approaches its ensemble average with a decaying offset
+$\delta A_0\,\mathrm{e}^{-t/\tau_{\mathrm r}}$, which is $\delta A_0$ at the
+start, and on which the run's own
+fluctuations ride. Averaged over a run of length $t_{\mathrm f}$ from its
+start, the offset contributes
+\begin{equation*}
+   \frac{1}{t_{\mathrm f}}\int_0^{t_{\mathrm f}}\delta A_0\,
+   \mathrm{e}^{-t/\tau_{\mathrm r}}\,\dd t
+   = \frac{\delta A_0\,\tau_{\mathrm r}}{t_{\mathrm f}}\Bigl[-\mathrm{e}^{-t/
+   \tau_{\mathrm r}}\Bigr]_0^{t_{\mathrm f}}
+   = \frac{\delta A_0\,\tau_{\mathrm r}}{t_{\mathrm f}}\bigl(1 -
+   \mathrm{e}^{-t_{\mathrm f}/\tau_{\mathrm r}}\bigr)
+   \approx \frac{\delta A_0\,\tau_{\mathrm r}}{t_{\mathrm f}}
+\end{equation*}
+for a run much longer than $\tau_{\mathrm r}$. The shift falls as
+$1/t_{\mathrm f}$ and the error bar as $1/\sqrt{t_{\mathrm f}}$, so a long
+enough run would hide the shift inside its error bar, but only slowly.
+Leaving out the first $t_0$ of the run cuts the offset's share to
+$\delta A_0\,\tau_{\mathrm r}\mathrm{e}^{-t_0/\tau_{\mathrm r}}/(t_{\mathrm f}
+- t_0)$ (\cref{ex:cv-offset}), at the cost of the samples discarded.
+
+\subsection*{The start that leaves the most}
+
+Discarding too little leaves a shift; discarding too much throws away
+samples. Chodera found a way to weigh the two from the run
+alone\cite{Chodera2016}. To the autocorrelation function a decaying offset
+looks like a very slow correlation, and it inflates $g$; so for each
+candidate start $t_0$, the effective number of samples left after it,
+\begin{equation*}
+   n_{\mathrm{eff}}(t_0) = \frac{n - t_0/\dt}{g(t_0)} ,
+\end{equation*}
+with $t_0/\dt$ the number of samples discarded and $g(t_0)$ the
+statistical inefficiency of the samples from $t_0$ on,
+rises while the discard removes more of the offset's inflation of $g$
+than it costs in samples, and falls once only samples are being removed.
+The start kept is the one that maximises it:
+
+\begin{code}
+def detect_equilibration(
+    series: ArrayLike, nskip: int = 1
+) -> tuple[int, float, float]:
+    a = np.asarray(series, dtype=float)
+    n = len(a)
+    best = (0, 1.0, 0.0)
+    for t0 in range(0, n - 1, nskip):
+        rest = a[t0:]
+        if np.all(rest == rest[0]):
+            g = float(n - t0)
+        else:
+            g = statistical_inefficiency(rest)
+        if (n - t0) / g > best[2]:
+            best = (t0, g, (n - t0) / g)
+    return best
+\end{code}
+
+\noindent The listing counts \texttt{t0} in samples. It finds the same
+start as the function of the same name in the \texttt{timeseries} module
+of pymbar with \texttt{fast=False} (\texttt{test\_stats.py}); pymbar's
+default estimates $g$ more roughly and can place the start a few samples
+later, 550 against 534 for the series below.
+
+\Cref{fig:cv-equilibration}(a) adds the offset $3\,\mathrm{e}^{-t/\SI{2}{\pico
+\second}}$, three standard deviations at the start, to \SI{50}{\pico
+\second} of the series of \cref{sec:cv-correlation}, and (b) shows
+$n_{\mathrm{eff}}(t_0)$ rising to 158 at \SI{5.34}{\pico\second}, 2.7 decay
+times, and falling after. From the start the mean is $0.160 \pm 0.164$,
+of which the offset contributes $\delta A_0\,\tau_{\mathrm r}/t_{\mathrm f} = 0.120$; after
+the discard it is $0.001 \pm 0.076$, the offset contributing 0.0093, and
+the error bar has halved. One series is one draw: over 200 such series the
+start falls between 0.1 and 16.5 decay times, with the median, the value
+with half the series on either side, at 1.4, and
+the offset left in the mean is at most 1.35 error bars, with the median
+0.34. One error bar then holds the true mean in 0.58 of the series, where
+it should hold it in 0.68; without the discard, in 0.54. The method trades
+a shift of about a third of an error bar for an error bar half as large,
+and leaves part of a slow offset in place, which the test for drift of
+\cref{sec:cv-drift} looks for.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/equilibration}
+\caption{Where a run begins. (a) \SI{50}{\pico\second} of the series of
+\cref{eq:cv-ou} with $c = 0.95$, with the offset $3\,\mathrm{e}^{-t/\SI{2}{\pico
+\second}}$ added, the offset itself dashed, and the start found (dotted).
+(b) The effective number of samples after each candidate start,
+maximised at the dotted line. (c) The first \SI{30}{\pico\second} of eight
+runs of the liquid melting from the face-centred
+cubic lattice at \SI{135}{\kelvin}: the potential energy per atom (grey),
+their mean (teal) and the mean of the \SI{2}{\nano\second} run (dashed),
+with the start found in each run from its own $U$ (ticks).}
+\label{fig:cv-equilibration}
+\end{figure}
+
+\subsection*{A liquid melting}
+
+\Cref{fig:cv-equilibration}(c) starts eight runs of the liquid from the
+face-centred cubic lattice at the liquid's density, with velocities drawn
+at \SI{135}{\kelvin} from eight seeds, under CSVR for \SI{100}{\pico
+\second}. The lattice has $U/N = \SI{-64.331}{\milli\electronvolt}$; the
+energy climbs from it as the lattice melts, and the mean of the eight runs
+comes
+within \SI{1}{\milli\electronvolt} of the \SI{2}{\nano\second} run's
+$(-50.092 \pm 0.018)$\,\si{\milli\electronvolt} after \SI{2.89}{\pico
+\second}. In four of the runs the start found from $U$ is 2.8 to
+\SI{3.2}{\pico\second}, at the end of the melting. In the other four it is
+19 to \SI{27}{\pico\second}: under CSVR the energy wanders over
+picoseconds (\cref{sec:cv-correlation}), and a run of \SI{100}{\pico
+\second} cannot always tell such a wander from the tail of a transient.
+Discarding more than needed costs samples and, on average, does not shift
+the mean.
+Averaged from their first steps, the eight means of $U/N$ lie at $-50.169$
+on average, the melting's share pulling them down; after the discards
+they average \SI{-50.063}{\milli\electronvolt}, close to the
+\SI{2}{\nano\second} value, and scatter by \SI{0.111}{\milli\electronvolt}
+against error bars of 0.046 to \SI{0.085}{\milli\electronvolt}, 0.067 on
+average. The error bars are low by about two fifths, though a spread from
+eight runs is itself uncertain by a quarter (\cref{ex:cv-error-error}). A
+run of \SI{100}{\pico\second} holds about 68 independent samples of $U$
+(\cref{sec:cv-blocks}), and the start chosen makes $(n - t_0/\dt)/g(t_0)$
+largest, which favours a start after which $g$ happens to come out small:
+the eight runs find $g$ of 45 to 138 after their starts, against the 146
+of the \SI{2}{\nano\second} run, and their error bars are small with it.
+
+The same holds for any quantity with few independent samples.
+Chapter~14's three runs of \SI{300}{\pico\second} at constant pressure
+under stochastic cell rescaling hold 35, 73 and 109 independent samples of
+the volume. In the second and third the start found is 1.0 and
+\SI{0.0}{\pico\second}, well within the first \SI{10}{\pico\second} that
+\cref{sec:pr-trajectory} left out of its averages. In the first,
+$n_{\mathrm{eff}}(t_0)$ falls from 35 at the start, as a settled run's
+should, to 24 at \SI{100}{\pico\second} and 9 at \SI{195}{\pico\second};
+beyond, the $g$ estimated from the last few tens of picoseconds is so
+uncertain that it can come out far too small, and the largest value, 55,
+falls at \SI{259}{\pico\second}, a start with no meaning. The criterion of \cref{sec:cv-protocol}
+therefore asks that the start lie in the first half of the run. Chapter~11
+prepared its water in rounds of \SI{1}{\pico\second} and left the end of
+that slow change unmeasured (\cref{sec:cs-water}); its healthy run of
+\SI{10}{\pico\second} at fixed energy has its start at \SI{0.30}{\pico
+\second}, after which the box's kinetic energy is $K = (4.993 \pm
+0.022)$\,\si{\electronvolt} and the potential energy $(-0.40265 \pm
+0.00034)$\,\si{\electronvolt} per molecule, against 4.990 and $-0.40259$
+over the whole run: the preparation had all but finished, and
+the averages that \cref{sec:cs-trajectory} quoted stand within their error
+bars.
+
+\begin{keyidea}
+A run's early part relaxes from its start, and shifts the mean of the
+whole run by about $\delta A_0\,\tau_{\mathrm r}/t_{\mathrm f}$. The start to keep is the
+one that leaves the largest effective number of samples, $(n - t_0/\dt)/
+g(t_0)$. The method trades a shift of a fraction of an error bar for
+precision and needs a
+run with many independent samples: when the start it finds falls in the
+second half of the run, the run is too short to locate it.
+\end{keyidea}
+
+\notebook{15}{add a transient of your choosing and watch where the start
+is found}
+
+\begin{selfcheck}
+A run of \SI{100}{\pico\second} has an offset of \SI{2}{\kelvin} in its
+temperature at the start, decaying with the time $\tau_{\mathrm r} =
+\SI{1}{\pico\second}$. By how much
+does it shift the mean temperature of the whole run?
+\end{selfcheck}

@@ -1,0 +1,36 @@
+%=============================================================================!
+% 8.S  WHAT WE NOW HAVE                                                       !
+%=============================================================================!
+\unnumbered{What we now have}
+
+The potential energy on which atoms move is the energy of their electrons,
+settled at each arrangement of the nuclei, plus the repulsion of the
+nuclei: the potential energy surface of Born and Oppenheimer. The dense eigensolver considered here has a cost that grows as the cube
+of its matrix size, motivating cheaper models of the energy. Treating the nuclei
+themselves as classical is good when the quantum step $\hbar\omega$ of
+their vibrations is small beside $\kB T$, which holds for heavy atoms and
+slow motions and fails for the stretches of bonds to hydrogen.
+
+The simplest models add up pair potentials, the Lennard-Jones, Morse and
+exp-6 shapes, whose forces are computed once per pair and applied with
+opposite signs, with the virial $\mathcal{W} = -\sum r_{ij}\varphi'(r_{ij})$
+alongside; in reduced units every Lennard-Jones substance obeys the same
+equations. Every force routine is checked against central differences of
+its energy, at a step near the cube root of the machine epsilon times the
+length scale.
+
+A cutoff must take both energy and force smoothly to zero:
+truncation breaks the conservation of energy, shifting leaves a jump in
+the force that an adaptive solver follows only with far shorter steps,
+and switching or a smooth envelope removes both jumps.
+
+In metals and carbon the strength of a bond
+falls as an atom's bonds multiply, which the second-moment model, the
+embedded-atom method and bond-order potentials describe; molecules are
+described by force fields of bonds, angles, dihedral twists and
+non-bonded pairs; and the Coulomb energy of charges falls so slowly that
+its sum depends on its order.
+
+Chapter~9 uses these forces to follow the motion step by step, and
+Chapter~10 builds a complete simulation of atoms in a periodic box, with
+neighbour lists for the cutoffs and the Ewald sum for the charges.

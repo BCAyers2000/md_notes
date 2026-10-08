@@ -1,0 +1,20 @@
+%=============================================================================!
+% 9.0  CHAPTER OPENING                                                        !
+%=============================================================================!
+Once the forces are known, a simulation must use them to advance the
+positions and velocities. The computer cannot follow every instant: it
+computes a sequence of states separated by a finite time step. Chapter~2
+used the forward Euler method, Chapter~3 used a more accurate solver, and
+Chapter~7 showed that two methods with similar errors over one step can
+behave quite differently over a long run.
+
+This chapter develops velocity Verlet, a method widely used in molecular
+dynamics. Its construction from Taylor series gives the error of a step;
+its construction from kicks and drifts explains its reversibility and
+preservation of phase-space volume. For a spring it keeps a slightly
+different energy exactly, which lets us derive both its energy error and
+its stability limit. These results give a practical way to choose the
+step for a molecule, including the water example left open in
+Chapters~1, 2 and~4. Long runs then test the method against RK4 and show
+why the smooth forces of Chapter~8 matter. Chapter~10 assembles these
+parts into a complete simulation in a periodic box.

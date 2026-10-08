@@ -1,0 +1,165 @@
+%=============================================================================!
+% 10.2  THE NEAREST IMAGE                                                     !
+%=============================================================================!
+\section{The nearest image}
+\label{sec:md-image}
+
+Two atoms in a periodic box are separated by $\vb{r}_{ij} = \vb{r}_j -
+\vb{r}_i$, written $\vb{d}$ in this section to keep subscripts short, and
+by every copy of it, $\vb{d} + \vb{h}\vb{n}$. A copy is also called an
+image, and the nearest copy the minimum image. A pair
+potential cut off at $r_{\mathrm c}$ needs the copies within $r_{\mathrm c}$,
+and when the cell is large enough there is at most one, the nearest. This
+section finds it, first in a rectangular cell and then in a skewed one,
+and derives how large the cell must be.
+
+\subsection*{Rounding the fractional coordinates}
+
+The fractional coordinates of the separation, $\vb{s} = \vb{h}^{-1}\vb{d}$,
+and those of a copy, $\vb{h}^{-1}(\vb{d} + \vb{h}\vb{n}) = \vb{s} +
+\vb{n}$, differ by whole numbers. Rounding
+each to the nearest whole number and subtracting,
+\begin{equation}
+   \vb{s} \to \vb{s} - \operatorname{round}(\vb{s}) ,
+   \label{eq:md-round}
+\end{equation}
+gives the copy whose fractional coordinates all lie between $-\frac12$
+and $\frac12$. The function \texttt{minimum\_image} of \texttt{mdlab.cell}
+does this for many separations at once:
+
+\begin{code}
+def minimum_image(separations: ArrayLike, cell: ArrayLike) -> NDArray:
+    s = to_fractional(separations, cell)
+    return to_cartesian(s - np.round(s), cell)
+\end{code}
+
+In a rectangular cell, with $\vb{a}$, $\vb{b}$ and $\vb{c}$ along the
+axes and of lengths $a$, $b$ and $c$, a copy is $\vb{d} + (n_1a, n_2b,
+n_3c)$ and its squared length is
+\begin{equation*}
+   (d_x + n_1a)^2 + (d_y + n_2b)^2 + (d_z + n_3c)^2 .
+\end{equation*}
+Each term depends on one whole number only, so each is made as small as it
+can be on its own, by the $n_1$ that brings $d_x + n_1a$ between
+$-\frac12a$ and $\frac12a$, and likewise for the others. That is
+\cref{eq:md-round}: in a rectangular cell, rounding gives the nearest copy
+of every separation.
+
+\subsection*{A skewed cell}
+
+Many crystals have cells that are not rectangular. Graphite's is
+hexagonal: in each layer $\vb{a}$ and $\vb{b}$ have the same length, $a =
+\SI{2.464}{\angstrom}$, at \ang{120} to each other, and $\vb{c}$, of length
+\SI{6.711}{\angstrom}, is at right angles to the layers\cite{TrucanoChen1975}.
+Rounding in such a cell returns the copy inside the parallelogram of
+\cref{fig:md-cell}(a), centred on the first atom, while the copies that
+are nearest fill the hexagon around it: a separation is its own nearest
+copy when it ends nearer to the first atom than to any copy of that atom,
+and in the plane of a layer the six closest copies, at $\pm\vb{a}$,
+$\pm\vb{b}$ and $\pm(\vb{a} + \vb{b})$, cut off a hexagon whose sides
+halve the lines to them. The two regions overlap but
+differ: in about 17\% of the parallelogram, shaded, a shorter copy
+exists, and rounding misses it.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch10_code/cell}
+\caption{Rounding and the nearest copy in the hexagonal cell of graphite,
+in the plane of a layer. (a) Rounding returns separations in the
+parallelogram centred on the first atom, spanned by $\vb{a}$ and
+$\vb{b}$; the separations that are their own nearest copy fill the
+hexagon; in the shaded corners a shorter copy exists. The circle of radius
+$\frac12w_{\min}$, half the smallest perpendicular width, lies inside both.
+(b) Of the separations that are their own nearest copy, the fraction that
+rounding returns wrongly, against their length: none below
+$\frac12w_{\min}$ (dotted).}
+\label{fig:md-cell}
+\end{figure}
+
+Rounding cannot fail for a short enough separation, whatever the cell.
+Since $\vb{b}$ and $\vb{c}$ are at right angles to $\vb{b}\times\vb{c}$,
+taking the scalar product of $\vb{d} = s_1\vb{a} + s_2\vb{b} + s_3\vb{c}$
+with $\vb{b}\times\vb{c}$ leaves only the first term,
+\begin{equation*}
+   \vb{d}\cdot(\vb{b}\times\vb{c}) = s_1\,\vb{a}\cdot(\vb{b}\times\vb{c}) .
+\end{equation*}
+Dividing by $\vb{a}\cdot(\vb{b}\times\vb{c})$, whose size is $V$ by
+\cref{eq:md-volume},
+\begin{align}
+   \lvert s_1\rvert
+   &= \frac{\lvert\vb{d}\cdot(\vb{b}\times\vb{c})\rvert}{V}
+   && \text{dividing and taking sizes}\notag\\
+   &\le \frac{\lvert\vb{d}\rvert\,\lvert\vb{b}\times\vb{c}\rvert}{V}
+   && \text{a scalar product is at most the product of the lengths}
+   \notag\\
+   &= \frac{\lvert\vb{d}\rvert}{w_1} ,
+   \qquad w_1 = \frac{V}{\lvert\vb{b}\times\vb{c}\rvert}
+   && \text{naming the width.}
+   \label{eq:md-width}
+\end{align}
+The length $w_1$ is the height of the cell above the face spanned by
+$\vb{b}$ and $\vb{c}$ (\cref{sec:md-periodic}), the perpendicular width
+of the cell in that direction; $w_2$ and $w_3$ follow in the same way.
+Two consequences follow, with $w_{\min}$ the smallest of the three widths.
+\begin{itemize}
+\item A copy shorter than $\frac12w_{\min}$ has every fractional
+   coordinate between $-\frac12$ and $\frac12$, so rounding returns it:
+   rounding finds the nearest copy of every separation shorter than half
+   the smallest width, in any cell. \Cref{fig:md-cell}(b) measures this
+   for graphite: rounding first misses just beyond $\frac12w_{\min} =
+   \SI{1.067}{\angstrom}$.
+\item A copy $\vb{h}\vb{n}$ of the origin, with $\vb{n}$ not zero, has a
+   fractional coordinate of size at least 1, so by \cref{eq:md-width} it is
+   at least $w_{\min}$ long. Two copies of one separation differ by such
+   a vector, and a difference of two vectors is no longer than the sum of
+   their lengths (one side of a triangle is no longer than the other two
+   together), so they cannot both be shorter than $\frac12w_{\min}$.
+\end{itemize}
+A cutoff no larger than half the smallest width therefore makes rounding
+exact for every pair within it, in any cell, and each pair has at most one
+copy within it:
+\begin{equation}
+   r_{\mathrm c} \le \tfrac12 w_{\min} .
+   \label{eq:md-rule}
+\end{equation}
+For a rectangular cell the widths are the side lengths. For graphite they
+are \SI{2.134}{\angstrom} in the layers and \SI{6.711}{\angstrom} across
+them, so a single cell allows a cutoff of only \SI{1.067}{\angstrom}.
+Repeating the cell $n_1$ times along $\vb{a}$, $n_2$ times along $\vb{b}$
+and $n_3$ times along $\vb{c}$ makes a larger cell, a supercell, of volume
+$n_1n_2n_3V$, whose face $n_2\vb{b}\times n_3\vb{c}$ has area
+$n_2n_3\lvert\vb{b}\times\vb{c}\rvert$, so its first width is $n_1w_1$,
+and likewise $n_2w_2$ and $n_3w_3$. A cutoff of \SI{10}{\angstrom} then
+needs $n_1, n_2 \ge 20/2.134 = 9.4$ and $n_3 \ge 20/6.711 = 2.98$: a
+supercell of $10\times10\times3$ of these cells, 1200 atoms at the four
+atoms per cell of \cref{sec:md-start}.
+
+\begin{practice}
+\Cref{eq:md-rule} decides the smallest cell that rounding can serve. A
+skewed cell is narrower than its lattice vectors are long: graphite's
+in-plane vectors are \SI{2.464}{\angstrom} long, and its cell is
+\SI{2.134}{\angstrom} wide. When a cell must be narrower than twice the
+cutoff, as for a single cell of a crystal, the copies within the cutoff
+are found by searching over several neighbouring cells instead, as the
+Ewald sum of \cref{sec:md-ewald} does. \texttt{nearest\_image} of
+\texttt{mdlab.cell} searches in the same way but keeps only the shortest
+copy, the reference against which rounding is tested.
+\end{practice}
+
+\begin{keyidea}
+Rounding the fractional coordinates of a separation gives the copy inside
+the cell centred on the first atom. In a rectangular cell that is always
+the nearest copy; in any cell it is the nearest for every separation
+shorter than half the smallest perpendicular width $w_{\min}$, the
+smallest of $V/\lvert\vb{b}\times\vb{c}\rvert$ and its two partners, so
+a cutoff $r_{\mathrm c} \le \frac12w_{\min}$ makes the minimum image
+exact.
+\end{keyidea}
+
+\notebook{10}{compare rounding with the nearest copy in a hexagonal cell}
+
+\begin{selfcheck}
+A cubic cell of side \SI{20}{\angstrom} holds atoms that interact with a
+cutoff of \SI{12}{\angstrom}. Is rounding enough to find their pairs, and
+how large must the cell be?
+\end{selfcheck}

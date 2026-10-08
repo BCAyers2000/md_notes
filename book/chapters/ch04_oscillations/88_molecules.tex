@@ -1,0 +1,112 @@
+%=============================================================================!
+% 4.10  MOLECULAR VIBRATIONS AND THE TIME STEP                                !
+%=============================================================================!
+\section{Molecular vibrations and the time step}
+\label{sec:os-molecules}
+
+The oscillations of this chapter are the motions of atoms in molecules.
+This section turns measured vibrational frequencies into periods in
+femtoseconds and draws the consequence for simulation: a computer that
+advances the motion in steps must take steps short compared with the
+fastest of these periods.
+
+\subsection*{Frequencies from light}
+
+Light is an oscillation that travels, at the speed of light $c$; its
+wavelength is the distance from one crest to the next, and infrared light
+has wavelengths too long for the eye to see. A molecule absorbs infrared
+light at frequencies close to those of many of its normal modes, much as
+a driven oscillator responds most strongly at resonance
+(\cref{sec:os-driven}), and other kinds of spectrum reveal most of the
+rest, so measured spectra give vibrational frequencies. Spectroscopists
+quote them as wavenumbers $\tilde\nu$, the number of wavelengths of the
+light per centimetre, in \si{\per\centi\metre}. In one second the light
+travels a distance $c$, and so passes $c\tilde\nu$ crests, each one cycle
+of the oscillation, so its frequency is $\nu = c\tilde\nu$. In the units of this book, $c =
+\SI{2.99792458e8}{\metre\per\second} = \SI{2.99792458e10}{\centi\metre\per
+\second} = \SI{2.99792458e-5}{\centi\metre\per\femto\second}$, the last
+step dividing by $10^{15}$ femtoseconds per second, so
+\begin{equation*}
+   \nu = 2.99792458\times10^{-5}\,\tilde\nu ,
+   \qquad
+   \text{period} = \frac1\nu , \qquad \omega = 2\pi\nu ,
+\end{equation*}
+with $\tilde\nu$ in \si{\per\centi\metre}, $\nu$ in cycles per
+femtosecond and the period in femtoseconds. In \texttt{mdlab} this speed is
+\texttt{units.C\_CM\_PER\_FS}, computed from the exact SI value.
+
+\subsection*{The fastest motions}
+
+The vibrational frequencies of small molecules have been measured
+carefully and collected in tables. \Cref{tab:os-vibrations} lists a few
+from Shimanouchi's compilation\cite{Shimanouchi1972}, as given by the NIST
+Chemistry WebBook\cite{NISTWebBook}, with their periods. A water molecule's
+O--H stretches repeat every \SI{9}{\femto\second}, and the C--H stretches
+of methane every \SI{11}{\femto\second}; the bend of water takes
+\SI{21}{\femto\second}, more than twice as long as its stretches, and the
+stretch of the C--C bond in ethane takes \SI{34}{\femto\second}.
+Stretches of bonds to hydrogen are the fastest motions in molecules that
+contain hydrogen,
+for the reason found in \cref{sec:os-bodies}: the hydrogen does almost all
+the moving, so the reduced mass is small and $\omega = \sqrt{k/m_{\mathrm r}}$ is
+large.
+
+\begin{table}[htb]
+\centering
+\caption{Measured vibrational wavenumbers of three free (gas-phase)
+molecules\cite{Shimanouchi1972,NISTWebBook}, with the frequency and period
+they imply.}
+\label{tab:os-vibrations}
+\begin{tabular}{llccc}
+\toprule
+molecule & motion & $\tilde\nu$ / \si{\per\centi\metre}
+   & $\nu$ / \si{\per\femto\second} & period / \si{\femto\second}\\
+\midrule
+water & antisymmetric O--H stretch & 3756 & 0.11260 & 8.88\\
+water & symmetric O--H stretch & 3657 & 0.10963 & 9.12\\
+methane & C--H stretch & 3019 & 0.09051 & 11.05\\
+methane & C--H stretch, all in step & 2917 & 0.08745 & 11.44\\
+water & bend & 1595 & 0.04782 & 20.91\\
+ethane & C--C stretch & 995 & 0.02983 & 33.52\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No comparably simple measured value is collected here for a lithium atom
+in graphite. The model surface of \cref{sec:os-small} gives a period of
+\SI{170.3}{\femto\second}, a wavenumber of \SI{196}{\per\centi\metre}, but
+it was built for illustration; Chapters~16 and 17 measure the motion of
+lithium in graphite with a fitted model of the forces.
+
+\subsection*{The step of a simulation}
+
+A computer that follows atoms advances their positions and velocities by
+repeated short steps, as in \cref{sec:ne-equations}. \Cref{sec:mo-atoms}
+showed that a sinusoid sampled every $\tau$ is described accurately only
+when $\omega\tau$ is small, and the same holds for a motion advanced in
+steps. A simulation of water must therefore take steps $\tau$ with
+$\omega\tau$ small for its fastest vibration, of period
+\SI{8.88}{\femto\second} and so $\omega = 2\pi/8.88 =
+\SI{0.708}{\radian\per\femto\second}$: steps short compared with $1/\omega
+= \SI{1.41}{\femto\second}$, even if every other motion in it is a hundred
+times slower. Chapter~9 works out how much
+shorter, and Chapter~11 shows how the fastest vibrations can be frozen out
+so that longer steps become safe. The learned propagators planned for Part~VI take
+a different route: trained on such simulations, they predict the state of
+the atoms a single long step ahead.
+
+\Needspace{9\baselineskip}
+\begin{bridge}
+The vibrational frequencies computed by electronic-structure codes come
+from the eigenvalue problem of \cref{sec:os-modes}: the Hessian of
+the Born--Oppenheimer energy, usually by finite differences of the forces,
+is mass-weighted and diagonalised. The harmonic frequencies so obtained
+neglect the anharmonicity of \cref{sec:os-anharmonic}, which is one
+reason they differ from the measured fundamentals of
+\cref{tab:os-vibrations}.
+\end{bridge}
+
+\begin{selfcheck}
+A vibration has a wavenumber of \SI{1000}{\per\centi\metre}. What is its
+period in femtoseconds?
+\end{selfcheck}

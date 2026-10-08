@@ -1,0 +1,315 @@
+%=============================================================================!
+% 3.F  SOLUTIONS TO THE EXERCISES                                             !
+%=============================================================================!
+\unnumbered{Chapter~\ref{ch:energy}: Work and energy}
+\label{sec:en-solutions}
+
+\solutionto{ex:en-circle}No. On a circle the velocity is perpendicular to
+the line to the centre (\cref{sec:mo-circle}), and the string pulls along
+that line, towards the peg at the centre. The pull is therefore
+perpendicular to the velocity at every instant, its power $\vb{F}\cdot
+\vb{v}$ is zero, and it does no work. The weight and the push of the table
+are vertical, across the horizontal motion, and do no work either. By the work-energy theorem the kinetic energy does not
+change, which agrees with the constant speed; the pull changes only the
+direction of the motion.
+
+\solutionto{ex:en-suitcase}Only the component of the pull along the
+floor does work. By \cref{eq:en-work-constant},
+\begin{equation*}
+   W = F\,d\cos\theta = 60\times25\times\cos\ang{50}
+   = 60\times25\times0.6428 = \SI{964.2}{\joule} .
+\end{equation*}
+
+\solutionto{ex:en-stairs}The weight is $mg = 70\times9.80665 =
+\SI{686.47}{\newton}$, and over a rise of \SI{3}{\metre} it does
+$-686.47\times3 = \SI{-2059.4}{\joule}$ of work. The climber moves at a
+steady speed, so the kinetic energy does not change, and the
+\SI{2059.4}{\joule} that the weight takes must be supplied by the
+climber's muscles: the stairs push on a foot that does not move while it
+pushes, and so do no work. Done in \SI{5}{\second}, this is an average power of $2059.4/5 =
+\SI{411.9}{\watt}$.
+
+\solutionto{ex:en-braking}In metres per second,
+\begin{equation*}
+   \SI{50}{\kilo\metre\per\hour} = \frac{50\times1000}{3600}\,
+   \si{\metre\per\second} = \frac{125}{9}\,\si{\metre\per\second}
+   = \SI{13.889}{\metre\per\second} ,
+\end{equation*}
+so
+\begin{equation*}
+   K = \tfrac12\times1200\times\bigl(\tfrac{125}{9}\bigr)^2
+   = \SI{115741}{\joule} ,
+\end{equation*}
+about \SI{116}{\kilo\joule}. The braking force does the work $-6000\,d$
+over a distance $d$, and the car stops when this equals $-K$, so $d =
+115741/6000 = \SI{19.29}{\metre}$. At twice the speed the kinetic energy
+is four times larger, and so is the distance, \SI{77.16}{\metre}.
+
+\solutionto{ex:en-stretch}The hand pulls against the spring, so its work
+from $x_A$ to $x_B$ is \cref{eq:en-spring-work} with the signs reversed,
+$\frac12 k(x_B^2 - x_A^2)$. From 0 to
+\SI{0.1}{\metre}: $\frac12\times200\times0.1^2 = \SI{1}{\joule}$. From
+\SI{0.1}{\metre} to \SI{0.2}{\metre}: $\frac12\times200\times(0.04 -
+0.01) = \SI{3}{\joule}$, three times as much, because the spring pulls
+harder over the second stretch.
+
+\solutionto{ex:en-launcher}The spring stores $\frac12 k\xi^2 = \frac12
+\times500\times0.08^2 = \SI{1.6}{\joule}$, and on a smooth level table all
+of it becomes kinetic energy, so
+\begin{equation*}
+   v = \sqrt{\frac{2\times1.6}{0.1}} = \SI{5.657}{\metre\per\second} .
+\end{equation*}
+On the smooth ramp only the weight does work, so the puck rises until its
+potential energy $mgh$ equals \SI{1.6}{\joule}: $h = 1.6/(0.1\times
+9.80665) = \SI{1.632}{\metre}$. The angle of the ramp does not matter.
+
+\solutionto{ex:en-pendulum}The bob moves on a circle about the point of
+support, so its velocity is perpendicular to the string, which pulls
+along its own length; as for the bead on its wire, the pull does no work.
+Only the weight does work, and energy is conserved. The bob starts at a
+height $L\cos\ang{40}$ below the support and ends at $L$ below it, so it
+falls through
+\begin{equation*}
+   L\,(1 - \cos\ang{40}) = 1.2\times(1 - 0.766044) = \SI{0.28075}{\metre} ,
+\end{equation*}
+and at the bottom $\frac12 mv^2 = mg\times0.28075$, giving
+\begin{equation*}
+   v = \sqrt{2\times9.80665\times0.28075} = \SI{2.347}{\metre\per\second} .
+\end{equation*}
+
+\solutionto{ex:en-track}The bead's energy is $mgh_E$ with $\frac12 mv^2 =
+mg\,(h_E - h)$ at the valley bottom, so $h_E = h + v^2/2g = 0.183 +
+3^2/(2\times9.80665) = \SI{0.642}{\metre}$. The hill is
+\SI{1.009}{\metre} high, so the bead cannot cross it. In
+\cref{fig:en-track}(a) the line $E/mg = \SI{0.642}{\metre}$ meets the
+deep valley at about $x = -2.0$ and \SI{-0.7}{\metre}; the notebook finds
+the turning points \SI{-1.973}{\metre} and \SI{-0.693}{\metre}. The line
+also meets the shallow valley, at \SI{1.147}{\metre} and
+\SI{1.520}{\metre}, but the bead started in the deep valley and cannot get
+there.
+
+\solutionto{ex:en-double}Write $s = x/a$, so that $U = U_0(s^2 - 1)^2$
+and, by the chain rule with $\dd s/\dd x = 1/a$,
+\begin{align*}
+   U'(x) &= U_0\times2(s^2 - 1)\times2s\times\frac1a
+   = \frac{4U_0}{a}\,s\,(s^2 - 1) ,\\
+   U''(x) &= \frac{4U_0}{a}\,\bigl(3s^2 - 1\bigr)\,\frac1a
+   = \frac{4U_0}{a^2}\,\bigl(3s^2 - 1\bigr) ,
+\end{align*}
+the second line differentiating $s^3 - s$ to $3s^2 - 1$ and multiplying
+by $\dd s/\dd x$ again. $U' = 0$ where $s = 0$ or $s^2 = 1$, that is at $x
+= 0$ and $x = \pm a$. At $x = 0$, $U'' = -4U_0/a^2 < 0$: unstable, a
+hill of height $U_0$. At $x = \pm a$, $U'' = 8U_0/a^2 > 0$: stable, the
+bottoms of two wells where $U = 0$. For $E = U_0/2$ the turning points
+satisfy $U_0(s^2 - 1)^2 = U_0/2$, so $s^2 - 1 = \pm1/\sqrt2$ and $s^2 =
+1 \pm 1/\sqrt2$, giving $x = \pm a\sqrt{1 \pm 1/\sqrt2}$, that is $\pm
+0.5412\,a$ and $\pm1.3066\,a$. Since $E < U(0) = U_0$, the body cannot
+cross the middle: there are two separate allowed regions, $0.5412\,a \le
+\lvert x\rvert \le 1.3066\,a$, one in each well.
+
+\solutionto{ex:en-ice}As for the box in \cref{sec:en-friction}, the
+friction $\mu_{\mathrm{k}}mg$ removes all the kinetic energy over the
+distance $d = v_0^2/(2\mu_{\mathrm{k}}g) = 3^2/(2\times0.05\times
+9.80665) = \SI{9.177}{\metre}$.
+
+\solutionto{ex:en-ramp}The ramp is $L = 2/\sin\ang{25} = 2/0.42262 =
+\SI{4.732}{\metre}$ long. As in \cref{sec:en-friction}, the normal force
+is $mg\cos\ang{25}$ and the friction $\mu_{\mathrm{k}}mg\cos\ang{25}$,
+which does the work $-\mu_{\mathrm{k}}mg\cos\ang{25}\,L$; the weight does
+$mg\times2$. Dividing the work-energy theorem by $m$,
+\begin{align*}
+   \tfrac12 v^2 &= g\times2 - \mu_{\mathrm{k}}g\cos\ang{25}\,L\\
+   &= 19.613 - 0.15\times9.80665\times0.9063\times4.732
+   = 19.613 - 6.309 = \SI{13.304}{\joule\per\kilogram} ,
+\end{align*}
+so $v = \sqrt{2\times13.304} = \SI{5.158}{\metre\per\second}$. The mass
+does not enter.
+
+\solutionto{ex:en-carts}The spring stores $\frac12\times200\times0.05^2 =
+\SI{0.25}{\joule}$. Momentum gives $1\times v_1 + 2\times v_2 = 0$, so
+$v_1 = -2v_2$, and energy gives
+\begin{equation*}
+   \tfrac12\times1\times(-2v_2)^2 + \tfrac12\times2\times v_2^2
+   = 2v_2^2 + v_2^2 = 3v_2^2 = 0.25 ,
+\end{equation*}
+so $v_2 = +\sqrt{0.25/3} = +\SI{0.2887}{\metre\per\second}$, taking the
+positive root because the spring pushes the cart on the right forwards,
+and $v_1 = -2v_2 = -\SI{0.5774}{\metre\per\second}$.
+
+\solutionto{ex:en-coupling}Before, $K = \frac12\times2\times3^2 =
+\SI{9}{\joule}$; after, $K = \frac12\times3\times2^2 = \SI{6}{\joule}$.
+\SI{3}{\joule} has gone into the coupling: the latch and buffers are
+deformed and warmed, and some energy goes into sound. The forces between
+the carts during the coupling are a third-law pair, so they cancel in the
+total momentum whatever they are. They are not the forces of a spring
+that stores and returns energy, so nothing makes them conserve the
+kinetic energy, and \cref{sec:en-bodies} showed that a pair of forces
+does work whenever the carts move relative to each other.
+
+\solutionto{ex:en-routes}Along the straight line, $\vb{r}(s) = (2s, s)$
+for $s$ from 0 to 1, so $\dd\vb{r}/\dd s = (2, 1)$ and $\vb{F} = a\,(s,
+2s)$, giving
+\begin{equation*}
+   \int_0^1 a\,(s\times2 + 2s\times1)\,\dd s = a\int_0^1 4s\,\dd s = 2a
+   = \SI{1}{\electronvolt} .
+\end{equation*}
+Along the $x$ axis $y = 0$, so $F_x = ay = 0$ and that leg does no work.
+Going up the line $x = 2$, $F_y = ax = 2a$ and the displacement is 1, so
+the work is $2a = \SI{1}{\electronvolt}$ again. The curl is $\partial
+F_y/\partial x - \partial F_x/\partial y = a - a = 0$ in the whole plane,
+so the force is conservative, and by \cref{eq:en-potential-3d} with
+$\vb{r}_0 = \vb{0}$, $U(x, y)$ is minus the work along the second kind of
+route to $(x, y)$: none along the $x$ axis, then $ax$ times the rise $y$.
+Hence $U = -axy$, and indeed $-\partial U/\partial x = ay$ and
+$-\partial U/\partial y = ax$. The work is $U(\vb{0}) - U(2, 1) = 0 -
+(-2a) = 2a$, as found.
+
+\solutionto{ex:en-ellipse}$\partial U/\partial x = kx$ and $\partial
+U/\partial y = 4ky$, so $\vb{F} = -\grad U = -k\,(x, 4y)$, which at $(1,
+1)$ is $-(2, 8)$\,\si{\electronvolt\per\angstrom}. The contour through
+$(1, 1)$ is $x^2 + 4y^2 = 5$. A small step $(\Delta x, \Delta y)$ along it
+keeps $x^2 + 4y^2$ fixed, so by the gradient toolbox of
+\cref{sec:en-gradient} $2x\,\Delta x + 8y\,\Delta y \approx 0$, with an
+error small compared with the step; at $(1, 1)$ this is $2\Delta x +
+8\Delta y = 0$, met by the direction $(4, -1)$. Its scalar product with the force is $-(2\times4 - 8\times1)
+= 0$, so the force is perpendicular to the contour. The direction to the
+origin is $-(1, 1)$, which is not parallel to $-(2, 8)$: the force points
+across the contour, more steeply in $y$, where the well is stiffer.
+
+\solutionto{ex:en-curl}The three curl components are
+\begin{align*}
+   \frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z}
+   &= a\,(2z - 2z) = 0 ,\\
+   \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x}
+   &= a\,(0 - 0) = 0 ,\\
+   \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y}
+   &= a\,(2x - 2x) = 0 .
+\end{align*}
+To find $U$, integrate $\partial U/\partial x = -F_x = -2axy$ with
+respect to $x$, holding $y$ and $z$ fixed: $U = -ax^2y + f(y, z)$, where
+the constant of integration $f$ may depend on the fixed $y$ and $z$ but
+not on $x$. Then $-\partial
+U/\partial y = ax^2 - \partial f/\partial y$ must equal $F_y = a(x^2 +
+z^2)$, so $\partial f/\partial y = -az^2$ and $f = -ayz^2 + \chi(z)$. Then
+$-\partial U/\partial z = 2ayz - \chi'(z)$ must equal $F_z = 2ayz$, so $\chi' =
+0$, and $U(\vb{0}) = 0$ makes $\chi = 0$:
+\begin{equation*}
+   U = -a\,(x^2y + yz^2) .
+\end{equation*}
+At $(1, 2, 3)$, $U = -(1\times2 + 2\times9) = \SI{-20}{\electronvolt}$.
+
+\solutionto{ex:en-square}Side by side, anticlockwise:
+\begin{itemize}
+\item bottom, $y = 0$ from $x = 0$ to $L$: $F_x = -cy = 0$, work 0;
+\item right, $x = L$ from $y = 0$ to $L$: $F_y = cL$, work $cL\times L =
+   cL^2$;
+\item top, $y = L$ from $x = L$ back to 0: $F_x = -cL$ and the
+   displacement is $-L$, work $(-cL)(-L) = cL^2$;
+\item left, $x = 0$ from $y = L$ down to 0: $F_y = 0$, work 0.
+\end{itemize}
+The total is $2cL^2$, which is $2c$ times the area $L^2$, as Green's
+theorem with curl $2c$ requires.
+
+\solutionto{ex:en-vortex}Write $\rho^2 = x^2 + y^2$ and $q = 1/\rho^2$,
+so $F_y = bx\,q$ and $F_x = -by\,q$. Differentiating $\rho^2 q = 1$ with
+respect to $x$ by the product rule gives $2x\,q + \rho^2\,\partial
+q/\partial x = 0$, so $\partial q/\partial x = -2x\,q/\rho^2 =
+-2x/\rho^4$; in the same way $\partial q/\partial y = -2y/\rho^4$. By the
+product rule again,
+\begin{equation*}
+   \frac{\partial F_y}{\partial x}
+   = b\,\Bigl[q + x\,\frac{\partial q}{\partial x}\Bigr]
+   = b\,\Bigl[\frac{1}{\rho^2} - \frac{2x^2}{\rho^4}\Bigr]
+   = b\,\frac{\rho^2 - 2x^2}{\rho^4} = b\,\frac{y^2 - x^2}{\rho^4} ,
+\end{equation*}
+putting both terms over $\rho^4$ and using $\rho^2 = x^2 + y^2$; and in
+the same way, differentiating $-by\,q$ with respect to $y$,
+\begin{equation*}
+   \frac{\partial F_x}{\partial y}
+   = -b\,\Bigl[q + y\,\frac{\partial q}{\partial y}\Bigr]
+   = -b\,\Bigl[\frac{1}{\rho^2} - \frac{2y^2}{\rho^4}\Bigr]
+   = -b\,\frac{x^2 - y^2}{\rho^4} = b\,\frac{y^2 - x^2}{\rho^4} .
+\end{equation*}
+The two are equal, so the curl is zero wherever $\vb{F}$ is defined. On the
+circle $\vb{r}(s) = R(\cos s, \sin s)$, $\vb{F} = (b/R)(-\sin s, \cos s)$
+and $\dd\vb{r}/\dd s = R(-\sin s, \cos s)$, so $\vb{F}\cdot\dd\vb{r}/\dd
+s = b$ and the work once round is $2\pi b$, for every radius. This does
+not contradict the curl test, because the force is not defined at the
+origin: the plane with the origin removed has a hole, and Green's theorem
+needs the curl to be zero over the whole area inside the loop, origin
+included. A circle that does not enclose the origin encloses no hole, so
+by Green's theorem the work around it is zero.
+
+\solutionto{ex:en-top}Write $g = \lvert\vb{g}\rvert = 4\pi/(\sqrt3\,a)$.
+A vector of length $g$ at an angle $\alpha$ to the $x$ axis is $g(\cos
+\alpha, \sin\alpha)$ (\cref{sec:mo-plane}), so, with $\cos\ang{-30} =
+\sqrt3/2$, $\sin\ang{-30} = -\frac12$, $\cos\ang{210} = -\sqrt3/2$ and
+$\sin\ang{210} = -\frac12$,
+\begin{equation*}
+   \vb{g}_1 = g\,\bigl(\tfrac{\sqrt3}{2}, -\tfrac12\bigr) , \qquad
+   \vb{g}_2 = g\,(0, 1) , \qquad
+   \vb{g}_3 = g\,\bigl(-\tfrac{\sqrt3}{2}, -\tfrac12\bigr) .
+\end{equation*}
+With $\vb{r} = \bigl(a/2, a/(2\sqrt3)\bigr)$ and the scalar product in
+components,
+\begin{align*}
+   \vb{g}_1\cdot\vb{r}
+   &= g\,a\,\Bigl(\frac{\sqrt3}{4} - \frac{1}{4\sqrt3}\Bigr)
+   = g\,a\,\frac{3 - 1}{4\sqrt3} = \frac{g\,a}{2\sqrt3}
+      && \text{writing $\tfrac{\sqrt3}{4}$ as $\tfrac{3}{4\sqrt3}$}\\
+   &= \frac{4\pi}{\sqrt3\,a}\times\frac{a}{2\sqrt3} = \frac{4\pi}{6}
+   = \frac{2\pi}{3} ,
+      && \text{since $\sqrt3\times\sqrt3 = 3$,}\\
+   \vb{g}_2\cdot\vb{r} &= \frac{g\,a}{2\sqrt3} = \frac{2\pi}{3} ,\\
+   \vb{g}_3\cdot\vb{r}
+   &= -g\,a\,\Bigl(\frac{\sqrt3}{4} + \frac{1}{4\sqrt3}\Bigr)
+   = -g\,a\,\frac{3 + 1}{4\sqrt3} = -\frac{g\,a}{\sqrt3}
+   = -\frac{4\pi}{3} .
+\end{align*}
+Each cosine is $-\frac12$: $\cos(2\pi/3) = \cos(\pi - \pi/3) =
+-\cos(\pi/3) = -\frac12$ by the reflection rule $\cos(\pi - \theta) =
+-\cos\theta$ of \cref{sec:mo-trig}, and $\cos(-4\pi/3) = \cos(-4\pi/3 +
+2\pi) = \cos(2\pi/3) = -\frac12$ by the period $2\pi$. Hence $U =
+(U_{\mathrm b}/4)(3 + \frac32) = 9U_{\mathrm b}/8$.
+
+\solutionto{ex:en-pair}By Pythagoras' theorem, $r_{12}^2 = (x_2 - x_1)^2 +
+(y_2 - y_1)^2 + (z_2 - z_1)^2$. Differentiating both sides with respect
+to $x_2$, the left by the chain rule with outer function $u^2$ and the
+right term by term, of which only the first depends on $x_2$,
+\begin{equation*}
+   2r_{12}\,\frac{\partial r_{12}}{\partial x_2} = 2(x_2 - x_1) ,
+   \qquad\text{so}\qquad
+   \frac{\partial r_{12}}{\partial x_2} = \frac{x_2 - x_1}{r_{12}}
+\end{equation*}
+on dividing by $2r_{12}$, and likewise for $y_2$ and $z_2$, so $\grad_2
+r_{12} = (\vb{r}_2 - \vb{r}_1)/r_{12}$. Differentiating with respect to
+$x_1$ instead, the right side becomes $-2(x_2 - x_1)$, by the chain rule
+with inner function $x_2 - x_1$, whose derivative with respect to $x_1$
+is $-1$; so $\grad_1 r_{12} = -(\vb{r}_2 - \vb{r}_1)/r_{12}$. By the chain rule again,
+\begin{equation*}
+   \vb{F}_2 = -\grad_2\,\varphi(r_{12}) = -\varphi'(r_{12})\,
+   \frac{\vb{r}_2 - \vb{r}_1}{r_{12}} ,
+   \qquad
+   \vb{F}_1 = -\grad_1\,\varphi(r_{12}) = +\varphi'(r_{12})\,
+   \frac{\vb{r}_2 - \vb{r}_1}{r_{12}} = -\vb{F}_2 .
+\end{equation*}
+Both are multiples of $\vb{r}_2 - \vb{r}_1$, so they act along the line
+joining the atoms. Where $\varphi' > 0$, the energy rises with distance
+and the atoms pull together.
+
+\solutionto{ex:en-oxygen}By \cref{eq:en-mv2}, $K = \frac12\times15.999
+\times0.01^2\times103.6427 = \SI{0.08291}{\electronvolt}$. The opposing
+force does the work $-0.5\,d$ over a distance $d$ in \aa ngstr\"oms, and
+the atom stops when this equals $-K$: $d = 0.08291/0.5 =
+\SI{0.1658}{\angstrom}$.
+
+\solutionto{ex:en-drag}With no potential energy, $E = K$, and
+\cref{eq:en-dEdt} gives $\dd K/\dd t = -\gamma m\vb{v}\cdot\vb{v} =
+-\gamma mv^2 = -2\gamma K$. By the exponential toolbox of
+\cref{sec:ne-drag}, $K(0)\,\mathrm{e}^{-2\gamma t}$ has derivative
+$-2\gamma$ times itself and the right value at $t = 0$, and by the
+uniqueness of solutions (\cref{sec:ne-equations}) it is the only such
+function, so $K(t) = K(0)\,\mathrm{e}^{-2\gamma t}$. For the lithium atom, $K(0) = \frac12
+\times6.94\times0.02^2\times103.6427 = \SI{0.14386}{\electronvolt}$, and
+$2\gamma t = 2\times0.005\times100 = 1$, so $K = 0.14386\,\mathrm{e}^{-1}
+= \SI{0.05292}{\electronvolt}$.

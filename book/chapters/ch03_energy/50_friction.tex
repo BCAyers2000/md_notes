@@ -1,0 +1,155 @@
+%=============================================================================!
+% 3.7  FRICTION AND THE LOSS OF ENERGY                                        !
+%=============================================================================!
+\section{Friction and the loss of energy}
+\label{sec:en-friction}
+
+A box shoved across a floor slides to a stop, and a real bead on a real
+wire never quite climbs back to the height it was released from. Both
+lose energy to friction. This section measures the loss and finds the
+rule that says how fast the total energy changes when part of the force
+is not conservative.
+
+\subsection*{Sliding friction}
+
+When one surface slides over another, each exerts on the other a
+friction force along the surfaces, and the force on each points against
+the direction in which that surface slides over the other. For many pairs of dry surfaces, the size of this force depends only
+weakly on the speed and on the area in contact, and is roughly
+proportional to the normal force $F_{\mathrm{n}}$ with which the surfaces
+are pressed together,
+\begin{equation*}
+   F_{\mathrm{fr}} = \mu_{\mathrm{k}}\,F_{\mathrm{n}} .
+\end{equation*}
+The number $\mu_{\mathrm{k}}$, the coefficient of sliding friction,
+depends on the two surfaces and is found by measurement. This rule is an empirical description of limited
+accuracy, and we use it only to see how energy is lost.
+
+A box of \SI{5}{\kilogram} slides across a level floor at
+\SI{2}{\metre\per\second}, with $\mu_{\mathrm{k}} = 0.3$. Vertically the
+box does not accelerate, so the normal force balances the weight,
+$F_{\mathrm{n}} = mg$, and the friction is $0.3\times5\times9.80665 =
+\SI{14.71}{\newton}$, pointing against the motion. The weight and the
+normal force are perpendicular to the motion and do no work, so over a
+distance $d$ the work on the box is that of friction, $-\mu_{\mathrm{k}}
+mg\,d$. The box stops when this has removed all of its kinetic energy,
+\begin{align*}
+   0 - \tfrac12 m v_0^2 &= -\mu_{\mathrm{k}} m g\,d ,\\
+   d &= \frac{v_0^2}{2\mu_{\mathrm{k}}g}
+      && \text{dividing both sides by $-\mu_{\mathrm{k}}mg$}\\
+   &= \frac{2^2}{2\times0.3\times9.80665} = \SI{0.680}{\metre} .
+\end{align*}
+The mass cancels again: a heavier box has proportionally more kinetic
+energy to lose, and it presses harder on the floor and feels a
+proportionally larger friction.
+
+The \SI{10}{\joule} of kinetic energy the box had is not destroyed. The
+rubbing surfaces warm up, and Chapter~12 shows that warmth is the hidden
+kinetic and potential energy of the jiggling atoms of the box and the
+floor. Energy has passed from the motion of the box as a whole, which we
+follow, into motions of its atoms, which we do not.
+
+\subsection*{Down a rough ramp}
+
+A block of \SI{2}{\kilogram} slides from rest down a straight ramp
+\SI{3}{\metre} long, inclined at \ang{30}, with $\mu_{\mathrm{k}} = 0.2$
+(\cref{fig:en-ramp}). Three forces act. The line perpendicular to the
+ramp is the vertical turned through the same \ang{30} as the ramp is
+turned from the level, so it makes an angle of \ang{30} with the weight,
+$mg$ straight down. As for the sledge of \cref{sec:en-constant}, the
+weight therefore has a component $mg\cos\ang{30}$ into the ramp and a
+component $mg\sin\ang{30}$ at right angles to that, down the ramp. The
+normal force balances the first of these, because the block does not
+accelerate into or away from the ramp, so $F_{\mathrm{n}} = mg\cos\ang{30}
+= \SI{16.986}{\newton}$. Friction acts up the ramp with size
+$\mu_{\mathrm{k}}F_{\mathrm{n}} = 0.2\times16.986 = \SI{3.397}{\newton}$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.15,
+   force/.style={-{Stealth[length=5pt]}, line width=1.0pt},
+   part/.style={-{Stealth[length=4pt]}, line width=0.6pt, dashed}]
+   % the ramp, rising to the left at 30 degrees
+   \fill[black!10] (0,0) -- (5.2,0) -- (0,3.0) -- cycle;
+   \draw[line width=0.6pt] (0,0) -- (5.2,0) -- (0,3.0);
+   \draw[black!50, line width=0.4pt] (4.3,0) arc[start angle=180,
+      end angle=150, radius=0.9];
+   \node at (3.95,0.2) {\small \ang{30}};
+   % the block, its centre on the line through the middle of its face
+   \begin{scope}[shift={(2.25,1.70)}, rotate=-30]
+      \draw[line width=0.6pt, fill=white] (-0.45,0) rectangle (0.45,0.6);
+      \coordinate (C) at (0,0.3);
+   \end{scope}
+   % weight and its two parts
+   \draw[force] (C) -- ++(0,-1.35) coordinate (W)
+      node[below] {\small $mg$};
+   \draw[part] (C) -- ++(-30:0.675) node[right] {\small $mg\sin\ang{30}$};
+   \draw[part] (C) -- ++(-120:1.169) node[below left] {\small $mg\cos\ang{30}$};
+   % normal force and friction
+   \draw[force, accent] (C) -- ++(60:1.169) node[above right]
+      {\small $F_{\mathrm{n}}$};
+   \draw[force, oxblood] ($(C)+(150:0.45)$) -- ++(150:0.234)
+      node[above left] {\small $F_{\mathrm{fr}}$};
+   \draw[black!50, line width=0.4pt] ($(C)+(-90:0.5)$) arc[start angle=-90,
+      end angle=-120, radius=0.5];
+   \node at ($(C)+(-105:0.72)$) {\scriptsize \ang{30}};
+   \fill (C) circle (1.3pt);
+\end{tikzpicture}
+\caption{A block sliding down a rough ramp. Its weight $mg$ is split
+(dashed) into a part along the ramp and a part into it. The normal force
+$F_{\mathrm{n}}$ (teal) balances the part into the ramp, and friction
+$F_{\mathrm{fr}}$ (dark red) acts up the ramp, against the motion.}
+\label{fig:en-ramp}
+\end{figure}
+
+Over the length $L = \SI{3}{\metre}$ the block drops by $L\sin\ang{30} =
+\SI{1.5}{\metre}$, and the three forces do the work
+\begin{align*}
+   W_{\mathrm{weight}} &= -mg\times(-1.5)
+      && \text{by \cref{sec:en-track}, $-mg$ times the rise,}\\
+   &= 2\times9.80665\times1.5 = \SI{29.42}{\joule} ,\\
+   W_{\mathrm{n}} &= 0
+      && \text{perpendicular to the motion,}\\
+   W_{\mathrm{fr}} &= -3.397\times3 = \SI{-10.19}{\joule}
+      && \text{against the motion.}
+\end{align*}
+The block arrives with $K = 29.42 - 10.19 = \SI{19.23}{\joule}$, and so
+with speed $\sqrt{2\times19.23/2} = \SI{4.385}{\metre\per\second}$; on a
+smooth ramp it would arrive at $\sqrt{2g\times1.5} =
+\SI{5.424}{\metre\per\second}$.
+
+\subsection*{The rate of energy loss}
+
+Friction and the drag of \cref{sec:ne-drag} always point against the
+velocity, so on a trip out to a point and back they do negative work on
+both legs, whereas a force with a potential energy does the work $U(x_A)
+- U(x_A) = 0$ on any trip that returns to its start $x_A$. They therefore
+have no potential energy. To see their effect on $E$, write the net force
+on a body moving along a line as a conservative part, $-\dd U/\dd x$,
+plus the rest, $F^{\mathrm{nc}}$, the non-conservative part. The kinetic
+energy changes at the rate $(-\dd U/\dd x + F^{\mathrm{nc}})\,v$, by
+\cref{sec:en-varying}, and the potential energy at the rate $(\dd U/\dd
+x)\,v$, by the chain rule, so their sum changes at the rate
+\begin{equation}
+   \frac{\dd E}{\dd t} = F^{\mathrm{nc}}\,v :
+   \label{eq:en-dEdt-1d}
+\end{equation}
+the total energy changes at exactly the rate at which the
+non-conservative force does work. Friction always opposes the velocity,
+so $F^{\mathrm{nc}}v = -\mu_{\mathrm{k}}F_{\mathrm{n}}\lvert v\rvert$, and
+the energy can only fall. For linear drag, $F^{\mathrm{nc}} = -bv$ and
+$\dd E/\dd t = -bv^2$.
+
+The bead of \cref{sec:ne-drag} sinking at its terminal velocity shows
+this rate at work. Measuring the depth $x$ downwards, its potential
+energy is $U = -mgx$, which falls at the rate $mg\,v_\infty$, while its
+kinetic energy stays constant. Every second, then, the weight does
+$mg\,v_\infty = 0.01\times9.80665\times1.961 = \SI{0.1923}{\joule}$ of
+work, and the drag removes all of it: $bv_\infty^2 = 0.05\times1.961^2 =
+\SI{0.1923}{\watt}$, the same, because $bv_\infty = mg$.
+
+\begin{selfcheck}
+A box sliding across a floor stops after \SI{0.68}{\metre}. How far would
+a box of twice the mass, sliding on the same floor at the same starting
+speed, travel before stopping? Where has the kinetic energy gone?
+\end{selfcheck}

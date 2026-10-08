@@ -1,0 +1,31 @@
+%=============================================================================!
+% 0.2  HOW THE BOOK IS ORGANISED                                              !
+%=============================================================================!
+\section{How the book is organised}
+\label{sec:or-map}
+
+This working edition contains Chapters~0--18 and the trajectory gallery
+in Appendix~F. The six-part map in \cref{fig:or-map} also shows the intended
+continuation through neural networks and learned propagators, so that the
+purpose of the earlier material is visible from the outset.
+
+The six parts follow the order introduced above, and two links between
+them shape the reading. The Hamiltonian formulation in Part~I supplies the
+conservation laws that TrajCast imposes on its predictions and the geometric
+property that keeps the standard integrator stable, so Part~II can locate
+exactly the limit on the step that learned propagators aim to lift. Part~IV
+ends with a study of lithium in graphite run with a foundation potential,
+and its trajectories provide data for the planned comparisons in Part~VI,
+where the learned models will be judged on a system the reader has already
+simulated.
+
+\begin{figure}[!hb]
+\centering
+\input{chapters/ch00_orientation/fig_map}
+\caption{The course map, including the planned Chapters~19--30, in reading
+order. An accent dot marks a
+chapter on which the TrajCast chapter draws directly; a dashed outline marks
+a chapter off the fast track, the shortest path to reading the TrajCast code
+with understanding.}
+\label{fig:or-map}
+\end{figure}

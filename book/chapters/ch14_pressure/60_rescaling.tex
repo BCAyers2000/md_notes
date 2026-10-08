@@ -1,0 +1,182 @@
+%=============================================================================!
+% 14.6  WEAK COUPLING AND STOCHASTIC CELL RESCALING                           !
+%=============================================================================!
+\section{Weak coupling and stochastic cell rescaling}
+\label{sec:pr-rescaling}
+
+Chapter~13 built weak coupling for the temperature, found its
+fluctuations too narrow, and mended it with noise. The same two steps
+give the two first-order barostats of this section, which set the rate of
+change of the volume directly, with no momentum of the volume to carry
+it on: Berendsen's, which
+relaxes the pressure towards its target, and stochastic cell rescaling,
+which adds the noise that gives the volume its right spread.
+
+\subsection*{Weak coupling}
+
+Berendsen and colleagues asked the pressure to relax towards $P_0$ with a
+time constant $\tau_{\mathrm P}$\cite{Berendsen1984},
+\begin{equation*}
+   \frac{\dd P}{\dd t} = \frac{P_0 - P}{\tau_{\mathrm P}} .
+\end{equation*}
+The pressure responds to the volume through the compressibility, $\dd P
+= -\dd V/(V\kappa)$, with $\kappa$ an estimate of the material's
+$\kappa_T$, so the volume must change at the rate
+\begin{equation*}
+   \frac{\dd V}{\dd t} = -V\kappa\,\frac{\dd P}{\dd t}
+   = -\frac{V\kappa}{\tau_{\mathrm P}}(P_0 - P) .
+\end{equation*}
+Over one step $\dt$ the volume is multiplied by $1 -
+(\kappa\dt/\tau_{\mathrm P})(P_0 - P)$, and each length by its cube root,
+which to first order in the small change, by $(1 + y)^{1/3} \approx 1 +
+y/3$ from the Taylor series of \cref{sec:mo-taylor}, is
+\begin{equation*}
+   1 - \frac{\kappa\dt}{3\tau_{\mathrm P}}(P_0 - P) ;
+\end{equation*}
+\texttt{barostats.Berendsen} scales the cell and the positions by this
+factor at the start of each step, leaving the velocities as they are, and
+with Berendsen's thermostat follows ASE's \texttt{NPTBerendsen} to
+\SI{7.9e-8}{\angstrom} over 40 steps. The estimate $\kappa$ need not be
+right. Near the mean volume $\bar V$, $P_0 - P \approx (V - \bar
+V)/(\bar V\kappa_T)$ with the true $\kappa_T$, so
+\begin{equation*}
+   \frac{\dd V}{\dd t} = -\frac{\kappa}{\kappa_T\tau_{\mathrm P}}(V - \bar V) ,
+\end{equation*}
+and the volume relaxes with the time constant $\tau_{\mathrm P}\kappa_T/
+\kappa$, in the way the gap $w$ of \cref{sec:ne-drag} did: a wrong
+$\kappa$ changes only how fast the volume settles. We gave the
+barostats on the liquid the rough guess $\kappa = \SI{2.5}{\per\giga
+\pascal}$; with the measured $\kappa_T = \SI{1.46}{\per\giga\pascal}$ and
+$\tau_{\mathrm P} = \SI{1}{\pico\second}$ the liquid's volume relaxes in
+\SI{0.58}{\pico\second}.
+
+Like its thermostat, Berendsen's barostat holds the mean pressure and
+squeezes the fluctuations (\cref{fig:pr-volume}). On the ideal gas of
+\cref{sec:pr-npt}, under Langevin friction, which leaves all $3N$ momenta
+free so that $\ens{2K} = 3N\kB T$, its volume spreads by
+\SI{192}{\angstrom\cubed}, 0.361 of the exact \SI{533}{\angstrom\cubed},
+and even its mean is off, \SI{2328}{\angstrom\cubed} against
+\SI{2443}{\angstrom\cubed}. The barostat and the ensemble both hold the
+mean of the instantaneous pressure, here $2K/3V$, at $P_0$, which fixes
+$\ens{1/V} = P_0/N\kB T$. The ensemble's wide spread makes $\ens{1/V}$
+larger than $1/\ens{V}$, by the factor $(N + 1)/N$, which puts its mean at
+$(N + 1)\kB T/P_0$; Berendsen's narrow spread leaves $\ens{1/V}$ close to
+$1/\ens{V}$ and the volume near $N\kB T/P_0 = \SI{2327}{\angstrom\cubed}$
+(\cref{ex:pr-berendsen-mean}). On the liquid, with three runs
+of \SI{300}{\pico\second} at \SI{0.1}{\giga\pascal} and \SI{135}{\kelvin}
+under CSVR, the mean pressure is \SI{0.1000}{\giga\pascal}, but
+$\kappa_T$ read from the volume's fluctuations by \cref{eq:pr-volume} is
+$(0.64 \pm 0.05)$\,\si{\per\giga\pascal} against the
+\SI{1.46}{\per\giga\pascal} measured at fixed volumes.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/volume}
+\caption{The volume a barostat samples. (a) 20 argon atoms that do not
+interact, at \SI{135}{\kelvin} and $P_0 = \SI{1e-4}{\electronvolt\per
+\angstrom\cubed}$, with $\tau_{\mathrm P} = \SI{0.2}{\pico\second}$, and
+$\kappa = 1/P_0$ and Langevin friction for the first-order barostats: the
+density of the volume under Berendsen's barostat, stochastic cell
+rescaling and the piston of Martyna, Tobias and Klein (MTK) of
+\cref{sec:pr-piston} with its chains,
+against the exact $V^N\mathrm{e}^{-\beta P_0V}$ (dashed). (b) The liquid
+at \SI{135}{\kelvin} and \SI{0.1}{\giga\pascal}, three runs of
+\SI{300}{\pico\second} for each: the density of the volume, against the
+Gaussian of variance $\kB T\ens{V}\kappa_T$ with $\kappa_T$ from the
+runs at fixed volume (dashed).}
+\label{fig:pr-volume}
+\end{figure}
+
+\subsection*{Noise for the volume}
+
+Bernetti and Bussi mended the barostat as CSVR mended the
+thermostat\cite{Bernetti2020}. Berendsen's drift, written for $\ln V$, is
+$\dd\ln V = \dd V/V = -(\kappa/\tau_{\mathrm P})(P_0 - P)\,\dd t$. Near the
+mean, $\ln V - \ln\bar V \approx (V - \bar V)/\bar V$, so $P_0 - P \approx
+(\ln V - \ln\bar V)/\kappa_T$ and
+\begin{equation*}
+   \dd\ln V = -\frac{\kappa}{\kappa_T\tau_{\mathrm P}}\,(\ln V - \ln\bar V)
+   \,\dd t ,
+\end{equation*}
+the drag of \cref{sec:th-langevin} with $\gamma = \kappa/(\kappa_T
+\tau_{\mathrm P})$, acting on $\ln V - \ln\bar V$. Adding kicks of strength
+$\sigma$ makes it the Ornstein-Uhlenbeck process of \cref{eq:th-ou},
+whose variance settles at $\sigma^2/2\gamma$ (\cref{ex:th-ou-variance}).
+The ensemble asks for the variance of $\ln V$ to be that of $V$ over
+$\bar V^2$, $\kB T\kappa_T/\bar V$ by \cref{eq:pr-volume}, so
+\begin{equation*}
+   \frac{\sigma^2}{2\gamma} = \frac{\kB T\kappa_T}{\bar V}
+   \quad\Longrightarrow\quad
+   \sigma^2 = \frac{2\kappa}{\kappa_T\tau_{\mathrm P}}\,
+   \frac{\kB T\kappa_T}{\bar V} = \frac{2\kB T\kappa}{\bar V\tau_{\mathrm P}} ,
+\end{equation*}
+and the unknown $\kappa_T$ cancels. Stochastic cell rescaling keeps this
+noise, with the current $V$ in place of $\bar V$:
+\begin{equation}
+   \dd\ln V = -\frac{\kappa}{\tau_{\mathrm P}}(P_0 - P)\,\dd t
+   + \sqrt{\frac{2\kB T\kappa\,\dd t}{V\tau_{\mathrm P}}}\;g ,
+   \label{eq:pr-scr}
+\end{equation}
+with $g$ a fresh number from the normal distribution of mean 0 and
+variance 1 at each interval $\dd t$, the kick of \cref{sec:th-langevin}:
+the fluctuation-dissipation relation again, now for the volume. Bernetti
+and Bussi showed that it samples the ensemble at constant pressure far
+from the mean as well as near it\cite{Bernetti2020}, provided $P$ is the
+instantaneous pressure taken along the path on which the barostat moves
+the atoms. Their drift comes from the slope of $K + U + P_0V$ with $V$
+along that path, so $P$ must be $-\partial(K + U)/\partial V$ there. The
+virial part already is, since \cref{sec:pr-periodic} took $\partial U/
+\partial V$ at fixed fractional coordinates. If every momentum is scaled by
+$V^{-1/3}$ as the box grows, $K \propto V^{-2/3}$ and $\partial K/\partial V
+= -\frac23K/V$ (\cref{ex:pr-kinetic}), so $-\partial K/\partial V$ is $2K/3V$,
+the kinetic part of the instantaneous pressure. Each length is therefore
+multiplied by $\mathrm{e}^{\dd\ln V/3}$ and each velocity by
+$\mathrm{e}^{-\dd\ln V/3}$. \texttt{StochasticCellRescaling.scale} takes
+one such step of \cref{eq:pr-scr} each time step:
+
+\begin{code}
+        kappa, tau, p0 = self.compressibility, self.tau, self.pressure
+        kt_v = self.kb * self.temperature / cell_volume(h)
+        diagonal = np.diag(tensor)
+        if self.couple == "isotropic":
+            d_log_v = (-kappa / tau * (p0 - diagonal.mean()) * dt
+                       + math.sqrt(2 * kt_v * kappa * dt / tau)
+                       * rng.standard_normal())
+            stretch = np.full(3, math.exp(d_log_v / 3))
+\end{code}
+
+\noindent followed by \texttt{\_scale\_cell}, which multiplies the cell's
+lattice vectors by \texttt{stretch}, the positions with them, and the
+velocities by the inverse. For the liquid, a step moves $\ln V$ by noise
+of spread $2.75\times10^{-3}$, against its settled spread of 0.0149.
+
+\subsection*{Measured}
+
+On the ideal gas the volume now follows the exact density closely
+(\cref{fig:pr-volume}(a)): mean \SI{2444}{\angstrom\cubed}, 1.000 of the
+exact, and spread \SI{541}{\angstrom\cubed}, 1.014 of it. On the liquid
+the three runs give $\kappa_T = (1.50 \pm 0.05)$\,\si{\per\giga\pascal}
+from the fluctuations, against \SI{1.46}{\per\giga\pascal} at fixed
+volumes, with the mean pressure 0.0988, 0.1004 and
+\SI{0.1002}{\giga\pascal}. ASE has no stochastic cell rescaling; the
+ideal gas, whose answer is known exactly, is the independent check.
+
+\begin{keyidea}
+Berendsen's barostat scales each length by $1 - (\kappa\dt/3\tau_{\mathrm
+P})(P_0 - P)$: it holds the mean pressure, relaxes the volume in
+$\tau_{\mathrm P}\kappa_T/\kappa$, and squeezes the volume's fluctuations,
+to 0.36 of the exact spread for a small ideal gas and to less than half
+the compressibility for the liquid. Stochastic cell rescaling adds to $\ln V$
+the noise $\sqrt{2\kB T\kappa\,\dd t/(V\tau_{\mathrm P})}\,g$ that the
+fluctuation-dissipation relation demands, and samples the volume
+correctly.
+\end{keyidea}
+
+\notebook{14}{set the barostat's time constant and compare the volume with the exact density}
+
+\begin{selfcheck}
+The liquid reads \SI{0.08}{\giga\pascal} with the target
+\SI{0.1}{\giga\pascal}, $\kappa = \SI{2.5}{\per\giga\pascal}$ and
+$\dt/\tau_{\mathrm P} = 0.01$. By what factor does Berendsen's barostat
+multiply each length in this step?
+\end{selfcheck}

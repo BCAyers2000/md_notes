@@ -1,0 +1,192 @@
+%=============================================================================!
+% 11.5  RESONANCE                                                             !
+%=============================================================================!
+\section{Resonance}
+\label{sec:cs-resonance}
+
+RESPA applies the slow forces as sudden kicks, once per outer step, to
+atoms that are vibrating under the fast forces in between. A swing pushed
+in step with its motion goes higher, and without drag higher and higher
+(\cref{sec:os-driven}); kicks that come in step with a vibration, once in
+every half swing or every swing, can pump it in the same way. This section
+finds the outer steps at which that happens for the simplest system that
+shows it, and compares the result with water.
+
+\subsection*{Two springs}
+
+One coordinate $q$, of unit mass, is pulled back by a fast spring and a
+slow one, with angular frequencies $\omega_{\mathrm f}$ and
+$\omega_{\mathrm s}$, so its force is $-(\omega_{\mathrm f}^2 +
+\omega_{\mathrm s}^2)\,q$. RESPA follows the fast spring with many inner
+steps, closely enough to take its motion as exact: by the solution of
+\cref{sec:ne-spring}, over a time $\dt$ it carries the state $(q, v)$ to
+\begin{equation*}
+   q' = q\cos\theta + \frac{v}{\omega_{\mathrm f}}\sin\theta , \qquad
+   v' = -\omega_{\mathrm f}q\sin\theta + v\cos\theta , \qquad
+   \theta = \omega_{\mathrm f}\dt ,
+\end{equation*}
+and half a kick by the slow spring changes $v$ by $-\frac12\dt\,
+\omega_{\mathrm s}^2q$ and leaves $q$. Both are linear, so as matrices
+acting on the column $(q, v)$,
+\begin{equation*}
+   \vb{R} = \begin{pmatrix} \cos\theta & \sin\theta/\omega_{\mathrm f}\\
+   -\omega_{\mathrm f}\sin\theta & \cos\theta \end{pmatrix} , \qquad
+   \vb{K} = \begin{pmatrix} 1 & 0\\ -\kappa & 1 \end{pmatrix} , \qquad
+   \kappa = \tfrac12\dt\,\omega_{\mathrm s}^2 ,
+\end{equation*}
+and the outer step is $\vb{M} = \vb{K}\vb{R}\vb{K}$, the half kick
+$\vb{K}$ acting first. Multiplying, with $C = \cos\theta$ and $S =
+\sin\theta$,
+\begin{align*}
+   \vb{R}\vb{K} &= \begin{pmatrix} C - \kappa S/\omega_{\mathrm f} &
+      S/\omega_{\mathrm f}\\ -\omega_{\mathrm f}S - \kappa C & C
+      \end{pmatrix} ,\\
+   \vb{K}\vb{R}\vb{K} &= \begin{pmatrix} C - \kappa S/\omega_{\mathrm f} &
+      S/\omega_{\mathrm f}\\ -\omega_{\mathrm f}S - 2\kappa C
+      + \kappa^2S/\omega_{\mathrm f} & C - \kappa S/\omega_{\mathrm f}
+      \end{pmatrix} ,
+\end{align*}
+so the trace, the sum of the diagonal entries (\cref{sec:in-reversal}),
+is $2C - 2\kappa S/\omega_{\mathrm f}$, which with $2\kappa = \dt\,
+\omega_{\mathrm s}^2$ is
+\begin{equation}
+   \operatorname{tr}\vb{M} = 2\cos\theta
+   - \frac{\omega_{\mathrm s}^2\dt}{\omega_{\mathrm f}}\sin\theta .
+   \label{eq:cs-trace}
+\end{equation}
+The fast motion $\vb{R}$, which turns the point $(q, v/\omega_{\mathrm f})$
+through the angle $\theta$, and the kick $\vb{K}$ each keep area in the
+phase plane (determinants $\cos^2\theta + \sin^2\theta = 1$ and $1$), so
+their product does too, and $\det\vb{M} = 1$ (\cref{sec:ha-symplectic}).
+Whether repeated outer steps stay bounded depends on the trace alone.
+
+\begin{toolbox}[Powers of a $2\times2$ matrix]
+Any $2\times2$ matrix $\vb{M}$, with $M_{11}$, $M_{12}$ in its first row
+and $M_{21}$, $M_{22}$ in its second, satisfies
+\begin{equation*}
+   \vb{M}^2 = (\operatorname{tr}\vb{M})\,\vb{M} - (\det\vb{M})\,\vb{I} ,
+\end{equation*}
+as multiplying out shows: $\vb{M}^2$ has $M_{11}^2 + M_{12}M_{21}$ and
+$M_{11}M_{12} + M_{12}M_{22}$ in its first row and $M_{21}M_{11} +
+M_{22}M_{21}$ and $M_{21}M_{12} + M_{22}^2$ in its second, while $(M_{11}
++ M_{22})\vb{M}$ has $M_{11}^2 + M_{11}M_{22}$, $M_{11}M_{12} +
+M_{12}M_{22}$ and $M_{21}M_{11} + M_{21}M_{22}$, $M_{11}M_{22} +
+M_{22}^2$, and subtracting $(M_{11}M_{22} - M_{12}M_{21})\vb{I}$ from the
+latter gives the former. With $\det\vb{M} = 1$, multiplying by
+$\vb{M}^{n-1}$ gives $\vb{M}^{n+1} = (\operatorname{tr}\vb{M})\vb{M}^n -
+\vb{M}^{n-1}$, so each entry $x_n$ of the state after $n$ steps,
+$\vb{M}^n$ times the start, obeys
+\begin{equation*}
+   x_{n+1} = (\operatorname{tr}\vb{M})\,x_n - x_{n-1} .
+\end{equation*}
+This is the recurrence of \cref{sec:in-shadow}. If
+$\lvert\operatorname{tr}\vb{M}\rvert < 2$, then $\operatorname{tr}\vb{M} =
+2\cos\phi$ for some angle $\phi$, and $\cos n\phi$ and $\sin n\phi$ solve
+it, as shown there: the motion stays bounded. If
+$\lvert\operatorname{tr}\vb{M}\rvert > 2$, the quadratic $\Lambda^2 -
+(\operatorname{tr}\vb{M})\Lambda + 1 = 0$ has, by the quadratic formula, a
+real root $\Lambda$ with $\lvert\Lambda\rvert > 1$, and dividing it by
+$\Lambda$ gives $\Lambda + 1/\Lambda = \operatorname{tr}\vb{M}$. Then
+$\Lambda^{n+1} = (\Lambda + 1/\Lambda)\Lambda^n - \Lambda^{n-1}$, so $x_n =
+\Lambda^n$ solves the recurrence, as does $\Lambda^{-n}$, and a general
+start, a mixture of the two, grows by the factor $\lvert\Lambda\rvert$ at
+every step. At $\lvert\operatorname{tr}\vb{M}\rvert = 2$ exactly the growth,
+if any, is slower, by a fixed amount at each step.
+\end{toolbox}
+
+Without the slow spring, $\operatorname{tr}\vb{M} = 2\cos\theta$, which
+never leaves $[-2, 2]$: exact inner motion is stable at any outer step.
+The slow spring adds $-b\theta\sin\theta$ to the trace, with $b =
+(\omega_{\mathrm s}/\omega_{\mathrm f})^2$, since $\omega_{\mathrm s}^2
+\dt/\omega_{\mathrm f} = b\,\omega_{\mathrm f}\dt$. Just below
+$\theta = \pi$ we write $\theta = \pi - \epsilon$ with $\epsilon$ small and
+positive; then $\cos\theta = -\cos\epsilon \approx -1 + \frac12\epsilon^2$
+and $\sin\theta = \sin\epsilon \approx \epsilon$ (\cref{sec:mo-taylor}),
+and
+\begin{align*}
+   \tfrac12\operatorname{tr}\vb{M} &\approx -1 + \tfrac12\epsilon^2
+   - \tfrac12b\pi\epsilon && \text{with $\theta \approx \pi$ in the last
+   term,}\\
+   &< -1 \quad\text{when}\quad \tfrac12\epsilon^2 < \tfrac12b\pi\epsilon ,
+   \text{ that is, } 0 < \epsilon < b\pi .
+\end{align*}
+The motion therefore grows for outer steps in a band just below $\theta =
+\pi$, half the fast period $\mathcal{T}_{\mathrm f} = 2\pi/\omega_{\mathrm
+f}$, of width $b\pi$ in $\theta$, or $\frac12b\,\mathcal{T}_{\mathrm f}$
+in $\dt$; just below $\theta = 2\pi$, where $\sin\theta$ is negative, the
+same argument gives a band twice as wide below $\mathcal{T}_{\mathrm f}$
+(\cref{ex:cs-band}). Near $\dt = \frac12\mathcal{T}_{\mathrm f}$ the kicks
+come every half vibration, when the fast motion has carried $q$ to minus
+its value, and each one, proportional to $q$, meets the vibration in the
+same phase as the last: a resonance. Together the two springs shorten the
+period to $\mathcal{T}_{\mathrm f}/\sqrt{1 + b}$, so the band lies just
+below $\frac12\mathcal{T}_{\mathrm f}$, around half that period. At
+$\dt = \frac12\mathcal{T}_{\mathrm f}$ exactly, $\theta = \pi$, the trace
+is $-2$, and $\vb{M}$ has rows $(-1, 0)$ and $(2\kappa, -1)$: $q$ comes
+back to minus itself at every step while $v$ gains $2\kappa q$ each time,
+so the motion grows steadily rather than by a factor.
+
+\Cref{fig:cs-resonance} measures it for $\omega_{\mathrm s} =
+0.3\,\omega_{\mathrm f}$, so $b = 0.09$ and the predicted width below
+$\frac12\mathcal{T}_{\mathrm f}$ is $0.045\,\mathcal{T}_{\mathrm f}$. The
+trace of \cref{eq:cs-trace} leaves $[-2, 2]$ for $\dt$ from 0.459 to
+$0.500\,\mathcal{T}_{\mathrm f}$, a width of 0.041, since the term
+$\frac12b\epsilon^2$ dropped with $\theta \approx \pi$ narrows the band by
+the factor $1/(1 + b)$, and from 0.919 to $1.000\,\mathcal{T}_{\mathrm
+f}$. RESPA run for 300 steps from $q = 1$ at rest reaches a size
+$\sqrt{q^2 + (v/\omega_{\mathrm f})^2}$ of $\num{2.9e17}$ at
+$0.48\,\mathcal{T}_{\mathrm f}$, grows steadily to 23 at
+$0.50\,\mathcal{T}_{\mathrm f}$, and stays near its start, below 2, at
+0.45 and $0.52\,\mathcal{T}_{\mathrm f}$.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch11_constraints/resonance}
+\caption{Resonance of a fast spring kicked by a slow one, $\omega_{\mathrm
+s} = 0.3\,\omega_{\mathrm f}$, stepped by RESPA with 50 inner steps.
+(a) Half the trace of the outer step, \cref{eq:cs-trace}, against the
+outer step in units of the fast period; the motion grows where it passes
+$\pm1$ (dotted), in the shaded bands, and the dashed curve, $\cos\theta$,
+is half the trace without the slow spring. (b) The largest size of the
+state, $\sqrt{q^2 + (v/\omega_{\mathrm f})^2}$, in 300 outer steps from $q
+= 1$ at rest.}
+\label{fig:cs-resonance}
+\end{figure}
+
+\subsection*{In water}
+
+Water has many fast vibrations, and its slow forces are not springs, but
+the same picture explains part of \cref{fig:cs-respa}. The energy drifts
+most for outer steps around half the periods of the model's two
+stretches, 3.67 and \SI{4.44}{\femto\second}: by $+0.19$, $+1.14$,
+$+2.25$ and \SI{+0.33}{\electronvolt\per\pico\second} at 3.5, 3.75, 4 and
+\SI{4.25}{\femto\second}, and the run blows up at
+\SI{4.5}{\femto\second}. The fluctuation grows too fast well before those
+steps. From an outer step of 1 to \SI{2}{\femto\second} it grows by a
+factor of 4.8, a little more than the factor of 4 of $\dt^2$, and from 2
+to \SI{3}{\femto\second} by 4.9, against 2.25. Ma, Izaguirre and Skeel
+found the same in flexible water and proteins, and traced it to
+resonances of a kind that the linear model above lacks, with
+instabilities when the outer step is a third or possibly a quarter of the
+fastest period\cite{Ma2003}: here 2.44 and \SI{1.83}{\femto\second}. The
+outer step of RESPA is therefore kept below a third of the fastest
+period, and for this water a quarter, whatever the cost of the slow
+forces.
+
+\begin{keyidea}
+Kicks by the slow forces once per outer step can pump a fast vibration.
+For two springs the outer step's matrix has the trace $2\cos\theta -
+(\omega_{\mathrm s}^2\dt/\omega_{\mathrm f})\sin\theta$, and the motion
+grows where it leaves $[-2, 2]$, in bands just below multiples of half
+the fast period. In water the fluctuation climbs faster than $\dt^2$
+beyond about a quarter of the fastest period, where Ma, Izaguirre and
+Skeel found resonances beyond this linear picture.
+\end{keyidea}
+
+\notebook{11}{move the outer step across the resonance bands}
+
+\begin{selfcheck}
+For $\omega_{\mathrm s} = 0.1\,\omega_{\mathrm f}$ and a fast period of
+\SI{9}{\femto\second}, where is the band of growth below half the period,
+and how wide is it?
+\end{selfcheck}

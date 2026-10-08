@@ -1,0 +1,82 @@
+%=============================================================================!
+% 4.3  THE PHASE PORTRAIT                                                     !
+%=============================================================================!
+\section{The phase portrait}
+\label{sec:os-phase}
+
+\Cref{sec:ne-equations} showed that the state of a body moving along a
+line is the pair $(x, v)$, and drew motions as paths through the plane of
+states (\cref{fig:ne-state}b). This plane is called the phase plane, and a
+drawing of the paths through it the phase portrait of the system. For the
+oscillator, energy alone gives the shape of every path.
+
+\subsection*{Ellipses of constant energy}
+
+Along any motion of the block, $\frac12 mv^2 + \frac12 kx^2 = E$. Dividing
+both sides by $E$, which is positive unless the block rests at $x = 0$,
+gives $kx^2/2E + mv^2/2E = 1$, and dividing the top and bottom of the
+first fraction by $k$ and of the second by $m$,
+\begin{equation}
+   \frac{x^2}{2E/k} + \frac{v^2}{2E/m} = 1 ,
+   \qquad\text{or}\qquad
+   \Bigl(\frac{x}{a}\Bigr)^2 + \Bigl(\frac{v}{b}\Bigr)^2 = 1
+   \quad\text{with } a = \sqrt{\frac{2E}{k}},\ b = \sqrt{\frac{2E}{m}} .
+   \label{eq:os-ellipse}
+\end{equation}
+The second form says that the point $(x/a, v/b)$ lies on the circle of
+radius 1, so the state $(x, v)$ lies on that circle stretched by the
+factor $a$ along the $x$ axis and $b$ along the $v$ axis. A stretched
+circle is an ellipse, and $a$ and $b$ are its semi-axes, half its width
+and half its height. Here $a = \sqrt{2E/k}$ is the amplitude $A$
+(\cref{sec:os-energy}), and $b = \sqrt{2E/m} = \sqrt{(2E/k)(k/m)} =
+A\omega$, multiplying and dividing by $k$ under the root, is the largest
+speed. For the block with $E =
+\SI{0.04}{\joule}$ they are \SI{4}{\centi\metre} and
+\SI{0.4}{\metre\per\second}.
+
+\Cref{fig:os-phase}(a) draws the ellipses for three energies. Every
+state lies on exactly one such ellipse, the one of its own energy, and the
+block goes round it for ever, because energy is conserved. Two paths can
+never cross: if they met at one state, that state would start two
+different motions, which \cref{sec:ne-equations} rules out. The
+direction of travel is clockwise: in the upper half of the plane $v > 0$,
+so $x$ grows and the state moves to the right; in the lower half it moves
+to the left. The panel is drawn with \SI{1}{\centi\metre} of position as
+long as \SI{0.1}{\metre\per\second} of velocity, that is, with the velocity
+divided by $\omega = \SI{10}{\radian\per\second}$, since
+$\SI{0.1}{\metre\per\second}/\SI{10}{\radian\per\second} =
+\SI{0.01}{\metre}$. On that scale the ellipses are circles, since $(x,
+v/\omega) = A(\cos\theta, -\sin\theta)$ by \cref{sec:os-circle}: the
+reference circle again, reflected in the $x$ axis, which reverses the sign
+of the second coordinate and so turns the anticlockwise motion of $P$ into
+a clockwise one.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch04_oscillations/phase}
+\caption{Phase portraits. (a) The block of \cref{sec:os-circle} at the
+energies 0.01, 0.04 (teal) and \SI{0.09}{\joule}, traversed clockwise;
+with \SI{1}{\centi\metre} drawn as long as \SI{0.1}{\metre\per\second}
+the ellipses are circles. (b) The pendulum of \cref{sec:os-anharmonic},
+with the rate of change of its angle, $\dot\theta$, in units of its
+small-swing angular frequency $\omega_0$: closed paths while it swings (grey), the path through the
+upright position (teal), and open paths when it goes over the top
+(ochre).}
+\label{fig:os-phase}
+\end{figure}
+
+Phase portraits return throughout the book. Chapter~7 uses momentum in
+place of velocity and studies the flow of whole regions of the phase
+plane, and Chapter~9 judges methods of computing motion by whether their
+paths close, as these do, or spiral outwards. Panel (b), the pendulum,
+belongs to \cref{sec:os-anharmonic}; there $\theta$ is the angle of the
+pendulum, not $\omega t + \phi$. Its teal paths seem to cross at the
+upright position, but that state is a path of its own, a pendulum
+balanced at rest, which a pendulum on the teal paths approaches ever more
+slowly and never reaches, so no state starts two motions.
+
+\begin{selfcheck}
+A block with $\omega = \SI{10}{\radian\per\second}$ starts at $x = 0$
+with $v = \SI{0.3}{\metre\per\second}$. What are the semi-axes of its
+ellipse in the phase plane, and where on the ellipse does it start?
+\end{selfcheck}

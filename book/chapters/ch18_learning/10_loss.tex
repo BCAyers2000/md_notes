@@ -1,0 +1,154 @@
+%=============================================================================!
+% 18.1  DATA, MODEL AND LOSS                                                  !
+%=============================================================================!
+\section{Data, model and loss}
+\label{sec:lo-loss}
+
+A spring is stretched by 1, 2, \dots, \SI{10}{\centi\metre}, and at each
+stretch the force is read on a dial that errs by about
+\SI{0.05}{\newton} (\cref{fig:lo-bond}a, readings drawn by computer for a
+spring of \SI{25}{\newton\per\metre}). Hooke's law (\cref{sec:ne-spring})
+says the force is $kx$ for some stiffness $k$, and the task is to choose
+$k$. Three things make up any such task. The \emph{data} are the pairs
+of stretch and force, $(x_i, F_i)$ for $i = 1$ to $n$; the \emph{model}
+is the rule $F = kx$ that turns a stretch into a predicted force, with
+$k$ its one adjustable number, its \emph{weight}; and the \emph{loss}
+measures how far the model misses the data. The usual loss is the sum of
+squared misses,
+\begin{equation}
+   \mathcal{L}(k) = \sum_{i=1}^n\bigl(F_i - kx_i\bigr)^2 ,
+   \label{eq:lo-loss}
+\end{equation}
+which is zero only if every reading lies on the line, is never negative,
+and counts a miss twice as large four times as heavily. Learning, here,
+is finding the $k$ that makes $\mathcal{L}$ least.
+
+$\mathcal{L}$ is a parabola in $k$ (\cref{fig:lo-bond}b): expanding the square,
+$\mathcal{L} = \sum_iF_i^2 - 2k\sum_ix_iF_i + k^2\sum_ix_i^2$, a quadratic with a
+positive coefficient of $k^2$. Its lowest point is where its slope
+vanishes:
+\begin{align*}
+   \frac{\dd\mathcal{L}}{\dd k} &= -2\sum_ix_i\bigl(F_i - kx_i\bigr) = 0
+      && \text{differentiating each square by the chain rule}\\
+   \sum_ix_iF_i &= k\sum_ix_i^2
+      && \text{dividing by $-2$ and moving the $k$ terms}\\
+   \hat k &= \frac{\sum_ix_iF_i}{\sum_ix_i^2}
+      && \text{solving, the hat marking the fitted value.}
+\end{align*}
+For the readings of the figure $\hat k = \SI{25.72}{\newton\per\metre}$.
+Its error follows as in the least-squares line of \cref{sec:cv-drift}:
+$\hat k$ is a weighted sum of the readings, $\sum_iw_iF_i$ with $w_i =
+x_i/\sum_jx_j^2$, so if the readings err independently by
+$\sigma_{\mathrm m}$, its variance is $\sigma_{\mathrm
+m}^2\sum_iw_i^2 = \sigma_{\mathrm m}^2/\sum_ix_i^2$. With
+$\sigma_{\mathrm m}$ estimated from the misses about the fitted line,
+\SI{0.056}{\newton}, the stiffness is $(25.72 \pm
+0.28)$\,\si{\newton\per\metre}, 2.5 errors from the
+\SI{25}{\newton\per\metre} the readings were drawn from. Ten readings
+fix the stiffness to about 1\%, and with an error estimated from only ten
+readings a miss this large comes in 3\% of such fits, by Student's
+factor (\cref{sec:cv-mean}).
+
+\subsection*{The stiffness of a bond}
+
+The same fit gives the stiffness of a chemical bond from a molecular
+dynamics run. The A--B molecule of Chapter~16, two atoms of nitrogen's
+mass held by a Morse well of depth $D = \SI{1}{\electronvolt}$ and width
+$a = \SI{2}{\per\angstrom}$, has the stiffness $2Da^2 =
+\SI{8}{\electronvolt\per\angstrom\squared}$ at the bottom of its well
+(\cref{sec:os-anharmonic}). Run for \SI{20}{\pico\second} under Langevin
+dynamics, each \SI{10}{\femto\second} gives a reading of the stretch $x
+= r - r_0$ and the force along the bond, 2001 readings in all
+(\cref{fig:lo-bond}c). At \SI{100}{\kelvin} the stretch spreads by
+\SI{0.0345}{\angstrom}, close to the $\sqrt{\kB T/k} =
+\SI{0.0328}{\angstrom}$ that equipartition gives a spring of that
+stiffness (\cref{sec:sm-equipartition}); at \SI{1000}{\kelvin} by
+\SI{0.127}{\angstrom}, against \num{0.104}, reaching
+\SI{0.72}{\angstrom} on the soft outer side of the well.
+
+A straight line through these readings needs two weights, an intercept
+$\theta_0$ and a slope, $F \approx \theta_0 - kx$, since the bond's mean length need
+not sit at $r_0$. Two weights are found as one was, with a little more
+bookkeeping, which the matrix form of the next toolbox does once for any
+number of weights. The line's stiffness is \SI{7.66}{\electronvolt\per
+\angstrom\squared} at \SI{100}{\kelvin}, 7.07 at 300 and 5.26 at
+\SI{1000}{\kelvin}, below the 8 of the well's bottom and further below
+the hotter the run. The fit is sound: the Morse well's own
+stiffness changes along it, as $2Da^2(2\mathrm{e}^{-2ax} -
+\mathrm{e}^{-ax}) \approx 8(1 - 3ax)$ for small $x$, by about a fifth
+over the range the bond explores even at \SI{100}{\kelvin}, and a line
+fitted over a range gives the stiffness averaged over that range, which
+the softer outer side pulls down. A model answers the question its data
+pose: readings from a hot run teach the hot bond. Adding the powers $x^2$,
+$x^3$ and $x^4$ to the model lets the fitted curve bend with the force,
+and its slope at $x = 0$ then gives 8.126, 8.007 and
+\SI{8.000}{\electronvolt\per\angstrom\squared} at \SI{100}{\kelvin}, and
+\num{8.084} at \SI{1000}{\kelvin} with four powers. Choosing what goes
+into a model is the subject of \cref{sec:lo-basis}.
+
+\begin{toolbox}[Least squares in matrix form]
+A model whose prediction is a sum of weights times known functions,
+$\hat y(x) = \sum_{j=1}^p\theta_j\phi_j(x)$, is linear in its weights. At the
+$n$ readings $x_i$ the predictions form the vector $X\boldsymbol{\theta}$, with the
+\emph{design matrix} $X_{ij} = \phi_j(x_i)$, one row per reading and one
+column per function; for the line $\theta_0 - kx$, the columns are 1 and
+$x_i$, and $\boldsymbol{\theta} = (\theta_0, -k)$. The loss is the squared length of the vector of
+misses,
+\begin{equation*}
+   \mathcal{L}(\boldsymbol{\theta}) = (X\boldsymbol{\theta} - \vb{y})^{\mathsf T}(X\boldsymbol{\theta} - \vb{y})
+   = \sum_{i=1}^n\Bigl(\sum_{l=1}^pX_{il}\theta_l - y_i\Bigr)^2 .
+\end{equation*}
+Its rate of change with one weight $\theta_j$, by the chain rule on each
+square, is
+\begin{equation*}
+   \frac{\partial\mathcal{L}}{\partial\theta_j}
+   = \sum_i2\Bigl(\sum_lX_{il}\theta_l - y_i\Bigr)X_{ij}
+   = 2\bigl[X^{\mathsf T}(X\boldsymbol{\theta} - \vb{y})\bigr]_j ,
+\end{equation*}
+since $\sum_iX_{ij}m_i$ is the $j$th entry of $X^{\mathsf T}\vb{m}$ for
+any vector of misses $\vb{m}$. The $p$ rates together are the
+\emph{gradient of the loss}, $\grad\mathcal{L} = 2X^{\mathsf T}(X\boldsymbol{\theta} -
+\vb{y})$, a vector pointing the way $\mathcal{L}$ rises fastest in the space of
+weights (\cref{sec:en-gradient}). At the least loss every rate vanishes,
+which gives the \emph{normal equations}
+\begin{equation}
+   X^{\mathsf T}X\,\boldsymbol{\theta} = X^{\mathsf T}\vb{y} ,
+   \label{eq:lo-normal}
+\end{equation}
+$p$ linear equations for $p$ weights, solved as in \cref{sec:ro-remove}.
+For one weight and the single column $x_i$ they are
+$\bigl(\sum_ix_i^2\bigr)k = \sum_ix_iy_i$, the result above.
+\end{toolbox}
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/bond}
+\caption{One weight learned by least squares. (a) A spring's force read
+on a dial with an error of \SI{0.05}{\newton} at ten stretches (readings
+drawn by computer for \SI{25}{\newton\per\metre}), and the line through
+the origin of least squares. (b) The sum of squared misses against the
+stiffness tried; the fit is its lowest point (dashed). (c) The A--B
+molecule of Chapter~16 under Langevin dynamics: the force along the bond
+against its stretch, every \SI{50}{\femto\second} of \SI{20}{\pico
+\second}, at 100 and \SI{1000}{\kelvin}, with the Morse force (grey
+dashed) and the straight lines of least squares.}
+\label{fig:lo-bond}
+\end{figure}
+
+\begin{keyidea}
+Learning a model from data is the lowering of a loss, here the sum of
+squared misses. For a model linear in its weights the least loss solves
+the normal equations $X^{\mathsf T}X\boldsymbol{\theta} = X^{\mathsf T}\vb{y}$ at
+once. A fit answers the question its data pose: a line through the forces
+of a hot run gives the stiffness averaged over the stretches that run
+explores.
+\end{keyidea}
+
+\notebook{18}{fit a spring and a bond, and change the temperature of the
+bond's run}
+
+\begin{selfcheck}
+Ten readings of a spring's force at stretches $x_i$ all lie exactly on a
+line through the origin. What is $\mathcal{L}(\hat k)$, and what does the formula
+for the error of $\hat k$ then give?
+\end{selfcheck}

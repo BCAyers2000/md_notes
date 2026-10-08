@@ -1,0 +1,22 @@
+%=============================================================================!
+% 8.0  CHAPTER OPENING                                                        !
+%=============================================================================!
+The preceding chapters treated the potential energy $U(\vb{r}^N)$ as a
+known function and used its derivatives to determine the motion. For an
+atomistic simulation we must also choose how to obtain that function.
+Within the Born--Oppenheimer approximation, the electrons remain in their
+ground state as the nuclei move, and their energy together with the
+nuclear repulsion defines the potential energy surface. Evaluating an
+electronic-structure calculation at every step is costly, which motivates
+simpler interatomic models.
+
+We begin by examining when classical motion of the nuclei is an
+appropriate approximation. Pair potentials then give a direct route from
+an energy model to forces, their numerical checks and the treatment of a
+cutoff. Their limitations motivate environment-dependent interactions for
+metals and carbon, and bonded force fields for molecules. Finally, the
+slow decay of the Coulomb interaction shows why charges need a separate
+summation method. Chapter~9 uses these forces to advance the motion,
+while Chapter~18 introduces the learning methods used to represent a
+potential energy surface. Later chapters on these models are planned
+for the continuation of Part~V.

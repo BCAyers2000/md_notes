@@ -1,0 +1,45 @@
+%=============================================================================!
+% 14.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:pr-answers}
+
+\answerto{sec:pr-wall}$P = N\kB T/V = 10^4\times0.025852/100^3 =
+\SI{2.585e-4}{\electronvolt\per\angstrom\cubed}$, which is $2.585\times
+10^{-4}\times160.218\times10^4 = \SI{414.2}{bar}$.
+
+\answerto{sec:pr-virial}They raise it. Closer than the minimum,
+$\varphi'(r) < 0$: the atoms repel, and the pair adds $-r\varphi'(r) > 0$ to
+$\mathcal{W}$, and so raises $(2K + \mathcal{W})/3V$ above the $2K/3V$ of
+two atoms that do not interact.
+
+\answerto{sec:pr-periodic}$V$ is proportional to $a^3$, and the factor
+cancels in $V/\Delta V$, so $B \approx -V_{\mathrm m}\,\Delta P/\Delta V$
+with $V_{\mathrm m}$ the mean of $5.20^3$ and $5.40^3$: $B \approx 149.04
+\times0.288/16.86 = \SI{2.55}{\giga\pascal}$. The two spacings are centred
+on \SI{5.30}{\angstrom}, on the stretched side of $a_0$, where the crystal
+is softer, so the estimate lies below the \SI{2.856}{\giga\pascal} at
+$a_0$.
+
+\answerto{sec:pr-tensor}$P = -0.002\times160.218 =
+\SI{-0.320}{\giga\pascal}$: the stress is positive, so the material pulls
+on its cell.
+
+\answerto{sec:pr-npt}$1/\sqrt{1001} = 0.0316$, about 3\%.
+
+\answerto{sec:pr-rescaling}$1 - (2.5\times0.01/3)(0.1 - 0.08) =
+0.9998333$: each length shrinks by 17 parts in a hundred thousand, which
+raises the pressure towards its target.
+
+\answerto{sec:pr-piston}$\omega^2 = A^2/(M_{\mathrm p}V\kappa) =
+(10^{-3})^2/(1\times10^{-3}\times10^{-5}) = \SI{100}{\per\second\squared}$,
+so $\omega = \SI{10}{\radian\per\second}$ and the period is
+\SI{0.628}{\second}.
+
+\answerto{sec:pr-shape}The volume is the in-plane area times the height,
+and with the area kept it grows as the height does: by 10.8\%.
+
+\answerto{sec:pr-trajectory}\texttt{get\_stress} leaves out the kinetic
+part by default; adding $N\kB T/V = 500\times0.025852/20000 =
+\SI{6.46e-4}{\electronvolt\per\angstrom\cubed} = \SI{0.1035}{\giga\pascal}$
+gives $-0.04 + 0.1035 = \SI{0.0635}{\giga\pascal}$.

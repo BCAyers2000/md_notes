@@ -1,0 +1,61 @@
+%=============================================================================!
+% MOLECULAR DYNAMICS AND LEARNED DYNAMICS                                     !
+% -------------------------------------                                       !
+% The driver: metadata and the order of things, nothing else. Each chapter    !
+% file sets its own section order. Build with make; one chapter with          !
+% make chapter CH=NN.                                                         !
+%=============================================================================!
+\documentclass[11pt,oneside,openright]{uosthesis}
+\usepackage[super,comma,sort&compress]{natbib}
+\usepackage{thesis-style}
+\usepackage{mdbook}
+\graphicspath{{figures/}{style/}}
+
+\title{Molecular Dynamics and Learned Propagators}
+\authors{Brad Ayers}
+\date{October 2026}
+
+\begin{document}
+
+\frontmatter
+% the title page is numbered i, as is the first contents page; giving it
+% no page anchor avoids a duplicate hyperref destination
+\hypersetup{pageanchor=false}
+\input{frontmatter/titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\input{frontmatter/notation}
+
+\mainmatter
+\input{chapters/ch00_orientation}
+\input{chapters/ch01_motion}
+\input{chapters/ch02_newton}
+\input{chapters/ch03_energy}
+\input{chapters/ch04_oscillations}
+\input{chapters/ch05_rotation}
+\input{chapters/ch06_lagrange}
+\input{chapters/ch07_hamilton}
+\input{chapters/ch08_potentials}
+\input{chapters/ch09_integrators}
+\input{chapters/ch10_code}
+\input{chapters/ch11_constraints}
+\input{chapters/ch12_ensembles}
+\input{chapters/ch13_thermostats}
+\input{chapters/ch14_pressure}
+\input{chapters/ch15_convergence}
+\input{chapters/ch16_observables}
+\input{chapters/ch17_practice}
+\input{chapters/ch18_learning}
+
+% Appendix E is drafted in appendices/ and awaits its software version table.
+% Appendices A to E join as they are built; until then F keeps its letter.
+\appendix
+\setcounter{chapter}{5}
+\input{appendices/appF_gallery}
+
+\backmatter
+\input{chapters/solutions}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}

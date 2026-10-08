@@ -1,0 +1,32 @@
+%=============================================================================!
+% 10.A  ANSWERS TO THE CHECKS                                                 !
+%=============================================================================!
+\unnumbered{Answers to the checks}
+\label{sec:md-answers}
+
+\answerto{sec:md-periodic}$\vb{s} = (9/4, -1/5, 3/6) = (2.25, -0.2,
+0.5)$. Wrapping removes the floors 2, $-1$ and 0, leaving $(0.25, 0.8,
+0.5)$, so the atom is put at $(1, 4, 3)$\,\AA.
+
+\answerto{sec:md-image}No. In a cubic cell rounding does return the
+nearest copy, but half the side is \SI{10}{\angstrom}, less than the
+cutoff, so a pair can have a second copy within \SI{12}{\angstrom}, as
+$(\pm10, 0, 0)$\,\AA\ do, and rounding misses it. By \cref{eq:md-rule}
+the side must be at least \SI{24}{\angstrom}.
+
+\answerto{sec:md-ewald}$\sqrt{-\ln10^{-8}} = 4.292$, so $r_{\mathrm c} =
+4.292/0.3 = \SI{14.31}{\angstrom}$ and $G_{\mathrm c} = 2\times0.3\times
+4.292 = \SI{2.575}{\per\angstrom}$.
+
+\answerto{sec:md-neighbours}Half the skin, $0.15\sigma$. The list holds the
+pairs within $2.8\sigma$: $\frac12\times\frac43\pi(2.8)^3\times0.8 = 36.8$
+per atom.
+
+\answerto{sec:md-start}$4\times125 = 500$ atoms, in a cube of side
+$5\times5.267 = \SI{26.34}{\angstrom}$.
+
+\answerto{sec:md-loop}$20\,000/10 = 2000$ steps, and 2001 force calls:
+one before the first step and one in each step.
+
+\answerto{sec:md-speed}$10^6$ steps of $10^4\times\SI{0.2}{\micro\second}
+= \SI{2}{\milli\second}$ each: \SI{2000}{\second}, about half an hour.

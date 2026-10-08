@@ -1,0 +1,141 @@
+%=============================================================================!
+% 15.1  THE ERROR OF AN AVERAGE                                               !
+%=============================================================================!
+\section{The error of an average}
+\label{sec:cv-mean}
+
+A run reports the average of a quantity over its samples, and that average
+misses the ensemble average by an amount that changes from run to run.
+This section finds the size of the miss when the samples are independent,
+on rolls of a die first, and says what an error bar built from it
+promises.
+
+\subsection*{The mean of independent rolls}
+
+A fair die shows each face with probability $\frac16$, so one roll $x$ has
+the mean $\ens{x} = 3.5$ and the variance $\sigma_x^2 = 35/12$
+(\cref{ex:sm-die}). Rolling it $n$ times and averaging gives
+\begin{equation*}
+   \bar x = \frac1n\sum_{i=1}^nx_i ,
+\end{equation*}
+the overbar marking an average over samples, as it marks an average over
+time (\cref{sec:sm-ergodic}). Each roll has the mean $\ens{x}$, and the
+expectation of a sum is the sum of the expectations, so $\ens{\bar x} =
+n\ens{x}/n = \ens{x}$: many such averages centre on the right value.
+Their spread follows from the rule of \cref{sec:sm-probability} that the
+variances of independent quantities add, and from one more. The rolls are
+independent, so the variances of the $n$ of them add,
+$\operatorname{var}(\sum_ix_i) = n\sigma_x^2$. A constant factor $a$
+multiplies a variance by $a^2$, since
+\begin{equation*}
+   \operatorname{var}(ax) = \ens{a^2x^2} - \ens{ax}^2
+   = a^2\bigl(\ens{x^2} - \ens{x}^2\bigr) = a^2\operatorname{var}(x) ,
+\end{equation*}
+and with $a = 1/n$,
+\begin{equation}
+   \operatorname{var}(\bar x) = \frac{n\sigma_x^2}{n^2}
+   = \frac{\sigma_x^2}{n} , \qquad
+   \sigma_{\bar x} = \frac{\sigma_x}{\sqrt n} .
+   \label{eq:cv-mean}
+\end{equation}
+The spread of the mean falls as the square root of the number of samples:
+four times as many rolls halve it, and a hundred times as many cut it to a
+tenth. \Cref{fig:cv-dice}(b) rolls the die by computer, $n$ rolls at a
+time, 200\,000 times over: the spread of the mean is 0.8558 for 4 rolls
+against $\sigma_x/\sqrt4 = 0.8539$, and 0.1067 for 256 rolls against
+0.1067.
+
+\Cref{fig:cv-dice}(a) shows the shape as well as the spread. One roll has
+six equally likely values, but the mean of 4 rolls is already close to
+the Gaussian of \cref{eq:sm-gauss} with mean 3.5 and variance $\sigma_x^2/4$,
+and the mean of 64 is indistinguishable from its Gaussian. The mean of
+many independent samples approaches a Gaussian density whatever the
+density of one sample, provided that density has a finite variance, a
+result known as the central limit theorem, which the figure illustrates
+without proving\cite{Grossfield2018}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch15_convergence/dice}
+\caption{The error of an average of independent rolls of a die, each set
+of $n$ rolls repeated 200\,000 times. (a) The density of the mean of 4
+rolls (light) and of 64 (dark), against the Gaussians of mean 3.5 and
+variance $\sigma_x^2/n$ (dashed). (b) The spread of the mean against $n$,
+against $\sigma_x/\sqrt n$ (dashed). (c) The fraction of the intervals
+$\bar x \pm 1.96\,s/\sqrt n$ that hold 3.5 (teal), and of those with
+Student's factor in place of 1.96 (ochre), against 0.95 (dotted).}
+\label{fig:cv-dice}
+\end{figure}
+
+\subsection*{The standard error}
+
+In a simulation $\sigma_x$ is not known in advance and must be estimated
+from the same samples. The spread of the samples about their own mean
+falls short of $\sigma_x$, because $\bar x$ sits closer to the samples than
+$\ens{x}$ does. Writing each deviation as $x_i - \bar x = (x_i - \ens{x})
+- (\bar x - \ens{x})$ and expanding the square,
+\begin{align*}
+   \sum_i(x_i - \bar x)^2
+   &= \sum_i(x_i - \ens{x})^2 - 2(\bar x - \ens{x})\sum_i(x_i - \ens{x})
+   + n(\bar x - \ens{x})^2\\
+   &= \sum_i(x_i - \ens{x})^2 - n(\bar x - \ens{x})^2 ,
+\end{align*}
+since $\sum_i(x_i - \ens{x}) = n(\bar x - \ens{x})$. Averaging, the first sum gives
+$n\sigma_x^2$ and the second term $n\operatorname{var}(\bar x) =
+\sigma_x^2$, so the sum of squares averages to $(n - 1)\sigma_x^2$.
+Dividing by $n - 1$ rather than $n$ therefore gives an estimate whose
+average is $\sigma_x^2$,
+\begin{equation*}
+   s^2 = \frac{1}{n - 1}\sum_i(x_i - \bar x)^2 ,
+\end{equation*}
+and the estimate of $\sigma_{\bar x}$ is $s/\sqrt n$, the standard error of
+the mean. The book writes a result as $\bar x \pm s/\sqrt n$, one standard
+error, unless a factor is stated.
+
+\subsection*{What an error bar promises}
+
+When the mean is Gaussian, it lies within one $\sigma_{\bar x}$ of
+$\ens{x}$ in 68.27\% of runs and within two in 95.45\%
+(\cref{sec:sm-probability}); the factor that encloses 95\%, found
+numerically from $\operatorname{erf}(1.960/\sqrt2) = 0.95$, is 1.960. An interval $\bar x \pm
+1.96\,s/\sqrt n$ should therefore hold the true mean in 95\% of runs, and
+\cref{fig:cv-dice}(c) counts how often it does: 0.949 of the time for 256
+rolls and 0.905 for 8; for 3 rolls, not drawn, it is 0.777. With few
+samples the estimate $s$ is itself uncertain, and a run whose $s$ happens
+to be small claims an interval too narrow. For samples with a Gaussian
+density the remedy is exact: Student showed that $(\bar x - \ens{x})/(s/
+\sqrt n)$ then has a known density that depends on $n$ only through $n -
+1$, its number of degrees of freedom. The $n$ deviations $x_i - \bar x$
+from which $s$ is built add to zero, which leaves $n - 1$ of them free, as
+holding the total momentum at zero left $3N - 3$ velocities free
+(\cref{sec:sm-equipartition}). The density's 95\% factor is 4.303 for
+three samples, 2.365 for 8 and 1.998 for 64, and approaches 1.960 as $n$
+grows\cite{Student1908}. Three Gaussian samples with the factor 1.96
+hold their mean in 0.811 of trials, as Student's density predicts; with
+4.303 in 0.950. The die is far from Gaussian, and Student's factor brings
+its three rolls only to 0.917. The standard errors of three runs that
+Chapter~13 quoted are of this kind. For the difference of two means of
+three runs each, Student's density has, when the two spreads are alike,
+$2 + 2 = 4$ degrees of freedom and the 95\% factor 2.776, so the
+differences of up to 2.5 combined errors that \cref{sec:th-compare} found
+for the Nosé-Hoover chains and CSVR are within what so few runs leave open,
+and the 2.9 of Berendsen coupling lies only just beyond it.
+\Cref{sec:cv-observables} returns to those numbers with error bars from
+the runs themselves.
+
+\begin{keyidea}
+The mean of $n$ independent samples has the spread $\sigma_x/\sqrt n$, and
+approaches a Gaussian as $n$ grows whatever the samples' own density,
+provided its variance is finite. Its
+standard error is $s/\sqrt n$, with $s^2$ the sum of squared deviations
+divided by $n - 1$. The interval $\pm1.96$ standard errors holds the true
+mean in 95\% of runs when $n$ is large; with few samples it holds it less
+often, and Student's factor replaces 1.96.
+\end{keyidea}
+
+\notebook{15}{roll dice and watch the mean narrow and the error bars cover}
+
+\begin{selfcheck}
+A run of 100 independent samples gives a standard error of 0.05. How many
+samples give 0.01?
+\end{selfcheck}

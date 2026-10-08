@@ -1,0 +1,158 @@
+%=============================================================================!
+% APPENDIX F  A GALLERY OF FAULTS                                             !
+% Every fault met in the sections 'What the trajectory looks like' of        !
+% Chapters 11 to 17, with its symptom, check and cure.                        !
+%=============================================================================!
+\chapter{A gallery of faults}
+\label{app:gallery}
+
+Chapters~11--17 end by breaking their own runs on purpose
+and finding the check that catches each fault. This appendix gathers them
+in one table, in the order of the chapters, each with what it looks like,
+the check that finds it (a function of \texttt{mdlab.diagnostics} where
+there is one), and the cure. \texttt{diagnostics.health\_report} runs the
+checks of continuity, the centre of mass, overlaps, energy, temperature
+and velocities on a run of \texttt{mdlab} or, through
+\texttt{io.read\_run}, of any code that ASE can read
+(\cref{sec:ip-trajectory}), and Notebook~F passes the cached runs of
+Chapters~11, 12, 13 and~16, healthy and broken, through it.
+
+\begingroup
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.20\linewidth}
+   >{\raggedright\arraybackslash}p{0.26\linewidth}
+   >{\raggedright\arraybackslash}p{0.22\linewidth}
+   >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\caption{Faults of molecular dynamics runs, their symptoms, the checks
+that find them and their cures.}
+\label{tab:app-gallery}\\
+\toprule
+fault & what it looks like & check & cure\\
+\midrule
+\endfirsthead
+\toprule
+fault & what it looks like & check & cure\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{4}{@{}l}{\textit{Integrating and constraining
+(\cref{sec:cs-trajectory})}}\\
+step too long & the total energy fluctuates widely, not falling as
+$\dt^2$ & \texttt{energy\_\allowbreak fluctuation} & a shorter step, or held bonds\\
+jumping cutoff & spikes of the total energy as pairs cross the cutoff &
+\texttt{energy\_\allowbreak fluctuation} & the Ewald sum for charges
+(\cref{sec:md-ewald}), or a potential switched off smoothly
+(\cref{sec:pe-cutoffs})\\
+wrong units & a kinetic energy per freedom far from $\frac12\kB T$ & $K$ at
+the start & velocities converted between units\\
+wrapped wrongly & held distances wrong by a cell & \texttt{bond\_error} &
+the nearest image in the constraints\\
+overlap & an enormous force at the start & \texttt{largest\_\allowbreak force},
+\texttt{closest\_\allowbreak approach} & the start relaxed or rebuilt\\
+loose constraints & the total energy drifts & \texttt{energy\_\allowbreak drift} & a
+tighter tolerance\\
+drift kept & the centre of mass travels & \texttt{centre\_\allowbreak of\_\allowbreak mass\_\allowbreak path} &
+the total momentum removed\\
+resonance & the energy drifts under multiple time steps &
+\texttt{energy\_\allowbreak drift} & a shorter outer step\\
+\multicolumn{4}{@{}l}{\textit{Ensembles (\cref{sec:sm-trajectory})}}\\
+freedoms miscounted & the temperature is wrong by a ratio of counts & $T$
+against the value asked & $3N - n_{\mathrm c} - 3$ freedoms\\
+lattice start & the temperature halves as energy flows into the potential &
+mean $T$ against $T(0)$ & a start drawn at twice the temperature, half
+of which flows into the potential (\cref{sec:sm-equipartition}), or an
+equilibrated one\\
+drift counted & a temperature that includes the flight of the whole &
+total momentum & the momentum removed\\
+masses ignored & species start at different temperatures & $T$ of each
+species & velocities drawn for each mass\\
+not Gaussian & velocities spread evenly, not as Maxwell-Boltzmann &
+\texttt{excess\_\allowbreak kurtosis} & velocities drawn from the Gaussian\\
+no sharing & energy stays in the modes it started in & the energy of each
+mode & a longer run, or a thermostat acting on each atom\\
+\multicolumn{4}{@{}l}{\textit{Thermostats (\cref{sec:th-trajectory})}}\\
+coupling too strong & a temperature spread far below canonical & spread of
+$T$ against $\sqrt{2/N_{\mathrm f}}\,T$ & CSVR or a chain, or weaker
+coupling\\
+coupling too weak & runs that have not reached the temperature & mean $T$
+of several runs & longer equilibration, or stronger coupling while it
+lasts\\
+flying ice cube & kinetic energy collecting in the centre of mass & growth
+of its kinetic energy & a thermostat that samples the canonical ensemble\\
+one atom, one variable & a density that is not canonical & the density
+of $U$ against the exact one & a chain, or Langevin\\
+wrong $N_{\mathrm f}$ & a temperature on the wrong count of freedoms & $T$
+over the true freedoms & the code's count checked\\
+centre as diffusion & $D$ too large & $D$ with the centre removed & the
+centre of mass removed\\
+\multicolumn{4}{@{}l}{\textit{Pressure (\cref{sec:pr-trajectory})}}\\
+virial from wrapped positions & a pressure that moves with the origin & $P$
+after moving the origin & the virial from pair separations\\
+kinetic part dropped & a pressure read too low by $N\kB T/V$; under a
+barostat, a volume too small & $P$ with $2K$ & the kinetic part included\\
+volume too narrow & a compressibility from fluctuations too small &
+$\kappa_T$ against fixed volumes & stochastic cell rescaling or a piston\\
+piston too heavy & few swings of the volume & swings in the run & a lighter
+piston, or a longer run\\
+isotropic coupling of layers & unequal diagonal pressures & the diagonal
+of the pressure tensor & lengths coupled apart\\
+$\kappa$ in the wrong unit & a barostat $10^4$ times too slow: the volume
+stays at its start and the pressure off target & mean $P$ & the unit
+converted\\
+\multicolumn{4}{@{}l}{\textit{Convergence (\cref{sec:cv-trajectory})}}\\
+averaged from the start & a biased mean & \texttt{stats.\allowbreak detect\_\allowbreak equilibration}
+& the start discarded\\
+the naive error bar & errors too small & \texttt{stats.\allowbreak statistical\_\allowbreak inefficiency}
+& $\sqrt{g s^2/n}$\\
+too short for a plateau & no plateau of the block errors &
+\texttt{stats.\allowbreak convergence\_\allowbreak report} & a longer run, by \cref{eq:cv-length}\\
+a drifting energy & a slope many errors from zero & \texttt{stats.\allowbreak drift\_\allowbreak test}
+& a shorter step\\
+the wrong ensemble & energy histograms whose ratio has the wrong slope &
+the test of \cref{sec:cv-ensemble} & a canonical thermostat\\
+a box too small & $D$ that grows with the box & runs at two sizes & the
+correction of Yeh and Hummer\\
+\multicolumn{4}{@{}l}{\textit{Observables (\cref{sec:ob-trajectory})}}\\
+wrapped positions in an MSD & an MSD that levels off near $L^2/2$ &
+\texttt{largest\_\allowbreak jump} & \texttt{unwrap}\\
+centre of mass drifting & an MSD that curves upwards &
+\texttt{centre\_\allowbreak of\_\allowbreak mass\_\allowbreak path} & the centre removed\\
+fit in the ballistic part & $D$ too small & slope of $\ln$MSD against $\ln
+t$ & a window after the motion forgets its velocity\\
+$g(r)$ past half the cell & $g(r)$ falling below 1 at large $r$ & the range
+against half the smallest width & the range limited\\
+transport under friction & $D$ too small & a run at fixed energy & fixed
+energy or CSVR for dynamics\\
+Green-Kubo read too late & an integral that wanders & the plateau & read
+the plateau; errors from runs\\
+bonds from one cutoff & many brief events & events with a band & a band of
+hysteresis and a least lifetime\\
+frames too sparse for a spectrum & peaks where nothing vibrates & stride
+against $1/2\nu_{\max}$ & a shorter stride, the same for both spectra\\
+errors of $F$ from short blocks & errors too small across rare barriers
+& errors over copies & independent copies\\
+energy distributions from two ensembles & distributions that differ for
+the wrong reason & the thermostats of both & the same ensemble for both\\
+\multicolumn{4}{@{}l}{\textit{Practice (\cref{sec:ip-trajectory})}}\\
+LAMMPS arrays read by position & atoms that jump cells between frames;
+$D$ twenty times too large & \texttt{largest\_\allowbreak jump} & arrays ordered by
+identity at every frame\\
+forces compared in two frames & large force differences with equal
+energies & the energy, which does not turn & both codes in one
+orientation\\
+a functional's gap & graphite's sheets too far apart & the lattice against
+measurement & D3 for dispersion\\
+isotropic coupling of LiC$_6$ & the spacing held at its value at
+\SI{0}{\kelvin}; diagonal pressures of opposite sign & the diagonal of the
+pressure tensor & lengths coupled apart\\
+a reference not converged & forces that change with the $k$-point grid &
+forces against a denser grid & a denser grid\\
+a step too long for the bonds & a spread growing\newline faster than $\dt^2$,
+and a drift &
+\texttt{health\_\allowbreak report} at fixed energy & a shorter step\\
+sites in the wrong frame, or too few & a count of hops that keeps falling
+as the least stay grows & the count against the least stay & sites fixed
+to the atoms that make them, and a least stay where the count is flat\\
+\end{longtable}
+\endgroup

@@ -1,0 +1,142 @@
+%=============================================================================!
+% 10.7  MAKING IT FAST                                                        !
+%=============================================================================!
+\section{Making it fast}
+\label{sec:md-speed}
+
+A run of a million steps calls the model a million times, and the time a
+call takes decides what can be simulated. This section measures where the
+time goes and rewrites one force loop in three faster ways, each checked
+against the plain one.
+
+\subsection*{The profile}
+
+A profiler records how long a program spends in each of its functions.
+Python's \texttt{cProfile}, run on 200 steps of 4000 Lennard-Jones atoms
+in reduced units with the NumPy pair model of \cref{sec:md-loop}, finds
+three quarters of the time inside the neighbour list: 36\% in its 14
+rebuilds by the cell list, whose loops over small cells are written in
+Python, and 38\% in picking out at every step the listed pairs now within
+$r_{\mathrm c}$, which reduces each of them to its nearest copy by solving
+$\vb{h}\vb{s} = \vb{d}$ although the cell is a cube. The forces take most
+of the remaining quarter, \texttt{np.add.at} alone 16\%. The first gains
+would come from the neighbour list.
+
+\subsection*{One loop, four ways}
+
+The force loop runs over every pair at every step, and it shows the
+choices well. A processor runs only machine code, its own short list of
+simple instructions. A compiler can translate a numerical loop into machine code before it
+runs. In the ordinary Python loop, the interpreter instead carries out
+Python operations at each iteration, including the work needed to handle
+objects and call NumPy functions. The kernel takes the
+positions, the side lengths of a rectangular box and a list of pairs, and
+returns the Lennard-Jones energy, shifted to zero at $r_{\mathrm c}$, and
+the forces. \texttt{mdlab.kernels} has it four times:
+\begin{itemize}
+\item \texttt{lj\_loop}, a plain Python loop over the pairs;
+\item \texttt{lj\_numpy}, the same arithmetic on whole arrays, every pair
+   in each operation;
+\item \texttt{lj\_numba}, the same loop with the three components of
+   each pair written as a loop of their own, compiled to machine code by
+   Numba when it is first called;
+\item \texttt{lj\_fortran}, the loop written in Fortran and compiled
+   through NumPy's \texttt{f2py}, which builds the code that lets Python
+   call it.
+\end{itemize}
+The Fortran loop over the pairs is
+
+\begin{code}[language={[95]Fortran}]
+do p = 1, n_pairs
+   i   = pair_i(p) + 1
+   j   = pair_j(p) + 1
+   sep = positions(:, j) - positions(:, i)
+   sep = sep - box * anint(sep / box)
+   r2  = sum(sep * sep)
+   if (r2 >= r_cut2) cycle
+   s6           = (sigma2 / r2)**3
+   push         = 24.0_dp * well_depth * (2.0_dp * s6 * s6 - s6) / r2
+   energy       = energy + 4.0_dp * well_depth * (s6 * s6 - s6)        &
+                  - phi_cut
+   forces(:, i) = forces(:, i) - push * sep
+   forces(:, j) = forces(:, j) + push * sep
+end do
+\end{code}
+
+\noindent Fortran counts from 1 where Python counts from 0, hence the
+$+1$ of lines 2 and 3; \texttt{anint} rounds to the nearest whole number,
+the minimum image of \cref{sec:md-image} in a rectangular box; and the
+array \texttt{positions(3, n\_atoms)} holds one atom per column. Fortran
+stores an array column after column and NumPy row after row, so both keep
+the numbers in memory in the order $x_1, y_1, z_1, x_2, \dots$, and NumPy's
+array of one atom per row, passed as its transpose, reaches Fortran
+without a copy. \texttt{push} is $-\varphi'(r)/r$, so the force on $j$ is
+\texttt{push} times the separation and the force on $i$ its opposite;
+\texttt{push} times the separation is thus the opposite of the
+\texttt{push} of \texttt{PairModel} in \cref{sec:md-loop}, which was the
+force on $i$. The Numba version follows the Python loop with each
+operation on three numbers written as a loop over the components, as in
+the Fortran.
+
+\Cref{fig:md-speed} times one call of each on atoms on a simple cubic
+grid shaken by $0.05\sigma$, at $\rho = 0.8\sigma^{-3}$, with the pairs
+within $r_{\mathrm c} + 0.3\sigma$ listed.
+At $N = 2000$, with 74\,684 listed pairs, the plain loop takes
+\SI{172}{\milli\second}, NumPy \SI{5.2}{\milli\second}, Numba
+\SI{0.34}{\milli\second} and Fortran \SI{0.28}{\milli\second}: NumPy is 33
+times faster than the loop, and the two compiled versions another 15 and
+18 times faster than NumPy. Every version grows roughly as $N$, with the
+number of listed pairs, the compiled ones less evenly. All three agree with the plain loop to about a part in $10^{12}$ in
+the energy and to $\num{3e-12}$ in forces as large as 1024, in reduced
+units, the differences of rounding in a different order.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch10_code/speed}
+\caption{The time of one call of the Lennard-Jones force kernel against
+$N$, for atoms on a simple cubic grid shaken by $0.05\sigma$ at $\rho =
+0.8\sigma^{-3}$, with $r_{\mathrm c} = 2.5\sigma$, written as a plain
+Python loop, with NumPy, with Numba and in Fortran, with a line of slope 1
+(dashed). Each time is the best of five, on one thread, one sequence of
+instructions on one core of the processor.}
+\label{fig:md-speed}
+\end{figure}
+
+The reasons are in how each runs. The plain loop takes
+$\SI{172}{\milli\second}/74\,684 = \SI{2.3}{\micro\second}$ for each
+pair, and the Fortran loop \SI{3.7}{\nano\second} for the same
+arithmetic, so almost all of the plain loop's time goes on something other
+than arithmetic: each pair makes about a dozen calls of NumPy on arrays of
+three numbers, and every call first finds out what its operands are and
+makes a new array for its result. NumPy on whole arrays makes those
+decisions once per operation for all the pairs and does the arithmetic in
+compiled code, but it passes over the pairs once for every operation,
+writing a new array each time. A compiled loop keeps each pair's few
+numbers in the processor's registers, its fastest storage, and touches
+memory only for the indices, positions and forces.
+
+\begin{practice}
+The profile comes before any rewriting: here the slow part was the
+neighbour list. Only the loop that dominates is rewritten, the plain
+version is kept as the reference, and every fast version is checked
+against it, as the tests of \texttt{mdlab} do. Numba compiles a Python
+loop with few changes once every operation on a small array is written as
+a loop over its numbers, as in \texttt{lj\_numba}; the Fortran loop took
+18\% less time here.
+\end{practice}
+
+\begin{keyidea}
+A profiler shows where the time goes, and in this code it was the
+neighbour list. The force loop written in Python, with NumPy on each pair,
+is hundreds of times slower than the loop compiled by Numba or written in
+Fortran; NumPy on whole arrays lies between. Every fast version is checked
+against the plain one to the rounding of the arithmetic.
+\end{keyidea}
+
+\notebook{10}{race the four kernels}
+
+\begin{selfcheck}
+At \SI{0.2}{\micro\second} per atom per call, how long does the force
+kernel alone take for \SI{1}{\nano\second} of $10^4$ atoms with $\dt =
+\SI{1}{\femto\second}$?
+\end{selfcheck}

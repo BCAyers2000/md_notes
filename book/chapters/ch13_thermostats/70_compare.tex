@@ -1,0 +1,183 @@
+%=============================================================================!
+% 13.7  WHICH THERMOSTAT, AND WHEN                                            !
+%=============================================================================!
+\section{Which thermostat, and when}
+\label{sec:th-compare}
+
+The sections so far measured each thermostat on its own. This section
+sets the measurements side by side and draws from them which thermostat
+to use for the three jobs a thermostat does: bringing a system to a
+temperature, sampling averages at it, and leaving its dynamics fit to
+measure.
+
+\subsection*{Side by side}
+
+\Cref{tab:th-compare} collects, for every thermostat and coupling, the
+spread of $K$ in liquid argon as a fraction of the canonical spread, the
+diffusion coefficient as a fraction of its value at fixed energy, and,
+for one lithium atom with its own thermostat, how far the density of its
+potential energy misses the exact one and how often it hops. The
+diffusion coefficients carry the standard error of three runs, the
+standard deviation of their three estimates divided by $\sqrt3$, since the variances of
+the three add and their mean divides the sum by three; with so few runs it
+is itself rough, and Chapter~15 gives the tools to say when two such
+numbers differ. Three groups stand out.
+\begin{itemize}
+\item Rescaling fixes the kinetic temperature at each rescaling, and Berendsen
+   coupling keeps its mean close to the target. Both narrow the spread, 0.11 to 0.59 of the canonical, and a single atom
+   under Berendsen coupling stops hopping.
+\item Andersen and Langevin sample the canonical ensemble once the
+   coupling is \SI{1}{\per\pico\second} or more, for the liquid and for
+   one atom alike, and cost no more than a step without a thermostat. At
+   that coupling they cut the diffusion coefficient to 0.71 to 0.72 of its
+   value, and at \SI{10}{\per\pico\second} to 0.17.
+\item Nosé-Hoover chains and CSVR give the canonical spread at both
+   couplings and sample one atom correctly. Like Berendsen coupling and a
+   single Nosé-Hoover thermostat, they leave the diffusion coefficient
+   1.01 to 1.07 of its value at fixed energy, in runs 0.4 to
+   \SI{1.8}{\kelvin} warmer than those at fixed energy. The variances of
+   independent quantities add, so the standard error of a difference is
+   the square root of the sum of the two squared standard errors; the
+   chains and CSVR lie at most 2.5 of these from fixed energy, and
+   Berendsen coupling at \SI{1}{\pico\second} 2.9. Whether so small a
+   difference is real is a question for Chapter~15. A single Nosé-Hoover thermostat matches the chains for
+   the liquid but not for one atom. These findings agree with Basconi and
+   Shirts, who compared thermostats on the transport properties of
+   liquids\cite{Basconi2013}.
+\end{itemize}
+
+\begin{table}[htb]
+\centering
+\caption{The thermostats measured: for liquid argon at \SI{135}{\kelvin},
+the relative spread of $K$ divided by the canonical
+$\sqrt{2/N_{\mathrm f}}$, and
+the diffusion coefficient divided by its value at fixed energy,
+$(3.81\pm0.08)\times10^{-4}$\,\AA$^2$/fs (three runs of
+\SI{100}{\pico\second}; rescaling, one); for one lithium atom on the
+surface at \SI{1000}{\kelvin}, the largest gap between the density of its
+potential energy and the exact one, divided by the exact density's peak,
+and its hops per picosecond (1000 atoms over \SI{100}{\pico\second}).
+For Andersen and Langevin, which move the centre of mass, $N_{\mathrm f} =
+3N = 768$. Under Berendsen coupling the density is a narrow spike, so its
+gap is many times the peak.}
+\label{tab:th-compare}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+& \multicolumn{2}{l}{liquid argon} & \multicolumn{2}{l}{one lithium atom}\\
+thermostat & spread & $D$ & gap & hops/ps\\
+\midrule
+fixed energy & 0.61 & 1 & & \\
+rescaling & 0.11 & 1.01 & & \\
+Berendsen, \SI{0.1}{\pico\second} & 0.45 & $1.04\pm0.01$ & 15.5 & 0.001\\
+Berendsen, \SI{1}{\pico\second} & 0.59 & $1.07\pm0.01$ & & \\
+Andersen, \SI{0.1}{\per\pico\second} & 0.85 & $0.96\pm0.03$ & & \\
+Andersen, \SI{1}{\per\pico\second} & 0.98 & $0.72\pm0.01$ & 0.011 & 0.974\\
+Andersen, \SI{10}{\per\pico\second} & 1.00 & $0.173\pm0.004$ & & \\
+Langevin, \SI{0.1}{\per\pico\second} & 0.93 & $0.97\pm0.02$ & 0.024 & 1.024\\
+Langevin, \SI{1}{\per\pico\second} & 1.01 & $0.71\pm0.01$ & 0.005 & 1.008\\
+Langevin, \SI{10}{\per\pico\second} & 1.01 & $0.169\pm0.001$ & 0.008 & 0.928\\
+Nosé-Hoover, \SI{0.1}{\pico\second} & 0.99 & $1.02\pm0.01$ & 0.231 & 0.667\\
+Nosé-Hoover, \SI{1}{\pico\second} & 1.04 & $1.05\pm0.01$ & & \\
+chain of 3, \SI{0.1}{\pico\second} & 1.01 & $1.04\pm0.03$ & 0.016 & 1.087\\
+chain of 3, \SI{1}{\pico\second} & 1.01 & $1.01\pm0.02$ & & \\
+CSVR, \SI{0.1}{\pico\second} & 0.98 & $1.07\pm0.02$ & 0.012 & 1.081\\
+CSVR, \SI{1}{\pico\second} & 0.99 & $1.05\pm0.01$ & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{What to use}
+
+\Cref{tab:th-choose} turns the measurements into a choice for each job.
+
+\emph{Bringing a system to a temperature.} Any thermostat does it; what
+matters is how fast it gets there and that it settles at the target. From
+\SI{200}{\kelvin}, Berendsen and CSVR with $\tau_{\mathrm T} =
+\SI{1}{\pico\second}$ and Langevin with $\gamma = \SI{1}{\per\pico\second}$
+all reach the target within a few picoseconds (\cref{fig:th-berendsen}(b)).
+Under Berendsen and CSVR the excess decays with the time constant
+$\tau_{\mathrm T}C_V/C_K = \SI{1.59}{\pico\second}$, fitted at 1.67 and
+\SI{1.63}{\pico\second}; under Langevin with $C_V/(2\gamma C_K) =
+\SI{0.80}{\pico\second}$, fitted at \SI{0.68}{\pico\second}
+(\cref{ex:th-langevin-tau}). A short coupling time, 0.1 to
+\SI{1}{\pico\second}, is right here, and the run's early part is
+discarded, for which Chapter~15 gives a measured criterion.
+
+\emph{Averages at a temperature.} The average and the fluctuations must
+both be canonical, so rescaling and Berendsen coupling are out. CSVR,
+Nosé-Hoover chains, Langevin and Andersen all qualify. A single
+Nosé-Hoover thermostat failed for one oscillator and for one atom on the
+surface, and is expected to fail likewise for other small or nearly
+harmonic systems, a single molecule or a nearly harmonic
+crystal\cite{Martyna1992}. The heat capacity from the energy's
+fluctuations, \cref{eq:sm-fluctuation}, shows what is at stake: it comes
+out at 2.28 to $2.40N\kB$ under CSVR, the chain and Langevin, against the
+$2.376N\kB$ of Chapter~12 from $\dd E/\dd T$, and at $0.41N\kB$ under
+Berendsen coupling with $\tau_{\mathrm T} = \SI{0.1}{\pico\second}$.
+
+\emph{Dynamics.} The thermostat must disturb the motion as little as
+possible; of the motion, this chapter measured the diffusion of the
+liquid. A run at fixed energy started from an equilibrated state disturbs
+nothing, but its temperature is the one its energy gives, which in our
+runs fell \SI{0.66}{\kelvin} short. CSVR or a Nosé-Hoover chain changes
+the diffusion of the liquid by at most 7\%, and a coupling time of a
+picosecond or more keeps the thermostat's hand light. Berendsen coupling
+changes it no more, but it narrows the fluctuations, feeds the flying ice
+cube and pins a single atom. Langevin and Andersen thermostats at
+\SI{1}{\per\pico\second} remove more than a quarter of it.
+
+\emph{An atom whose only bath is the thermostat.} When the real bath is
+left out, as for an atom on a frozen surface, the thermostat's coupling
+becomes part of the physics: the lithium atom's hop rate fell from 1.0 to
+\SI{0.35}{\per\pico\second} as the friction rose from 3 to
+\SI{100}{\per\pico\second}. Such a rate means something only
+if the friction stands for a real bath, and the safer course is to
+simulate the bath's atoms.
+
+\begin{table}[htb]
+\centering
+\caption{Which thermostat to use, from the measurements of this chapter.}
+\label{tab:th-choose}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}
+   >{\raggedright\arraybackslash}p{0.38\linewidth}
+   >{\raggedright\arraybackslash}p{0.3\linewidth}@{}}
+\toprule
+job & use & avoid\\
+\midrule
+bringing to a temperature & Berendsen, CSVR or Langevin,
+   $\tau_{\mathrm T}$ of 0.1 to \SI{1}{\pico\second} or $\gamma$ of 1 to
+   \SI{10}{\per\pico\second} (measured at \SI{1}{\pico\second} and
+   \SI{1}{\per\pico\second}), the early part discarded & one Berendsen
+   thermostat on a single atom, which pins its energy\\
+averages and fluctuations & CSVR, Nosé-Hoover chains, Langevin, Andersen
+   & rescaling, Berendsen; one Nosé-Hoover thermostat on small or nearly
+   harmonic systems\\
+dynamics (here, diffusion) & fixed energy after equilibrating; CSVR or a
+   chain with $\tau_{\mathrm T} \ge \SI{1}{\pico\second}$ & Langevin and
+   Andersen at $\ge$ \SI{1}{\per\pico\second}; Berendsen, for its
+   fluctuations and flying ice cube\\
+learned runs (TrajCast) & CSVR once per stride; its update preserves the canonical
+   distribution of $K$ & Berendsen\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyidea}
+Rescaling and Berendsen coupling are for reaching a temperature. CSVR,
+Nosé-Hoover chains, Langevin and Andersen sample the canonical ensemble; of
+these,
+CSVR and chains change the diffusion of the liquid by at most 7\%, while
+friction or collisions at \SI{1}{\per\pico\second} slow it by more than
+a quarter. A single Nosé-Hoover thermostat fails for small systems, and
+for an atom whose bath is the thermostat, the atom's rates belong to the
+coupling.
+\end{keyidea}
+
+\begin{selfcheck}
+A run is to measure the diffusion of lithium in a liquid electrolyte at
+\SI{300}{\kelvin}. Which thermostat, with what coupling, does this chapter
+recommend for the production run, and why not Langevin with $\gamma =
+\SI{5}{\per\pico\second}$?
+\end{selfcheck}

@@ -1,0 +1,182 @@
+%=============================================================================!
+% 4.4  SMALL OSCILLATIONS ABOUT ANY MINIMUM                                   !
+%=============================================================================!
+\section{Small oscillations about any minimum}
+\label{sec:os-small}
+
+Wells are everywhere, springs far fewer: a pendulum hangs at
+the bottom of a well of gravitational energy, and an atom sits at the
+bottom of a well made by its neighbours. This section shows that small
+swings about a minimum with positive curvature are approximately those
+of a spring, and finds the stiffness
+of that spring for a pendulum, for the bead of Chapter~3 and for a lithium
+atom on the model surface.
+
+\subsection*{The spring approximation near a minimum}
+
+Let $U(x)$ have a minimum at $x_0$, with $U'(x_0) = 0$ and positive curvature,
+$U''(x_0) > 0$. This last condition matters: a flatter minimum, such as
+$U(x) = x^4$ at the origin, has no quadratic restoring term. The Taylor series of \cref{sec:mo-taylor}, with $x - x_0$ in the role
+of the interval, gives
+\begin{align*}
+   U(x) &= U(x_0) + U'(x_0)\,(x - x_0) + \tfrac12 U''(x_0)\,(x - x_0)^2
+      + \order{(x - x_0)^3}\\
+   &= U(x_0) + \tfrac12 k\,(x - x_0)^2 + \order{(x - x_0)^3} ,
+      \qquad k = U''(x_0) ,
+\end{align*}
+since $U'(x_0) = 0$. Near its bottom such a well is approximately a parabola, the
+potential energy of a spring of stiffness $k = U''(x_0)$ stretched by $x -
+x_0$; the constant $U(x_0)$ changes no force. As long as the swing is small
+enough that the cubic and higher terms can be neglected, the motion is
+simple harmonic, with
+\begin{equation}
+   \omega_0 = \sqrt{\frac{U''(x_0)}{m}} ,
+   \label{eq:os-small}
+\end{equation}
+whatever the shape of the well further out. This is the result of
+\cref{sec:en-diagrams}, now read from $U$ itself rather than from the
+force, and the subscript 0 marks the angular frequency of small swings. How small is small enough, and what happens beyond, is the
+subject of \cref{sec:os-anharmonic}.
+
+\subsection*{Motion along a curved path}
+
+A pendulum bob and a bead on a wire move along curves.
+Measuring the position by the distance $s$ along the curve from its lowest
+point, the speed is $\lvert\dd s/\dd t\rvert$ and the energy is $E =
+\frac12 m\dot{s}^2 + U(s)$, where the dot denotes the rate of change with
+time, as in \cref{sec:mo-acceleration}. Energy is conserved, because the push of
+the rod or the wire is at right angles to the motion (\cref{sec:en-track}),
+so differentiating $E$ with the chain rule,
+\begin{equation*}
+   0 = \frac{\dd E}{\dd t} = m\dot{s}\ddot{s} + \frac{\dd U}{\dd s}\,\dot{s}
+   = \dot{s}\,\Bigl(m\ddot{s} + \frac{\dd U}{\dd s}\Bigr) .
+\end{equation*}
+Whenever the body is moving, $\dot{s} \neq 0$, and the bracket must vanish:
+$m\ddot{s} = -\dd U/\dd s$, and since both sides change smoothly this
+holds also at the instants when the body stops. Along its curve the body therefore moves as a
+body on a line with potential energy $U(s)$, and \cref{eq:os-small}
+applies with $s$ in place of $x$.
+
+\subsection*{The pendulum}
+
+A pendulum's bob, a small heavy weight of mass $m$, is fixed to a light
+rigid rod of length $L$, light meaning that its own mass is negligible,
+which turns freely about a pivot (\cref{fig:os-pendulum}). A rod, unlike
+a string, can push as well as pull, so the bob stays on its circle even
+above the pivot, as the large swings of \cref{sec:os-anharmonic} need.
+When the rod makes an angle $\theta$ with the vertical, the bob has moved
+$s = L\theta$ along its arc, by the definition of the radian
+(\cref{sec:mo-trig}), and it is $L\cos\theta$ below the pivot, so
+$L - L\cos\theta$ above its lowest point. Its potential energy is
+therefore
+\begin{equation*}
+   U = mgL\,(1 - \cos\theta) = mgL\,\Bigl(1 - \cos\frac{s}{L}\Bigr) .
+\end{equation*}
+Differentiating twice with respect to $s$, by the chain rule,
+\begin{equation*}
+   \frac{\dd U}{\dd s} = mg\sin\frac{s}{L} , \qquad
+   \frac{\dd^2 U}{\dd s^2} = \frac{mg}{L}\cos\frac{s}{L} ,
+\end{equation*}
+which is $mg/L$ at $s = 0$, since $\cos 0 = 1$, so by \cref{eq:os-small}
+\begin{equation*}
+   \omega_0 = \sqrt{\frac{g}{L}} .
+\end{equation*}
+The mass has cancelled, as in free fall. A pendulum \SI{1.2}{\metre} long
+swings with $\omega_0 = \sqrt{9.80665/1.2} = \SI{2.859}{\radian\per
+\second}$ and a period of $2\pi/\omega_0 = \SI{2.198}{\second}$, for small
+swings.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[line cap=round, line join=round, scale=1.1,
+   force/.style={-{Stealth[length=5pt]}, line width=1.0pt}]
+   \fill[black!35] (-0.8,0.05) rectangle (0.8,0.15);
+   \draw[black!40, dashed, line width=0.5pt] (0,0) -- (0,-2.6);
+   \draw[line width=0.8pt] (0,0) -- ({2.4*sin(35)},{-2.4*cos(35)});
+   \draw[black!50, line width=0.4pt] (0,-0.8) arc[start angle=-90,
+      end angle=-55, radius=0.8];
+   \node at (0.2,-1.05) {\small $\theta$};
+   \node[above right] at ({1.2*sin(35)},{-1.2*cos(35)}) {\small $L$};
+   \draw[accent, line width=0.9pt] (0,-2.4) arc[start angle=-90,
+      end angle=-55, radius=2.4];
+   \node[accent, below] at (0.7,-2.42) {\small $s = L\theta$};
+   \fill[black!15, draw=black, line width=0.5pt]
+      ({2.4*sin(35)},{-2.4*cos(35)}) circle (0.12);
+   \draw[black!40, line width=0.4pt] ({2.4*sin(35)+0.25},{-2.4*cos(35)})
+      -- (1.9,{-2.4*cos(35)});
+   \draw[black!40, line width=0.4pt] (0.15,-2.4) -- (1.9,-2.4);
+   \draw[{Stealth[length=3pt]}-{Stealth[length=3pt]}, line width=0.4pt]
+      (1.8,-2.4) -- (1.8,{-2.4*cos(35)})
+      node[midway, right] {\small $L - L\cos\theta$};
+\end{tikzpicture}
+\caption{A pendulum, a bob on a light rod of length $L$, at the angle $\theta$. The bob has moved
+$s = L\theta$ along its arc (teal) and has risen $L - L\cos\theta$ above
+its lowest point.}
+\label{fig:os-pendulum}
+\end{figure}
+
+\subsection*{The bead in its valley}
+
+The bead of \cref{sec:en-track} has $U = mg\,h(x)$, but it moves along the
+wire, so we need $\dd^2U/\dd s^2$ at the bottom of a valley, not $\dd^2U/
+\dd x^2$. By the chain rule, with $x$ a function of $s$,
+\begin{equation*}
+   \frac{\dd U}{\dd s} = \frac{\dd U}{\dd x}\frac{\dd x}{\dd s} , \qquad
+   \frac{\dd^2 U}{\dd s^2} = \frac{\dd^2 U}{\dd x^2}
+   \Bigl(\frac{\dd x}{\dd s}\Bigr)^2 + \frac{\dd U}{\dd x}\frac{\dd^2 x}{\dd
+   s^2} ,
+\end{equation*}
+the second by the product rule. At the bottom of a valley the wire is
+level, so $\dd U/\dd x = 0$ and a short step along the wire is a step along
+$x$, $\dd x/\dd s = 1$. Hence $\dd^2U/\dd s^2 = mg\,h''(x_0)$ there, and
+$\omega_0 = \sqrt{g\,h''(x_0)}$. The deep valley lies at $x_0 =
+\SI{-1.473}{\metre}$ (\cref{sec:en-diagrams}), where $h'' = 1.8\times
+1.473^2 - 1.2 = \SI{2.7055}{\per\metre}$, so $\omega_0 =
+\sqrt{9.80665\times2.7055} = \SI{5.151}{\radian\per\second}$, a period of
+$2\pi/5.151 = \SI{1.220}{\second}$.
+
+\subsection*{A lithium atom in a hollow}
+
+On the model surface of \cref{sec:en-surface}, take the line through a
+hollow and a bridge, the $x$ axis, along which a hop runs. There $\vb{r} =
+(x, 0)$, and the three products in \cref{eq:en-surface} are $\vb{g}_1\cdot
+\vb{r} = \lvert\vb{g}\rvert x\cos\ang{-30} = 2\pi x/a$, using
+$\lvert\vb{g}\rvert = 4\pi/(\sqrt3\,a)$ and $\cos\ang{-30} = \sqrt3/2$;
+$\vb{g}_2\cdot\vb{r} = 0$; and $\vb{g}_3\cdot\vb{r} = -2\pi x/a$. Since
+the cosine is even and $\cos 0 = 1$,
+\begin{equation}
+   U(x, 0) = \frac{U_{\mathrm b}}{4}\Bigl[3 - 2\cos\frac{2\pi x}{a} - 1\Bigr]
+   = \frac{U_{\mathrm b}}{2}\Bigl(1 - \cos\frac{2\pi x}{a}\Bigr) ,
+   \label{eq:os-hop}
+\end{equation}
+a well of the same shape as the pendulum's. Differentiating twice by the
+chain rule, as for the pendulum with $s/L$ replaced by $2\pi x/a$, gives
+$U'' = \frac12 U_{\mathrm b}(2\pi/a)^2\cos(2\pi x/a)$, and $\cos 0 = 1$, so
+\begin{equation*}
+   k = U''(0) = \frac{U_{\mathrm b}}{2}\Bigl(\frac{2\pi}{a}\Bigr)^2
+   = \frac{2\pi^2U_{\mathrm b}}{a^2}
+   = \frac{19.7392\times0.3}{6.0516}
+   = \SI{0.97854}{\electronvolt\per\angstrom\squared}
+\end{equation*}
+with $U_{\mathrm b} = \SI{0.3}{\electronvolt}$ and $a =
+\SI{2.46}{\angstrom}$.
+The force in \si{\electronvolt\per\angstrom} divided by the mass in
+\si{\amu} becomes an acceleration in \si{\angstrom\per\femto\second
+\squared} on multiplying by \num{9.648533e-3} (\cref{sec:ne-atoms}), so
+for lithium, $\omega_0 = \sqrt{0.97854\times\num{9.648533e-3}/6.94} =
+\SI{0.036884}{\radian\per\femto\second}$, and the period is $2\pi/\omega_0
+= \SI{170.3}{\femto\second}$. The model is illustrative, but the scale is
+the point: an atom rattles in its site a few times in a picosecond.
+\Cref{ex:os-isotropic} shows that the well has the same curvature along
+$y$ as along $x$.
+
+\begin{keyidea}
+Near a minimum with $U''(x_0) > 0$, $U \approx U(x_0) + \frac12
+U''(x_0)(x - x_0)^2$: small swings are approximately those of a spring of stiffness
+$U''(x_0)$, with angular frequency $\sqrt{U''(x_0)/m}$.
+\end{keyidea}
+
+\begin{selfcheck}
+A pendulum is made four times as long. What happens to the period of its
+small swings? Does the mass of the bob matter?
+\end{selfcheck}

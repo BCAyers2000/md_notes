@@ -1,0 +1,238 @@
+%=============================================================================!
+% 16.11  FREE ENERGY FROM A HISTOGRAM                                         !
+%=============================================================================!
+\section{Free energy from a histogram}
+\label{sec:ob-fes}
+
+A trajectory spends more time in some arrangements than in others. At
+equilibrium these populations measure free-energy differences. A
+histogram of a distance, angle or position therefore gives a free-energy
+profile along that coordinate, provided the run has sampled it adequately.
+We test this construction on a surface and a four-bead chain, where the
+answer is known, then examine why rare crossings make the uncertainty
+hard to estimate.
+
+\subsection*{Free energy along a coordinate}
+
+In the canonical ensemble the positions have the density $\mathcal{P}
+\propto \mathrm{e}^{-\beta U}$ (\cref{sec:sm-canonical}). For a coordinate
+$x$ computed from the positions, the density of its values is the total
+weight of all arrangements with that value, and writing it as a Boltzmann
+factor defines the free energy along $x$:
+\begin{equation}
+   \mathcal{P}(x) \propto \mathrm{e}^{-\beta F(x)} , \qquad
+   F(x) = -\kB T\ln\mathcal{P}(x) + \text{constant} ,
+   \label{eq:ob-fes}
+\end{equation}
+the free energy $-\kB T\ln Z$ of \cref{sec:sm-canonical} for the
+arrangements held at that $x$. If $x$ is every coordinate of the system,
+$F = U$ up to a constant. If it is fewer, $F$ includes the number of
+arrangements that share each value, an entropy, and can differ from any
+energy. A free-energy profile from a run is a histogram of $x$, as for
+$g(r)$, turned into $F$ by \cref{eq:ob-fes}. Its error comes from blocks,
+as in Chapter~15: the histogram of each block, normalised to a density;
+the mean and the standard error of each bin over the blocks; and, since a
+small change $\delta\mathcal{P}$ changes $\ln\mathcal{P}$ by
+$\delta\mathcal{P}/\mathcal{P}$, an error of $\kB T\,\delta\mathcal{P}/
+\mathcal{P}$ in $F$. \texttt{mdlab.analysis.landscape} does this for one
+coordinate or several:
+
+\begin{code}
+def free_energy(
+    values: ArrayLike,
+    bins: int | ArrayLike | list,
+    temperature: float,
+    n_blocks: int = 10,
+    value_range: list | None = None,
+) -> tuple[list[NDArray], NDArray, NDArray]:
+    x = np.asarray(values, dtype=float)
+    x = x[:, None] if x.ndim == 1 else x
+    edges = np.histogramdd(x, bins=bins, range=value_range)[1]
+    blocks = np.array_split(x, n_blocks)
+    density = np.array(
+        [np.histogramdd(b, bins=edges, density=True)[0] for b in blocks]
+    )
+    p = density.mean(axis=0)
+    dp = density.std(axis=0, ddof=1) / np.sqrt(n_blocks)
+    kt = KB * temperature
+    with np.errstate(divide="ignore", invalid="ignore"):
+        f = -kt * np.log(p)
+        df = kt * dp / p
+    f -= np.min(f[np.isfinite(f)])
+    middles = [0.5 * (e[1:] + e[:-1]) for e in edges]
+    return middles, f, df
+\end{code}
+
+\subsection*{An atom on a surface}
+
+A lithium atom on the model surface of \cref{sec:en-surface} has two
+coordinates, and its position is all of them, so $F(x, y)$ must equal
+$U(x, y)$. 1000 atoms at \SI{600}{\kelvin} under Langevin friction of
+\SI{1}{\per\pico\second}, every \SI{50}{\femto\second} for
+\SI{200}{\pico\second}, folded into one cell of the hollows, give the map
+of \cref{fig:ob-fes}(a). A profile is tested against an exact one by the
+mean of its squared misses divided by their squared errors. Each such
+ratio has the mean 1 when the errors are right and, for misses of
+Gaussian density, the variance $\ens{z^4} - 1 = 2$, so over $n$ independent bins the
+mean scatters about 1 by $\sqrt{2/n}$; a mean of $c$ says that the
+errors understate the misses by about $\sqrt c$. Below
+\SI{0.3}{\electronvolt}, over 1400 bins, $F$ less $U$ gives 1.20, where
+independent bins with correct errors would give $1.00 \pm 0.04$.
+Histogram bins are correlated, so this spread is only a guide: it is constant to within about
+1.1 times its errors, and the largest miss is
+\SI{15.2}{\milli\electronvolt}.
+
+The distance $r_{\mathrm h}$ from the nearest hollow is one coordinate of the two,
+and $F(r_{\mathrm h})$ is not $U$. The positions at a distance $r_{\mathrm h}$ fill a circle of
+circumference $2\pi r_{\mathrm h}$, so the density of $r_{\mathrm h}$ is
+\begin{equation*}
+   \mathcal{P}(r_{\mathrm h}) \propto r_{\mathrm h}\oint\mathrm{e}^{-\beta U(r_{\mathrm h}, \theta)}\,\dd\theta ,
+   \qquad
+   F(r_{\mathrm h}) = -\kB T\ln\Bigl[r_{\mathrm h}\oint\mathrm{e}^{-\beta U(r_{\mathrm h}, \theta)}\,\dd\theta
+   \Bigr] ,
+\end{equation*}
+with $\theta$ the angle around the hollow, valid out to $a/2 =
+\SI{1.23}{\angstrom}$, where the circle still lies in the region nearer
+that hollow than any other. The factor $r_{\mathrm h}$ is the number of positions at
+each distance, and it makes $F$ rise as $r_{\mathrm h} \to 0$, where $U$ is lowest:
+there are few places that close to the centre, as there are few
+velocities with all three components near zero in Maxwell's density of
+speeds (\cref{sec:sm-maxwell}). The run's $F(r_{\mathrm h})$ follows
+this within its errors, its squared misses over squared errors averaging
+0.60 over 40 bins (\cref{fig:ob-fes}b), and its least value lies at $r_{\mathrm h} =
+\SI{0.225}{\angstrom}$ from the hollow. For small $r_{\mathrm h}$, $U \approx
+\frac12 kr_{\mathrm h}^2$ with $k = 3U_{\mathrm b}\lvert\vb{g}\rvert^2/8 =
+2\pi^2U_{\mathrm b}/a^2$ (\cref{sec:ob-vdos}), so $\mathcal{P}
+\propto r_{\mathrm h}\,\mathrm{e}^{-\beta kr_{\mathrm h}^2/2}$, whose largest value is at $r_{\mathrm h} =
+\sqrt{\kB T/k} = \SI{0.230}{\angstrom}$. At the smallest $r_{\mathrm h}$, $F$ is
+\SI{116}{\milli\electronvolt} above its least. A free-energy profile along
+a coordinate carries the count of arrangements at each value, and a
+minimum of $F$ need not be a minimum of $U$.
+
+\subsection*{A dihedral angle}
+
+The free energy of a dihedral angle is how the TrajCast paper judges the
+slow motions of a molecule\cite{Thiemann2026}, and a model chain has an
+exact answer for it. The chain has four beads of \SI{14.5}{\amu}, each
+standing for a CH$_2$ or CH$_3$ group, joined by springs in the force
+field of \cref{eq:pe-opls}: bonds with $\kappa_r =
+\SI{5}{\electronvolt\per\angstrom\squared}$ and $r_{\mathrm{eq}} =
+\SI{1.53}{\angstrom}$, angles with $\kappa_\theta =
+\SI{2.5}{\electronvolt\per\radian\squared}$ and $\theta_{\mathrm{eq}} =
+\ang{112}$, and a torsion with $\kappa_1 = 0.06$, $\kappa_2 = -0.01$ and
+$\kappa_3 = \SI{0.12}{\electronvolt}$, which puts the lowest well at
+$\psi = \ang{180}$ (trans), two gauche wells \SI{36.4}{\milli
+\electronvolt} higher at $\pm\ang{63.7}$, barriers of
+\SI{127.8}{\milli\electronvolt} at $\pm\ang{118.1}$ and
+\SI{180}{\milli\electronvolt} at \ang{0}. The constants are chosen for
+illustration. The forces of \texttt{mdlab.forcefield.BondedModel} match
+finite differences of its energy to \SI{1e-8}{\electronvolt\per\angstrom}.
+
+With no other terms, the density of $\psi$ is exactly $\mathrm{e}^{-\beta
+U_{\mathrm t}(\psi)}$, $U_{\mathrm t}$ the torsion energy. Building the
+chain bead by bead, the second bead's position relative to the first is
+given by a length and two angles, the third's relative to the second by
+$r_2$, the bond angle $\theta_1$ and an angle about the first bond, and
+the fourth's by $r_3$, $\theta_2$ and its angle about the middle bond,
+which is $\psi$. Each step is a set of spherical coordinates: small
+changes of $r$, of $\theta$ and of the angle $\phi$ about the axis move the
+bead by $\dd r$, $r\,\dd\theta$ and $r\sin\theta\,\dd\phi$ at right angles
+to one another, a small volume $r^2\sin\theta\,\dd r\,\dd\theta\,\dd\phi$.
+The volume for the whole chain is a product of such factors of $r$ and
+$\sin\theta$ times $\dd\psi$, with no factor that depends on $\psi$. The energy is a sum of a part in the bonds and angles
+and a part in $\psi$, so integrating over everything but $\psi$ leaves
+$\mathrm{e}^{-\beta U_{\mathrm t}(\psi)}$ times a constant, and $F(\psi) =
+U_{\mathrm t}(\psi)$ up to a constant.
+
+Two hundred copies, each started in the trans well, are held by Langevin
+friction of \SI{1}{\per\pico\second} at \SI{300}{\kelvin} and at
+\SI{200}{\kelvin} for \SI{2}{\nano\second}, $\psi$ recorded every
+\SI{100}{\femto\second}, and the first \SI{200}{\pico\second} left out:
+over it the trans well holds 0.720 and 0.903 of the copies, against the
+0.664 and 0.801 of equilibrium. Each bin of $F(\psi)$ is compared with
+$-\kB T\ln$ of the bin's average of $\mathrm{e}^{-\beta U_{\mathrm t}}$,
+since a histogram counts the whole bin. At \SI{300}{\kelvin}, where each
+copy changes well 83.5 times per nanosecond, $F$ matches the torsion
+energy within its errors (\cref{fig:ob-fes}c): the mean of the squared
+misses over squared errors is 1.02 over 72 bins with blocks in time and
+0.68 with blocks of 20 copies each, and at $\psi \approx 0$ the run gives
+$(181 \pm 2)$\,\si{\milli\electronvolt} against 179.
+
+At \SI{200}{\kelvin} each copy changes well only 8.0 times per
+nanosecond, and the profile is harder to get right. Its shape is right,
+$F(0) = (177 \pm 4)$\,\si{\milli\electronvolt} against 179, but with blocks
+in time the squared misses over squared errors average 3.26, and they lie
+mostly on one side, where counts are plentiful: 7.8 between $-\ang{120}$
+and 0, 1.3 between 0 and \ang{120}. Over the \SI{1.8}{\nano\second} kept,
+the gauche well near $+\ang{64}$ holds $0.0158 \pm 0.0088$ more of the
+copies than the one near $-\ang{64}$, though by symmetry the two must hold
+equal shares. That is
+1.8 of its errors, an ordinary fluctuation when the error is taken over
+the 200 independent copies; but each copy stays in a well for
+\SI{125}{\pico\second} on average, so the populations of consecutive blocks in time
+are not independent and their spread understates the error, by the mechanism of
+\cref{sec:cv-blocks}. Blocks of copies instead give errors 40\% larger
+(a median of 0.92 against \SI{0.66}{\milli\electronvolt}) and a mean of
+2.05, much of what remains being that single fluctuation, which moves
+every bin of a well together: folding $\psi$ to $\lvert\psi\rvert$, which
+pools the two gauche wells and so cancels it, brings the mean to 1.06
+with blocks of copies, while blocks in time still give 2.10. Free-energy profiles across barriers
+crossed rarely need their error bars from independent runs, or from
+blocks far longer than the time between crossings.
+
+\begin{practice}
+A free-energy profile is no better than the number of crossings between
+its wells, and counting them is the check. For a two-well process with independent, approximately exponential stays,
+$n$ crossings mean each side
+is visited about $n/2$ times, its share of the time known to about
+$\sqrt{2/n}$ of itself, so the ratio of the two shares is known to about
+$2/\sqrt n$, and the difference of free energy to $2\kB T/\sqrt n$: two
+thirds of $\kB T$ for ten crossings and a tenth for 400, whatever the
+number of frames. Copies started in different wells, errors taken over
+independent copies, and the start left out, where the wells still hold
+the populations they began with, guard against the rest.
+\end{practice}
+
+\subsection*{The distribution of the potential energy}
+
+The density of the potential energy itself is a profile of the same kind,
+and the TrajCast paper compares it between a learned model and the
+reference\cite{Thiemann2026}. It depends on the ensemble as well as the
+forces: Chapter~15's liquid argon spreads by 0.677 under CSVR and by
+\SI{0.532}{\milli\electronvolt} per atom at fixed energy, and the two
+distributions overlap by 0.882 by the score of \cref{sec:ob-vdos}, against
+0.980 for the two halves of the same CSVR run. A test of a model by this
+distribution is a test of its forces only when both runs sample the same
+ensemble; with that settled, a score near the halves' own is the target.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch16_observables/fes}
+\caption{(a) Lithium on the model surface at \SI{600}{\kelvin}, positions
+folded into one cell of the hollows: $F(x, y)$ (shading, \SIrange{0}{0.35}{
+\electronvolt}, with its additive constant aligned to $U$) and contours of $U$ every \SI{0.1}{\electronvolt} (lines).
+(b) The same atoms' free energy against the distance $r_{\mathrm h}$ to the nearest
+hollow (points, with twice their errors), against the exact
+$-\kB T\ln[r_{\mathrm h}\oint\mathrm{e}^{-\beta U}\dd\theta]$ (line) and $U$ along the
+line from a hollow to a bridge (dashed). (c) The four-bead chain's
+dihedral angle at 300 and \SI{200}{\kelvin}: $F(\psi)$ with twice its
+error from ten blocks of 20 copies, after the first
+\SI{200}{\pico\second}, against the torsion energy (line).}
+\label{fig:ob-fes}
+\end{figure}
+
+\begin{keyidea}
+The free energy along a coordinate is $-\kB T\ln$ of the density of its
+values, estimated by a histogram, with errors from blocks. It equals the
+potential energy only when the coordinate is every coordinate; otherwise
+it counts the arrangements at each value. Across barriers crossed rarely,
+short blocks in time underestimate errors; use sufficiently long blocks
+or independent copies.
+\end{keyidea}
+
+\notebook{16}{build F from a histogram and watch the error bars at 200 K}
+
+\begin{selfcheck}
+Why does $F(r_{\mathrm h})$ for the lithium atom rise towards $r_{\mathrm h} = 0$ although the
+potential energy is lowest there?
+\end{selfcheck}

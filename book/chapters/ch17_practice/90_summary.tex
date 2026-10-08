@@ -1,0 +1,42 @@
+%=============================================================================!
+% 17.S  WHAT WE NOW HAVE                                                      !
+%=============================================================================!
+\unnumbered{What we now have}
+
+ASE and LAMMPS run the methods of the earlier chapters under their own
+names, units and defaults: ASE's time in units of \SI{10.18}{\femto
+\second}, LAMMPS's in picoseconds, a friction given as a rate in one and
+as its inverse in the other, chain masses from different counts of
+freedoms, a pair potential read from a table whose error falls as the
+square of its spacing, image flags packed into one number, and atoms
+re-sorted in memory. With these translated, the same argon gives the same
+spread of the total energy in all three codes, trajectories that part
+only as chaos amplifies the differences of rounding and of the table,
+and diffusion coefficients that agree within their errors under each
+thermostat.
+MACE-MP-0 runs in both codes, in single precision on the
+graphics processor at a few tenths of a second a step for a hundred atoms;
+it needs D3 added to hold graphite's sheets at their measured spacing,
+and a step of at most \SI{2}{\femto\second}, \SI{1}{\femto\second} with a
+margin, for the bonds of carbon. First-principles molecular dynamics
+costs, on an estimate of its step, about nine hundred times as much, and
+its
+$k$-points must be converged before its forces serve as a reference.
+
+LiC$_6$ needs its lattice lengths coupled apart; the first
+\SI{20}{\pico\second} still leave its spacing unresolved. Lithium's sites in dilute graphite are the
+hollows of both sheets, followed in the frame of each sheet, since the
+sheets of a small cell slide; hops are counted after the start that
+Chapter~15's test finds, with a least stay chosen where the count is
+flat, and rates are reported with their Poisson errors once 25 are seen
+and otherwise as unresolved, while one atom's
+diffusion coefficient stays unresolved long after its rate is known.
+A protocol orders the choices of a production run with the measurement
+behind each; \texttt{health\_report} runs the book's checks of a single
+record on any trajectory, and Appendix~F gathers every fault with its
+check and cure.
+
+Part~V begins to open the learned potential that this chapter used as a black
+box. Chapter~18 starts from the simplest learning problem, fitting a
+spring's constant to data by least squares, and the planned continuation
+builds from there to the equivariant networks of MACE.

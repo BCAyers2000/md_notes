@@ -1,0 +1,185 @@
+%=============================================================================!
+% 18.7  MOMENTUM AND ADAM                                                     !
+%=============================================================================!
+\section{Momentum and Adam}
+\label{sec:lo-momentum}
+
+A heavy block sliding down a long, gently tilted gutter with steep sides
+gathers speed along the gutter, since every push points the same way
+there, while across it the pushes alternate from one wall to the other
+and friction damps the swaying. The walker of \cref{sec:lo-descent} has
+no memory: each step depends only on the slope underfoot, so along a
+long shallow valley it creeps, and across a steep one it zig-zags. Giving
+the steps memory, as the block's speed is a memory of past pushes, cures
+much of both.
+
+\subsection*{Momentum}
+
+\emph{Gradient descent with momentum} keeps a velocity $\vb{v}$, a
+running sum of past gradients that decays by a factor $\mu < 1$ a step,
+and moves the weights along it:
+\begin{equation}
+   \vb{v} \leftarrow \mu\vb{v} + \grad L(\vb{w}) , \qquad
+   \vb{w} \leftarrow \vb{w} - \eta\vb{v} .
+   \label{eq:lo-momentum}
+\end{equation}
+The block is more than a picture. Writing $\vb{w}_t$ for the weights after
+$t$ steps, the second rule gives $\eta\vb{v}_t = \vb{w}_{t-1} - \vb{w}_t$
+at every step. Multiplying the first rule by $-\eta$ and substituting
+gives
+\begin{equation*}
+   \vb{w}_{t+1} - \vb{w}_t = \mu(\vb{w}_t - \vb{w}_{t-1})
+   - \eta\grad L(\vb{w}_t) ,
+\end{equation*}
+and moving $\vb{w}_t - \vb{w}_{t-1}$ to the left,
+\begin{equation*}
+   (\vb{w}_{t+1} - 2\vb{w}_t + \vb{w}_{t-1})
+   + (1 - \mu)(\vb{w}_t - \vb{w}_{t-1}) = -\eta\grad L(\vb{w}_t) .
+\end{equation*}
+The first bracket is a second difference, the change of the step from
+one step to the next, an acceleration, and the second a velocity: this is
+Newton's law with friction, $m\ddot{\vb{w}} + \gamma\dot{\vb{w}} =
+-\grad L$ (\cref{sec:os-damped}), discretised with a step of one, the
+mass one, the friction $1 - \mu$ and the force $\eta$ times the gradient.
+Momentum turns the descent into the damped motion of a particle on the
+loss.
+
+On a quadratic loss each eigen-direction of the Hessian again moves on
+its own, the component $c_t$ along an eigenvector of eigenvalue
+$\lambda$ following $c_{t+1} = (1 + \mu - \eta\lambda)\,c_t - \mu
+c_{t-1}$, the line above with $\grad L$ replaced by $\lambda c_t$.
+Trying $c_t = z^t$, as for the oscillations of \cref{sec:in-stability},
+\begin{equation*}
+   z^2 - (1 + \mu - \eta\lambda)\,z + \mu = 0 .
+\end{equation*}
+The product of the two roots is $\mu$, so when they are complex, a pair
+of conjugates of equal size, both have $\lvert z\rvert = \sqrt\mu$: the
+component swings and shrinks by $\sqrt\mu$ a step, whatever $\lambda$.
+They are complex while $(1 + \mu - \eta\lambda)^2 \le 4\mu$, and the
+best choice, due to Polyak\cite{Polyak1964}, puts both ends of the range
+of eigenvalues on the edge of this condition, $1 + \mu -
+\eta\lambda_{\min} = 2\sqrt\mu$ and $1 + \mu - \eta\lambda_{\max} =
+-2\sqrt\mu$:
+\begin{align*}
+   (1 - \sqrt\mu)^2 &= \eta\lambda_{\min} , \quad
+   (1 + \sqrt\mu)^2 = \eta\lambda_{\max}
+      && \text{as squares}\\
+   \frac{1 + \sqrt\mu}{1 - \sqrt\mu} &= \sqrt\kappa
+      && \text{dividing, and the root}\\
+   \sqrt\mu &= \frac{\sqrt\kappa - 1}{\sqrt\kappa + 1}
+      && \text{solving for $\sqrt\mu$,}
+\end{align*}
+the first line writing $1 + \mu \mp 2\sqrt\mu$ as $(1 \mp \sqrt\mu)^2$.
+Adding the square roots of the first line's two equations gives $2 =
+\sqrt\eta\,(\sqrt{\lambda_{\min}} + \sqrt{\lambda_{\max}})$, so $\eta =
+4/(\sqrt{\lambda_{\max}} + \sqrt{\lambda_{\min}})^2$.
+The asymptotic contraction factor in every direction is $(\sqrt\kappa - 1)/(\sqrt\kappa + 1)$ a step,
+against $(\kappa - 1)/(\kappa + 1)$ without momentum, and the steps
+needed grow as $\sqrt\kappa$ instead of $\kappa$. For the valley of
+\cref{fig:lo-optimisers}, with eigenvalues 1 and 100, the factors are
+0.818 and 0.980: momentum brings the loss below $10^{-8}$ in 77 steps,
+while gradient descent at its best fixed rate has not in 300. The steep
+weight shows the difference (\cref{fig:lo-optimisers}a): without
+momentum it flips sign at every step and barely shrinks, by the factor
+$-0.98$; with momentum it rings and dies away, the damped swing of
+Chapter~4.
+
+\subsection*{Adam}
+
+The networks of the later chapters are trained with
+Adam\cite{Kingma2014}, which gives each weight a step of its own size.
+It keeps two running means of each weight's gradient, of the gradient
+and of its square,
+\begin{equation*}
+   m \leftarrow \beta_1m + (1 - \beta_1)\,g , \qquad
+   s \leftarrow \beta_2s + (1 - \beta_2)\,g^2 ,
+\end{equation*}
+with $\beta_1 = 0.9$ and $\beta_2 = 0.999$ by default, each a mean over
+roughly the last $1/(1 - \beta)$ steps, 10 and 1000, weighted towards the
+recent ones. Both start at zero, which biases them low at first: with a
+steady gradient $g$, after $t$ steps
+\begin{equation*}
+   m_t = (1 - \beta_1)\sum_{k=0}^{t-1}\beta_1^kg
+   = (1 - \beta_1)\frac{1 - \beta_1^t}{1 - \beta_1}\,g
+   = (1 - \beta_1^t)\,g ,
+\end{equation*}
+by the sum of a geometric series, so dividing by $1 - \beta_1^t$ undoes
+the bias, and likewise for $s$. The step is
+\begin{equation*}
+   w \leftarrow w - \eta\,\frac{\hat m}{\sqrt{\hat s} + \epsilon} , \qquad
+   \hat m = \frac{m}{1 - \beta_1^t} , \quad \hat s = \frac{s}{1 - \beta_2^t} ,
+\end{equation*}
+with $\epsilon = 10^{-8}$ guarding against a division by zero. For a
+steady gradient $\hat m/\sqrt{\hat s}$ is $\pm1$, so each weight moves by
+about $\eta$ a step whatever the size of its gradient; multiplying one
+weight's gradients by a constant multiplies $\hat m$ and $\sqrt{\hat s}$
+alike and leaves its steps unchanged. In \texttt{mdlab}:
+
+\begin{code}
+class Adam:
+    def __init__(self, rate: float = 1e-3, beta1: float = 0.9,
+                 beta2: float = 0.999, eps: float = 1e-8):
+        self.rate, self.beta1, self.beta2, self.eps = rate, beta1, beta2, eps
+        self.m = self.s = None
+        self.t = 0
+
+    def step(self, w: NDArray, g: NDArray) -> NDArray:
+        if self.m is None:
+            self.m, self.s = np.zeros_like(g), np.zeros_like(g)
+        self.t += 1
+        self.m = self.beta1 * self.m + (1 - self.beta1) * g
+        self.s = self.beta2 * self.s + (1 - self.beta2) * g * g
+        m_hat = self.m / (1 - self.beta1**self.t)
+        s_hat = self.s / (1 - self.beta2**self.t)
+        return w - self.rate * m_hat / (np.sqrt(s_hat) + self.eps)
+\end{code}
+
+\noindent A test checks that its steps, and those of \texttt{Momentum},
+match PyTorch's \texttt{Adam} and \texttt{SGD} with momentum on a loss of
+two weights to the last digit.
+
+The scaling is Adam's strength and its limit. A valley whose steep and
+shallow directions lie along the weights, as when one weight multiplies
+a feature a hundred times larger than another's, is a valley of badly
+scaled weights, and Adam evens them out: with the rate 0.05 it reaches
+$10^{-8}$ in 189 steps (\cref{fig:lo-optimisers}b). The same valley
+turned by \ang{45}, its steep direction a mixture of both weights, gives
+each weight a similar gradient, Adam's scaling has nothing to even out,
+and after 300 steps its loss is still 0.49, worse than plain descent's
+\num{0.0014}, while momentum still needs only 85
+(\cref{fig:lo-optimisers}c). Adam is robust where the scales of the
+weights differ widely and are not known in advance, as in a network,
+which is why it is the common default; a narrow valley at an angle it
+leaves as it found it.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch18_learning/optimisers}
+\caption{Gradient descent, momentum and Adam in a valley whose Hessian
+has the eigenvalues 1 and 100, from $(-2.5, 0.5)$: descent at its best
+fixed rate $2/(\lambda_{\min} + \lambda_{\max})$, momentum with Polyak's
+rate and $\mu$, Adam with the rate 0.05. (a) The steep weight against
+the step, the valley's axes along the weights. (b) The loss against the
+step there, with the factors per step that theory gives descent and
+momentum (dashed). (c) The loss in the same valley turned by \ang{45}.}
+\label{fig:lo-optimisers}
+\end{figure}
+
+\begin{keyidea}
+Momentum adds to the step a decaying memory of past gradients; it is
+damped motion on the loss, and on a quadratic with Polyak's choice it
+has the asymptotic contraction factor $(\sqrt\kappa - 1)/(\sqrt\kappa + 1)$ a step.
+Adam divides each weight's running mean gradient by the root of its
+running mean square, with both corrected for their start at zero, so that
+every weight moves at about the rate whatever the scale of its gradient;
+it evens out badly scaled weights, and leaves a narrow valley at an angle
+as narrow as it was.
+\end{keyidea}
+
+\notebook{18}{race the three optimisers down a valley, and turn the valley}
+
+\begin{selfcheck}
+For a Hessian with $\kappa = 10^4$, by what factor does the slow direction
+shrink in a step of gradient descent at its best fixed rate, and of
+momentum with Polyak's choice?
+\end{selfcheck}

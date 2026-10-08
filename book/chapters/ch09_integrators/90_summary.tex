@@ -1,0 +1,39 @@
+%=============================================================================!
+% 9.S  WHAT WE NOW HAVE                                                       !
+%=============================================================================!
+\unnumbered{What we now have}
+
+A method of computing motion is a step map, and its order says how fast
+its error over a fixed time shrinks with the step: the forward Euler
+method, whose error over a fixed time shrinks as $\dt$ and over one step
+as $\dt^2$, is of order 1. Adding the Taylor
+series a step ahead and a step behind gives the Verlet method, which in
+its velocity form is a half kick, a drift and a half kick, costs one force
+evaluation per step and is of order 2; its local error, of order
+$\dt^3$, is the `cubic scaling' quoted by TrajCast.
+
+Reversing the
+velocities after a step and stepping again returns the start, with its
+velocities reversed, without error, and each step keeps
+volume in phase space and satisfies the full symplectic condition. The
+same method follows from splitting the Liouville operator into the parts
+that move positions and momenta, whose exponentials are a drift and a kick
+with no error; the symmetric product agrees with the true motion to second
+order.
+
+For a spring, velocity Verlet keeps the shadow energy $p^2/(2m) +
+\frac12 kq^2(1 - \omega^2\dt^2/4)$ exactly, so the true energy oscillates
+in a band of relative width $\omega^2\dt^2/4$; the symplectic Euler
+method keeps one that differs from the energy at first order in $\dt$,
+hence its wider band, and for other Hamiltonians a nearby shadow energy
+is kept very nearly for sufficiently small steps and smooth forces.
+
+The method is stable only for
+$\omega\dt < 2$ for the fastest vibration, \SI{2.83}{\femto\second} for
+the O--H stretch, and accurate enough well inside that; the step is chosen
+by measuring the energy fluctuation. Over long runs it keeps the energy
+better than RK4 at the same cost, provided the forces are smooth.
+
+Chapter~10 uses velocity Verlet to build a complete simulation: atoms in a
+periodic box, neighbour lists for the cutoffs, and the Ewald sum for
+charges.

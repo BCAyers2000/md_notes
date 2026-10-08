@@ -1,0 +1,148 @@
+%=============================================================================!
+% 14.7  A PISTON WITH MASS                                                    !
+%=============================================================================!
+\section{A piston with mass}
+\label{sec:pr-piston}
+
+The barostats of \cref{sec:pr-rescaling} move the volume as a heavily
+damped quantity, with no momentum of its own. A real piston has mass: it
+overshoots and swings. This section builds the barostat that treats the
+volume as a coordinate with inertia, finds the frequency at which it
+swings, and measures it.
+
+\subsection*{A piston on a gas spring}
+
+A piston of mass $M_{\mathrm p}$ and area $A$ rests on a column of gas of
+height $x$, so $V = Ax$, with the pressure $P_0$ above it. The gas pushes
+up with $PA$ and the outside pushes down with $P_0A$, so $M_{\mathrm
+p}\ddot x = A(P - P_0)$. If the piston is moved by $\delta x$ from where
+the two balance, the volume changes by $A\,\delta x$ and the gas's
+pressure by $\delta P = -A\,\delta x/(V\kappa)$, and
+\begin{equation*}
+   M_{\mathrm p}\,\ddot{\delta x} = -\frac{A^2}{V\kappa}\,\delta x :
+\end{equation*}
+the oscillator of \cref{sec:os-small}, with the gas as its spring, of
+stiffness $A^2/V\kappa$, and the frequency $\omega^2 = A^2/(M_{\mathrm
+p}V\kappa)$. A heavy piston on a soft gas swings slowly.
+
+\subsection*{The volume as a coordinate}
+
+Andersen turned this into a barostat\cite{Andersen1980}: the volume is
+given a mass and a kinetic energy of its own, the outside does the work
+$P_0V$, and the atoms' positions scale with the box, so that the volume
+accelerates in proportion to $P - P_0$ and the sum of $H$, $P_0V$ and the
+piston's kinetic energy is kept. The form of Martyna, Tobias and Klein
+(MTK)\cite{Martyna1994}, which ASE and \texttt{mdlab} follow, takes as its coordinate the strain $\epsilon$
+by which every length is $\mathrm{e}^\epsilon$ times its starting value, so
+$V = V_0\mathrm{e}^{3\epsilon}$, with the momentum $p_\epsilon$ and the
+mass $M_\epsilon$. Its equations are
+\begin{align*}
+   \dot{\vb{r}}_i &= \vb{v}_i + \frac{p_\epsilon}{M_\epsilon}\vb{r}_i ,
+   & m_i\dot{\vb{v}}_i &= \vb{F}_i - \Bigl(1 + \frac{3}{N_{\mathrm f}}\Bigr)
+   \frac{p_\epsilon}{M_\epsilon}m_i\vb{v}_i ,\\
+   \dot V &= \frac{3Vp_\epsilon}{M_\epsilon} ,
+   & \dot p_\epsilon &= 3V(P - P_0) + \frac{3}{N_{\mathrm f}}\sum_im_iv_i^2 ,
+\end{align*}
+with $N_{\mathrm f}$ the number of free momenta. Here $\vb{v}_i =
+\vb{p}_i/m_i$ is the velocity of atom $i$ relative to the stretching box,
+which the first equation adds to the box's own motion to give
+$\dot{\vb{r}}_i$, and $P$ is the instantaneous pressure computed with
+these $\vb{v}_i$. The first equation carries each atom along as the box
+grows, the second slows the atoms as it does, the third ties the volume
+to the strain, and the fourth pushes the piston with the difference of
+pressures. Martyna, Tobias and Klein showed that with the two terms in
+$3/N_{\mathrm f}$ these equations, given a thermostat, sample the ensemble
+at constant pressure; without them the distribution of the volume is
+wrong by an amount that shrinks as $N$ grows. Nosé-Hoover chains
+(\cref{sec:th-nose}) add a friction to the second and fourth equations,
+acting on the atoms and on $p_\epsilon$, and the run keeps $K + U + P_0V +
+p_\epsilon^2/2M_\epsilon$ plus the chains' energies.
+\texttt{barostats.run\_mtk} integrates these equations by the Trotter
+splitting (\cref{sec:in-splitting}) of Tuckerman and
+colleagues\cite{Tuckerman2006}, as ASE's
+\texttt{IsotropicMTKNPT} does, and follows it to \SI{5.6e-7}{\angstrom}
+over 40 steps. Both take $N_{\mathrm f} = 3N$. A liquid whose total
+momentum stays at zero has only $3N - 3$ free momenta, and with $3N$ in
+the chain its kinetic temperature runs high by about $3/(3N - 3)$, 0.4\%
+for 256 atoms: the three runs of \cref{fig:pr-volume}(b) average 135.48,
+135.99 and \SI{135.94}{\kelvin} against the \SI{135}{\kelvin} asked
+for.
+
+\subsection*{How fast it swings}
+
+Ignoring the chains and the term $(3/N_{\mathrm f})\sum_im_iv_i^2$, which
+stays close to $3\kB T$ and only shifts where the piston balances,
+$M_\epsilon\ddot\epsilon = 3V(P - P_0)$. A change of the strain by
+$\delta\epsilon$ changes the volume by $3V\delta\epsilon$ and, taking the
+response at fixed temperature, the pressure by $\delta P =
+-3\delta\epsilon/\kappa_T$, so
+\begin{equation*}
+   M_\epsilon\,\ddot{\delta\epsilon} = -\frac{9V}{\kappa_T}\,\delta\epsilon ,
+   \qquad \omega^2 = \frac{9V}{M_\epsilon\kappa_T} ,
+\end{equation*}
+the piston on its gas spring again. ASE and \texttt{mdlab} take the mass
+from a time constant, $M_\epsilon = (3N + 3)\kB T\tau_{\mathrm P}^2$, which
+gives the period (\cref{ex:pr-period})
+\begin{equation*}
+   \frac{2\pi}{\omega} = 2\pi\tau_{\mathrm P}\sqrt{\frac{(N + 1)\kB T
+   \kappa_T}{3V}} ;
+\end{equation*}
+for the liquid, with $\kappa_T = \SI{1.46}{\per\giga\pascal}$, it is
+$0.865\,\tau_{\mathrm P}$, and $M_\epsilon = \SI{8.97e6}{\electronvolt\femto
+\second\squared}$ for $\tau_{\mathrm P} = \SI{1}{\pico\second}$. Measured
+from the crossings of the volume through its mean
+(\cref{fig:pr-piston}), the periods are 0.248, 0.876, 2.450 and
+\SI{8.695}{\pico\second} for $\tau_{\mathrm P}$ of 0.3, 1, 3 and
+\SI{10}{\pico\second}, against 0.259, 0.865, 2.594 and
+\SI{8.647}{\pico\second} predicted, the agreement within 6\% bearing out
+the response taken at fixed temperature.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{ch14_pressure/piston}
+\caption{A piston with mass rings. The liquid at \SI{135}{\kelvin} and
+\SI{0.1}{\giga\pascal} under the MTK piston with chains. (a) The volume's
+departure from its mean over the first \SI{30}{\pico\second} for
+$\tau_{\mathrm P} = 1$, 3 and \SI{10}{\pico\second}, each trace offset by
+\SI{1200}{\angstrom\cubed}. (b) The period of the volume's swing against
+$\tau_{\mathrm P}$ (points) and the period of the linearised piston
+(dashed).}
+\label{fig:pr-piston}
+\end{figure}
+
+The piston samples the right volume (\cref{fig:pr-volume}): on the ideal
+gas its mean is 0.999 and its spread 0.994 of the exact values, and on
+the liquid, with $\tau_{\mathrm P} = \SI{1}{\pico\second}$, the volume's
+fluctuations give $\kappa_T = (1.39 \pm 0.06)$\,\si{\per\giga\pascal}
+against \SI{1.46}{\per\giga\pascal}. How heavy the piston should be is a
+question of time. With $\tau_{\mathrm P} = \SI{10}{\pico\second}$ the
+volume swings only 10 times in \SI{90}{\pico\second}, too few for a run of
+that length to average its swings away; with \SI{1}{\pico\second} it
+swings 103 times.
+
+\subsection*{Changing shape}
+
+Parrinello and Rahman gave every component of the cell matrix $\vb{h}$ a
+mass and a momentum, so that the cell can change its shape as well as its
+size, each lattice vector a piston of its own, and used it to follow a
+crystal from one structure to another\cite{Parrinello1981}. Martyna,
+Tobias and Klein gave the same freedom to their piston. \texttt{mdlab}
+has only the isotropic piston; \cref{sec:pr-shape} changes the shape of
+the cell with first-order barostats instead.
+
+\begin{keyidea}
+A piston with mass treats the volume as a coordinate pushed by $P -
+P_0$; it swings like a mass on a gas spring, with $\omega^2 = 9V/(M_\epsilon
+\kappa_T)$, a period of $0.865\,\tau_{\mathrm P}$ for the liquid with the
+mass $(3N + 3)\kB T\tau_{\mathrm P}^2$. With Nosé-Hoover chains and the
+corrections of Martyna, Tobias and Klein it samples the right volume; a
+heavy piston swings so slowly that a short run averages few swings.
+\end{keyidea}
+
+\notebook{14}{set the piston's mass and watch the volume ring}
+
+\begin{selfcheck}
+A piston of \SI{1}{\kilo\gram} and area \SI{10}{\centi\metre\squared}, its
+weight ignored, sits on one litre of air, taken at a fixed temperature, so that $\kappa
+= 1/P$ with $P = \SI{1}{bar}$. What is the period of its swing?
+\end{selfcheck}

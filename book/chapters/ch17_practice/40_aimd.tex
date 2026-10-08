@@ -1,0 +1,95 @@
+%=============================================================================!
+% 17.4  FIRST-PRINCIPLES MOLECULAR DYNAMICS AND ITS COST                      !
+%=============================================================================!
+\section{First-principles molecular dynamics and its cost}
+\label{sec:ip-aimd}
+
+A map drawn from a survey is only as good as the survey, and a survey of
+every field is too costly to repeat for each journey; the map is drawn
+once and then used. A learned potential is such a map, and the survey is
+electronic-structure theory, which gives the energy and forces of atoms
+from their electrons (\cref{sec:pe-origin}). Molecular dynamics with
+those forces at every step, first-principles or \emph{ab initio}
+molecular dynamics, needs no fitted potential, and it is what a learned
+potential is trained to imitate. This section measures what it costs,
+with FHI-aims\cite{Blum2009}, which describes each electron's wave as a
+sum of functions centred on the atoms, stored as tables of numbers, and
+can run molecular dynamics itself.
+
+\subsection*{One frame of LiC$_6$}
+
+The 28 atoms of a $2\times2\times1$ cell of LiC$_6$, four copies of the
+seven-atom cell of \cref{sec:ip-lic6}, taken from a run of MACE-MP-0 at
+\SI{300}{\kelvin}, were given to FHI-aims with the PBE functional and its
+standard `light' settings, the cheapest of its standard choices of basis
+functions and integration grids, on four cores of an Apple M1 Max, once
+for each of the three grids below. The electrons are found by a
+self-consistent iteration: the potential each electron feels depends on
+the density of all of them, the number per unit volume at each point,
+which is built from their waves, which are in turn set by the potential;
+so each cycle builds a potential from the density and a density from the
+potential, until neither changes. This frame needed 16 or 17 cycles,
+\SI{337}{\second} to \SI{385}{\second} in all: 14 to \SI{16}{\second} for
+each ordinary cycle and 57 to \SI{60}{\second} for each of the last two,
+which also computed the forces. A step of molecular dynamics starts from
+the density of the step before, extrapolated, and needs fewer cycles. If
+it took half the time of this calculation from scratch, an estimate that
+a short run would test, a step would cost about \SI{192}{\second}, and a
+picosecond of steps of \SI{1}{\femto\second} about \SI{53}{\hour} on these
+four cores; the two cycles with forces do not shrink, so this is the
+cheaper end. MACE-MP-0 with D3 takes \SI{214}{\milli\second} a step of
+molecular dynamics for the same cell on the same machine's GPU, with other
+runs sharing the machine, about 900 times less (and
+\SI{72}{\milli\second} a call alone on the faster machine of
+\cref{fig:ip-learned}a). The gap widens with size, since the cost of the
+electronic structure grows faster than the number of atoms
+(\cref{sec:pe-origin}).
+
+\subsection*{A setting to converge}
+
+LiC$_6$ is a metal. In a crystal each electron's wave repeats from one
+cell to the next up to a shift of its phase, and the code finds the
+electrons separately for each of a grid of such shifts, the $k$-points,
+and averages over them; a metal, whose filled energy levels end
+abruptly, needs a fine grid. A grid of $4\times4\times10$ shifts along
+the three cell vectors has 160 points, but a shift and its reverse give
+the same energies, which leaves 84 to compute; grids of $2\times2\times5$
+and $3\times3\times8$ leave 12 and 37. The forces on the carbon atoms of
+this frame, up to \SI{3.1}{\electronvolt\per\angstrom}, change by up to
+\SI{0.16}{\electronvolt\per\angstrom} between the grids of 12 and 84
+points and by up to \SI{0.28}{\electronvolt\per\angstrom} between those
+of 37 and 84: they have not settled by 37 points, nothing yet shows that
+they have by 84, and a denser grid is needed before these frames can
+serve as a reference. A reference
+calculation is converged in its own settings before anything is compared
+with it, as a molecular dynamics run is converged in its time step
+and length.
+
+\subsection*{What is left to check}
+
+The lithium studies of the next two sections rest on MACE-MP-0, and no
+calculation here has yet compared its forces, or its barrier for a
+lithium hop, with PBE for this system. Their numbers are therefore the
+model's predictions. The check, single points at a converged grid on
+frames of the runs and along lithium's paths between sites, is the first
+step of the protocol of \cref{sec:ip-protocol} for any learned potential,
+and the planned continuation of Part~V returns to it when it trains a model of its own on these data.
+
+\begin{keyidea}
+First-principles molecular dynamics computes the electrons at every step
+and needs no fitted potential, at a cost of minutes a step for a few
+dozen atoms, on this estimate about nine hundred times a foundation
+model's here. Its settings,
+such as the grid of $k$-points of a metal, are converged before it serves
+as a reference, and a learned potential is checked against it on the
+system at hand before its predictions are trusted.
+\end{keyidea}
+
+\notebook{17}{read the cost of a first-principles step and of a learned one}
+
+\begin{selfcheck}
+A first-principles step of 28 atoms costs \SI{192}{\second}. If the cost
+grew as the cube of the number of atoms, as it does once finding the
+eigenvectors dominates (\cref{sec:pe-origin}), roughly how long would a
+step of 112 atoms take?
+\end{selfcheck}

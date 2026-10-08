@@ -1,0 +1,158 @@
+%=============================================================================!
+% 8.E  EXERCISES                                                              !
+%=============================================================================!
+\unnumbered{Exercises}
+\label{sec:pe-exercises}
+
+The exercises run from questions of understanding, through calculations,
+to short derivations marked `show that'. Full solutions are in
+\hyperref[sec:pe-solutions]{`Solutions to the exercises'} at the end of
+the book, and Notebook~08 checks every numerical answer.
+
+\begin{exercise}[fast electrons]
+\label{ex:pe-ratio}
+With the same stiffness, how many times faster than a lithium atom of
+\SI{6.94}{amu} does an electron vibrate? (An electron's mass is
+\SI{5.486e-4}{amu}.)
+\end{exercise}
+
+\begin{exercise}[when quantum steps matter]
+\label{ex:pe-quantum}
+At what temperature is $\kB T$ equal to the quantum step $\hbar\omega$ of
+the model lithium hollow of \cref{sec:pe-classical}, and of the O--H
+stretch?
+\end{exercise}
+
+\begin{exercise}[the strongest pull]
+\label{ex:pe-lj-pull}
+Show that two Lennard-Jones atoms attract most strongly at $r =
+(26/7)^{1/6}\sigma = 1.2445\,\sigma$, and find that greatest pull.
+\end{exercise}
+
+\begin{exercise}[the lowered Morse well]
+\label{ex:pe-morse}
+Show that $\varphi_{\mathrm M}(r) = D(\mathrm{e}^{-2a(r-r_0)} -
+2\mathrm{e}^{-a(r-r_0)})$ has its minimum $-D$ at $r_0$ and the stiffness
+$2Da^2$ there.
+\end{exercise}
+
+\begin{exercise}[the exp-6 form]
+\label{ex:pe-exp6}
+Show that, for $\alpha > 7$, the Buckingham potential with $A = 6\varepsilon\,\mathrm{e}^
+{\alpha}/(\alpha - 6)$, $\rho = r_{\mathrm m}/\alpha$ and $C =
+\alpha\varepsilon r_{\mathrm m}^6/(\alpha - 6)$ has its minimum
+$-\varepsilon$ at $r_{\mathrm m}$.
+\end{exercise}
+
+\begin{exercise}[an argon pair]
+\label{ex:pe-argon}
+Two argon atoms vibrate about the Lennard-Jones minimum with the reduced
+mass $m/2$ (\cref{sec:os-bodies}). Find the period of small vibrations in
+units of $\tau$ and in femtoseconds, and how many steps of $0.005\tau$ it
+spans.
+\end{exercise}
+
+\begin{exercise}[no total force]
+\label{ex:pe-third}
+Show from \cref{eq:pe-pair-force} that the forces of any pair potential
+add to zero.
+\end{exercise}
+
+\begin{exercise}[the virial of a pair]
+\label{ex:pe-virial}
+Find the virial of two Lennard-Jones atoms at $r = 1.5\sigma$, and say for
+which distances it is positive.
+\end{exercise}
+
+\begin{exercise}[the best step]
+\label{ex:pe-best-step}
+For the twelve atoms of \cref{fig:pe-fd}, $\lvert U\rvert =
+10.75\varepsilon$; take $\lvert U'''\rvert \approx 10^4\,\varepsilon/
+\sigma^3$. Use \cref{eq:pe-fd-error} to estimate the best step.
+\end{exercise}
+
+\begin{exercise}[a one-sided difference]
+\label{ex:pe-forward}
+Show that the forward difference $[U(x + h) - U(x)]/h$ has an error of
+about $\frac12 h\lvert U''\rvert + \epsilon_{\mathrm m}\lvert U\rvert/h$,
+and that its best step is of order $\sqrt{\epsilon_{\mathrm m}}$ times
+the length on which $U$ changes and its least error of order
+$\sqrt{\epsilon_{\mathrm m}}$ times the forces, much worse than for
+central differences.
+\end{exercise}
+
+\begin{exercise}[the switching function]
+\label{ex:pe-switch}
+Show that $S(x) = 1 - 10x^3 + 15x^4 - 6x^5$ has $S(0) = 1$, $S(1) = 0$,
+and its first and second derivatives zero at $x = 0$ and $x = 1$.
+\end{exercise}
+
+\begin{exercise}[TrajCast's envelope]
+\label{ex:pe-envelope}
+Show that the envelope $u(x) = 1 - 28x^6 + 48x^7 - 21x^8$, the case $p = 6$
+of \cref{sec:pe-cutoffs}, has $u(1) = 0$ and $u'(1) = u''(1) = 0$.
+\end{exercise}
+
+\begin{exercise}[the energy beyond the cutoff]
+\label{ex:pe-tail}
+Atoms beyond $r_{\mathrm c}$ are spread evenly at the number density
+$n$, the number of atoms per unit volume.
+Show that the Lennard-Jones energy per atom that a cutoff leaves out is
+$\frac83\pi n\varepsilon\sigma^3[\frac13(\sigma/r_{\mathrm c})^9 -
+(\sigma/r_{\mathrm c})^3]$, and evaluate it for $n = 0.8\sigma^{-3}$ and
+$r_{\mathrm c} = 2.5\sigma$.
+\end{exercise}
+
+\begin{exercise}[counting crossings]
+\label{ex:pe-crossings}
+In \cref{fig:pe-cutoff}(c) the truncated energy rises by up to
+$0.49\varepsilon$ above its starting value. How many fewer pairs lie
+inside the cutoff than at the start?
+\end{exercise}
+
+\begin{exercise}[the force of a square root]
+\label{ex:pe-sqrt-force}
+Show that the bond energy $-\sqrt{\rho_i}$ of \cref{eq:pe-second-moment}
+acts on atom $k \ne i$ with the force $\frac12\rho_i^{-1/2}\,\grad_k
+\rho_i$, and write $\grad_k\rho_i$ out.
+\end{exercise}
+
+\begin{exercise}[a vacancy]
+\label{ex:pe-vacancy}
+In a crystal where every atom has $z$ neighbours at the same distance,
+an atom is removed from inside and put back elsewhere on the surface of
+the crystal; putting it there gains, on average, the energy that holds
+one atom in the crystal.
+Counting only the bond energy, show that a pair potential makes the
+energy of the vacancy equal to that energy, and that the second-moment
+model makes it $z(1 - \sqrt{1 - 1/z})$ times it; evaluate this for $z =
+12$.
+\end{exercise}
+
+\begin{exercise}[a right-angled twist]
+\label{ex:pe-dihedral}
+Find the dihedral angle of the atoms at $(1, 0, 0)$, $(0, 0, 0)$, $(0, 0,
+1)$ and $(0, 1, 1)$ (in \AA), and the torsion energy of
+\cref{eq:pe-opls} there with $\kappa_1 = 0.1$, $\kappa_2 = 0.02$ and
+$\kappa_3 = \SI{0.05}{\electronvolt}$.
+\end{exercise}
+
+\begin{exercise}[as weak as heat]
+\label{ex:pe-bjerrum}
+At what distance is the Coulomb energy of two unit charges in vacuum
+equal to $\kB T$ at \SI{300}{\kelvin}?
+\end{exercise}
+
+\begin{exercise}[the first shells]
+\label{ex:pe-shells}
+Count the ions of rock salt at distances $\sqrt3\,d$ and $2d$ from an ion,
+give their charges, and find the sphere sums for $\mathcal{M}$ up to radii $d$,
+$\sqrt2\,d$, $\sqrt3\,d$ and $2d$.
+\end{exercise}
+
+\begin{exercise}[the smallest neutral cube]
+\label{ex:pe-cube}
+Find by hand the cube sum for $\mathcal{M}$ with half-side $d$, counting the ions on
+the faces, edges and corners with weights $\frac12$, $\frac14$ and
+$\frac18$.
+\end{exercise}
